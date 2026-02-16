@@ -9,9 +9,15 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@medusajs/js-sdk": "^2.13.1",
+    "@medusajs/types": "^2.13.1",
+    "@meilisearch/instant-meilisearch": "^0.30.0",
+    "lucide-react": "^0.564.0",
+    "meilisearch": "^0.55.0",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "react-instantsearch": "^7.23.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

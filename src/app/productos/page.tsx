@@ -1,0 +1,14 @@
+import { ProductosContent } from "./ProductosContent";
+
+export const revalidate = 1800;
+
+export default function ProductosPage() {
+  return (
+    <div className="mx-auto max-w-7xl px-4 py-12">
+      <h1 className="mb-8 text-3xl font-bold text-sicaru-purple-900 md:text-4xl">
+        Nuestros Productos
+      </h1>
+      <ProductosContent />
+    </div>
+  );
+}
