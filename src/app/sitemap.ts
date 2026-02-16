@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { getProducts } from "@/lib/data/products";
 import { getCollections } from "@/lib/data/collections";
 import { getCategories } from "@/lib/data/categories";
+import { getAllPosts } from "@/lib/blog";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://sicaru.com";
@@ -92,10 +93,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Backend may not be available during build
   }
 
+  const blogPosts: MetadataRoute.Sitemap = getAllPosts().map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: post.updatedAt ? new Date(post.updatedAt) : new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+
   return [
     ...staticPages,
     ...productPages,
     ...collectionPages,
     ...categoryPages,
+    ...blogPosts,
   ];
 }
