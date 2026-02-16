@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useCart } from "./CartProvider";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 
@@ -66,9 +67,11 @@ export function CartDrawer() {
                 {cart.items.map((item) => (
                   <li key={item.id} className="flex gap-4">
                     {item.thumbnail && (
-                      <img
+                      <Image
                         src={item.thumbnail}
                         alt={item.title}
+                        width={80}
+                        height={80}
                         className="h-20 w-20 rounded-lg object-cover"
                       />
                     )}

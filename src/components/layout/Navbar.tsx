@@ -1,8 +1,13 @@
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { CartButton } from "./CartButton";
-import { MobileNav } from "./MobileNav";
 import { AccountButton } from "./AccountButton";
 import { SearchButton } from "@/components/search/SearchButton";
+
+const MobileNav = dynamic(
+  () => import("./MobileNav").then((mod) => mod.MobileNav),
+  { ssr: false }
+);
 
 export function Navbar() {
   return (

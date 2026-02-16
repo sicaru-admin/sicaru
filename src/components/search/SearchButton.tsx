@@ -1,8 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { Search } from "lucide-react";
-import { SearchModal } from "./SearchModal";
+
+const SearchModal = dynamic(
+  () => import("./SearchModal").then((mod) => mod.SearchModal),
+  { ssr: false }
+);
 
 export function SearchButton() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +21,9 @@ export function SearchButton() {
       >
         <Search className="h-6 w-6" />
       </button>
-      <SearchModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      {isOpen && (
+        <SearchModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      )}
     </>
   );
 }

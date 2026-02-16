@@ -1,16 +1,28 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { HeroSection } from "@/components/home/HeroSection";
 import { TrustBar } from "@/components/home/TrustBar";
 import { BrandsShowcase } from "@/components/home/BrandsShowcase";
 import { FeaturedProducts } from "@/components/home/FeaturedProducts";
-import { CategoriesGrid } from "@/components/home/CategoriesGrid";
-import { MontisFeature } from "@/components/home/MontisFeature";
-import { BlogPreview } from "@/components/home/BlogPreview";
-import { SalonCTA } from "@/components/home/SalonCTA";
-import { WhatsAppBanner } from "@/components/home/WhatsAppBanner";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { generateWebSiteSchema } from "@/lib/schema";
+
+const CategoriesGrid = dynamic(() =>
+  import("@/components/home/CategoriesGrid").then((mod) => mod.CategoriesGrid)
+);
+const MontisFeature = dynamic(() =>
+  import("@/components/home/MontisFeature").then((mod) => mod.MontisFeature)
+);
+const BlogPreview = dynamic(() =>
+  import("@/components/home/BlogPreview").then((mod) => mod.BlogPreview)
+);
+const SalonCTA = dynamic(() =>
+  import("@/components/home/SalonCTA").then((mod) => mod.SalonCTA)
+);
+const WhatsAppBanner = dynamic(() =>
+  import("@/components/home/WhatsAppBanner").then((mod) => mod.WhatsAppBanner)
+);
 
 export const metadata: Metadata = {
   title: "Distribuidora Sicarú — Productos de Belleza Profesional",

@@ -3,6 +3,7 @@ import { Playfair_Display, Montserrat } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { AuthProvider } from "@/components/auth/AuthProvider";
+import { WebVitals } from "@/components/analytics/WebVitals";
 
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair-display",
@@ -46,6 +47,7 @@ export default function RootLayout({
         <AuthProvider>
           <CartProvider>{children}</CartProvider>
         </AuthProvider>
+        <WebVitals />
       </body>
     </html>
   );

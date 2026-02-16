@@ -6,9 +6,11 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: "Sicarú",
     description:
       "Distribuidora autorizada de productos de belleza profesional. Küül, Voglia, Nekane, Hidra Color, Xiomara, Vitale y Montis con envío a todo México.",
+    id: "/",
     start_url: "/",
+    scope: "/",
     display: "standalone",
-    background_color: "#F8F5FC",
+    background_color: "#2D1B4E",
     theme_color: "#6B3FA0",
     orientation: "portrait-primary",
     categories: ["shopping", "beauty"],

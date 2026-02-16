@@ -1,10 +1,15 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useCart } from "@/components/cart/CartProvider";
-import { CartDrawer } from "@/components/cart/CartDrawer";
+
+const CartDrawer = dynamic(
+  () => import("@/components/cart/CartDrawer").then((mod) => mod.CartDrawer),
+  { ssr: false }
+);
 
 export function CartButton() {
-  const { openCart, totalItems } = useCart();
+  const { openCart, isOpen, totalItems } = useCart();
 
   return (
     <>
@@ -33,7 +38,7 @@ export function CartButton() {
           </span>
         )}
       </button>
-      <CartDrawer />
+      {isOpen && <CartDrawer />}
     </>
   );
 }
