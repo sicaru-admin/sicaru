@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { ProductosContent } from "./ProductosContent";
+
+export const metadata: Metadata = {
+  title: "Nuestros Productos",
+  description:
+    "Explora nuestro catálogo completo de productos de belleza profesional. Coloración, tratamientos, shampoos y más de las mejores marcas mexicanas.",
+};
 
 export const revalidate = 1800;
 
