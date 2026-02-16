@@ -1,16 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import type { HttpTypes } from "@medusajs/types";
-import {
-  Elements,
-  PaymentElement,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
-import { getStripe } from "@/lib/stripe";
+import { ensureMercadoPagoInit } from "@/lib/mercadopago";
 import { useCart } from "@/components/cart/CartProvider";
+import { useAuth } from "@/components/auth/AuthProvider";
+import { listAddresses } from "@/lib/data/customer";
 import {
   getFullCart,
   updateCart,
@@ -24,10 +20,14 @@ import { CheckoutStepSection } from "@/components/checkout/CheckoutStepSection";
 import { ContactForm } from "@/components/checkout/ContactForm";
 import { ShippingAddressForm } from "@/components/checkout/ShippingAddressForm";
 import { ShippingMethodSelector } from "@/components/checkout/ShippingMethodSelector";
-import { PaymentSelector } from "@/components/checkout/PaymentSelector";
+import {
+  PaymentSelector,
+  type PaymentMethod,
+} from "@/components/checkout/PaymentSelector";
 import { OrderReview } from "@/components/checkout/OrderReview";
 import { OrderSummary } from "@/components/checkout/OrderSummary";
 import { MEXICAN_STATES } from "@/lib/constants/mexican-states";
+import type { CardTokenData } from "@/components/checkout/MercadoPagoCardForm";
 
 export const dynamic = "force-dynamic";
 
@@ -70,92 +70,15 @@ const EMPTY_ADDRESS: Address = {
   country_code: "mx",
 };
 
-// ─── Stripe inner form (needs to be inside Elements) ────────────
-
-type StripeInnerFormProps = {
-  onReady: () => void;
-};
-
-const StripeInnerForm = ({
-  onReady,
-}: StripeInnerFormProps) => {
-  return (
-    <div className="mt-4 rounded-lg border border-gray-200 bg-white p-4">
-      <PaymentElement onReady={onReady} options={{ layout: "tabs" }} />
-    </div>
-  );
-};
-
-// ─── Stripe wrapper that also exposes confirm via ref ────────────
-
-function StripeConfirmButton({
-  onConfirmResult,
-  isSubmitting,
-  children,
-}: {
-  onConfirmResult: (result: { error?: string }) => void;
-  isSubmitting: boolean;
-  children: React.ReactNode;
-}) {
-  const stripe = useStripe();
-  const elements = useElements();
-
-  const handleConfirm = async () => {
-    if (!stripe || !elements) {
-      onConfirmResult({ error: "Stripe no está listo" });
-      return;
-    }
-
-    const { error: submitError } = await elements.submit();
-    if (submitError) {
-      onConfirmResult({
-        error: submitError.message ?? "Error de validación",
-      });
-      return;
-    }
-
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: `${window.location.origin}/checkout/confirmacion`,
-      },
-      redirect: "if_required",
-    });
-
-    if (error) {
-      onConfirmResult({
-        error: error.message ?? "Error al procesar el pago",
-      });
-      return;
-    }
-
-    onConfirmResult({});
-  };
-
-  return (
-    <button
-      type="button"
-      onClick={handleConfirm}
-      disabled={isSubmitting || !stripe}
-      className="w-full rounded-full bg-sicaru-purple-900 px-6 py-4 text-base font-bold text-white transition-colors hover:bg-sicaru-purple-800 disabled:opacity-50"
-    >
-      {isSubmitting ? (
-        <span className="flex items-center justify-center gap-2">
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-          Procesando...
-        </span>
-      ) : (
-        children
-      )}
-    </button>
-  );
-}
+// The Medusa provider ID for our MercadoPago module
+const MP_PROVIDER_ID = "pp_mercadopago_mercadopago";
 
 // ─── Main Checkout Page ──────────────────────────────────────────
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { cartId, clearCart, totalItems } = useCart();
+  const { customer, isAuthenticated } = useAuth();
 
   // Full Medusa cart
   const [fullCart, setFullCart] = useState<HttpTypes.StoreCart | null>(null);
@@ -180,10 +103,12 @@ export default function CheckoutPage() {
   const [paymentProviders, setPaymentProviders] = useState<
     HttpTypes.StorePaymentProvider[]
   >([]);
-  const [selectedPaymentId, setSelectedPaymentId] = useState<string | null>(
+
+  // MercadoPago payment state
+  const [selectedMethod, setSelectedMethod] = useState<PaymentMethod | null>(
     null
   );
-  const [stripeClientSecret, setStripeClientSecret] = useState<string | null>(
+  const [cardTokenData, setCardTokenData] = useState<CardTokenData | null>(
     null
   );
 
@@ -191,7 +116,11 @@ export default function CheckoutPage() {
   const [stepLoading, setStepLoading] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [stripeReady, setStripeReady] = useState(false);
+
+  // Initialize MercadoPago SDK
+  useEffect(() => {
+    ensureMercadoPagoInit();
+  }, []);
 
   // Initialize: fetch full cart
   useEffect(() => {
@@ -233,6 +162,49 @@ export default function CheckoutPage() {
     };
   }, [cartId]);
 
+  // Pre-fill from customer profile when logged in
+  useEffect(() => {
+    if (!isAuthenticated || !customer || isInitializing) return;
+
+    // Pre-fill email if not already set
+    if (customer.email && !email) {
+      setEmail(customer.email);
+    }
+
+    // Pre-fill address from customer's first saved address
+    if (shippingAddress.first_name === "") {
+      listAddresses()
+        .then((addresses) => {
+          if (addresses && addresses.length > 0) {
+            const addr = addresses[0];
+            setShippingAddress({
+              first_name: addr.first_name || customer.first_name || "",
+              last_name: addr.last_name || customer.last_name || "",
+              phone: addr.phone || customer.phone || "",
+              address_1: addr.address_1 || "",
+              address_2: addr.address_2 || "",
+              city: addr.city || "",
+              province: addr.province || "",
+              postal_code: addr.postal_code || "",
+              country_code: addr.country_code || "mx",
+            });
+          } else if (customer.first_name) {
+            // No saved addresses, but pre-fill name
+            setShippingAddress((prev) => ({
+              ...prev,
+              first_name: customer.first_name || "",
+              last_name: customer.last_name || "",
+              phone: customer.phone || "",
+            }));
+          }
+        })
+        .catch(() => {
+          // Ignore - just don't pre-fill
+        });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, customer, isInitializing]);
+
   // Redirect if no cart or empty
   useEffect(() => {
     if (!isInitializing && (!cartId || totalItems === 0)) {
@@ -266,13 +238,17 @@ export default function CheckoutPage() {
       setShippingOptions([]);
       setSelectedShippingId(null);
       setPaymentProviders([]);
-      setSelectedPaymentId(null);
-      setStripeClientSecret(null);
+      setSelectedMethod(null);
+      setCardTokenData(null);
     }
     if (step === "delivery") {
       setPaymentProviders([]);
-      setSelectedPaymentId(null);
-      setStripeClientSecret(null);
+      setSelectedMethod(null);
+      setCardTokenData(null);
+    }
+    if (step === "payment") {
+      setSelectedMethod(null);
+      setCardTokenData(null);
     }
   };
 
@@ -324,15 +300,10 @@ export default function CheckoutPage() {
       const cart = await addShippingMethod(cartId, selectedShippingId);
       setFullCart(cart);
 
-      // Fetch payment providers
+      // Fetch payment providers (to verify mercadopago is available)
       if (cart.region_id) {
         const providers = await listPaymentProviders(cart.region_id);
         setPaymentProviders(providers);
-
-        // Auto-select if only one provider
-        if (providers.length === 1) {
-          setSelectedPaymentId(providers[0].id);
-        }
       }
 
       completeStep("delivery");
@@ -345,60 +316,54 @@ export default function CheckoutPage() {
     }
   };
 
-  const handlePaymentSelect = async (providerId: string) => {
-    setSelectedPaymentId(providerId);
-    setStripeClientSecret(null);
-    setStripeReady(false);
-
-    if (!fullCart) return;
-
-    try {
-      const paymentCollection = await initiatePaymentSession(
-        fullCart,
-        providerId
-      );
-
-      // Refresh cart to get updated payment collection
-      if (cartId) {
-        const refreshed = await getFullCart(cartId);
-        setFullCart(refreshed);
-      }
-
-      // Extract Stripe client secret if applicable
-      if (providerId === "pp_stripe_stripe" && paymentCollection) {
-        const session = paymentCollection.payment_sessions?.find(
-          (s: { provider_id: string }) => s.provider_id === "pp_stripe_stripe"
-        );
-        if (session?.data?.client_secret) {
-          setStripeClientSecret(session.data.client_secret as string);
-        }
-      }
-    } catch (error) {
-      console.error("Error initializing payment:", error);
-    }
-  };
-
-  const handlePaymentSubmit = async () => {
-    if (!selectedPaymentId) return;
-
-    // For Stripe, just check the form is ready
-    if (
-      selectedPaymentId === "pp_stripe_stripe" &&
-      !stripeClientSecret
-    ) {
-      setSubmitError("Esperando la carga del formulario de pago...");
-      return;
-    }
-
+  // Card: MP brick tokenized the card → store token and advance
+  const handleCardTokenized = useCallback((data: CardTokenData) => {
+    setCardTokenData(data);
+    setSubmitError(null);
     completeStep("payment");
-  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  // OXXO: no token needed, just advance
+  const handleOxxoSubmit = useCallback(() => {
+    setCardTokenData(null);
+    setSubmitError(null);
+    completeStep("payment");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Review step: initiate MP payment session then complete cart
   const handleOrderConfirm = async () => {
-    if (!cartId) return;
+    if (!cartId || !fullCart || !selectedMethod) return;
     setIsSubmitting(true);
     setSubmitError(null);
 
     try {
+      // Build payment data based on selected method
+      const paymentData: Record<string, unknown> =
+        selectedMethod === "card" && cardTokenData
+          ? {
+              token: cardTokenData.token,
+              payment_method_id: cardTokenData.payment_method_id,
+              installments: cardTokenData.installments,
+              payer_email: email,
+            }
+          : {
+              payment_method_id: "oxxo",
+              payer_email: email,
+            };
+
+      // Determine the provider ID — use the first mercadopago provider if available,
+      // otherwise fall back to the constant
+      const mpProvider = paymentProviders.find((p) =>
+        p.id.includes("mercadopago")
+      );
+      const providerId = mpProvider?.id ?? MP_PROVIDER_ID;
+
+      // Initiate payment session with MP-specific data
+      await initiatePaymentSession(fullCart, providerId, paymentData);
+
+      // Complete the cart → creates the order
       const result = await completeCart(cartId);
 
       if (result.type === "order") {
@@ -421,42 +386,6 @@ export default function CheckoutPage() {
     }
   };
 
-  const handleStripeConfirmAndComplete = async () => {
-    // This is called from within the Stripe Elements context
-    // The StripeConfirmButton handles stripe.confirmPayment
-    // Then we complete the cart
-  };
-
-  const onStripeResult = useCallback(async (result: { error?: string }) => {
-    if (result.error) {
-      setSubmitError(result.error);
-      setIsSubmitting(false);
-      return;
-    }
-
-    // Stripe payment confirmed, now complete the cart
-    if (!cartId) return;
-    try {
-      const cartResult = await completeCart(cartId);
-      if (cartResult.type === "order") {
-        sessionStorage.setItem(
-          "sicaru_last_order",
-          JSON.stringify(cartResult.order)
-        );
-        clearCart();
-        router.push("/checkout/confirmacion");
-      } else {
-        setSubmitError(
-          cartResult.error?.message ?? "Error al completar el pedido."
-        );
-      }
-    } catch {
-      setSubmitError("Error al completar el pedido. Intenta de nuevo.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  }, [cartId, clearCart, router]);
-
   // ─── Summaries for completed steps ─────────────────────────────
 
   const contactSummary = email;
@@ -470,10 +399,10 @@ export default function CheckoutPage() {
     "Envío estándar";
 
   const paymentMethodName =
-    selectedPaymentId === "pp_stripe_stripe"
+    selectedMethod === "card"
       ? "Tarjeta de crédito / débito"
-      : selectedPaymentId === "pp_system_default"
-        ? "OXXO Pay / Transferencia"
+      : selectedMethod === "oxxo"
+        ? "OXXO Pay"
         : "Método de pago";
 
   // ─── Loading state ─────────────────────────────────────────────
@@ -490,30 +419,6 @@ export default function CheckoutPage() {
       </div>
     );
   }
-
-  // ─── Review step with Stripe Elements wrapping ────────────────
-
-  const isStripePayment = selectedPaymentId === "pp_stripe_stripe";
-  const reviewContent = fullCart ? (
-    <div className="space-y-5">
-      <OrderReview
-        cart={fullCart}
-        email={email}
-        shippingAddress={shippingAddress}
-        shippingMethodName={shippingMethodName}
-        paymentMethodName={paymentMethodName}
-        onConfirm={
-          isStripePayment
-            ? async () => {
-                setIsSubmitting(true);
-              }
-            : handleOrderConfirm
-        }
-        isSubmitting={isSubmitting}
-        error={submitError}
-      />
-    </div>
-  ) : null;
 
   // ─── Render ────────────────────────────────────────────────────
 
@@ -581,7 +486,7 @@ export default function CheckoutPage() {
             />
           </CheckoutStepSection>
 
-          {/* Step 4: Payment */}
+          {/* Step 4: Payment Method */}
           <CheckoutStepSection
             stepNumber={4}
             title="Pago"
@@ -592,32 +497,13 @@ export default function CheckoutPage() {
             onEdit={() => editStep("payment")}
           >
             <PaymentSelector
-              providers={paymentProviders}
-              selectedProviderId={selectedPaymentId}
-              onSelect={handlePaymentSelect}
-              onSubmit={handlePaymentSubmit}
+              selectedMethod={selectedMethod}
+              onMethodChange={setSelectedMethod}
+              onCardTokenized={handleCardTokenized}
+              onOxxoSubmit={handleOxxoSubmit}
+              cartTotal={fullCart?.total ?? 0}
               isLoading={stepLoading}
-              stripeClientSecret={stripeClientSecret}
-              stripeFormSlot={
-                stripeClientSecret ? (
-                  <Elements
-                    stripe={getStripe()}
-                    options={{
-                      clientSecret: stripeClientSecret,
-                      locale: "es",
-                      appearance: {
-                        theme: "stripe",
-                        variables: {
-                          colorPrimary: "#6B3FA0",
-                          borderRadius: "8px",
-                        },
-                      },
-                    }}
-                  >
-                    <StripeInnerForm onReady={() => setStripeReady(true)} />
-                  </Elements>
-                ) : undefined
-              }
+              error={submitError}
             />
           </CheckoutStepSection>
 
@@ -631,39 +517,16 @@ export default function CheckoutPage() {
             onEdit={() => {}}
           >
             {fullCart && (
-              <>
-                {/* Summary blocks */}
-                <OrderReview
-                  cart={fullCart}
-                  email={email}
-                  shippingAddress={shippingAddress}
-                  shippingMethodName={shippingMethodName}
-                  paymentMethodName={paymentMethodName}
-                  onConfirm={
-                    isStripePayment
-                      ? () => {
-                          setIsSubmitting(true);
-                          return Promise.resolve();
-                        }
-                      : handleOrderConfirm
-                  }
-                  isSubmitting={isSubmitting}
-                  error={submitError}
-                />
-
-                {/* For Stripe: wrap the confirm button in Elements so it can call stripe.confirmPayment */}
-                {isStripePayment && stripeClientSecret && isSubmitting && (
-                  <Elements
-                    stripe={getStripe()}
-                    options={{
-                      clientSecret: stripeClientSecret,
-                      locale: "es",
-                    }}
-                  >
-                    <StripeAutoConfirm onResult={onStripeResult} />
-                  </Elements>
-                )}
-              </>
+              <OrderReview
+                cart={fullCart}
+                email={email}
+                shippingAddress={shippingAddress}
+                shippingMethodName={shippingMethodName}
+                paymentMethodName={paymentMethodName}
+                onConfirm={handleOrderConfirm}
+                isSubmitting={isSubmitting}
+                error={submitError}
+              />
             )}
           </CheckoutStepSection>
         </div>
@@ -677,50 +540,4 @@ export default function CheckoutPage() {
       </div>
     </div>
   );
-}
-
-// ─── Auto-confirm Stripe component ──────────────────────────────
-
-function StripeAutoConfirm({
-  onResult,
-}: {
-  onResult: (result: { error?: string }) => void;
-}) {
-  const stripe = useStripe();
-  const elements = useElements();
-  const hasRun = useRef(false);
-
-  useEffect(() => {
-    if (!stripe || !elements || hasRun.current) return;
-    hasRun.current = true;
-
-    async function confirm() {
-      const { error: submitError } = await elements!.submit();
-      if (submitError) {
-        onResult({ error: submitError.message ?? "Error de validación" });
-        return;
-      }
-
-      const { error } = await stripe!.confirmPayment({
-        elements: elements!,
-        confirmParams: {
-          return_url: `${window.location.origin}/checkout/confirmacion`,
-        },
-        redirect: "if_required",
-      });
-
-      if (error) {
-        onResult({
-          error: error.message ?? "Error al procesar el pago",
-        });
-        return;
-      }
-
-      onResult({});
-    }
-
-    confirm();
-  }, [stripe, elements, onResult]);
-
-  return null;
 }

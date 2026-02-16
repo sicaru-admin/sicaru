@@ -1,74 +1,61 @@
 "use client";
 
 import { CreditCard, Store } from "lucide-react";
+import {
+  MercadoPagoCardForm,
+  type CardTokenData,
+} from "@/components/checkout/MercadoPagoCardForm";
 
-type PaymentProvider = {
-  id: string;
-};
+export type PaymentMethod = "card" | "oxxo";
 
 type PaymentSelectorProps = {
-  providers: PaymentProvider[];
-  selectedProviderId: string | null;
-  onSelect: (providerId: string) => void;
-  onSubmit: () => Promise<void>;
+  selectedMethod: PaymentMethod | null;
+  onMethodChange: (method: PaymentMethod) => void;
+  onCardTokenized: (data: CardTokenData) => void;
+  onOxxoSubmit: () => void;
+  cartTotal: number;
   isLoading: boolean;
-  stripeClientSecret: string | null;
-  stripeFormSlot?: React.ReactNode;
+  error?: string | null;
 };
 
-const PROVIDER_META: Record<
-  string,
-  { label: string; description: string; icon: React.ReactNode }
-> = {
-  pp_stripe_stripe: {
+const METHODS: {
+  id: PaymentMethod;
+  label: string;
+  description: string;
+  icon: React.ReactNode;
+}[] = [
+  {
+    id: "card",
     label: "Tarjeta de crédito / débito",
-    description: "Pago seguro con Stripe",
+    description: "Pago seguro con Mercado Pago",
     icon: <CreditCard className="h-5 w-5" />,
   },
-  pp_system_default: {
-    label: "OXXO Pay / Transferencia bancaria",
+  {
+    id: "oxxo",
+    label: "OXXO Pay",
     description:
-      "Recibirás instrucciones de pago después de confirmar tu pedido",
+      "Paga en efectivo en cualquier OXXO. Recibirás un voucher con las instrucciones.",
     icon: <Store className="h-5 w-5" />,
   },
-};
+];
 
 export function PaymentSelector({
-  providers,
-  selectedProviderId,
-  onSelect,
-  onSubmit,
+  selectedMethod,
+  onMethodChange,
+  onCardTokenized,
+  onOxxoSubmit,
+  cartTotal,
   isLoading,
-  stripeClientSecret,
-  stripeFormSlot,
+  error,
 }: PaymentSelectorProps) {
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedProviderId) return;
-    await onSubmit();
-  };
-
-  if (providers.length === 0) {
-    return (
-      <div className="py-4 text-center text-sm text-gray-500">
-        No hay métodos de pago disponibles.
-      </div>
-    );
-  }
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="space-y-4">
       <div className="space-y-3">
-        {providers.map((provider) => {
-          const meta = PROVIDER_META[provider.id] ?? {
-            label: provider.id,
-            description: "",
-            icon: <CreditCard className="h-5 w-5" />,
-          };
-          const isSelected = selectedProviderId === provider.id;
+        {METHODS.map((method) => {
+          const isSelected = selectedMethod === method.id;
 
           return (
-            <div key={provider.id}>
+            <div key={method.id}>
               <label
                 className={`flex cursor-pointer items-start gap-4 rounded-lg border p-4 transition-colors ${
                   isSelected
@@ -79,41 +66,52 @@ export function PaymentSelector({
                 <input
                   type="radio"
                   name="payment-method"
-                  value={provider.id}
+                  value={method.id}
                   checked={isSelected}
-                  onChange={() => onSelect(provider.id)}
+                  onChange={() => onMethodChange(method.id)}
                   className="mt-0.5 h-4 w-4 text-sicaru-purple-600 focus:ring-sicaru-purple-500"
                 />
                 <span className="mt-0.5 flex-shrink-0 text-gray-400">
-                  {meta.icon}
+                  {method.icon}
                 </span>
                 <div>
                   <p className="text-sm font-medium text-gray-900">
-                    {meta.label}
+                    {method.label}
                   </p>
                   <p className="mt-0.5 text-xs text-gray-500">
-                    {meta.description}
+                    {method.description}
                   </p>
                 </div>
               </label>
 
-              {/* Stripe Elements form renders inside the selected card */}
-              {isSelected &&
-                provider.id === "pp_stripe_stripe" &&
-                stripeClientSecret &&
-                stripeFormSlot}
+              {/* Card: MP CardPayment brick renders inside selected option */}
+              {isSelected && method.id === "card" && (
+                <MercadoPagoCardForm
+                  amount={cartTotal}
+                  onTokenized={onCardTokenized}
+                  onError={(err) => console.error(err)}
+                />
+              )}
             </div>
           );
         })}
       </div>
 
-      <button
-        type="submit"
-        disabled={isLoading || !selectedProviderId}
-        className="w-full rounded-full bg-sicaru-pink px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-sicaru-pink/90 disabled:opacity-50"
-      >
-        {isLoading ? "Procesando..." : "Continuar"}
-      </button>
-    </form>
+      {error && (
+        <p className="text-sm text-red-600">{error}</p>
+      )}
+
+      {/* OXXO: standard continue button (card uses the brick's built-in button) */}
+      {selectedMethod === "oxxo" && (
+        <button
+          type="button"
+          onClick={onOxxoSubmit}
+          disabled={isLoading}
+          className="w-full rounded-full bg-sicaru-pink px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-sicaru-pink/90 disabled:opacity-50"
+        >
+          {isLoading ? "Procesando..." : "Continuar"}
+        </button>
+      )}
+    </div>
   );
 }

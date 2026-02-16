@@ -40,11 +40,13 @@ export async function listPaymentProviders(regionId: string) {
 
 export async function initiatePaymentSession(
   cart: HttpTypes.StoreCart,
-  providerId: string
+  providerId: string,
+  data?: Record<string, unknown>
 ) {
   const { payment_collection } =
     await sdk.store.payment.initiatePaymentSession(cart, {
       provider_id: providerId,
+      ...(data ? { data } : {}),
     });
   return payment_collection;
 }
