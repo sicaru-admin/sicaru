@@ -2,25 +2,39 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1a1a1a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-heading: var(--font-playfair-display);
+  --font-body: var(--font-montserrat);
+
+  --color-sicaru-purple-50: #F8F5FC;
+  --color-sicaru-purple-100: #F0E8F7;
+  --color-sicaru-purple-200: #DEC9EE;
+  --color-sicaru-purple-300: #C4A0E0;
+  --color-sicaru-purple-400: #A474CC;
+  --color-sicaru-purple-500: #8650B5;
+  --color-sicaru-purple-600: #6B3FA0;
+  --color-sicaru-purple-700: #553080;
+  --color-sicaru-purple-800: #3F2460;
+  --color-sicaru-purple-900: #2D1B4E;
+
+  --color-sicaru-pink: #E84393;
+  --color-sicaru-gold: #D4A853;
+
+  --container-max-width: 80rem;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading), serif;
 }

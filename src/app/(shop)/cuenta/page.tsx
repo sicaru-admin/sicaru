@@ -1,36 +1,62 @@
+"use client";
+
 import Link from "next/link";
+import { useAuth } from "@/components/auth/AuthProvider";
+import { ShoppingBag, User, MapPin } from "lucide-react";
+
+const quickLinks = [
+  {
+    href: "/cuenta/pedidos",
+    label: "Mis Pedidos",
+    description: "Consulta el historial y estado de tus pedidos.",
+    icon: ShoppingBag,
+  },
+  {
+    href: "/cuenta/perfil",
+    label: "Perfil",
+    description: "Administra tu informacion personal.",
+    icon: User,
+  },
+  {
+    href: "/cuenta/direcciones",
+    label: "Direcciones",
+    description: "Gestiona tus direcciones de envio.",
+    icon: MapPin,
+  },
+];
 
 export default function CuentaPage() {
+  const { customer } = useAuth();
+
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12">
-      <h1 className="mb-8 text-3xl font-bold text-sicaru-purple-900 md:text-4xl">
-        Mi Cuenta
+    <div>
+      <h1 className="mb-2 text-2xl font-bold text-sicaru-purple-900 lg:text-3xl">
+        Hola, {customer?.first_name || "Usuario"}
       </h1>
+      <p className="mb-8 text-gray-600">
+        Bienvenido a tu cuenta. Aqui puedes gestionar tus pedidos, perfil y
+        direcciones.
+      </p>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <Link
-          href="/cuenta/pedidos"
-          className="group rounded-lg border border-gray-200 bg-white p-6 transition-shadow hover:shadow-lg"
-        >
-          <h2 className="text-lg font-semibold text-sicaru-purple-900 group-hover:text-sicaru-pink transition-colors">
-            Mis Pedidos
-          </h2>
-          <p className="mt-2 text-sm text-gray-500">
-            Consulta el historial y estado de tus pedidos.
-          </p>
-        </Link>
-
-        <Link
-          href="/cuenta/login"
-          className="group rounded-lg border border-gray-200 bg-white p-6 transition-shadow hover:shadow-lg"
-        >
-          <h2 className="text-lg font-semibold text-sicaru-purple-900 group-hover:text-sicaru-pink transition-colors">
-            Datos Personales
-          </h2>
-          <p className="mt-2 text-sm text-gray-500">
-            Administra tu informacion personal y direcciones.
-          </p>
-        </Link>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {quickLinks.map((link) => {
+          const Icon = link.icon;
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="group rounded-lg border border-gray-200 bg-white p-6 transition-shadow hover:shadow-lg"
+            >
+              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-sicaru-purple-50 text-sicaru-purple-600 transition-colors group-hover:bg-sicaru-purple-100">
+                <Icon className="h-5 w-5" />
+              </div>
+              <h2 className="text-lg font-semibold text-sicaru-purple-900 transition-colors group-hover:text-sicaru-pink">
+                {link.label}
+              </h2>
+              <p className="mt-1 text-sm text-gray-500">{link.description}</p>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );
