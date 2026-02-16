@@ -534,7 +534,16 @@ export default function CheckoutPage() {
         {/* Right: Order Summary */}
         <div className="mt-6 lg:col-span-5 lg:mt-0">
           <div className="lg:sticky lg:top-24">
-            <OrderSummary cart={fullCart} />
+            <OrderSummary
+              cart={fullCart}
+              isAuthenticated={isAuthenticated}
+              onCartRefresh={async () => {
+                if (cartId) {
+                  const updated = await getFullCart(cartId);
+                  setFullCart(updated);
+                }
+              }}
+            />
           </div>
         </div>
       </div>

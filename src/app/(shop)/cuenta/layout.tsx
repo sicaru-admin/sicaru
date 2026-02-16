@@ -10,11 +10,13 @@ import {
   MapPin,
   LayoutDashboard,
   LogOut,
+  Gift,
 } from "lucide-react";
 
 const navItems = [
   { href: "/cuenta", label: "Mi Cuenta", icon: LayoutDashboard },
   { href: "/cuenta/pedidos", label: "Mis Pedidos", icon: ShoppingBag },
+  { href: "/cuenta/recompensas", label: "Recompensas", icon: Gift },
   { href: "/cuenta/perfil", label: "Perfil", icon: User },
   { href: "/cuenta/direcciones", label: "Direcciones", icon: MapPin },
 ];

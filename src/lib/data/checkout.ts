@@ -54,3 +54,34 @@ export async function initiatePaymentSession(
 export async function completeCart(cartId: string) {
   return await sdk.store.cart.complete(cartId);
 }
+
+const MEDUSA_BACKEND_URL =
+  process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000";
+
+export async function applyPromoCode(cartId: string, promoCode: string) {
+  const res = await fetch(
+    `${MEDUSA_BACKEND_URL}/store/carts/${cartId}/promotions`,
+    {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ promo_codes: [promoCode] }),
+    }
+  );
+  if (!res.ok) throw new Error("Error al aplicar codigo de descuento");
+  return res.json();
+}
+
+export async function removePromoCode(cartId: string, promoCode: string) {
+  const res = await fetch(
+    `${MEDUSA_BACKEND_URL}/store/carts/${cartId}/promotions`,
+    {
+      method: "DELETE",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ promo_codes: [promoCode] }),
+    }
+  );
+  if (!res.ok) throw new Error("Error al remover codigo de descuento");
+  return res.json();
+}

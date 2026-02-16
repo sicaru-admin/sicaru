@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useAuth } from "@/components/auth/AuthProvider";
-import { ShoppingBag, User, MapPin } from "lucide-react";
+import { ShoppingBag, User, MapPin, Gift } from "lucide-react";
 
 const quickLinks = [
   {
@@ -10,6 +10,12 @@ const quickLinks = [
     label: "Mis Pedidos",
     description: "Consulta el historial y estado de tus pedidos.",
     icon: ShoppingBag,
+  },
+  {
+    href: "/cuenta/recompensas",
+    label: "Mis Recompensas",
+    description: "Consulta tus puntos y canjea recompensas.",
+    icon: Gift,
   },
   {
     href: "/cuenta/perfil",
