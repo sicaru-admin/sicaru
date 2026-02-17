@@ -1,103 +1,139 @@
-import { Metadata } from "next";
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { ChevronRight } from "lucide-react";
-import { getCategoryByHandle } from "@/lib/data/categories";
-import { getProducts } from "@/lib/data/products";
-import { ProductCard } from "@/components/ui/ProductCard";
-import { JsonLd } from "@/components/seo/JsonLd";
+import type { Metadata } from "next"
+import Link from "next/link"
+import { notFound } from "next/navigation"
+import { ChevronRight } from "lucide-react"
+import { getCategoryByHandle } from "@/lib/data/categories"
+import { getProducts } from "@/lib/data/products"
+import { ProductCard } from "@/components/ui/ProductCard"
+import { JsonLd } from "@/components/seo/JsonLd"
 import {
   generateCollectionPageSchema,
   generateBreadcrumbSchema,
-} from "@/lib/schema";
+} from "@/lib/schema"
+import { getCategoryData } from "@/lib/constants/categories"
 
-export const revalidate = 1800;
+export const revalidate = 1800
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ handle: string }>;
-}): Promise<Metadata> {
-  const { handle } = await params;
-  const category = await getCategoryByHandle(handle);
+type Props = {
+  params: Promise<{ handle: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { handle } = await params
+  const category = await getCategoryByHandle(handle)
 
   if (!category) {
-    return {
-      title: "Categoria no encontrada",
-    };
+    return {}
   }
+
+  const categoryData = getCategoryData(handle)
 
   return {
     title: category.name,
-    description: `Productos de la categoria ${category.name} en Distribuidora Sicaru`,
-  };
+    description:
+      categoryData?.description ||
+      `Productos de la categoría ${category.name} en Distribuidora Sicarú`,
+  }
 }
 
-export default async function CategoriaPage({
-  params,
-}: {
-  params: Promise<{ handle: string }>;
-}) {
-  const { handle } = await params;
-  const category = await getCategoryByHandle(handle);
+export default async function CategoryPage({ params }: Props) {
+  const { handle } = await params
+  const category = await getCategoryByHandle(handle)
 
   if (!category) {
-    notFound();
+    notFound()
   }
 
-  const { products } = await getProducts({
-    category_id: [category.id],
-  });
+  const { products } = await getProducts({ category_id: [category.id] })
+  const categoryData = getCategoryData(handle)
 
   const collectionSchema = generateCollectionPageSchema({
     name: category.name,
     description:
+      categoryData?.description ||
       category.description ||
       `Productos de la categoría ${category.name} en Distribuidora Sicarú`,
     url: `/categorias/${handle}`,
-  });
+  })
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Inicio", url: "/" },
     { name: "Productos", url: "/productos" },
     { name: category.name, url: `/categorias/${handle}` },
-  ]);
+  ])
+
+  const description =
+    categoryData?.description ||
+    category.description ||
+    `Explora nuestra colección de ${category.name}. Encuentra los mejores productos en Sicarú.`
+
+  const gradientClasses = categoryData?.gradient
+    ? `bg-gradient-to-br ${categoryData.gradient}`
+    : "bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700"
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12">
+    <>
       <JsonLd schema={[collectionSchema, breadcrumbSchema]} />
 
-      <nav
-        aria-label="Breadcrumb"
-        className="mb-6 flex items-center gap-1 text-sm text-gray-500"
-      >
-        <Link href="/" className="hover:text-sicaru-purple-600">
-          Inicio
-        </Link>
-        <ChevronRight className="h-3.5 w-3.5" />
-        <Link href="/productos" className="hover:text-sicaru-purple-600">
-          Productos
-        </Link>
-        <ChevronRight className="h-3.5 w-3.5" />
-        <span className="truncate text-sicaru-purple-900 font-medium">
-          {category.name}
-        </span>
-      </nav>
+      {/* Category Hero */}
+      <section className={`${gradientClasses} py-14 text-white`}>
+        <div className="mx-auto max-w-4xl px-4 text-center">
+          <nav
+            aria-label="Breadcrumb"
+            className="flex items-center justify-center gap-1 text-sm"
+          >
+            <Link
+              href="/"
+              className="text-white/70 transition-colors hover:text-white"
+            >
+              Inicio
+            </Link>
+            <ChevronRight className="h-4 w-4 text-white/50" />
+            <Link
+              href="/productos"
+              className="text-white/70 transition-colors hover:text-white"
+            >
+              Productos
+            </Link>
+            <ChevronRight className="h-4 w-4 text-white/50" />
+            <span className="text-white">{category.name}</span>
+          </nav>
 
-      <h1 className="mb-8 text-3xl font-bold text-sicaru-purple-900 md:text-4xl">
-        {category.name}
-      </h1>
+          <h1 className="mt-4 font-heading text-3xl font-bold md:text-4xl">
+            {category.name}
+          </h1>
 
-      {products.length === 0 ? (
-        <p className="text-center text-gray-500">
-          No hay productos disponibles en esta categoria.
-        </p>
-      ) : (
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 md:gap-6">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+          <p className="mx-auto mt-3 max-w-2xl text-lg text-white/80">
+            {description}
+          </p>
+
+          <span className="mt-4 inline-block rounded-full bg-white/20 px-4 py-1.5 text-sm">
+            {products.length} productos
+          </span>
         </div>
-      )}
-    </div>
-  );
+      </section>
+
+      {/* Product Grid */}
+      <section className="mx-auto max-w-7xl px-4 py-12">
+        {products.length === 0 ? (
+          <div className="py-16 text-center">
+            <p className="text-lg text-gray-500">
+              No hay productos disponibles en esta categoría por el momento.
+            </p>
+            <Link
+              href="/productos"
+              className="mt-4 inline-block text-sicaru-purple-600 underline hover:text-sicaru-purple-800"
+            >
+              Ver todos los productos
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
+      </section>
+    </>
+  )
 }

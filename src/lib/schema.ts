@@ -1,4 +1,5 @@
 import type { HttpTypes } from "@medusajs/types";
+import { BRANDS } from "@/lib/constants/brands";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://www.distribuidorasicaru.com";
@@ -270,7 +271,27 @@ export function generateProductFAQs(
 
 // ─── 7. Auto-generated brand FAQs ──────────────────────────────
 
-export function generateBrandFAQs(brandName: string): FAQItem[] {
+export function generateBrandFAQs(
+  brandName: string,
+  handle?: string
+): FAQItem[] {
+  // Use brand-specific FAQs from constants if available
+  if (handle) {
+    const brand = BRANDS[handle];
+    if (brand?.faqs?.length) {
+      return brand.faqs;
+    }
+  }
+
+  // Check by name match
+  const brandByName = Object.values(BRANDS).find(
+    (b) => b.name === brandName
+  );
+  if (brandByName?.faqs?.length) {
+    return brandByName.faqs;
+  }
+
+  // Fallback to generic FAQs
   return [
     {
       question: `¿Dónde puedo comprar productos ${brandName} originales?`,

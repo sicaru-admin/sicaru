@@ -14,6 +14,13 @@ const footerLinks = {
     { href: "/cuenta", label: "Mi Cuenta" },
     { href: "/cuenta/pedidos", label: "Mis Pedidos" },
     { href: "/contacto", label: "Contacto" },
+    { href: "/nosotros", label: "Nosotros" },
+  ],
+  informacion: [
+    { href: "/envios", label: "Pol\u00edtica de Env\u00edos" },
+    { href: "/devoluciones", label: "Devoluciones" },
+    { href: "/terminos", label: "T\u00e9rminos y Condiciones" },
+    { href: "/politica-privacidad", label: "Aviso de Privacidad" },
   ],
   contacto: [
     {
@@ -33,7 +40,7 @@ export function Footer() {
   return (
     <footer className="border-t bg-sicaru-purple-900 text-white">
       <div className="mx-auto max-w-7xl px-4 py-12">
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
           {/* Tienda */}
           <div>
             <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sicaru-gold">
@@ -79,6 +86,25 @@ export function Footer() {
             </h3>
             <ul className="space-y-2">
               {footerLinks.ayuda.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-purple-200 transition-colors hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Información */}
+          <div>
+            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sicaru-gold">
+              Informaci&oacute;n
+            </h3>
+            <ul className="space-y-2">
+              {footerLinks.informacion.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
