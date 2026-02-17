@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import dynamic from "next/dynamic";
+import { useEffect, useRef, lazy } from "react";
 import { useCart } from "@/components/cart/CartProvider";
 
-const CartDrawer = dynamic(
-  () => import("@/components/cart/CartDrawer").then((mod) => mod.CartDrawer),
-  { ssr: false }
+const CartDrawer = lazy(() =>
+  import("@/components/cart/CartDrawer").then((mod) => ({ default: mod.CartDrawer }))
 );
 
 export function CartButton() {

@@ -1,12 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import dynamic from "next/dynamic";
+import { useState, lazy } from "react";
 import { Search } from "lucide-react";
 
-const SearchModal = dynamic(
-  () => import("./SearchModal").then((mod) => mod.SearchModal),
-  { ssr: false }
+const SearchModal = lazy(() =>
+  import("./SearchModal").then((mod) => ({ default: mod.SearchModal }))
 );
 
 export function SearchButton() {

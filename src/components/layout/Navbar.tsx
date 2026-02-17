@@ -2,15 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { CartButton } from "./CartButton";
 import { AccountButton } from "./AccountButton";
 import { SearchButton } from "@/components/search/SearchButton";
-
-const MobileNav = dynamic(
-  () => import("./MobileNav").then((mod) => mod.MobileNav),
-  { ssr: false }
-);
+import { MobileNav } from "./MobileNav";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
