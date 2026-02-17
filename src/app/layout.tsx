@@ -4,6 +4,7 @@ import "./globals.css";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { WebVitals } from "@/components/analytics/WebVitals";
+import { NavigationProgress } from "@/components/ui/NavigationProgress";
 
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair-display",
@@ -44,6 +45,7 @@ export default function RootLayout({
       <body
         className={`${playfairDisplay.variable} ${montserrat.variable} antialiased`}
       >
+        <NavigationProgress />
         <AuthProvider>
           <CartProvider>{children}</CartProvider>
         </AuthProvider>

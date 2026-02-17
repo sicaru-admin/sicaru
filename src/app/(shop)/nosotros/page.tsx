@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import {
   MapPin,
@@ -23,8 +24,16 @@ export default function NosotrosPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-16 md:py-20 text-white">
-        <div className="mx-auto max-w-4xl px-4 text-center">
+      <section className="relative bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-16 md:py-20 text-white overflow-hidden">
+        <Image
+          src="/images/hero-productos-tienda.jpg"
+          alt="Interior de la tienda Distribuidora Sicarú con productos profesionales de belleza capilar"
+          fill
+          className="object-cover opacity-25"
+          priority
+          sizes="100vw"
+        />
+        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
           <h1 className="font-heading text-3xl md:text-5xl font-bold">
             Sicarú — Especialistas en Cuidado Capilar Profesional
           </h1>
@@ -37,24 +46,61 @@ export default function NosotrosPage() {
 
       {/* Story */}
       <section className="mx-auto max-w-7xl px-4 py-12 md:py-16">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="font-heading text-2xl md:text-3xl font-bold text-sicaru-purple-900 mb-6">
-            Nuestra Historia
-          </h2>
-          <p className="text-gray-600 leading-relaxed">
-            Distribuidora Sicarú nace en Cadereyta Jiménez, Nuevo León, con la
-            misión de acercar los mejores productos de belleza profesional a
-            estilistas, salones y consumidores de todo México. Desde nuestra
-            ubicación en La Plaza, Local 204, hemos construido relaciones de
-            confianza con las marcas líderes del mercado mexicano.
-          </p>
-          <p className="text-gray-600 leading-relaxed mt-4">
-            Nos especializamos en coloración profesional, tratamientos
-            capilares, productos de styling y cuidado natural. Como
-            distribuidores autorizados, garantizamos la autenticidad de cada
-            producto que ofrecemos, con precios competitivos y un servicio
-            personalizado que nos distingue.
-          </p>
+        <div className="grid gap-10 md:grid-cols-2 md:items-center">
+          <div>
+            <h2 className="font-heading text-2xl md:text-3xl font-bold text-sicaru-purple-900 mb-6">
+              Nuestra Historia
+            </h2>
+            <p className="text-gray-600 leading-relaxed">
+              Distribuidora Sicarú nace en Cadereyta Jiménez, Nuevo León, con la
+              misión de acercar los mejores productos de belleza profesional a
+              estilistas, salones y consumidores de todo México. Desde nuestra
+              ubicación en La Plaza, Local 204, hemos construido relaciones de
+              confianza con las marcas líderes del mercado mexicano.
+            </p>
+            <p className="text-gray-600 leading-relaxed mt-4">
+              Nos especializamos en coloración profesional, tratamientos
+              capilares, productos de styling y cuidado natural. Como
+              distribuidores autorizados, garantizamos la autenticidad de cada
+              producto que ofrecemos, con precios competitivos y un servicio
+              personalizado que nos distingue.
+            </p>
+          </div>
+          <div className="relative overflow-hidden rounded-xl aspect-[3/4] max-w-sm mx-auto md:mx-0">
+            <Image
+              src="/images/nosotros-fundadora-sicaru.jpg"
+              alt="Fundadora de Distribuidora Sicarú sonriendo frente a estantes de productos profesionales de belleza"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 400px"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Ingredientes Naturales */}
+      <section className="mx-auto max-w-7xl px-4 pb-12">
+        <div className="grid gap-10 md:grid-cols-2 md:items-center">
+          <div className="relative overflow-hidden rounded-xl aspect-[4/3] order-2 md:order-1">
+            <Image
+              src="/images/nosotros-ingredientes-naturales-mexico.jpg"
+              alt="Plantas de sábila, romero y nopal en macetas de barro en paisaje mexicano — raíces naturales de nuestros productos"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          </div>
+          <div className="order-1 md:order-2">
+            <h2 className="font-heading text-2xl md:text-3xl font-bold text-sicaru-purple-900 mb-6">
+              Raíces Mexicanas, Calidad Profesional
+            </h2>
+            <p className="text-gray-600 leading-relaxed">
+              Creemos en el poder de los ingredientes naturales mexicanos. Muchas
+              de nuestras marcas utilizan extractos botánicos como sábila,
+              romero, manzanilla y nopal — tradiciones ancestrales combinadas con
+              tecnología capilar moderna para ofrecer resultados excepcionales.
+            </p>
+          </div>
         </div>
       </section>
 

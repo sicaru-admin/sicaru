@@ -23,137 +23,64 @@ const footerLinks = {
     { href: "/politica-privacidad", label: "Aviso de Privacidad" },
   ],
   contacto: [
-    {
-      href: "https://wa.me/528281111023",
-      label: "WhatsApp",
-      external: true,
-    },
-    {
-      href: "mailto:hola@sicaru.com",
-      label: "hola@sicaru.com",
-      external: true,
-    },
+    { href: "https://wa.me/528281111023", label: "WhatsApp" },
+    { href: "mailto:hola@sicaru.com", label: "hola@sicaru.com" },
   ],
 };
 
 export function Footer() {
   return (
-    <footer className="border-t bg-sicaru-purple-900 text-white">
+    <footer className="relative border-t bg-sicaru-purple-900 text-white footer-gradient">
       <div className="mx-auto max-w-7xl px-4 py-12">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
-          {/* Tienda */}
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sicaru-gold">
-              Tienda
-            </h3>
+            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sicaru-gold">Tienda</h3>
             <ul className="space-y-2">
-              {footerLinks.tienda.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-purple-200 transition-colors hover:text-white"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
+              {footerLinks.tienda.map((l) => (
+                <li key={l.href}><Link href={l.href} className="text-sm text-purple-200 transition-colors hover:text-white">{l.label}</Link></li>
               ))}
             </ul>
           </div>
-
-          {/* Marcas */}
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sicaru-gold">
-              Marcas
-            </h3>
+            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sicaru-gold">Marcas</h3>
             <ul className="space-y-2">
-              {footerLinks.marcas.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-purple-200 transition-colors hover:text-white"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
+              {footerLinks.marcas.map((l) => (
+                <li key={l.href}><Link href={l.href} className="text-sm text-purple-200 transition-colors hover:text-white">{l.label}</Link></li>
               ))}
             </ul>
           </div>
-
-          {/* Ayuda */}
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sicaru-gold">
-              Ayuda
-            </h3>
+            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sicaru-gold">Ayuda</h3>
             <ul className="space-y-2">
-              {footerLinks.ayuda.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-purple-200 transition-colors hover:text-white"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
+              {footerLinks.ayuda.map((l) => (
+                <li key={l.href}><Link href={l.href} className="text-sm text-purple-200 transition-colors hover:text-white">{l.label}</Link></li>
               ))}
             </ul>
           </div>
-
-          {/* Información */}
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sicaru-gold">
-              Informaci&oacute;n
-            </h3>
+            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sicaru-gold">Informaci&oacute;n</h3>
             <ul className="space-y-2">
-              {footerLinks.informacion.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-purple-200 transition-colors hover:text-white"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
+              {footerLinks.informacion.map((l) => (
+                <li key={l.href}><Link href={l.href} className="text-sm text-purple-200 transition-colors hover:text-white">{l.label}</Link></li>
               ))}
             </ul>
           </div>
-
-          {/* Contacto */}
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sicaru-gold">
-              Contacto
-            </h3>
+            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sicaru-gold">Contacto</h3>
             <ul className="space-y-2">
-              {footerLinks.contacto.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-purple-200 transition-colors hover:text-white"
-                  >
-                    {link.label}
-                  </a>
-                </li>
+              {footerLinks.contacto.map((l) => (
+                <li key={l.href}><a href={l.href} target="_blank" rel="noopener noreferrer" className="text-sm text-purple-200 transition-colors hover:text-white">{l.label}</a></li>
               ))}
             </ul>
           </div>
         </div>
 
-        {/* Bottom bar */}
         <div className="mt-10 border-t border-purple-800 pt-6 text-center">
-          <p
-            className="text-lg font-bold text-white"
-            style={{ fontFamily: "var(--font-heading)" }}
-          >
+          <p className="text-lg font-bold text-white" style={{ fontFamily: "var(--font-heading)" }}>
             Distribuidora Sicar&uacute;
           </p>
-          <p className="mt-1 text-sm text-purple-300">
-            Distribuidor Autorizado de Productos de Belleza Profesional
-          </p>
-          <p className="mt-4 text-xs text-purple-400">
-            &copy; {new Date().getFullYear()} Distribuidora Sicar&uacute;. Todos los derechos
-            reservados.
-          </p>
+          <p className="mt-1 text-sm text-purple-300">Distribuidor Autorizado de Productos de Belleza Profesional</p>
+          <p className="mt-4 text-xs text-purple-400">&copy; {new Date().getFullYear()} Distribuidora Sicar&uacute;. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>

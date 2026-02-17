@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import { BRANDS } from "@/lib/constants/brands"
 
@@ -14,8 +15,16 @@ export default function MarcasPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-16 text-white md:py-20">
-        <div className="mx-auto max-w-4xl px-4 text-center">
+      <section className="relative bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-16 text-white md:py-20 overflow-hidden">
+        <Image
+          src="/images/marcas-colorista-aplicando-tinte.jpg"
+          alt="Estilista profesional aplicando tinte de color rojo a clienta en salón de belleza mexicano"
+          fill
+          className="object-cover opacity-20"
+          priority
+          sizes="100vw"
+        />
+        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
           <h1 className="font-heading text-3xl font-bold md:text-5xl">
             Nuestras Marcas
           </h1>

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Droplets, Palette, Sparkles, Leaf, Heart, Wrench } from "lucide-react";
 
@@ -8,6 +9,8 @@ const CATEGORIES = [
     icon: Droplets,
     href: "/categorias/shampoo-y-acondicionador",
     gradient: "from-sicaru-purple-600 to-sicaru-purple-800",
+    image: "/images/mujer-lavando-cabello.jpg",
+    alt: "Mujer lavando su cabello con champú profesional",
   },
   {
     name: "Color y Tintes",
@@ -15,6 +18,8 @@ const CATEGORIES = [
     icon: Palette,
     href: "/categorias/color-y-tintes",
     gradient: "from-sicaru-purple-700 to-sicaru-purple-900",
+    image: "/images/marcas-colorista-aplicando-tinte.jpg",
+    alt: "Estilista profesional aplicando tinte rojo a clienta en salón de belleza",
   },
   {
     name: "Styling y Acabado",
@@ -22,6 +27,8 @@ const CATEGORIES = [
     icon: Sparkles,
     href: "/categorias/styling-y-acabado",
     gradient: "from-sicaru-pink to-sicaru-purple-700",
+    image: "/images/salon-estilista-secando-cabello.jpg",
+    alt: "Estilista secando y peinando el cabello de clienta sonriente en salón",
   },
   {
     name: "Línea Natural",
@@ -29,6 +36,8 @@ const CATEGORIES = [
     icon: Leaf,
     href: "/categorias/linea-natural",
     gradient: "from-[#166534] to-[#1A3A25]",
+    image: "/images/producto-champu-sabila-natural.jpg",
+    alt: "Champú artesanal de sábila con ingredientes naturales mexicanos — romero, manzanilla y aloe vera",
   },
   {
     name: "Tratamientos y Mascarillas",
@@ -36,6 +45,8 @@ const CATEGORIES = [
     icon: Heart,
     href: "/categorias/tratamientos-y-mascarillas",
     gradient: "from-sicaru-purple-500 to-sicaru-purple-700",
+    image: "/images/salon-aplicacion-tratamiento.jpg",
+    alt: "Manos de estilista aplicando tratamiento capilar cremoso al cabello de clienta",
   },
   {
     name: "Herramientas Pro",
@@ -43,6 +54,8 @@ const CATEGORIES = [
     icon: Wrench,
     href: "/categorias/herramientas-pro",
     gradient: "from-sicaru-purple-800 to-sicaru-purple-900",
+    image: "/images/salon-alisado-plancha-profesional.jpg",
+    alt: "Plancha profesional alisando cabello con vapor en salón de belleza",
   },
 ];
 
@@ -59,11 +72,17 @@ export function CategoriesGrid() {
             <Link
               key={cat.name}
               href={cat.href}
-              className="group relative flex flex-col justify-end overflow-hidden rounded-xl p-5 md:p-6"
+              className="gradient-shift group relative flex flex-col justify-end overflow-hidden rounded-xl p-5 md:p-6 min-h-[160px]"
             >
-              {/* Gradient background */}
+              <Image
+                src={cat.image}
+                alt={cat.alt}
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(max-width: 768px) 50vw, 33vw"
+              />
               <div
-                className={`absolute inset-0 bg-gradient-to-br ${cat.gradient} transition-transform duration-300 group-hover:scale-105`}
+                className={`absolute inset-0 bg-gradient-to-br ${cat.gradient} opacity-70`}
               />
 
               <div className="relative z-10">

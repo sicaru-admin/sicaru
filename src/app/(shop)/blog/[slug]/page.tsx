@@ -83,7 +83,7 @@ export default async function BlogPostPage({
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={post.image}
-                alt={post.title}
+                alt={post.imageAlt || post.title}
                 className="h-auto w-full object-cover"
               />
             </div>
@@ -96,7 +96,7 @@ export default async function BlogPostPage({
 
           <div className="mx-auto max-w-3xl">
             {/* MDX Content with prose styling */}
-            <div className="prose prose-gray max-w-none prose-headings:font-heading prose-headings:text-sicaru-purple-900 prose-p:leading-relaxed prose-p:text-gray-600 prose-strong:text-sicaru-purple-900 prose-ul:text-gray-600 prose-ol:text-gray-600 prose-li:text-gray-600">
+            <div className="blog-content prose prose-gray max-w-none prose-headings:font-heading prose-headings:text-sicaru-purple-900 prose-p:leading-relaxed prose-p:text-gray-600 prose-strong:text-sicaru-purple-900 prose-ul:text-gray-600 prose-ol:text-gray-600 prose-li:text-gray-600">
               <MDXRemote
                 source={post.content}
                 components={mdxComponents}

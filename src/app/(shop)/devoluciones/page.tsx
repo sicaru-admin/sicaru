@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 
 export const metadata: Metadata = {
   title: "Política de Devoluciones",
@@ -10,14 +11,23 @@ export default function DevolucionesPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-14 text-white text-center">
-        <h1 className="font-heading text-3xl md:text-4xl font-bold">
-          Política de Devoluciones
-        </h1>
-        <p className="mt-3 text-white/80 max-w-xl mx-auto text-sm md:text-base">
-          Tu satisfacción es nuestra prioridad. Conoce cómo realizar una
-          devolución.
-        </p>
+      <section className="relative bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-14 text-white text-center overflow-hidden">
+        <Image
+          src="/images/hero-cabello-natural-luz.jpg"
+          alt="Mujer mexicana sonriendo mientras toca su cabello saludable con luz natural dorada"
+          fill
+          className="object-cover opacity-20"
+          sizes="100vw"
+        />
+        <div className="relative z-10">
+          <h1 className="font-heading text-3xl md:text-4xl font-bold">
+            Política de Devoluciones
+          </h1>
+          <p className="mt-3 text-white/80 max-w-xl mx-auto text-sm md:text-base">
+            Tu satisfacción es nuestra prioridad. Conoce cómo realizar una
+            devolución.
+          </p>
+        </div>
       </section>
 
       {/* Content */}

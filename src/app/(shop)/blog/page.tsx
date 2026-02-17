@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { getAllPosts, getAllCategories } from "@/lib/blog";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { CategoryTabs } from "@/components/blog/CategoryTabs";
@@ -14,13 +15,26 @@ export default function BlogPage() {
   const categories = getAllCategories();
 
   return (
+    <>
+    <section className="relative bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-12 text-white overflow-hidden">
+      <Image
+        src="/images/salon-mezcla-tintes-profesional.jpg"
+        alt="Vista cenital de mezclas de tintes profesionales de diferentes colores con brochas y herramientas de colorista"
+        fill
+        className="object-cover opacity-20"
+        priority
+        sizes="100vw"
+      />
+      <div className="relative z-10 mx-auto max-w-7xl px-4 text-center">
+        <h1 className="font-heading text-3xl font-bold md:text-4xl">
+          Blog de Belleza
+        </h1>
+        <p className="mt-3 text-white/80">
+          Consejos, comparativas y guías de cuidado capilar profesional.
+        </p>
+      </div>
+    </section>
     <div className="mx-auto max-w-7xl px-4 py-12">
-      <h1 className="mb-2 font-heading text-3xl font-bold text-sicaru-purple-900 md:text-4xl">
-        Blog de Belleza
-      </h1>
-      <p className="mb-8 text-gray-500">
-        Consejos, comparativas y guías de cuidado capilar profesional.
-      </p>
 
       <CategoryTabs
         categories={categories}
@@ -41,5 +55,6 @@ export default function BlogPage() {
         </div>
       )}
     </div>
+    </>
   );
 }

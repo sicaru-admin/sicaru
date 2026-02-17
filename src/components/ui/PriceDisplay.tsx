@@ -34,5 +34,16 @@ export function PriceDisplay({
     currency: displayCurrency,
   }).format(displayAmount);
 
-  return <span className={className}>{formatted}</span>;
+  // Split into symbol and number for premium styling
+  const match = formatted.match(/^(\$)([\d,.]+)$/);
+  if (match) {
+    return (
+      <span className={`price-premium ${className}`}>
+        <span className="price-symbol">{match[1]}</span>
+        {match[2]}
+      </span>
+    );
+  }
+
+  return <span className={`price-premium ${className}`}>{formatted}</span>;
 }

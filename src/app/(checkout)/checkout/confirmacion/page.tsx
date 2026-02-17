@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { CheckCircle, ShoppingBag, MessageCircle } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { ConfettiCelebration } from "@/components/ui/ConfettiCelebration";
 
 export const dynamic = "force-dynamic";
 
@@ -102,6 +103,7 @@ export default function ConfirmacionPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 lg:py-16">
+      <ConfettiCelebration />
       {/* Success header */}
       <div className="mb-10 text-center">
         <CheckCircle className="mx-auto h-16 w-16 text-green-500" />

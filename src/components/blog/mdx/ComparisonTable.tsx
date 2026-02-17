@@ -8,10 +8,26 @@ type ComparisonRow = {
 };
 
 type ComparisonTableProps = {
-  data: ComparisonRow[];
+  data?: ComparisonRow[] | string;
 };
 
+function parseData(data?: ComparisonRow[] | string): ComparisonRow[] {
+  if (!data) return [];
+  if (Array.isArray(data)) return data;
+  if (typeof data === "string") {
+    try {
+      return JSON.parse(data);
+    } catch {
+      return [];
+    }
+  }
+  return [];
+}
+
 export function ComparisonTable({ data }: ComparisonTableProps) {
+  const rows = parseData(data);
+  if (rows.length === 0) return null;
+
   return (
     <div className="my-8 overflow-x-auto rounded-lg border border-gray-200">
       <table className="w-full min-w-[640px] text-left text-sm">
@@ -26,7 +42,7 @@ export function ComparisonTable({ data }: ComparisonTableProps) {
           </tr>
         </thead>
         <tbody>
-          {data.map((row, i) => (
+          {rows.map((row, i) => (
             <tr
               key={i}
               className={

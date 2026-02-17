@@ -58,7 +58,7 @@ export function BrandsShowcase() {
             <Link
               key={brand.handle}
               href={`/marcas/${brand.handle}`}
-              className="group flex flex-col overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-md"
+              className="card-tilt group flex flex-col overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-md"
             >
               {/* Accent bar */}
               <div

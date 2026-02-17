@@ -19,7 +19,7 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/productos/${product.handle}`}
-      className="group block overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-md"
+      className="group block overflow-hidden rounded-xl bg-white shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
     >
       <div className="relative aspect-square overflow-hidden bg-gray-100">
         {product.thumbnail ? (
@@ -28,7 +28,7 @@ export function ProductCard({ product }: ProductCardProps) {
             alt={product.title || "Producto"}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           />
         ) : (
           <div className="flex h-full items-center justify-center text-gray-300">

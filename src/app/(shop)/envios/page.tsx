@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 
 export const metadata: Metadata = {
   title: "Política de Envíos",
@@ -74,6 +75,22 @@ export default function EnviosPage() {
         <p className="text-gray-600 leading-relaxed mt-3">
           Envío gratis en pedidos locales (Cadereyta) mayores a $300 MXN.
         </p>
+
+        {/* Métodos de pago */}
+        <h2 className="text-xl font-bold text-sicaru-purple-900 mb-4 mt-8">
+          Métodos de Pago
+        </h2>
+        <div className="mb-6 flex justify-center">
+          <div className="relative w-full max-w-md aspect-square overflow-hidden rounded-xl">
+            <Image
+              src="/images/metodos-pago-mercadopago.jpg"
+              alt="Métodos de pago aceptados — Visa, Mastercard, OXXO Pay y Mercado Pago con confirmación de pago exitoso"
+              fill
+              className="object-contain"
+              sizes="400px"
+            />
+          </div>
+        </div>
 
         {/* OXXO */}
         <h2 className="text-xl font-bold text-sicaru-purple-900 mb-4 mt-8">

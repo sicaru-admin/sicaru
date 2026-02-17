@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle } from "lucide-react";
 
@@ -14,8 +15,15 @@ const WHATSAPP_MSG =
 
 export function SalonCTA() {
   return (
-    <section className="bg-sicaru-purple-900 py-16 md:py-20">
-      <div className="mx-auto max-w-4xl px-6 text-center">
+    <section className="relative bg-sicaru-purple-900 py-16 md:py-20 overflow-hidden">
+      <Image
+        src="/images/salon-tratamiento-cabello.jpg"
+        alt="Clienta relajándose mientras recibe tratamiento capilar profesional en salón de belleza mexicano"
+        fill
+        className="object-cover opacity-20"
+        sizes="100vw"
+      />
+      <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
         <span className="mb-4 inline-block rounded-full border border-sicaru-gold/40 px-4 py-1 text-sm font-medium text-sicaru-gold">
           Para Profesionales
         </span>

@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { CartButton } from "./CartButton";
@@ -10,8 +13,20 @@ const MobileNav = dynamic(
 );
 
 export function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-30 border-b bg-white/95 backdrop-blur-sm">
+    <header
+      className={`sticky top-0 z-30 border-b transition-all duration-300 navbar-glass ${
+        scrolled ? "scrolled border-gray-200/60" : "border-transparent"
+      }`}
+    >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
         {/* Logo */}
         <Link
@@ -56,18 +71,11 @@ export function Navbar() {
           </Link>
         </div>
 
-        {/* Right side: Search + Account + Cart + Mobile menu */}
+        {/* Right side */}
         <div className="flex items-center gap-3">
-          {/* Search */}
           <SearchButton />
-
-          {/* Account */}
           <AccountButton />
-
-          {/* Cart */}
           <CartButton />
-
-          {/* Mobile hamburger */}
           <MobileNav />
         </div>
       </nav>

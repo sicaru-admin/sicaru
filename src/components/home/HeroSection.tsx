@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 const slides = [
@@ -11,6 +12,8 @@ const slides = [
     cta: "Ver Productos",
     href: "/productos",
     gradient: "from-sicaru-purple-900 via-sicaru-purple-800 to-sicaru-purple-600",
+    image: "/images/hero-productos-tienda.jpg",
+    alt: "Exhibición de productos profesionales de belleza Küül, Nutrapél y TEC Italy en tienda Sicarú",
   },
   {
     headline: "Küül, Voglia, Hidra Color y más — Precios de Distribuidora",
@@ -19,6 +22,18 @@ const slides = [
     cta: "Comprar Ahora",
     href: "/productos",
     gradient: "from-sicaru-purple-800 via-sicaru-purple-700 to-sicaru-pink/80",
+    image: "/images/hero-mujer-salon-elegante.jpg",
+    alt: "Mujer mexicana aplicando producto capilar profesional en salón de belleza elegante",
+  },
+  {
+    headline: "Resultados Profesionales que Se Notan",
+    subtitle:
+      "Cabello saludable y radiante con tratamientos de las mejores marcas mexicanas",
+    cta: "Ver Tratamientos",
+    href: "/categorias/tratamientos-y-mascarillas",
+    gradient: "from-sicaru-purple-700 via-sicaru-purple-600 to-sicaru-gold/50",
+    image: "/images/hero-mujer-salon-lujo.jpg",
+    alt: "Mujer tocando su cabello ondulado con sonrisa de satisfacción en salón de belleza de lujo",
   },
   {
     headline: "Montis — Extractos 100% Naturales para Tu Cabello",
@@ -27,6 +42,8 @@ const slides = [
     cta: "Descubrir Montis",
     href: "/marcas/montis",
     gradient: "from-[#1A3A25] via-[#166534] to-[#22543D]",
+    image: "/images/nosotros-ingredientes-naturales-mexico.jpg",
+    alt: "Plantas de sábila, romero y nopal en macetas de barro — ingredientes naturales mexicanos para el cuidado capilar",
   },
 ];
 
@@ -43,15 +60,28 @@ export function HeroSection() {
   }, [next]);
 
   return (
-    <section className="relative w-full h-[85vh] md:h-[70vh] overflow-hidden">
+    <section className="hero-mesh noise-overlay relative w-full h-[85vh] md:h-[70vh] overflow-hidden">
       {slides.map((slide, i) => (
         <div
           key={i}
-          className={`absolute inset-0 flex items-center justify-center bg-gradient-to-br ${slide.gradient} transition-opacity duration-700 ${
+          className={`absolute inset-0 flex items-center justify-center transition-opacity duration-700 ${
             i === active ? "opacity-100 z-10" : "opacity-0 z-0"
           }`}
         >
-          <div className="mx-auto max-w-4xl px-6 text-center">
+          <Image
+            src={slide.image}
+            alt={slide.alt}
+            fill
+            className="object-cover scale-105 transition-transform duration-[8000ms] ease-out"
+            style={{ transform: i === active ? "scale(1)" : "scale(1.05)" }}
+            priority={i === 0}
+            sizes="100vw"
+          />
+          <div className={`absolute inset-0 bg-gradient-to-br ${slide.gradient} opacity-60`} />
+          <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
+            <p className="mb-3 font-heading text-sm tracking-[0.2em] uppercase text-sicaru-gold md:text-base" style={{ fontStyle: "italic" }}>
+              Distribuidora
+            </p>
             <h1 className="font-heading text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
               {slide.headline}
             </h1>

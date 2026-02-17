@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { ProductosContent } from "./ProductosContent";
 
 export const metadata: Metadata = {
@@ -11,11 +12,28 @@ export const revalidate = 1800;
 
 export default function ProductosPage() {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12">
-      <h1 className="mb-8 text-3xl font-bold text-sicaru-purple-900 md:text-4xl">
-        Nuestros Productos
-      </h1>
-      <ProductosContent />
-    </div>
+    <>
+      <section className="relative bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-12 text-white overflow-hidden">
+        <Image
+          src="/images/productos-carta-colores-tienda.jpg"
+          alt="Carta de colores profesional y productos capilares en exhibición en tienda Sicarú"
+          fill
+          className="object-cover opacity-20"
+          priority
+          sizes="100vw"
+        />
+        <div className="relative z-10 mx-auto max-w-7xl px-4 text-center">
+          <h1 className="font-heading text-3xl font-bold md:text-4xl">
+            Nuestros Productos
+          </h1>
+          <p className="mt-3 text-white/80">
+            Coloración, tratamientos, shampoos y más de las mejores marcas mexicanas
+          </p>
+        </div>
+      </section>
+      <div className="mx-auto max-w-7xl px-4 py-12">
+        <ProductosContent />
+      </div>
+    </>
   );
 }

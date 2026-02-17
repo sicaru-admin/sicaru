@@ -9,11 +9,27 @@ type FAQItem = {
 };
 
 type FAQSectionProps = {
-  items: FAQItem[];
+  items?: FAQItem[] | string;
 };
 
+function parseItems(items?: FAQItem[] | string): FAQItem[] {
+  if (!items) return [];
+  if (Array.isArray(items)) return items;
+  if (typeof items === "string") {
+    try {
+      return JSON.parse(items);
+    } catch {
+      return [];
+    }
+  }
+  return [];
+}
+
 export function FAQSection({ items }: FAQSectionProps) {
+  const faqItems = parseItems(items);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  if (faqItems.length === 0) return null;
 
   return (
     <div className="my-8">
@@ -31,7 +47,7 @@ export function FAQSection({ items }: FAQSectionProps) {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "FAQPage",
-            mainEntity: items.map((item) => ({
+            mainEntity: faqItems.map((item) => ({
               "@type": "Question",
               name: item.question,
               acceptedAnswer: {
@@ -44,7 +60,7 @@ export function FAQSection({ items }: FAQSectionProps) {
       />
 
       <div className="divide-y divide-gray-200 rounded-lg border border-gray-200">
-        {items.map((item, i) => (
+        {faqItems.map((item, i) => (
           <div key={i}>
             <button
               onClick={() => setOpenIndex(openIndex === i ? null : i)}

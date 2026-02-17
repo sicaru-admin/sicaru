@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { MapPin, Clock, Phone, Mail, MessageCircle } from "lucide-react";
 
 import { STORE } from "@/lib/constants/store";
@@ -14,8 +15,16 @@ export default function ContactoPage() {
   return (
     <>
       {/* ── Hero ── */}
-      <section className="bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-16 text-white">
-        <div className="mx-auto max-w-7xl px-4 text-center">
+      <section className="relative bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-16 text-white overflow-hidden">
+        <Image
+          src="/images/hero-mujer-salon-morado.jpg"
+          alt="Mujer sonriente con cabello rizado en salón de belleza Sicarú con pared morada"
+          fill
+          className="object-cover opacity-25"
+          priority
+          sizes="100vw"
+        />
+        <div className="relative z-10 mx-auto max-w-7xl px-4 text-center">
           <h1 className="font-heading text-3xl font-bold md:text-5xl">
             Contáctanos
           </h1>

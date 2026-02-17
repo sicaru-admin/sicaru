@@ -83,7 +83,7 @@ export function ProductActions({ product }: ProductActionsProps) {
         <button
           onClick={handleAddToCart}
           disabled={isLoading}
-          className="w-full rounded-full bg-sicaru-pink px-8 py-3.5 text-base font-semibold text-white transition-colors hover:bg-sicaru-pink/90 disabled:cursor-not-allowed disabled:opacity-50 md:text-lg"
+          className="btn-ripple tap-feedback w-full rounded-full bg-sicaru-pink px-8 py-3.5 text-base font-semibold text-white transition-colors hover:bg-sicaru-pink/90 disabled:cursor-not-allowed disabled:opacity-50 md:text-lg"
         >
           {isLoading ? "Agregando..." : "Agregar al Carrito"}
         </button>

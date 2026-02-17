@@ -3,6 +3,7 @@ import { sdk } from "@/lib/medusa";
 export async function createCart(regionId: string) {
   const { cart } = await sdk.store.cart.create({
     region_id: regionId,
+    sales_channel_id: process.env.NEXT_PUBLIC_SALES_CHANNEL_ID,
   });
 
   return cart;

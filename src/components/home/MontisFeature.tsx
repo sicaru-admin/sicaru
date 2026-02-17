@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Leaf, Flag, Recycle, Star } from "lucide-react";
 
@@ -39,18 +40,29 @@ export function MontisFeature() {
           </Link>
         </div>
 
-        {/* Right — benefit cards */}
-        <div className="grid grid-cols-2 gap-4">
-          {benefits.map((b) => (
-            <div
-              key={b.title}
-              className="rounded-xl bg-white/10 p-4 backdrop-blur-sm"
-            >
-              <b.icon className="mb-2 h-7 w-7 text-emerald-400" />
-              <h3 className="text-sm font-bold text-white">{b.title}</h3>
-              <p className="mt-1 text-xs text-white/60">{b.text}</p>
-            </div>
-          ))}
+        {/* Right — image + benefit cards */}
+        <div className="flex flex-col gap-6">
+          <div className="relative overflow-hidden rounded-xl aspect-[4/3]">
+            <Image
+              src="/images/producto-champu-sabila-natural.jpg"
+              alt="Champú artesanal de sábila hecho en México con ingredientes naturales como romero, manzanilla y aloe vera"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            {benefits.map((b) => (
+              <div
+                key={b.title}
+                className="rounded-xl bg-white/10 p-4 backdrop-blur-sm"
+              >
+                <b.icon className="mb-2 h-7 w-7 text-emerald-400" />
+                <h3 className="text-sm font-bold text-white">{b.title}</h3>
+                <p className="mt-1 text-xs text-white/60">{b.text}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -8,6 +8,9 @@ import { ImageGallery } from "@/components/product/ImageGallery";
 import { ProductActions } from "@/components/product/ProductActions";
 import { ProductTabs } from "@/components/product/ProductTabs";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
+import { ViewerCounter } from "@/components/ui/ViewerCounter";
+import { StarRating } from "@/components/ui/StarRating";
+import { StickyAddToCart } from "@/components/product/StickyAddToCart";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
   generateProductSchema,
@@ -176,6 +179,12 @@ export default async function ProductDetailPage({
               {product.title}
             </h1>
 
+            {/* Star Rating & Viewer Counter */}
+            <div className="mt-2 flex flex-wrap items-center gap-3">
+              <StarRating />
+              <ViewerCounter />
+            </div>
+
             {/* Short description */}
             {product.description && (
               <p className="mt-3 text-sm leading-relaxed text-gray-600 md:text-base">
@@ -218,6 +227,8 @@ export default async function ProductDetailPage({
           </Suspense>
         </div>
       </div>
+
+      <StickyAddToCart product={product} />
     </>
   );
 }

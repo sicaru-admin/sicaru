@@ -19,6 +19,7 @@ export type BlogPostMeta = {
   tags: string[];
   featuredBrands: string[];
   image: string;
+  imageAlt: string;
   readTime: number;
 };
 
@@ -58,6 +59,7 @@ function parseMdxFile(filePath: string): BlogPost | null {
       tags: data.tags || [],
       featuredBrands: data.featuredBrands || [],
       image: data.image || "",
+      imageAlt: data.imageAlt || "",
       readTime,
       content,
     };

@@ -17,6 +17,7 @@ import {
   completeCart,
 } from "@/lib/data/checkout";
 import { CheckoutStepSection } from "@/components/checkout/CheckoutStepSection";
+import { CheckoutProgress } from "@/components/checkout/CheckoutProgress";
 import { ContactForm } from "@/components/checkout/ContactForm";
 import { ShippingAddressForm } from "@/components/checkout/ShippingAddressForm";
 import { ShippingMethodSelector } from "@/components/checkout/ShippingMethodSelector";
@@ -427,6 +428,8 @@ export default function CheckoutPage() {
       <h1 className="mb-6 text-2xl font-bold text-sicaru-purple-900 lg:mb-8 lg:text-3xl">
         Checkout
       </h1>
+
+      <CheckoutProgress activeStep={activeStep} completedSteps={completedSteps} />
 
       <div className="lg:grid lg:grid-cols-12 lg:gap-8">
         {/* Left: Steps */}

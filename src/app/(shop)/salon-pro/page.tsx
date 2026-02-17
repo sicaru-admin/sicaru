@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import {
   Tag,
@@ -133,8 +134,16 @@ export default function SalonProPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-20 text-white md:py-28">
-        <div className="mx-auto max-w-7xl px-4 text-center">
+      <section className="relative bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-20 text-white md:py-28 overflow-hidden">
+        <Image
+          src="/images/salon-estilista-secando-cabello.jpg"
+          alt="Estilista profesional secando el cabello de clienta sonriente en salón de belleza"
+          fill
+          className="object-cover opacity-20"
+          priority
+          sizes="100vw"
+        />
+        <div className="relative z-10 mx-auto max-w-7xl px-4 text-center">
           <span className="mb-4 inline-block rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium backdrop-blur-sm">
             Para Profesionales
           </span>
@@ -177,6 +186,28 @@ export default function SalonProPage() {
           >
             Ventajas Exclusivas PRO
           </h2>
+
+          <div className="mb-12 grid gap-8 md:grid-cols-2 md:items-center">
+            <div className="relative overflow-hidden rounded-xl aspect-[3/2]">
+              <Image
+                src="/images/salon-colorista-muestrario.jpg"
+                alt="Colorista profesional consultando muestrario de colores de tinte junto a herramientas de mezcla en salón"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+            <div className="relative overflow-hidden rounded-xl aspect-[3/2]">
+              <Image
+                src="/images/barberia-corte-masculino.jpg"
+                alt="Barbero mexicano realizando corte de cabello masculino en barbería tradicional"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+          </div>
+
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {BENEFITS.map((benefit) => (
               <div
@@ -332,8 +363,15 @@ export default function SalonProPage() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="bg-sicaru-purple-900 py-16 text-white">
-        <div className="mx-auto max-w-3xl px-4 text-center">
+      <section className="relative bg-sicaru-purple-900 py-16 text-white overflow-hidden">
+        <Image
+          src="/images/salon-mezcla-tintes-profesional.jpg"
+          alt="Mesa de trabajo profesional con mezcla de tintes de diferentes colores listos para aplicación"
+          fill
+          className="object-cover opacity-15"
+          sizes="100vw"
+        />
+        <div className="relative z-10 mx-auto max-w-3xl px-4 text-center">
           <CheckCircle className="mx-auto mb-4 h-12 w-12 text-sicaru-gold" />
           <h2
             className="mb-4 text-2xl font-bold md:text-3xl"

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import { useCart } from "@/components/cart/CartProvider";
 
@@ -10,12 +11,26 @@ const CartDrawer = dynamic(
 
 export function CartButton() {
   const { openCart, isOpen, totalItems } = useCart();
+  const prevItems = useRef(totalItems);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (totalItems > prevItems.current && buttonRef.current) {
+      buttonRef.current.classList.add("animate-bounce");
+      const timer = setTimeout(() => {
+        buttonRef.current?.classList.remove("animate-bounce");
+      }, 600);
+      return () => clearTimeout(timer);
+    }
+    prevItems.current = totalItems;
+  }, [totalItems]);
 
   return (
     <>
       <button
+        ref={buttonRef}
         onClick={openCart}
-        className="relative text-gray-700 hover:text-sicaru-purple-600"
+        className="relative text-gray-700 hover:text-sicaru-purple-600 tap-feedback"
         aria-label="Abrir carrito"
       >
         <svg
@@ -33,7 +48,7 @@ export function CartButton() {
           />
         </svg>
         {totalItems > 0 && (
-          <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-sicaru-pink text-xs font-bold text-white">
+          <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-sicaru-pink text-xs font-bold text-white transition-transform">
             {totalItems}
           </span>
         )}
