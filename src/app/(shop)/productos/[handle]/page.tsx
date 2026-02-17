@@ -22,10 +22,15 @@ import {
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
-  const { products } = await getProducts();
-  return products.map((product) => ({
-    handle: product.handle,
-  }));
+  try {
+    const { products } = await getProducts();
+    return products.map((product) => ({
+      handle: product.handle,
+    }));
+  } catch {
+    // Backend may not be available during build (e.g. Vercel)
+    return [];
+  }
 }
 
 export async function generateMetadata({
