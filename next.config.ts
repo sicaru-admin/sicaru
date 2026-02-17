@@ -1,4 +1,3 @@
-import { withSentryConfig } from "@sentry/nextjs";
 import withSerwistInit from "@serwist/next";
 import withBundleAnalyzer from "@next/bundle-analyzer";
 import type { NextConfig } from "next";
@@ -36,15 +35,4 @@ const analyzeBundles = withBundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 });
 
-export default withSentryConfig(analyzeBundles(withSerwist(nextConfig)), {
-  org: process.env.SENTRY_ORG || "sicaru",
-  project: process.env.SENTRY_PROJECT || "storefront",
-  silent: !process.env.CI,
-  widenClientFileUpload: true,
-  sourcemaps: {
-    deleteSourcemapsAfterUpload: true,
-  },
-  bundleSizeOptimizations: {
-    excludeDebugStatements: true,
-  },
-});
+export default analyzeBundles(withSerwist(nextConfig));
