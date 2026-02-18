@@ -19,20 +19,24 @@ type Props = {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { handle } = await params
-  const category = await getCategoryByHandle(handle)
+  try {
+    const { handle } = await params
+    const category = await getCategoryByHandle(handle)
 
-  if (!category) {
-    return {}
-  }
+    if (!category) {
+      return {}
+    }
 
-  const categoryData = getCategoryData(handle)
+    const categoryData = getCategoryData(handle)
 
-  return {
-    title: category.name,
-    description:
-      categoryData?.description ||
-      `Productos de la categoría ${category.name} en Distribuidora Sicarú`,
+    return {
+      title: category.name,
+      description:
+        categoryData?.description ||
+        `Productos de la categoría ${category.name} en Distribuidora Sicarú`,
+    }
+  } catch {
+    return { title: "Categoría — Distribuidora Sicarú" }
   }
 }
 

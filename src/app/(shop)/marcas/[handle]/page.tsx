@@ -24,28 +24,32 @@ type Props = {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { handle } = await params
-  const collection = await getCollectionByHandle(handle)
-  const brand = getBrandData(handle)
+  try {
+    const { handle } = await params
+    const collection = await getCollectionByHandle(handle)
+    const brand = getBrandData(handle)
 
-  if (!collection) {
-    return {
-      title: "Marca no encontrada — Distribuidora Sicarú",
+    if (!collection) {
+      return {
+        title: "Marca no encontrada — Distribuidora Sicarú",
+      }
     }
-  }
 
-  const title = `Productos ${brand?.name || collection.title} — Distribuidora Sicarú`
-  const description =
-    brand?.description ||
-    `Compra productos ${collection.title} originales en Distribuidora Sicarú. Envío a todo México. Precios de mayoreo disponibles para profesionales.`
+    const title = `Productos ${brand?.name || collection.title} — Distribuidora Sicarú`
+    const description =
+      brand?.description ||
+      `Compra productos ${collection.title} originales en Distribuidora Sicarú. Envío a todo México. Precios de mayoreo disponibles para profesionales.`
 
-  return {
-    title,
-    description,
-    openGraph: {
+    return {
       title,
       description,
-    },
+      openGraph: {
+        title,
+        description,
+      },
+    }
+  } catch {
+    return { title: "Marca — Distribuidora Sicarú" }
   }
 }
 

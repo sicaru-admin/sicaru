@@ -38,40 +38,44 @@ export async function generateMetadata({
 }: {
   params: Promise<{ handle: string }>;
 }): Promise<Metadata> {
-  const { handle } = await params;
-  const product = await getProductByHandle(handle);
+  try {
+    const { handle } = await params;
+    const product = await getProductByHandle(handle);
 
-  if (!product) {
-    return { title: "Producto no encontrado" };
-  }
+    if (!product) {
+      return { title: "Producto no encontrado" };
+    }
 
-  const price = product.variants?.[0]?.calculated_price;
-  const priceStr =
-    price?.calculated_amount != null
-      ? new Intl.NumberFormat("es-MX", {
-          style: "currency",
-          currency: price.currency_code || "MXN",
-        }).format(price.calculated_amount)
-      : undefined;
+    const price = product.variants?.[0]?.calculated_price;
+    const priceStr =
+      price?.calculated_amount != null
+        ? new Intl.NumberFormat("es-MX", {
+            style: "currency",
+            currency: price.currency_code || "MXN",
+          }).format(price.calculated_amount)
+        : undefined;
 
-  const description =
-    product.description ||
-    `Compra ${product.title} en Distribuidora Sicarú`;
+    const description =
+      product.description ||
+      `Compra ${product.title} en Distribuidora Sicarú`;
 
-  return {
-    title: product.title,
-    description,
-    openGraph: {
-      title: `${product.title}${priceStr ? ` — ${priceStr}` : ""}`,
+    return {
+      title: product.title,
       description,
-      images: product.thumbnail ? [{ url: product.thumbnail }] : undefined,
-    },
-    other: {
-      "product:price:amount":
-        price?.calculated_amount?.toString() ?? "",
-      "product:price:currency": price?.currency_code || "MXN",
-    },
-  };
+      openGraph: {
+        title: `${product.title}${priceStr ? ` — ${priceStr}` : ""}`,
+        description,
+        images: product.thumbnail ? [{ url: product.thumbnail }] : undefined,
+      },
+      other: {
+        "product:price:amount":
+          price?.calculated_amount?.toString() ?? "",
+        "product:price:currency": price?.currency_code || "MXN",
+      },
+    };
+  } catch {
+    return { title: "Producto — Distribuidora Sicarú" };
+  }
 }
 
 function RelatedSkeleton() {
