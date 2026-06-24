@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { ProductosContent } from "./ProductosContent";
+import { getProducts } from "@/lib/data/products";
 
 export const metadata: Metadata = {
   title: "Nuestros Productos",
@@ -10,7 +11,9 @@ export const metadata: Metadata = {
 
 export const revalidate = 1800;
 
-export default function ProductosPage() {
+export default async function ProductosPage() {
+  const { products } = await getProducts({ limit: 100 });
+
   return (
     <>
       <section className="relative bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-12 text-white overflow-hidden">
@@ -32,7 +35,7 @@ export default function ProductosPage() {
         </div>
       </section>
       <div className="mx-auto max-w-7xl px-4 py-12">
-        <ProductosContent />
+        <ProductosContent products={products} />
       </div>
     </>
   );
