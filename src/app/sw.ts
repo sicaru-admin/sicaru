@@ -16,6 +16,14 @@ const serwist = new Serwist({
   clientsClaim: true,
   navigationPreload: true,
   runtimeCaching: [
+    // Always prefer fresh pages so product and brand updates appear immediately.
+    {
+      matcher: ({ request }) => request.mode === "navigate",
+      handler: new NetworkFirst({
+        cacheName: "pages",
+        networkTimeoutSeconds: 5,
+      }),
+    },
     // Google Fonts stylesheets
     {
       matcher: ({ url }) =>
@@ -56,17 +64,6 @@ const serwist = new Serwist({
         cacheName: "pwa-icons",
       }),
     },
-    // Product and collection pages (HTML)
-    {
-      matcher: ({ request, url }) =>
-        request.mode === "navigate" &&
-        (url.pathname.startsWith("/productos/") ||
-          url.pathname.startsWith("/marcas/") ||
-          url.pathname.startsWith("/colecciones/")),
-      handler: new StaleWhileRevalidate({
-        cacheName: "product-pages",
-      }),
-    },
     // Medusa API GET requests
     {
       matcher: ({ url, request }) =>
@@ -101,3 +98,19 @@ const serwist = new Serwist({
 })
 
 serwist.addEventListeners()
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys
+            .filter((key) =>
+              ["product-pages", "medusa-api", "next-static-assets"].includes(key)
+            )
+            .map((key) => caches.delete(key))
+        )
+      )
+  )
+})

@@ -65,7 +65,7 @@ export function HeroSection() {
         <div
           key={i}
           className={`absolute inset-0 flex items-center justify-center transition-opacity duration-700 ${
-            i === active ? "opacity-100 z-10" : "opacity-0 z-0"
+            i === active ? "z-10 opacity-100 pointer-events-auto" : "z-0 opacity-0 pointer-events-none"
           }`}
         >
           <Image
