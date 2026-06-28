@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { CartButton } from "./CartButton";
 import { AccountButton } from "./AccountButton";
@@ -26,10 +27,17 @@ export function Navbar() {
         {/* Logo */}
         <Link
           href="/"
-          className="text-xl font-bold text-sicaru-purple-900 md:text-2xl"
-          style={{ fontFamily: "var(--font-heading)" }}
+          className="relative block h-12 w-[120px] shrink-0 md:h-14 md:w-[140px]"
+          aria-label="Sicarú, inicio"
         >
-          Sicar&uacute;
+          <Image
+            src="/brand/logo-violet.png"
+            alt="Sicarú Productos de Belleza"
+            fill
+            priority
+            sizes="140px"
+            className="object-contain"
+          />
         </Link>
 
         {/* Desktop Navigation */}

@@ -148,7 +148,7 @@ export default function RecompensasPage() {
       </div>
 
       {/* Points Balance Card */}
-      <div className="rounded-xl bg-gradient-to-r from-sicaru-purple-900 to-sicaru-purple-800 p-6 text-white">
+      <div className="rounded-xl bg-gradient-to-r from-sicaru-purple-700 to-sicaru-purple-600 p-6 text-white">
         <div className="flex items-start justify-between">
           <div>
             <p className="text-sm text-sicaru-purple-200">Puntos disponibles</p>
@@ -248,7 +248,7 @@ export default function RecompensasPage() {
                 parseInt(redeemAmount) < 100 ||
                 parseInt(redeemAmount) > account.points_balance
               }
-              className="rounded-lg bg-sicaru-purple-900 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-sicaru-purple-800 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-lg bg-sicaru-purple-700 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-sicaru-purple-600 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isRedeeming ? "Canjeando..." : "Canjear"}
             </button>

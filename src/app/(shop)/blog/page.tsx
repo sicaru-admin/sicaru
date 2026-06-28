@@ -16,7 +16,7 @@ export default function BlogPage() {
 
   return (
     <>
-    <section className="relative bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-12 text-white overflow-hidden">
+    <section className="relative bg-gradient-to-br from-sicaru-purple-700 to-sicaru-purple-500 py-12 text-white overflow-hidden">
       <Image
         src="/images/salon-mezcla-tintes-profesional.jpg"
         alt="Vista cenital de mezclas de tintes profesionales de diferentes colores con brochas y herramientas de colorista"

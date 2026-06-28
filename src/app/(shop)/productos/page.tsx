@@ -16,12 +16,12 @@ export default async function ProductosPage() {
 
   return (
     <>
-      <section className="relative bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-12 text-white overflow-hidden">
+      <section className="relative overflow-hidden bg-sicaru-purple-700 py-12 text-white">
         <Image
           src="/images/productos-carta-colores-tienda.jpg"
           alt="Carta de colores profesional y productos capilares en exhibición en tienda Sicarú"
           fill
-          className="object-cover opacity-20"
+          className="object-cover opacity-15"
           priority
           sizes="100vw"
         />

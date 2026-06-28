@@ -104,7 +104,7 @@ export default async function BlogPostPage({
             </div>
 
             {/* WhatsApp CTA */}
-            <div className="mt-10 rounded-xl bg-gradient-to-r from-sicaru-purple-700 to-sicaru-purple-900 p-6 text-white">
+            <div className="mt-10 rounded-xl bg-gradient-to-r from-sicaru-purple-700 to-sicaru-purple-600 p-6 text-white">
               <div className="flex items-center gap-4">
                 <MessageCircle className="h-10 w-10 flex-shrink-0" />
                 <div>

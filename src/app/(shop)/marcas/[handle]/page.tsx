@@ -91,7 +91,7 @@ export default async function BrandDetailPage({ params }: Props) {
       <section
         className="w-full text-white"
         style={{
-          background: `linear-gradient(135deg, ${brand?.color || "#6B3FA0"}dd 0%, ${brand?.color || "#6B3FA0"}88 100%)`,
+          background: `linear-gradient(135deg, ${brand?.color || "#8e7a9e"}dd 0%, ${brand?.color || "#8e7a9e"}88 100%)`,
         }}
       >
         <div className="mx-auto max-w-7xl px-4 py-16 text-center md:py-20">

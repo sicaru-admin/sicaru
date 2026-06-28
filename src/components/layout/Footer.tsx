@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const footerLinks = {
   tienda: [
@@ -30,14 +31,23 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="relative border-t bg-sicaru-purple-900 text-white footer-gradient">
+    <footer className="relative border-t border-sicaru-purple-600 bg-sicaru-purple-700 text-white footer-gradient">
       <div className="mx-auto max-w-7xl px-4 py-12">
+        <Link href="/" className="relative mb-10 block h-28 w-48" aria-label="Sicarú, inicio">
+          <Image
+            src="/brand/logo-cream.png"
+            alt="Sicarú Productos de Belleza"
+            fill
+            sizes="192px"
+            className="object-contain"
+          />
+        </Link>
         <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
           <div>
             <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sicaru-gold">Tienda</h3>
             <ul className="space-y-2">
               {footerLinks.tienda.map((l) => (
-                <li key={l.href}><Link href={l.href} className="text-sm text-purple-200 transition-colors hover:text-white">{l.label}</Link></li>
+                <li key={l.href}><Link href={l.href} className="text-sm text-[#efe7dd] transition-colors hover:text-white">{l.label}</Link></li>
               ))}
             </ul>
           </div>
@@ -45,7 +55,7 @@ export function Footer() {
             <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sicaru-gold">Marcas</h3>
             <ul className="space-y-2">
               {footerLinks.marcas.map((l) => (
-                <li key={l.href}><Link href={l.href} className="text-sm text-purple-200 transition-colors hover:text-white">{l.label}</Link></li>
+                <li key={l.href}><Link href={l.href} className="text-sm text-[#efe7dd] transition-colors hover:text-white">{l.label}</Link></li>
               ))}
             </ul>
           </div>
@@ -53,7 +63,7 @@ export function Footer() {
             <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sicaru-gold">Ayuda</h3>
             <ul className="space-y-2">
               {footerLinks.ayuda.map((l) => (
-                <li key={l.href}><Link href={l.href} className="text-sm text-purple-200 transition-colors hover:text-white">{l.label}</Link></li>
+                <li key={l.href}><Link href={l.href} className="text-sm text-[#efe7dd] transition-colors hover:text-white">{l.label}</Link></li>
               ))}
             </ul>
           </div>
@@ -61,7 +71,7 @@ export function Footer() {
             <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sicaru-gold">Informaci&oacute;n</h3>
             <ul className="space-y-2">
               {footerLinks.informacion.map((l) => (
-                <li key={l.href}><Link href={l.href} className="text-sm text-purple-200 transition-colors hover:text-white">{l.label}</Link></li>
+                <li key={l.href}><Link href={l.href} className="text-sm text-[#efe7dd] transition-colors hover:text-white">{l.label}</Link></li>
               ))}
             </ul>
           </div>
@@ -69,18 +79,18 @@ export function Footer() {
             <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sicaru-gold">Contacto</h3>
             <ul className="space-y-2">
               {footerLinks.contacto.map((l) => (
-                <li key={l.href}><a href={l.href} target="_blank" rel="noopener noreferrer" className="text-sm text-purple-200 transition-colors hover:text-white">{l.label}</a></li>
+                <li key={l.href}><a href={l.href} target="_blank" rel="noopener noreferrer" className="text-sm text-[#efe7dd] transition-colors hover:text-white">{l.label}</a></li>
               ))}
             </ul>
           </div>
         </div>
 
-        <div className="mt-10 border-t border-purple-800 pt-6 text-center">
+        <div className="mt-10 border-t border-white/20 pt-6 text-center">
           <p className="text-lg font-bold text-white" style={{ fontFamily: "var(--font-heading)" }}>
             Distribuidora Sicar&uacute;
           </p>
-          <p className="mt-1 text-sm text-purple-300">Distribuidor Autorizado de Productos de Belleza Profesional</p>
-          <p className="mt-4 text-xs text-purple-400">&copy; {new Date().getFullYear()} Distribuidora Sicar&uacute;. Todos los derechos reservados.</p>
+          <p className="mt-1 text-sm text-[#efe7dd]">Distribuidor Autorizado de Productos de Belleza Profesional</p>
+          <p className="mt-4 text-xs text-white/60">&copy; {new Date().getFullYear()} Distribuidora Sicar&uacute;. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>

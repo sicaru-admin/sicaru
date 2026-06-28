@@ -11,7 +11,7 @@ export default function DevolucionesPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-14 text-white text-center overflow-hidden">
+      <section className="relative bg-gradient-to-br from-sicaru-purple-700 to-sicaru-purple-500 py-14 text-white text-center overflow-hidden">
         <Image
           src="/images/hero-cabello-natural-luz.jpg"
           alt="Mujer mexicana sonriendo mientras toca su cabello saludable con luz natural dorada"

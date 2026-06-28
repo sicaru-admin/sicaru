@@ -84,7 +84,7 @@ function AccountNav() {
                 href={item.href}
                 className={`flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-sicaru-purple-900 text-white"
+                    ? "bg-sicaru-purple-700 text-white"
                     : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
               >

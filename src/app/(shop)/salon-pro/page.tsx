@@ -103,7 +103,7 @@ const BRANDS = [
   },
   {
     name: "Montis",
-    color: "#166534",
+    color: "#7f6d8a",
     description: "Marca mexicana con extractos 100% naturales",
     handle: "montis",
   },
@@ -134,7 +134,7 @@ export default function SalonProPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-20 text-white md:py-28 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-sicaru-purple-700 to-sicaru-purple-500 py-20 text-white md:py-28 overflow-hidden">
         <Image
           src="/images/salon-estilista-secando-cabello.jpg"
           alt="Estilista profesional secando el cabello de clienta sonriente en salón de belleza"
@@ -363,7 +363,7 @@ export default function SalonProPage() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="relative bg-sicaru-purple-900 py-16 text-white overflow-hidden">
+      <section className="relative bg-sicaru-purple-700 py-16 text-white overflow-hidden">
         <Image
           src="/images/salon-mezcla-tintes-profesional.jpg"
           alt="Mesa de trabajo profesional con mezcla de tintes de diferentes colores listos para aplicación"

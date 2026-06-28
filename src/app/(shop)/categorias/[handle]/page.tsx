@@ -72,7 +72,7 @@ export default async function CategoryPage({ params }: Props) {
 
   const gradientClasses = categoryData?.gradient
     ? `bg-gradient-to-br ${categoryData.gradient}`
-    : "bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700"
+    : "bg-gradient-to-br from-sicaru-purple-700 to-sicaru-purple-500"
 
   return (
     <>

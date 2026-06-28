@@ -15,7 +15,7 @@ export default function ContactoPage() {
   return (
     <>
       {/* ── Hero ── */}
-      <section className="relative bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-16 text-white overflow-hidden">
+      <section className="relative bg-gradient-to-br from-sicaru-purple-700 to-sicaru-purple-500 py-16 text-white overflow-hidden">
         <Image
           src="/images/hero-mujer-salon-morado.jpg"
           alt="Mujer sonriente con cabello rizado en salón de belleza Sicarú con pared morada"

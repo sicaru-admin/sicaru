@@ -46,7 +46,7 @@ export function ProductosContent({
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Buscar productos..."
-          className="h-12 w-full rounded-lg border border-sicaru-purple-100 bg-white pl-12 pr-4 text-sm text-sicaru-purple-900 outline-none transition-colors placeholder:text-gray-400 focus:border-sicaru-purple-400"
+          className="h-12 w-full rounded-lg border border-sicaru-purple-300 bg-[#faf8f5] pl-12 pr-4 text-sm text-[#2e2b2b] outline-none transition-colors placeholder:text-gray-400 focus:border-sicaru-purple-600"
         />
       </label>
 
@@ -65,7 +65,7 @@ export function ProductosContent({
             <Link
               key={product.id}
               href={`/productos/${product.handle}`}
-              className="group block overflow-hidden rounded-lg border border-sicaru-purple-100 bg-white transition-shadow hover:shadow-md"
+              className="group block overflow-hidden rounded-lg border border-sicaru-purple-200 bg-[#faf8f5] transition-shadow hover:shadow-md"
             >
               <div className="relative aspect-square overflow-hidden bg-[#f5f1eb]">
                 {product.thumbnail ? (

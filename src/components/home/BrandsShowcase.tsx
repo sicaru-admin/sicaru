@@ -39,7 +39,7 @@ const BRANDS = [
   },
   {
     name: "Montis",
-    color: "#166534",
+    color: "#7f6d8a",
     description: "Marca mexicana con extractos 100% naturales",
     handle: "montis",
   },

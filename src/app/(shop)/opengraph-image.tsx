@@ -18,7 +18,7 @@ export default function OGImage() {
           alignItems: "center",
           justifyContent: "center",
           background:
-            "linear-gradient(135deg, #2D1B4E 0%, #6B3FA0 50%, #E84393 100%)",
+            "linear-gradient(135deg, #7f6d8a 0%, #8e7a9e 55%, #9b89a8 100%)",
           fontFamily: "system-ui, sans-serif",
         }}
       >
@@ -26,7 +26,7 @@ export default function OGImage() {
           style={{
             fontSize: 72,
             fontWeight: 700,
-            color: "#FFFFFF",
+            color: "#faf8f5",
             marginBottom: 16,
             letterSpacing: "-0.02em",
           }}
@@ -37,7 +37,7 @@ export default function OGImage() {
         <div
           style={{
             fontSize: 28,
-            color: "#DEC9EE",
+            color: "#efe7dd",
             maxWidth: 800,
             textAlign: "center",
             lineHeight: 1.4,
@@ -52,7 +52,7 @@ export default function OGImage() {
             gap: 24,
             marginTop: 40,
             fontSize: 18,
-            color: "#D4A853",
+            color: "#f5f1eb",
             fontWeight: 600,
           }}
         >

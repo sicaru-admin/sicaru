@@ -221,7 +221,7 @@ export const BRANDS: Record<string, BrandData> = {
   montis: {
     name: "Montis",
     handle: "montis",
-    color: "#166534",
+    color: "#7f6d8a",
     tagline:
       "Belleza natural, hecha en México — 100% libre de químicos agresivos",
     description:

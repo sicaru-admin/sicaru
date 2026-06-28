@@ -15,7 +15,7 @@ export default function MarcasPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-16 text-white md:py-20 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-sicaru-purple-700 to-sicaru-purple-500 py-16 text-white md:py-20 overflow-hidden">
         <Image
           src="/images/marcas-colorista-aplicando-tinte.jpg"
           alt="Estilista profesional aplicando tinte de color rojo a clienta en salón de belleza mexicano"

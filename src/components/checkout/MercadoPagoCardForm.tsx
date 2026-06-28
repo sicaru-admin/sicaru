@@ -55,7 +55,7 @@ export function MercadoPagoCardForm({
             style: {
               customVariables: {
                 formBackgroundColor: "transparent",
-                baseColor: "#6B3FA0",
+                baseColor: "#8e7a9e",
               },
             },
           },

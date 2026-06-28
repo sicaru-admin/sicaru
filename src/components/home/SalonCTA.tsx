@@ -15,12 +15,12 @@ const WHATSAPP_MSG =
 
 export function SalonCTA() {
   return (
-    <section className="relative bg-sicaru-purple-900 py-16 md:py-20 overflow-hidden">
+    <section className="relative overflow-hidden bg-sicaru-purple-700 py-16 md:py-20">
       <Image
         src="/images/salon-tratamiento-cabello.jpg"
         alt="Clienta relajándose mientras recibe tratamiento capilar profesional en salón de belleza mexicano"
         fill
-        className="object-cover opacity-20"
+        className="object-cover opacity-15"
         sizes="100vw"
       />
       <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
@@ -49,7 +49,7 @@ export function SalonCTA() {
         <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <Link
             href="/salon-pro"
-            className="inline-block rounded-full bg-sicaru-pink px-8 py-3 font-semibold text-white transition-colors hover:bg-sicaru-pink/90"
+            className="inline-block rounded-full bg-[#faf8f5] px-8 py-3 font-semibold text-[#2e2b2b] transition-colors hover:bg-[#efe7dd]"
           >
             Solicitar Acceso PRO
           </Link>

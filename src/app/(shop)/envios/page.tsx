@@ -11,7 +11,7 @@ export default function EnviosPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-14 text-white text-center">
+      <section className="bg-gradient-to-br from-sicaru-purple-700 to-sicaru-purple-500 py-14 text-white text-center">
         <h1 className="font-heading text-3xl md:text-4xl font-bold">
           Política de Envíos
         </h1>

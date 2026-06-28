@@ -24,7 +24,7 @@ export default function NosotrosPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-sicaru-purple-900 to-sicaru-purple-700 py-16 md:py-20 text-white overflow-hidden">
+      <section className="relative bg-gradient-to-br from-sicaru-purple-700 to-sicaru-purple-500 py-16 md:py-20 text-white overflow-hidden">
         <Image
           src="/images/hero-productos-tienda.jpg"
           alt="Interior de la tienda Distribuidora Sicarú con productos profesionales de belleza capilar"

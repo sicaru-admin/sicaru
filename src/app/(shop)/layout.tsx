@@ -14,7 +14,7 @@ export default function ShopLayout({
     <>
       <JsonLd schema={generateOrganizationSchema()} />
       <Navbar />
-      <main className="min-h-screen">{children}</main>
+      <main className="min-h-screen bg-[#faf8f5]">{children}</main>
       <Footer />
       <WhatsAppButton />
       <SocialProofToast />

@@ -183,7 +183,7 @@ function AddressForm({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="rounded-full bg-sicaru-purple-900 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-sicaru-purple-800 disabled:opacity-50"
+          className="rounded-full bg-sicaru-purple-700 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-sicaru-purple-600 disabled:opacity-50"
         >
           {isSubmitting ? "Guardando..." : "Guardar"}
         </button>

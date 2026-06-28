@@ -127,7 +127,7 @@ export function OrderReview({
         type="button"
         onClick={onConfirm}
         disabled={isSubmitting}
-        className="w-full rounded-full bg-sicaru-purple-900 px-6 py-4 text-base font-bold text-white transition-colors hover:bg-sicaru-purple-800 disabled:opacity-50"
+        className="w-full rounded-full bg-sicaru-purple-700 px-6 py-4 text-base font-bold text-white transition-colors hover:bg-sicaru-purple-600 disabled:opacity-50"
       >
         {isSubmitting ? (
           <span className="flex items-center justify-center gap-2">

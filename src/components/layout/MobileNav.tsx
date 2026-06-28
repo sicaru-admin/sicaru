@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/components/auth/AuthProvider";
 
@@ -58,14 +59,17 @@ export function MobileNav() {
           />
 
           {/* Drawer */}
-          <div className="fixed inset-y-0 left-0 z-50 w-72 bg-white shadow-xl">
+          <div className="fixed inset-y-0 left-0 z-50 w-72 bg-[#faf8f5] shadow-xl">
             <div className="flex items-center justify-between border-b px-4 py-4">
-              <span
-                className="text-xl font-bold text-sicaru-purple-900"
-                style={{ fontFamily: "var(--font-heading)" }}
-              >
-                Sicar&uacute;
-              </span>
+              <div className="relative h-16 w-28">
+                <Image
+                  src="/brand/logo-violet.png"
+                  alt="Sicarú Productos de Belleza"
+                  fill
+                  sizes="112px"
+                  className="object-contain"
+                />
+              </div>
               <button
                 onClick={() => setIsOpen(false)}
                 className="rounded-full p-2 text-gray-500 hover:bg-gray-100"
