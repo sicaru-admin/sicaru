@@ -23,6 +23,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "api.distribuidorasicaru.com",
       },
+      {
+        protocol: "https",
+        hostname: "sicaru-six.vercel.app",
+      },
     ],
   },
 };
