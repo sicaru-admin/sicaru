@@ -26,6 +26,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "sicaru-six.vercel.app",
       },
+      {
+        protocol: "https",
+        hostname: "www.sicarubeauty.com",
+      },
+      {
+        protocol: "https",
+        hostname: "sicarubeauty.com",
+      },
     ],
   },
 };
