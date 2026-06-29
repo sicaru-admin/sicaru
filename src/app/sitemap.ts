@@ -5,7 +5,7 @@ import { getCategories } from "@/lib/data/categories";
 import { getAllPosts } from "@/lib/blog";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://sicaru.com";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://sicaru-six.vercel.app";
 
   const staticPages: MetadataRoute.Sitemap = [
     {

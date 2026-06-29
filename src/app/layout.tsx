@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   description:
     "Distribuidora autorizada de productos de belleza profesional en México. Las mejores marcas para salón y uso personal con envío a todo el país.",
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://sicaru.com"
+    process.env.NEXT_PUBLIC_SITE_URL || "https://sicaru-six.vercel.app"
   ),
   openGraph: {
     locale: "es_MX",

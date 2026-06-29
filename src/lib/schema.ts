@@ -2,7 +2,7 @@ import type { HttpTypes } from "@medusajs/types";
 import { BRANDS } from "@/lib/constants/brands";
 
 const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://www.distribuidorasicaru.com";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://sicaru-six.vercel.app";
 
 // ─── Shared types ───────────────────────────────────────────────
 
