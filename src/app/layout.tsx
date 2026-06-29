@@ -5,6 +5,7 @@ import { CartProvider } from "@/components/cart/CartProvider";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { WebVitals } from "@/components/analytics/WebVitals";
 import { NavigationProgress } from "@/components/ui/NavigationProgress";
+import { BrowserCacheReset } from "@/components/system/BrowserCacheReset";
 
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair-display",
@@ -49,6 +50,7 @@ export default function RootLayout({
         <AuthProvider>
           <CartProvider>{children}</CartProvider>
         </AuthProvider>
+        <BrowserCacheReset />
         <WebVitals />
       </body>
     </html>
