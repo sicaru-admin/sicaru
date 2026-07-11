@@ -8,6 +8,8 @@
   --sicaru-background-warm: #efe7dd;
   --sicaru-white: #faf8f5;
   --sicaru-text: #2e2b2b;
+  --font-heading: var(--font-bodoni);
+  --font-body: var(--font-poppins);
   --background: var(--sicaru-white);
   --foreground: var(--sicaru-text);
 }
