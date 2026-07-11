@@ -107,15 +107,15 @@ export function HeroSection() {
               <div className="mt-10 grid max-w-2xl grid-cols-3 border-y border-[#faf8f5]/25 py-5 text-[#faf8f5]">
                 <div>
                   <p className="text-lg font-semibold">Local</p>
-                  <p className="mt-1 text-xs text-[#faf8f5]/70">Cadereyta</p>
+                  <p className="mt-1 text-xs leading-5 text-[#faf8f5]/70">Cadereyta</p>
                 </div>
                 <div className="border-x border-[#faf8f5]/20 px-4">
                   <p className="text-lg font-semibold">Pro</p>
-                  <p className="mt-1 text-xs text-[#faf8f5]/70">Uso salón</p>
+                  <p className="mt-1 text-xs leading-5 text-[#faf8f5]/70">Uso salón</p>
                 </div>
                 <div className="pl-4">
                   <p className="text-lg font-semibold">Guía</p>
-                  <p className="mt-1 text-xs text-[#faf8f5]/70">Compra segura</p>
+                  <p className="mt-1 text-xs leading-5 text-[#faf8f5]/70">Compra segura</p>
                 </div>
               </div>
             </div>
