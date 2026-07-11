@@ -41,12 +41,12 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-body), system-ui, sans-serif;
+  font-family: var(--font-poppins), system-ui, sans-serif;
   font-weight: 400;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading), serif;
+  font-family: var(--font-bodoni), serif;
   letter-spacing: 0;
 }
 
@@ -72,7 +72,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .sicaru-eyebrow {
   color: var(--sicaru-purple-deep);
-  font-family: var(--font-body), system-ui, sans-serif;
+  font-family: var(--font-poppins), system-ui, sans-serif;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -236,7 +236,7 @@ h1, h2, h3, h4, h5, h6 {
 /* ─── Blog Drop Cap ─── */
 .blog-content > p:first-of-type::first-letter {
   float: left;
-  font-family: var(--font-heading), serif;
+  font-family: var(--font-bodoni), serif;
   font-size: 3.5em;
   line-height: 0.8;
   padding-right: 0.1em;
