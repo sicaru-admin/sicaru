@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Montserrat } from "next/font/google";
+import { Bodoni_Moda, Poppins } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { AuthProvider } from "@/components/auth/AuthProvider";
@@ -7,15 +7,16 @@ import { WebVitals } from "@/components/analytics/WebVitals";
 import { NavigationProgress } from "@/components/ui/NavigationProgress";
 import { BrowserCacheReset } from "@/components/system/BrowserCacheReset";
 
-const playfairDisplay = Playfair_Display({
-  variable: "--font-playfair-display",
+const bodoniModa = Bodoni_Moda({
+  variable: "--font-bodoni",
   subsets: ["latin"],
   display: "swap",
 });
 
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
   description:
     "Distribuidora autorizada de productos de belleza profesional en México. Las mejores marcas para salón y uso personal con envío a todo el país.",
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://sicaru-six.vercel.app"
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.sicarubeauty.com"
   ),
   openGraph: {
     locale: "es_MX",
@@ -44,7 +45,7 @@ export default function RootLayout({
   return (
     <html lang="es-MX">
       <body
-        className={`${playfairDisplay.variable} ${montserrat.variable} antialiased`}
+        className={`${bodoniModa.variable} ${poppins.variable} antialiased`}
       >
         <NavigationProgress />
         <AuthProvider>

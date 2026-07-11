@@ -19,7 +19,7 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/productos/${product.handle}`}
-      className="group block overflow-hidden border border-[#efe7dd] bg-[#faf8f5] transition-colors duration-300 hover:border-[#9b89a8]"
+      className="sicaru-card group block overflow-hidden transition-colors duration-300 hover:border-[#9b89a8]"
     >
       <div className="relative aspect-square overflow-hidden bg-[#efe7dd]">
         {product.thumbnail ? (
@@ -57,7 +57,7 @@ export function ProductCard({ product }: ProductCardProps) {
         )}
 
         {hasDiscount && (
-          <div className="absolute right-2 top-2 bg-[#7f6d8a] px-2 py-1 text-xs font-bold text-white">
+          <div className="absolute right-2 top-2 rounded-[6px] bg-[#7f6d8a] px-2 py-1 text-xs font-semibold text-[#faf8f5]">
             Oferta
           </div>
         )}

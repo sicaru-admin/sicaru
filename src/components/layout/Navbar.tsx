@@ -19,15 +19,15 @@ export function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-30 border-b transition-all duration-300 navbar-glass ${
-        scrolled ? "scrolled border-gray-200/60" : "border-transparent"
+      className={`navbar-glass sticky top-0 z-30 border-b transition-all duration-300 ${
+        scrolled ? "scrolled border-[#efe7dd]" : "border-[#efe7dd]/70"
       }`}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2.5 sm:px-6">
         {/* Logo */}
         <Link
           href="/"
-          className="relative block h-12 w-[120px] shrink-0 md:h-14 md:w-[140px]"
+          className="relative block h-11 w-[116px] shrink-0 md:h-12 md:w-[128px]"
           aria-label="Sicarú, inicio"
         >
           <Image
@@ -35,47 +35,47 @@ export function Navbar() {
             alt="Sicarú Productos de Belleza"
             fill
             priority
-            sizes="140px"
+            sizes="128px"
             className="object-contain"
           />
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden items-center gap-6 md:flex">
+        <div className="hidden items-center gap-7 md:flex">
           <Link
             href="/productos"
-            className="text-sm font-medium text-gray-700 transition-colors hover:text-sicaru-purple-600"
+            className="text-sm font-medium text-[#2e2b2b] transition-colors hover:text-[#7f6d8a]"
           >
             Productos
           </Link>
           <Link
             href="/marcas"
-            className="text-sm font-medium text-gray-700 transition-colors hover:text-sicaru-purple-600"
+            className="text-sm font-medium text-[#2e2b2b] transition-colors hover:text-[#7f6d8a]"
           >
             Marcas
           </Link>
           <Link
             href="/salon-pro"
-            className="text-sm font-medium text-gray-700 transition-colors hover:text-sicaru-purple-600"
+            className="text-sm font-medium text-[#2e2b2b] transition-colors hover:text-[#7f6d8a]"
           >
             Sal&oacute;n Pro
           </Link>
           <Link
             href="/blog"
-            className="text-sm font-medium text-gray-700 transition-colors hover:text-sicaru-purple-600"
+            className="text-sm font-medium text-[#2e2b2b] transition-colors hover:text-[#7f6d8a]"
           >
             Blog
           </Link>
           <Link
             href="/contacto"
-            className="text-sm font-medium text-gray-700 transition-colors hover:text-sicaru-purple-600"
+            className="text-sm font-medium text-[#2e2b2b] transition-colors hover:text-[#7f6d8a]"
           >
             Contacto
           </Link>
         </div>
 
         {/* Right side */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 text-[#2e2b2b]">
           <SearchButton />
           <AccountButton />
           <CartButton />

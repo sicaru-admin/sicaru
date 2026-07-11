@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, lazy } from "react";
 import { useCart } from "@/components/cart/CartProvider";
+import { ShoppingBag } from "lucide-react";
 
 const CartDrawer = lazy(() =>
   import("@/components/cart/CartDrawer").then((mod) => ({ default: mod.CartDrawer }))
@@ -28,25 +29,12 @@ export function CartButton() {
       <button
         ref={buttonRef}
         onClick={openCart}
-        className="relative text-gray-700 hover:text-sicaru-purple-600 tap-feedback"
+        className="tap-feedback relative flex h-10 w-10 items-center justify-center rounded-[6px] text-[#2e2b2b] transition-colors hover:bg-[#efe7dd] hover:text-[#7f6d8a]"
         aria-label="Abrir carrito"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-          />
-        </svg>
+        <ShoppingBag className="h-5 w-5" strokeWidth={1.5} />
         {totalItems > 0 && (
-          <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-sicaru-pink text-xs font-bold text-white transition-transform">
+          <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-[6px] bg-[#7f6d8a] px-1 text-xs font-semibold text-[#faf8f5] transition-transform">
             {totalItems}
           </span>
         )}

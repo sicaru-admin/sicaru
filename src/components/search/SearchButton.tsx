@@ -14,10 +14,10 @@ export function SearchButton() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="text-gray-700 hover:text-sicaru-purple-600"
+        className="flex h-10 w-10 items-center justify-center rounded-[6px] text-[#2e2b2b] transition-colors hover:bg-[#efe7dd] hover:text-[#7f6d8a]"
         aria-label="Buscar"
       >
-        <Search className="h-6 w-6" />
+        <Search className="h-5 w-5" strokeWidth={1.7} />
       </button>
       {isOpen && (
         <SearchModal isOpen={isOpen} onClose={() => setIsOpen(false)} />

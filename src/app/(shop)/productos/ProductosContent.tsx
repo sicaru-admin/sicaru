@@ -41,7 +41,7 @@ export function ProductosContent({
     <div>
       <div className="mb-8 flex flex-col gap-5 border-b border-[#efe7dd] pb-8 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase text-[#8e7a9e]">
+          <p className="sicaru-eyebrow">
             Compra por nombre o necesidad
           </p>
           <p className="mt-2 text-sm leading-6 text-[#2e2b2b]/60">
@@ -56,7 +56,7 @@ export function ProductosContent({
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Buscar productos..."
-            className="h-12 w-full border border-[#d8cedc] bg-[#faf8f5] pl-12 pr-4 text-sm text-[#2e2b2b] outline-none transition-colors placeholder:text-[#2e2b2b]/40 focus:border-[#7f6d8a]"
+            className="sicaru-input h-12 w-full pl-12 pr-4 text-sm outline-none transition-colors placeholder:text-[#2e2b2b]/40 focus:border-[#7f6d8a]"
           />
         </label>
       </div>
@@ -76,7 +76,7 @@ export function ProductosContent({
             <Link
               key={product.id}
               href={`/productos/${product.handle}`}
-              className="group block overflow-hidden border border-[#efe7dd] bg-[#faf8f5] transition-colors hover:border-[#9b89a8]"
+              className="sicaru-card group block overflow-hidden transition-colors hover:border-[#9b89a8]"
             >
               <div className="relative aspect-square overflow-hidden bg-[#efe7dd]">
                 {product.thumbnail ? (

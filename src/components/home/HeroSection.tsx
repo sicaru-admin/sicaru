@@ -68,12 +68,12 @@ export function HeroSection() {
             priority={i === 0}
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#2e2b2b]/90 via-[#7f6d8a]/70 to-[#efe7dd]/20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#2e2b2b]/88 via-[#7f6d8a]/64 to-[#efe7dd]/16" />
           <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#faf8f5] to-transparent" />
 
           <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center px-5 py-24 sm:px-8">
             <div className="max-w-3xl text-left">
-              <div className="mb-5 inline-flex items-center gap-2 border border-[#efe7dd]/40 bg-[#faf8f5]/10 px-4 py-2 text-xs font-semibold uppercase text-[#faf8f5] backdrop-blur-md">
+              <div className="mb-5 inline-flex items-center gap-2 rounded-[6px] border border-[#efe7dd]/40 bg-[#faf8f5]/10 px-4 py-2 text-xs font-semibold uppercase text-[#faf8f5] backdrop-blur-md">
                 <Sparkles className="h-4 w-4" />
                 {slide.eyebrow}
               </div>
@@ -88,7 +88,7 @@ export function HeroSection() {
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                 <Link
                   href={slide.href}
-                  className="inline-flex items-center justify-center gap-2 bg-[#faf8f5] px-7 py-3 text-sm font-semibold text-[#2e2b2b] transition-colors hover:bg-[#efe7dd]"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[6px] border border-[#faf8f5] bg-[#faf8f5] px-6 py-3 text-sm font-semibold text-[#2e2b2b] transition-colors hover:bg-[#efe7dd]"
                 >
                   {slide.cta}
                   <ArrowRight className="h-4 w-4" />
@@ -97,7 +97,7 @@ export function HeroSection() {
                   href="https://wa.me/528281111023?text=Hola%2C%20quiero%20asesor%C3%ADa%20para%20elegir%20productos%20Sicar%C3%BA."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 border border-[#faf8f5]/50 px-7 py-3 text-sm font-semibold text-[#faf8f5] transition-colors hover:bg-[#faf8f5]/10"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[6px] border border-[#faf8f5]/55 bg-transparent px-6 py-3 text-sm font-semibold text-[#faf8f5] transition-colors hover:bg-[#faf8f5]/10"
                 >
                   <MessageCircle className="h-4 w-4" />
                   Asesoría por WhatsApp
@@ -131,8 +131,8 @@ export function HeroSection() {
             aria-label={`Ir a slide ${i + 1}`}
             className={`h-2.5 transition-all ${
               i === active
-                ? "w-8 bg-[#faf8f5]"
-                : "w-2.5 bg-[#faf8f5]/45 hover:bg-[#faf8f5]/70"
+                ? "w-8 rounded-[6px] bg-[#faf8f5]"
+                : "w-2.5 rounded-[6px] bg-[#faf8f5]/45 hover:bg-[#faf8f5]/70"
             }`}
           />
         ))}

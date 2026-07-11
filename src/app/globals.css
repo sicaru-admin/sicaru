@@ -1,30 +1,37 @@
 @import "tailwindcss";
 
 :root {
-  --background: #faf8f5;
-  --foreground: #2e2b2b;
+  --sicaru-purple: #8e7a9e;
+  --sicaru-purple-soft: #9b89a8;
+  --sicaru-purple-deep: #7f6d8a;
+  --sicaru-background: #f5f1eb;
+  --sicaru-background-warm: #efe7dd;
+  --sicaru-white: #faf8f5;
+  --sicaru-text: #2e2b2b;
+  --background: var(--sicaru-white);
+  --foreground: var(--sicaru-text);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  --font-heading: var(--font-playfair-display);
-  --font-body: var(--font-montserrat);
+  --font-heading: var(--font-bodoni);
+  --font-body: var(--font-poppins);
 
-  --color-sicaru-purple-50: #faf8f5;
-  --color-sicaru-purple-100: #f5f1eb;
-  --color-sicaru-purple-200: #efe7dd;
+  --color-sicaru-purple-50: var(--sicaru-white);
+  --color-sicaru-purple-100: var(--sicaru-background);
+  --color-sicaru-purple-200: var(--sicaru-background-warm);
   --color-sicaru-purple-300: #d8cedc;
   --color-sicaru-purple-400: #b6a7be;
-  --color-sicaru-purple-500: #9b89a8;
-  --color-sicaru-purple-600: #8e7a9e;
-  --color-sicaru-purple-700: #7f6d8a;
+  --color-sicaru-purple-500: var(--sicaru-purple-soft);
+  --color-sicaru-purple-600: var(--sicaru-purple);
+  --color-sicaru-purple-700: var(--sicaru-purple-deep);
   --color-sicaru-purple-800: #6c5c76;
-  --color-sicaru-purple-900: #2e2b2b;
+  --color-sicaru-purple-900: var(--sicaru-text);
 
-  --color-sicaru-pink: #9b89a8;
-  --color-sicaru-gold: #efe7dd;
+  --color-sicaru-pink: var(--sicaru-purple-soft);
+  --color-sicaru-gold: var(--sicaru-background-warm);
 
   --container-max-width: 80rem;
 }
@@ -33,10 +40,89 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-body), system-ui, sans-serif;
+  font-weight: 400;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading), serif;
+  letter-spacing: 0;
+}
+
+::selection {
+  background: var(--sicaru-background-warm);
+  color: var(--sicaru-text);
+}
+
+.sicaru-section {
+  background: var(--sicaru-white);
+  color: var(--sicaru-text);
+}
+
+.sicaru-section-soft {
+  background: var(--sicaru-background);
+  color: var(--sicaru-text);
+}
+
+.sicaru-section-warm {
+  background: var(--sicaru-background-warm);
+  color: var(--sicaru-text);
+}
+
+.sicaru-eyebrow {
+  color: var(--sicaru-purple-deep);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.sicaru-button-primary,
+.sicaru-button-secondary {
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.sicaru-button-primary {
+  background: var(--sicaru-purple-deep);
+  border: 1px solid var(--sicaru-purple-deep);
+  color: var(--sicaru-white);
+}
+
+.sicaru-button-primary:hover {
+  background: var(--sicaru-purple);
+  border-color: var(--sicaru-purple);
+}
+
+.sicaru-button-secondary {
+  background: transparent;
+  border: 1px solid var(--sicaru-purple-deep);
+  color: var(--sicaru-purple-deep);
+}
+
+.sicaru-button-secondary:hover {
+  background: var(--sicaru-background-warm);
+}
+
+.sicaru-card {
+  border: 1px solid var(--sicaru-background-warm);
+  border-radius: 8px;
+  background: var(--sicaru-white);
+}
+
+.sicaru-input {
+  border: 1px solid rgba(127, 109, 138, 0.25);
+  border-radius: 6px;
+  background: var(--sicaru-white);
+  color: var(--sicaru-text);
 }
 
 /* ─── Premium Shimmer Skeleton ─── */
@@ -64,8 +150,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes whatsapp-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
-  50% { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(127, 109, 138, 0.2); }
+  50% { box-shadow: 0 0 0 10px rgba(127, 109, 138, 0); }
 }
 
 /* ─── Confetti ─── */
@@ -120,14 +206,14 @@ h1, h2, h3, h4, h5, h6 {
   transition: transform 0.2s ease-out;
 }
 
-/* ─── 3D Tilt Effect for Brand Cards ─── */
+/* ─── Subtle Lift for Brand Cards ─── */
 .card-tilt {
-  transform: perspective(800px) rotateX(0deg) rotateY(0deg);
-  transition: transform 0.3s ease-out;
+  transform: translateY(0);
+  transition: transform 0.25s ease-out, border-color 0.25s ease-out;
 }
 
 .card-tilt:hover {
-  transform: perspective(800px) rotateX(2deg) rotateY(-3deg) translateY(-4px);
+  transform: translateY(-2px);
 }
 
 /* ─── Noise Texture Overlay ─── */
@@ -141,16 +227,8 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 1;
 }
 
-/* ─── Footer Gradient Fade ─── */
 .footer-gradient::before {
-  content: "";
-  position: absolute;
-  top: -40px;
-  left: 0;
-  right: 0;
-  height: 40px;
-  background: linear-gradient(to bottom, transparent, #7f6d8a);
-  pointer-events: none;
+  content: none;
 }
 
 /* ─── Blog Drop Cap ─── */
@@ -182,19 +260,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .gradient-shift:hover {
-  filter: hue-rotate(10deg) brightness(1.1);
+  filter: brightness(1.02);
 }
 
 /* ─── Frosted Glass Navbar ─── */
 .navbar-glass {
-  background: rgba(250, 248, 245, 0.9);
-  backdrop-filter: blur(12px) saturate(120%);
-  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  background: rgba(250, 248, 245, 0.94);
+  backdrop-filter: blur(14px) saturate(110%);
+  -webkit-backdrop-filter: blur(14px) saturate(110%);
 }
 
 .navbar-glass.scrolled {
   background: rgba(250, 248, 245, 0.98);
-  box-shadow: 0 1px 3px rgba(46, 43, 43, 0.04), 0 4px 12px rgba(127, 109, 138, 0.08);
+  box-shadow: 0 1px 0 rgba(127, 109, 138, 0.1);
 }
 
 /* ─── Smooth Scroll ─── */
