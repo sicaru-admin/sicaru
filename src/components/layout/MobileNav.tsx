@@ -32,7 +32,7 @@ export function MobileNav() {
       <button
         onClick={() => setIsOpen(true)}
         className="flex h-10 w-10 items-center justify-center rounded-[6px] text-[#2e2b2b] transition-colors hover:bg-[#efe7dd] hover:text-[#7f6d8a]"
-        aria-label="Abrir men\u00fa"
+        aria-label="Abrir menú"
       >
         <Menu className="h-5 w-5" strokeWidth={1.7} />
       </button>
@@ -61,7 +61,7 @@ export function MobileNav() {
               <button
                 onClick={() => setIsOpen(false)}
                 className="flex h-10 w-10 items-center justify-center rounded-[6px] text-[#7f6d8a] hover:bg-[#efe7dd]"
-                aria-label="Cerrar men\u00fa"
+                aria-label="Cerrar menú"
               >
                 <X className="h-5 w-5" strokeWidth={1.7} />
               </button>
