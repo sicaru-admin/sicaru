@@ -1,4 +1,4 @@
-import { Phone } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 
 const WHATSAPP_NUMBER = "528281111023";
 const WHATSAPP_MSG =
@@ -6,19 +6,23 @@ const WHATSAPP_MSG =
 
 export function WhatsAppBanner() {
   return (
-    <section className="bg-[#25D366] py-8">
-      <div className="mx-auto flex max-w-4xl flex-col items-center gap-5 px-6 text-center md:flex-row md:justify-between md:text-left">
-        <p className="text-lg font-semibold text-white md:text-xl">
-          &iquest;Tienes dudas? Escr&iacute;benos por WhatsApp — respondemos en
-          minutos
-        </p>
+    <section className="bg-[#2e2b2b] py-9">
+      <div className="mx-auto flex max-w-5xl flex-col items-center gap-5 px-5 text-center sm:px-8 md:flex-row md:justify-between md:text-left">
+        <div>
+          <p className="text-xs font-semibold uppercase text-[#9b89a8]">
+            Atención cercana
+          </p>
+          <p className="mt-2 text-lg font-semibold text-[#faf8f5] md:text-xl">
+            Si no sabes qué elegir, te orientamos por WhatsApp.
+          </p>
+        </div>
         <a
           href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MSG)}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-8 py-3 font-semibold text-[#25D366] transition-transform hover:scale-105"
+          className="inline-flex shrink-0 items-center gap-2 bg-[#faf8f5] px-7 py-3 text-sm font-semibold text-[#2e2b2b] transition-colors hover:bg-[#efe7dd]"
         >
-          <Phone className="h-5 w-5" />
+          <MessageCircle className="h-5 w-5 text-[#25D366]" />
           Abrir WhatsApp
         </a>
       </div>

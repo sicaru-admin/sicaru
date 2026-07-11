@@ -1,91 +1,81 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 const BRANDS = [
   {
     name: "Küül",
-    color: "#E8351E",
-    description: "Líder mexicano en coloración profesional — Henkel",
+    description: "Coloración profesional y cuidado técnico para salón.",
     handle: "kuul",
   },
   {
     name: "Voglia",
-    color: "#8B5CF6",
-    description: "Tintes y línea de barbería desde León, GTO",
+    description: "Tratamientos, protectores y acabado profesional.",
     handle: "voglia",
   },
   {
     name: "Nekane Capilar",
-    color: "#EC4899",
-    description: "Tratamientos capilares de hidratación profunda",
+    description: "Hidratación profunda y reparación para cabello seco.",
     handle: "nekane-capilar",
   },
   {
     name: "Hidra Color",
-    color: "#3B82F6",
-    description: "Sistema de coloración cremosa profesional",
+    description: "Color cremoso y cobertura para resultados pulidos.",
     handle: "hidra-color",
   },
   {
     name: "Xiomara",
-    color: "#F59E0B",
-    description: "Styling y fijación profesional",
+    description: "Styling, fijación y control para el acabado diario.",
     handle: "xiomara",
   },
   {
     name: "Vitale",
-    color: "#10B981",
-    description: "Keratina y tratamientos de reconstrucción",
+    description: "Keratina y reconstrucción para cabello procesado.",
     handle: "vitale",
   },
   {
     name: "Montis",
-    color: "#7f6d8a",
-    description: "Marca mexicana con extractos 100% naturales",
+    description: "Cuidado botánico con una sensación más natural.",
     handle: "montis",
   },
 ];
 
 export function BrandsShowcase() {
   return (
-    <section className="py-12 md:py-16">
-      <div className="mx-auto max-w-7xl px-4">
-        <h2 className="mb-10 text-center font-heading text-3xl font-bold text-sicaru-purple-900 md:text-4xl">
-          Nuestras Marcas
-        </h2>
+    <section className="bg-[#faf8f5] py-16 md:py-20">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase text-[#8e7a9e]">
+              Curaduría Sicarú
+            </p>
+            <h2 className="mt-3 font-heading text-3xl font-semibold text-[#2e2b2b] md:text-4xl">
+              Marcas profesionales, seleccionadas con intención
+            </h2>
+          </div>
+          <p className="max-w-md text-sm leading-7 text-[#2e2b2b]/70">
+            No todo entra al catálogo: buscamos productos útiles, vendibles y
+            fáciles de recomendar para casa o salón.
+          </p>
+        </div>
 
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 xl:grid-cols-7">
+        <div className="grid grid-cols-1 border-y border-[#efe7dd] md:grid-cols-2 xl:grid-cols-7">
           {BRANDS.map((brand) => (
             <Link
               key={brand.handle}
               href={`/marcas/${brand.handle}`}
-              className="card-tilt group flex flex-col overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-md"
+              className="group border-b border-[#efe7dd] bg-[#faf8f5] p-5 transition-colors hover:bg-[#f5f1eb] md:border-r xl:border-b-0"
             >
-              {/* Accent bar */}
-              <div
-                className="h-1.5"
-                style={{ backgroundColor: brand.color }}
-              />
-
-              <div className="flex flex-1 flex-col items-center p-4 text-center">
-                {/* Initial circle */}
-                <div
-                  className="mb-3 flex h-12 w-12 items-center justify-center rounded-full text-lg font-bold text-white"
-                  style={{ backgroundColor: brand.color }}
-                >
-                  {brand.name[0]}
-                </div>
-
-                <h3 className="text-sm font-bold text-sicaru-purple-900">
-                  {brand.name}
-                </h3>
-                <p className="mt-1 text-xs leading-snug text-gray-500">
-                  {brand.description}
-                </p>
-
-                <span className="mt-auto pt-3 text-xs font-semibold text-sicaru-pink transition-colors group-hover:text-sicaru-purple-600">
-                  Ver Productos &rarr;
-                </span>
-              </div>
+              <div className="mb-6 h-px w-10 bg-[#9b89a8]" />
+              <h3 className="font-heading text-xl font-semibold text-[#2e2b2b]">
+                {brand.name}
+              </h3>
+              <p className="mt-3 min-h-14 text-sm leading-6 text-[#2e2b2b]/60">
+                {brand.description}
+              </p>
+              <span className="mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase text-[#7f6d8a]">
+                Ver marca
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+              </span>
             </Link>
           ))}
         </div>

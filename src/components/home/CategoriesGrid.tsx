@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Droplets, Palette, Sparkles, Leaf, Heart, Wrench } from "lucide-react";
+import { ArrowRight, Droplets, Heart, Leaf, Palette, Sparkles, Wrench } from "lucide-react";
 
 const CATEGORIES = [
   {
@@ -8,7 +8,6 @@ const CATEGORIES = [
     brands: "Küül, Nekane, Montis, Vitale",
     icon: Droplets,
     href: "/categorias/shampoo-y-acondicionador",
-    gradient: "from-sicaru-purple-600 to-sicaru-purple-800",
     image: "/images/mujer-lavando-cabello.jpg",
     alt: "Mujer lavando su cabello con champú profesional",
   },
@@ -17,7 +16,6 @@ const CATEGORIES = [
     brands: "Küül Color, Voglia, Hidra Color",
     icon: Palette,
     href: "/categorias/color-y-tintes",
-    gradient: "from-sicaru-purple-700 to-sicaru-purple-600",
     image: "/images/marcas-colorista-aplicando-tinte.jpg",
     alt: "Estilista profesional aplicando tinte rojo a clienta en salón de belleza",
   },
@@ -26,7 +24,6 @@ const CATEGORIES = [
     brands: "Geles, ceras, sprays, protectores",
     icon: Sparkles,
     href: "/categorias/styling-y-acabado",
-    gradient: "from-sicaru-pink to-sicaru-purple-700",
     image: "/images/salon-estilista-secando-cabello.jpg",
     alt: "Estilista secando y peinando el cabello de clienta sonriente en salón",
   },
@@ -35,7 +32,6 @@ const CATEGORIES = [
     brands: "Montis — extractos 100% naturales",
     icon: Leaf,
     href: "/categorias/linea-natural",
-    gradient: "from-sicaru-purple-500 to-sicaru-purple-700",
     image: "/images/producto-champu-sabila-natural.jpg",
     alt: "Champú artesanal de sábila con ingredientes naturales mexicanos — romero, manzanilla y aloe vera",
   },
@@ -44,7 +40,6 @@ const CATEGORIES = [
     brands: "Keratina, botox, reparación",
     icon: Heart,
     href: "/categorias/tratamientos-y-mascarillas",
-    gradient: "from-sicaru-purple-500 to-sicaru-purple-700",
     image: "/images/salon-aplicacion-tratamiento.jpg",
     alt: "Manos de estilista aplicando tratamiento capilar cremoso al cabello de clienta",
   },
@@ -53,7 +48,6 @@ const CATEGORIES = [
     brands: "Secadoras, planchas, cepillos",
     icon: Wrench,
     href: "/categorias/herramientas-pro",
-    gradient: "from-sicaru-purple-700 to-sicaru-purple-600",
     image: "/images/salon-alisado-plancha-profesional.jpg",
     alt: "Plancha profesional alisando cabello con vapor en salón de belleza",
   },
@@ -61,42 +55,48 @@ const CATEGORIES = [
 
 export function CategoriesGrid() {
   return (
-    <section className="py-12 md:py-16">
-      <div className="mx-auto max-w-7xl px-4">
-        <h2 className="mb-10 text-center font-heading text-3xl font-bold text-sicaru-purple-900 md:text-4xl">
-          Compra por Categoría
-        </h2>
+    <section className="bg-[#faf8f5] py-16 md:py-20">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <div className="mb-10 max-w-2xl">
+          <p className="text-xs font-semibold uppercase text-[#8e7a9e]">
+            Compra con dirección
+          </p>
+          <h2 className="mt-3 font-heading text-3xl font-semibold text-[#2e2b2b] md:text-4xl">
+            Encuentra productos según el resultado que buscas
+          </h2>
+        </div>
 
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-px overflow-hidden border border-[#efe7dd] bg-[#efe7dd] md:grid-cols-3">
           {CATEGORIES.map((cat) => (
             <Link
               key={cat.name}
               href={cat.href}
-              className="gradient-shift group relative flex flex-col justify-end overflow-hidden rounded-xl p-5 md:p-6 min-h-[160px]"
+              className="group relative flex min-h-[260px] flex-col justify-between overflow-hidden bg-[#faf8f5] p-5 md:p-6"
             >
               <Image
                 src={cat.image}
                 alt={cat.alt}
                 fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-                sizes="(max-width: 768px) 50vw, 33vw"
+                className="object-cover opacity-25 transition-transform duration-500 group-hover:scale-[1.03]"
+                sizes="(max-width: 768px) 100vw, 33vw"
               />
-              <div
-                className={`absolute inset-0 bg-gradient-to-br ${cat.gradient} opacity-70`}
-              />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#faf8f5] via-[#faf8f5]/85 to-[#8e7a9e]/45" />
 
               <div className="relative z-10">
-                <cat.icon className="mb-3 h-8 w-8 text-white/80" />
-                <h3 className="text-base font-bold text-white md:text-lg">
+                <div className="mb-8 flex h-10 w-10 items-center justify-center border border-[#9b89a8]/45 bg-[#faf8f5]/70 text-[#7f6d8a]">
+                  <cat.icon className="h-5 w-5" />
+                </div>
+                <h3 className="font-heading text-2xl font-semibold text-[#2e2b2b]">
                   {cat.name}
                 </h3>
-                <p className="mt-1 text-xs text-white/70 md:text-sm">
+                <p className="mt-3 max-w-xs text-sm leading-6 text-[#2e2b2b]/70">
                   {cat.brands}
                 </p>
-                <span className="mt-3 inline-block text-xs font-semibold text-sicaru-gold">
-                  Explorar &rarr;
-                </span>
               </div>
+              <span className="relative z-10 mt-6 inline-flex items-center gap-2 text-xs font-semibold uppercase text-[#7f6d8a]">
+                Explorar
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+              </span>
             </Link>
           ))}
         </div>

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Leaf, Flag, Recycle, Star } from "lucide-react";
+import { ArrowRight, Flag, Leaf, Recycle, Star } from "lucide-react";
 
 const benefits = [
   { icon: Leaf, title: "Ingredientes Naturales", text: "Extractos botánicos seleccionados" },
@@ -17,32 +17,30 @@ export function MontisFeature() {
         background: "#efe7dd",
       }}
     >
-      <div className="mx-auto grid max-w-7xl gap-10 px-6 md:grid-cols-2 md:items-center md:gap-16">
-        {/* Left */}
+      <div className="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 md:grid-cols-2 md:items-center md:gap-16">
         <div>
-          <span className="mb-4 inline-block rounded-full bg-[#faf8f5] px-4 py-1 text-sm font-medium text-[#7f6d8a]">
-            Marca Destacada
-          </span>
-          <h2 className="font-heading text-3xl font-bold leading-tight text-[#2e2b2b] md:text-4xl lg:text-5xl">
-            Montis — La Belleza Natural, Hecha en M&eacute;xico
+          <p className="text-xs font-semibold uppercase text-[#8e7a9e]">
+            Marca destacada
+          </p>
+          <h2 className="mt-3 font-heading text-3xl font-semibold leading-tight text-[#2e2b2b] md:text-4xl lg:text-5xl">
+            Cuidado capilar con una sensación más natural
           </h2>
           <p className="mt-4 text-base leading-relaxed text-[#2e2b2b]/70 md:text-lg">
-            Montis nace de la riqueza botánica mexicana. Cada producto combina
-            extractos 100% naturales con tecnología capilar avanzada para
-            ofrecerte resultados profesionales sin comprometer la salud de tu
-            cabello ni del planeta.
+            Montis suma ingredientes botánicos a rutinas de cabello que buscan
+            hidratación, suavidad y brillo sin perder una presentación limpia y
+            profesional.
           </p>
           <Link
             href="/marcas/montis"
-            className="mt-8 inline-block rounded-full bg-[#8e7a9e] px-8 py-3 font-semibold text-white transition-colors hover:bg-[#7f6d8a]"
+            className="mt-8 inline-flex items-center gap-2 bg-[#7f6d8a] px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#2e2b2b]"
           >
-            Descubrir Montis
+            Ver Montis
+            <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
-        {/* Right — image + benefit cards */}
         <div className="flex flex-col gap-6">
-          <div className="relative overflow-hidden rounded-xl aspect-[4/3]">
+          <div className="relative aspect-[4/3] overflow-hidden">
             <Image
               src="/images/producto-champu-sabila-natural.jpg"
               alt="Champú artesanal de sábila hecho en México con ingredientes naturales como romero, manzanilla y aloe vera"
@@ -55,7 +53,7 @@ export function MontisFeature() {
             {benefits.map((b) => (
               <div
                 key={b.title}
-                className="rounded-lg border border-[#d8cedc] bg-[#faf8f5] p-4"
+                className="border border-[#d8cedc] bg-[#faf8f5] p-4"
               >
                 <b.icon className="mb-2 h-7 w-7 text-[#8e7a9e]" />
                 <h3 className="text-sm font-bold text-[#2e2b2b]">{b.title}</h3>
