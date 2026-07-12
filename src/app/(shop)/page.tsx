@@ -5,25 +5,21 @@ import { HeroSection } from "@/components/home/HeroSection";
 import { TrustBar } from "@/components/home/TrustBar";
 import { BrandsShowcase } from "@/components/home/BrandsShowcase";
 import { FeaturedProducts } from "@/components/home/FeaturedProducts";
-import { SectionDivider } from "@/components/ui/SectionDivider";
-import { EyebrowText } from "@/components/ui/EyebrowText";
+import { NeedsSection } from "@/components/home/NeedsSection";
+import { AboutSicaru } from "@/components/home/AboutSicaru";
+import { AdvisorySection } from "@/components/home/AdvisorySection";
+import { LocationContact } from "@/components/home/LocationContact";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { generateWebSiteSchema } from "@/lib/schema";
 
 const CategoriesGrid = dynamic(() =>
   import("@/components/home/CategoriesGrid").then((mod) => mod.CategoriesGrid)
 );
-const MontisFeature = dynamic(() =>
-  import("@/components/home/MontisFeature").then((mod) => mod.MontisFeature)
-);
 const BlogPreview = dynamic(() =>
   import("@/components/home/BlogPreview").then((mod) => mod.BlogPreview)
 );
 const SalonCTA = dynamic(() =>
   import("@/components/home/SalonCTA").then((mod) => mod.SalonCTA)
-);
-const WhatsAppBanner = dynamic(() =>
-  import("@/components/home/WhatsAppBanner").then((mod) => mod.WhatsAppBanner)
 );
 
 export const metadata: Metadata = {
@@ -36,7 +32,7 @@ export const revalidate = 900;
 
 function FeaturedProductsFallback() {
   return (
-    <section className="bg-gray-50 py-12 md:py-16">
+    <section className="bg-[#faf8f5] py-12 md:py-16">
       <div className="mx-auto max-w-7xl px-4">
         <div className="mb-10 flex justify-center">
           <div className="h-9 w-64 rounded premium-shimmer" />
@@ -66,19 +62,17 @@ export default function HomePage() {
       <JsonLd schema={generateWebSiteSchema()} />
       <HeroSection />
       <TrustBar />
-      <BrandsShowcase />
-      <SectionDivider />
+      <NeedsSection />
+      <CategoriesGrid />
       <Suspense fallback={<FeaturedProductsFallback />}>
         <FeaturedProducts />
       </Suspense>
-      <SectionDivider />
-      <CategoriesGrid />
-      <SectionDivider />
-      <MontisFeature />
-      <SectionDivider />
-      <BlogPreview />
+      <AboutSicaru />
       <SalonCTA />
-      <WhatsAppBanner />
+      <BrandsShowcase />
+      <AdvisorySection />
+      <BlogPreview />
+      <LocationContact />
     </>
   );
 }
