@@ -3,19 +3,13 @@ import Image from "next/image";
 import { HttpTypes } from "@medusajs/types";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import { BrandBadge } from "@/components/ui/BrandBadge";
-import { ArrowRight, ImageIcon } from "lucide-react";
 
 type ProductCardProps = {
   product: HttpTypes.StoreProduct;
 };
 
 export function ProductCard({ product }: ProductCardProps) {
-  const productWithCategories = product as HttpTypes.StoreProduct & {
-    categories?: Array<{ name?: string }>;
-  };
   const firstVariant = product.variants?.[0];
-  const brand = product.collection?.title;
-  const category = productWithCategories.categories?.[0]?.name;
   const hasDiscount =
     firstVariant?.calculated_price?.original_amount != null &&
     firstVariant?.calculated_price?.calculated_amount != null &&
@@ -25,29 +19,40 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/productos/${product.handle}`}
-      className="sicaru-card group flex h-full flex-col overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:border-[#9b89a8] hover:shadow-[0_18px_45px_rgba(46,43,43,0.08)]"
+      className="sicaru-card group block overflow-hidden transition-colors duration-300 hover:border-[#9b89a8]"
     >
-      <div className="relative aspect-square overflow-hidden bg-[#f5f1eb] p-4">
+      <div className="relative aspect-square overflow-hidden bg-[#efe7dd]">
         {product.thumbnail ? (
           <Image
             src={product.thumbnail}
             alt={product.title || "Producto"}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
-            className="object-contain object-center p-5 transition-transform duration-500 ease-out group-hover:scale-[1.025]"
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.025]"
           />
         ) : (
           <div className="flex h-full flex-col items-center justify-center gap-3 text-[#9b89a8]">
-            <ImageIcon className="h-9 w-9" strokeWidth={1.3} />
-            <span className="text-xs font-semibold uppercase tracking-[0.08em]">
-              Imagen próximamente
-            </span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-10 w-10"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1}
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+            <span className="text-xs font-medium uppercase">Próximamente</span>
           </div>
         )}
 
-        {category && (
+        {product.collection?.title && (
           <div className="absolute left-2 top-2">
-            <BrandBadge name={category} />
+            <BrandBadge name={product.collection.title} />
           </div>
         )}
 
@@ -58,13 +63,8 @@ export function ProductCard({ product }: ProductCardProps) {
         )}
       </div>
 
-      <div className="flex flex-1 flex-col p-4">
-        {brand && (
-          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#7f6d8a]">
-            {brand}
-          </p>
-        )}
-        <h3 className="mt-2 line-clamp-2 min-h-10 text-sm font-medium leading-5 text-[#2e2b2b]">
+      <div className="p-4">
+        <h3 className="line-clamp-2 min-h-10 text-sm font-medium leading-5 text-[#2e2b2b]">
           {product.title}
         </h3>
         <div className="mt-3 flex items-center gap-2">
@@ -80,10 +80,6 @@ export function ProductCard({ product }: ProductCardProps) {
               />
             )}
         </div>
-        <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-xs font-semibold uppercase tracking-[0.08em] text-[#7f6d8a]">
-          Ver producto
-          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-        </span>
       </div>
     </Link>
   );

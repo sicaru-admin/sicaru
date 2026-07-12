@@ -11,9 +11,11 @@ export function BlogPreview() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="sicaru-eyebrow">08 · Contenido educativo</p>
+            <p className="text-xs font-semibold uppercase text-[#8e7a9e]">
+              Guía Sicarú
+            </p>
             <h2 className="mt-3 font-heading text-3xl font-semibold text-[#2e2b2b] md:text-4xl">
-              Guías para cuidar mejor tu cabello
+              Consejos para comprar con más seguridad
             </h2>
           </div>
           <Link

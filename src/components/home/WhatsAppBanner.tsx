@@ -6,13 +6,13 @@ const WHATSAPP_MSG =
 
 export function WhatsAppBanner() {
   return (
-    <section className="bg-[#f5f1eb] py-10">
+    <section className="bg-[#2e2b2b] py-9">
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-5 px-5 text-center sm:px-8 md:flex-row md:justify-between md:text-left">
         <div>
-          <p className="sicaru-eyebrow">
-            05 · Atención cercana
+          <p className="text-xs font-semibold uppercase text-[#9b89a8]">
+            Atención cercana
           </p>
-          <p className="mt-2 font-heading text-2xl font-semibold text-[#2e2b2b] md:text-3xl">
+          <p className="mt-2 text-lg font-semibold text-[#faf8f5] md:text-xl">
             Si no sabes qué elegir, te orientamos por WhatsApp.
           </p>
         </div>
@@ -20,9 +20,9 @@ export function WhatsAppBanner() {
           href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MSG)}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="sicaru-button-primary shrink-0"
+          className="inline-flex shrink-0 items-center gap-2 bg-[#faf8f5] px-7 py-3 text-sm font-semibold text-[#2e2b2b] transition-colors hover:bg-[#efe7dd]"
         >
-          <MessageCircle className="h-5 w-5" />
+          <MessageCircle className="h-5 w-5 text-[#25D366]" />
           Abrir WhatsApp
         </a>
       </div>
