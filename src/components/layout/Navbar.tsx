@@ -41,11 +41,11 @@ export function Navbar() {
         </div>
       </div>
 
-      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-5 px-4 py-3 sm:px-6">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2 sm:px-6 md:gap-5 md:py-3">
         {/* Logo */}
         <Link
           href="/"
-          className="relative block h-11 w-[116px] shrink-0 md:h-12 md:w-[128px]"
+          className="relative block h-12 w-[126px] shrink-0 md:h-12 md:w-[128px]"
           aria-label="Sicarú, inicio"
         >
           <Image
@@ -84,7 +84,7 @@ export function Navbar() {
         </div>
 
         {/* Right side */}
-        <div className="flex items-center gap-3 text-[#2e2b2b]">
+        <div className="flex items-center gap-2 text-[#2e2b2b] sm:gap-3">
           <a
             href="https://wa.me/528281111023?text=Hola%2C%20quiero%20asesor%C3%ADa%20para%20elegir%20productos%20Sicar%C3%BA."
             target="_blank"
