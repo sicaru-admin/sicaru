@@ -8,24 +8,24 @@ const whatsappHref =
 export function HeroSection() {
   return (
     <section className="bg-[#f5f1eb]">
-      <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-12 sm:px-8 md:grid-cols-2 md:gap-12 md:py-16 lg:py-20">
-        <div className="max-w-2xl">
+      <div className="mx-auto grid max-w-7xl items-center gap-6 px-5 py-9 sm:px-8 md:grid-cols-2 md:gap-12 md:py-16 lg:py-20">
+        <div className="max-w-xl">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#7f6d8a]">
             SICARÚ · BELLEZA PROFESIONAL
           </p>
 
-          <h1 className="mt-5 font-heading text-4xl font-semibold leading-[1.08] text-[#2e2b2b] sm:text-5xl lg:text-[3.45rem]">
-            Productos profesionales y asesoría para cuidar, transformar y reparar tu cabello
+          <h1 className="mt-4 max-w-[18ch] font-heading text-[2.15rem] font-semibold leading-[1.04] text-[#2e2b2b] sm:text-5xl md:max-w-[17ch] lg:max-w-[18ch] lg:text-[3.15rem]">
+            Belleza profesional para transformar y cuidar tu cabello
           </h1>
 
-          <p className="mt-5 max-w-xl text-base leading-8 text-[#2e2b2b] sm:text-lg">
-            Coloración, tratamientos, herramientas y cuidado capilar para estilistas y para quienes buscan mejores resultados en casa.
+          <p className="mt-4 max-w-lg text-[0.95rem] leading-7 text-[#2e2b2b] sm:text-base">
+            Coloración, tratamientos, herramientas y asesoría personalizada para estilistas y para quienes buscan mejores resultados en casa.
           </p>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-6 flex flex-col gap-2.5 sm:flex-row sm:items-center">
             <Link
               href="/productos"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[6px] bg-[#7f6d8a] px-6 py-3 text-sm font-semibold text-[#faf8f5] transition-colors duration-300 hover:bg-[#8e7a9e]"
+              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-[6px] bg-[#7f6d8a] px-5 py-2.5 text-sm font-semibold text-[#faf8f5] transition-colors duration-[250ms] hover:bg-[#8e7a9e]"
             >
               Explorar productos
               <ArrowRight className="h-4 w-4" />
@@ -34,20 +34,20 @@ export function HeroSection() {
               href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[6px] border border-[#7f6d8a] bg-transparent px-6 py-3 text-sm font-semibold text-[#7f6d8a] transition-colors duration-300 hover:bg-[#efe7dd]"
+              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-[6px] border border-[#7f6d8a]/55 bg-transparent px-4 py-2.5 text-sm font-semibold text-[#7f6d8a] transition-colors duration-[250ms] hover:bg-[#efe7dd]"
             >
-              <MessageCircle className="h-4 w-4" strokeWidth={1.8} />
-              Recibir asesoría por WhatsApp
+              <MessageCircle className="h-3.5 w-3.5" strokeWidth={1.8} />
+              Recibir asesoría
             </a>
           </div>
 
-          <p className="mt-7 max-w-xl text-sm font-medium leading-7 text-[#7f6d8a]">
-            Tienda física en Cadereyta · Atención personalizada · Marcas profesionales
+          <p className="mt-5 max-w-lg text-xs font-normal leading-6 text-[#7f6d8a] sm:text-sm">
+            Tienda física · Atención personalizada · Marcas profesionales
           </p>
         </div>
 
-        <div className="bg-[#efe7dd] p-4 sm:p-5">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[6px] bg-[#faf8f5]">
+        <div className="mt-1 w-full bg-[#efe7dd] p-3 sm:p-4 md:mt-0">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[6px] bg-[#efe7dd] md:aspect-[3/4]">
             <Image
               src="/images/hero-productos-tienda.jpg"
               alt="Productos profesionales de belleza Sicarú en una presentación limpia"
