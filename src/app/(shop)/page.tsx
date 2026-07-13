@@ -29,7 +29,7 @@ const WhatsAppBanner = dynamic(() =>
 export const metadata: Metadata = {
   title: "Distribuidora Sicarú — Productos de Belleza Profesional",
   description:
-    "Distribuidora autorizada de productos de belleza profesional en México. Küül, Voglia, Nekane, Hidra Color, Xiomara, Vitale y Montis con envío a todo el país.",
+    "Sicarú es una tienda de productos profesionales de belleza en Cadereyta Jiménez, Nuevo León. Encuentra coloración, tratamientos capilares, herramientas, depilación y atención personalizada.",
 };
 
 export const revalidate = 900;
