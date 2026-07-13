@@ -94,7 +94,7 @@ export function Footer() {
           <p className="text-lg font-semibold text-[#faf8f5]" style={{ fontFamily: "var(--font-heading)" }}>
             Distribuidora Sicar&uacute;
           </p>
-          <p className="mt-1 text-sm text-[#faf8f5]/70">Distribuidor autorizado de productos de belleza profesional</p>
+          <p className="mt-1 text-sm text-[#faf8f5]/70">Tienda de productos profesionales de belleza</p>
           <p className="mt-4 text-xs text-[#faf8f5]/55">&copy; {new Date().getFullYear()} Distribuidora Sicar&uacute;. Todos los derechos reservados.</p>
         </div>
       </div>
