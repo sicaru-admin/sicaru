@@ -2,7 +2,7 @@ import type { HttpTypes } from "@medusajs/types";
 import { BRANDS } from "@/lib/constants/brands";
 
 const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://sicaru-six.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://www.sicarubeauty.com";
 
 // ─── Shared types ───────────────────────────────────────────────
 
@@ -35,40 +35,17 @@ export function generateOrganizationSchema(): Record<string, unknown> {
     "@id": `${BASE_URL}/#organization`,
     name: "Distribuidora Sicarú",
     description:
-      "Distribuidora especializada en marcas mexicanas de cuidado capilar profesional en Cadereyta Jiménez, Nuevo León. Küül, Voglia, Nekane, Hidra Color, Xiomara, Vitale y Montis.",
+      "Sicarú es una tienda de productos profesionales de belleza en Cadereyta Jiménez, Nuevo León. Encuentra coloración, tratamientos capilares, herramientas, depilación y atención personalizada.",
     url: BASE_URL,
     telephone: "+528281111023",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "La Plaza, Local 204",
       addressLocality: "Cadereyta Jiménez",
       addressRegion: "Nuevo León",
-      postalCode: "67480",
       addressCountry: "MX",
     },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: 25.5933,
-      longitude: -99.9836,
-    },
-    openingHoursSpecification: [
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-        ],
-        opens: "09:00",
-        closes: "19:00",
-      },
-    ],
     areaServed: [
       { "@type": "City", name: "Cadereyta Jiménez" },
-      { "@type": "City", name: "Monterrey" },
       { "@type": "State", name: "Nuevo León" },
     ],
     brand: [
@@ -89,8 +66,6 @@ export function generateOrganizationSchema(): Record<string, unknown> {
       { "@type": "Brand", name: "Montis" },
     ],
     currenciesAccepted: "MXN",
-    paymentAccepted:
-      "Efectivo, Tarjeta de crédito, Tarjeta de débito, OXXO Pay, Transferencia bancaria",
     priceRange: "$",
     sameAs: ["https://wa.me/528281111023"],
   };
@@ -156,43 +131,10 @@ export function generateProductSchema(
       priceValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
         .toISOString()
         .split("T")[0],
-      availability: "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
       seller: {
         "@type": "Organization",
         name: "Distribuidora Sicarú",
-      },
-      shippingDetails: {
-        "@type": "OfferShippingDetails",
-        shippingDestination: {
-          "@type": "DefinedRegion",
-          addressCountry: "MX",
-          addressRegion: "NL",
-        },
-        deliveryTime: {
-          "@type": "ShippingDeliveryTime",
-          handlingTime: {
-            "@type": "QuantitativeValue",
-            minValue: 1,
-            maxValue: 2,
-            unitCode: "d",
-          },
-          transitTime: {
-            "@type": "QuantitativeValue",
-            minValue: 2,
-            maxValue: 5,
-            unitCode: "d",
-          },
-        },
-      },
-      hasMerchantReturnPolicy: {
-        "@type": "MerchantReturnPolicy",
-        applicableCountry: "MX",
-        returnPolicyCategory:
-          "https://schema.org/MerchantReturnFiniteReturnWindow",
-        merchantReturnDays: 15,
-        returnMethod: "https://schema.org/ReturnByMail",
-        returnFees: "https://schema.org/FreeReturn",
       },
     };
   }
@@ -256,15 +198,15 @@ export function generateProductFAQs(
       question: `¿Cuánto cuesta ${product.title}?`,
       answer: priceStr
         ? `${product.title} de ${brandName} tiene un precio de ${priceStr} MXN en Distribuidora Sicarú. Los precios pueden variar según promociones vigentes.`
-        : `Consulta el precio actual de ${product.title} de ${brandName} directamente en nuestra tienda en línea o contáctanos por WhatsApp.`,
+        : `Consulta el precio actual de ${product.title} de ${brandName} por WhatsApp o en tienda.`,
     },
     {
       question: `¿${product.title} es un producto original?`,
-      answer: `Sí, Distribuidora Sicarú es distribuidora autorizada de ${brandName}. Todos nuestros productos son 100% originales con garantía de autenticidad.`,
+      answer: `Consulta disponibilidad e información de ${product.title} de ${brandName} directamente con Sicarú.`,
     },
     {
-      question: `¿Hacen envíos de ${product.title} a todo México?`,
-      answer: `Sí, realizamos envíos de ${product.title} y todos nuestros productos a todo México. Los pedidos se procesan en 1-2 días hábiles con entrega estimada de 2-5 días.`,
+      question: `¿Cómo puedo comprar ${product.title}?`,
+      answer: `Puedes consultar disponibilidad y opciones de compra de ${product.title} por WhatsApp o en la tienda física de Sicarú en Cadereyta Jiménez, Nuevo León.`,
     },
   ];
 }
@@ -295,15 +237,15 @@ export function generateBrandFAQs(
   return [
     {
       question: `¿Dónde puedo comprar productos ${brandName} originales?`,
-      answer: `Distribuidora Sicarú es distribuidora autorizada de ${brandName}. Puedes comprar todos los productos originales de ${brandName} en nuestra tienda en línea con envío a todo México.`,
+      answer: `Consulta productos ${brandName} en Sicarú, tienda de productos profesionales de belleza en Cadereyta Jiménez, Nuevo León.`,
     },
     {
       question: `¿Los productos ${brandName} son para uso profesional?`,
-      answer: `Sí, los productos ${brandName} son de calidad profesional, ideales tanto para estilistas y salones de belleza como para uso personal. En Distribuidora Sicarú ofrecemos precios especiales para profesionales a través de nuestro programa Salón Pro.`,
+      answer: `Sicarú trabaja con productos profesionales para estilistas, salones de belleza y cuidado en casa. Consulta recomendaciones según tu necesidad.`,
     },
     {
-      question: `¿Tienen precios de mayoreo para productos ${brandName}?`,
-      answer: `Sí, ofrecemos precios especiales de mayoreo para profesionales y salones de belleza a través de nuestro programa Salón Pro. Contáctanos por WhatsApp al +52 828 111 1023 para más información.`,
+      question: `¿Puedo recibir asesoría sobre productos ${brandName}?`,
+      answer: `Sí, puedes consultar disponibilidad y recomendaciones por WhatsApp al +52 828 111 1023.`,
     },
   ];
 }
