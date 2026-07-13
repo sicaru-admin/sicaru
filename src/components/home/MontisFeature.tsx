@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Flag, Leaf, Recycle, Star } from "lucide-react";
+import { ArrowRight, BadgeCheck, Droplets, Leaf, Sparkles } from "lucide-react";
 
 const benefits = [
-  { icon: Leaf, title: "Ingredientes Naturales", text: "Extractos botánicos seleccionados" },
-  { icon: Flag, title: "Hecho en México", text: "Producción 100% mexicana" },
-  { icon: Recycle, title: "Eco-Consciente", text: "Empaques responsables" },
-  { icon: Star, title: "Resultados Reales", text: "Cabello sano y brillante" },
+  { icon: Droplets, title: "Cuidado capilar", text: "Consulta opciones disponibles" },
+  { icon: Sparkles, title: "Rutina de cabello", text: "Productos para cuidado en casa" },
+  { icon: BadgeCheck, title: "Uso profesional", text: "Productos para estilistas" },
+  { icon: Leaf, title: "Disponibilidad", text: "Consulta por WhatsApp o en tienda" },
 ];
 
 export function MontisFeature() {
@@ -26,9 +26,8 @@ export function MontisFeature() {
             Cuidado capilar con una sensación más natural
           </h2>
           <p className="mt-4 text-base leading-relaxed text-[#2e2b2b]/70 md:text-lg">
-            Montis suma ingredientes botánicos a rutinas de cabello que buscan
-            hidratación, suavidad y brillo sin perder una presentación limpia y
-            profesional.
+            Montis forma parte de los productos disponibles en Sicarú. Consulta
+            disponibilidad y recomendaciones por WhatsApp o en tienda.
           </p>
           <Link
             href="/marcas/montis"
@@ -43,7 +42,7 @@ export function MontisFeature() {
           <div className="relative aspect-[4/3] overflow-hidden">
             <Image
               src="/images/producto-champu-sabila-natural.jpg"
-              alt="Champú artesanal de sábila hecho en México con ingredientes naturales como romero, manzanilla y aloe vera"
+              alt="Producto Montis disponible en Sicarú"
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
