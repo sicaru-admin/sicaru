@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     default: "Distribuidora Sicarú — Productos de Belleza Profesional",
   },
   description:
-    "Distribuidora autorizada de productos de belleza profesional en México. Las mejores marcas para salón y uso personal con envío a todo el país.",
+    "Sicarú es una tienda de productos profesionales de belleza en Cadereyta Jiménez, Nuevo León. Encuentra coloración, tratamientos capilares, herramientas, depilación y atención personalizada.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "https://www.sicarubeauty.com"
   ),
