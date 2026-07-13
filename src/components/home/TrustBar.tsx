@@ -1,13 +1,12 @@
 "use client";
 
-import { Truck, Store, BadgeCheck, MessageCircle } from "lucide-react";
+import { Store, BadgeCheck, MessageCircle } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 const items = [
-  { icon: Truck, text: "Entrega local en Cadereyta" },
-  { icon: Store, text: "Compra en tienda o en línea" },
+  { icon: Store, text: "Atención personalizada" },
   { icon: BadgeCheck, text: "Productos profesionales" },
-  { icon: MessageCircle, text: "Asesoría por WhatsApp" },
+  { icon: MessageCircle, text: "Consulta disponibilidad por WhatsApp" },
 ];
 
 export function TrustBar() {
