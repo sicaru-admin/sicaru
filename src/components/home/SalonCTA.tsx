@@ -3,15 +3,15 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle, MessageCircle } from "lucide-react";
 
 const BENEFITS = [
-  "Precios mayoreo desde 12 piezas",
-  "Envío semanal dedicado",
-  "Facturación CFDI automática",
-  "Asesoría personalizada",
+  "Coloración profesional",
+  "Tratamientos capilares",
+  "Herramientas y accesorios",
+  "Atención personalizada",
 ];
 
 const WHATSAPP_NUMBER = "528281111023";
 const WHATSAPP_MSG =
-  "¡Hola! Me interesa el programa Sicarú PRO para profesionales.";
+  "¡Hola! Quiero consultar disponibilidad de productos profesionales.";
 
 export function SalonCTA() {
   return (
@@ -27,16 +27,16 @@ export function SalonCTA() {
       <div className="relative z-10 mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 md:grid-cols-[1fr_0.8fr] md:items-center">
         <div>
           <span className="mb-4 inline-block border border-[#efe7dd]/40 px-4 py-1 text-sm font-medium text-[#efe7dd]">
-            Para Profesionales
+            Para estilistas
           </span>
 
           <h2 className="font-heading text-3xl font-semibold text-white md:text-4xl lg:text-5xl">
-            Stock profesional para salones que cuidan su resultado
+            Sicarú para profesionales
           </h2>
 
           <p className="mt-4 max-w-2xl text-base leading-8 text-white/75 md:text-lg">
-            Si compras para salón, te ayudamos a armar una selección práctica:
-            productos de rotación, tratamientos de venta y básicos para servicio.
+            Encuentra coloración, tratamientos, herramientas y productos para
+            tu trabajo como estilista.
           </p>
         </div>
 
@@ -55,7 +55,7 @@ export function SalonCTA() {
               href="/salon-pro"
               className="inline-flex items-center justify-center gap-2 bg-[#faf8f5] px-7 py-3 text-sm font-semibold text-[#2e2b2b] transition-colors hover:bg-[#efe7dd]"
             >
-              Solicitar acceso
+              Consultar disponibilidad
               <ArrowRight className="h-4 w-4" />
             </Link>
             <a
