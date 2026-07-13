@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { HttpTypes } from "@medusajs/types";
-import { MessageCircle, Truck, ShieldCheck, BadgeCheck } from "lucide-react";
+import { MessageCircle, Search, ShieldCheck, BadgeCheck } from "lucide-react";
 import { useCart } from "@/components/cart/CartProvider";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import { VariantSelector } from "./VariantSelector";
@@ -15,9 +15,9 @@ type ProductActionsProps = {
 const WHATSAPP_NUMBER = "528281111023";
 
 const TRUST_ITEMS = [
-  { icon: Truck, text: "Envío mismo día" },
+  { icon: Search, text: "Consulta disponibilidad" },
   { icon: ShieldCheck, text: "Pago seguro" },
-  { icon: BadgeCheck, text: "Distribuidor autorizado" },
+  { icon: BadgeCheck, text: "Productos profesionales" },
 ];
 
 export function ProductActions({ product }: ProductActionsProps) {
