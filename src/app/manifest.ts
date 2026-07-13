@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Distribuidora Sicarú — Productos de Belleza Profesional",
     short_name: "Sicarú",
     description:
-      "Distribuidora autorizada de productos de belleza profesional. Küül, Voglia, Nekane, Hidra Color, Xiomara, Vitale y Montis con envío a todo México.",
+      "Sicarú es una tienda de productos profesionales de belleza en Cadereyta Jiménez, Nuevo León.",
     id: "/",
     start_url: "/",
     scope: "/",
