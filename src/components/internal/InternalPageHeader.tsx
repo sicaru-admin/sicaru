@@ -1,15 +1,19 @@
-import Image from "next/image";
+import type { ReactNode } from "react";
 
 type InternalPageHeaderProps = {
   eyebrow: string;
   title: string;
   description: string;
   secondaryLine?: string;
-  image?: {
-    src: string;
-    alt: string;
-    fit?: "cover" | "contain";
+  primaryAction?: {
+    label: string;
+    href: string;
   };
+  secondaryAction?: {
+    label: string;
+    href: string;
+  };
+  visual?: ReactNode;
 };
 
 export function InternalPageHeader({
@@ -17,19 +21,21 @@ export function InternalPageHeader({
   title,
   description,
   secondaryLine,
-  image,
+  primaryAction,
+  secondaryAction,
+  visual,
 }: InternalPageHeaderProps) {
   return (
-    <section className="border-b border-[#efe7dd] bg-[#faf8f5]">
-      <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 sm:px-8 md:grid-cols-[minmax(0,1fr)_minmax(280px,420px)] md:items-center md:py-12 lg:gap-12">
-        <div className="max-w-3xl">
+    <section className="overflow-hidden border-b border-[#efe7dd] bg-[#f5f1eb]">
+      <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 sm:px-8 md:min-h-[560px] md:grid-cols-[minmax(0,0.86fr)_minmax(390px,1fr)] md:items-center md:gap-10 md:py-12 lg:min-h-[620px] lg:gap-14">
+        <div className="relative z-10 max-w-3xl">
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#7f6d8a]">
             {eyebrow}
           </p>
-          <h1 className="mt-3 max-w-3xl font-heading text-4xl font-semibold leading-tight text-[#2e2b2b] md:text-5xl">
+          <h1 className="mt-4 max-w-3xl font-heading text-4xl font-semibold leading-[1.02] text-[#2e2b2b] sm:text-5xl lg:text-6xl">
             {title}
           </h1>
-          <p className="mt-4 max-w-2xl text-base leading-8 text-[#2e2b2b]/68">
+          <p className="mt-5 max-w-2xl text-base leading-8 text-[#2e2b2b]/70">
             {description}
           </p>
           {secondaryLine ? (
@@ -37,26 +43,30 @@ export function InternalPageHeader({
               {secondaryLine}
             </p>
           ) : null}
+
+          {(primaryAction || secondaryAction) ? (
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+              {primaryAction ? (
+                <a
+                  href={primaryAction.href}
+                  className="inline-flex min-h-11 items-center justify-center rounded-md border border-[#7f6d8a] bg-[#7f6d8a] px-5 text-sm font-semibold text-[#faf8f5] transition-[background-color,border-color] duration-200 hover:border-[#8e7a9e] hover:bg-[#8e7a9e] focus:outline-none focus-visible:shadow-[0_0_0_3px_rgba(127,109,138,0.22)]"
+                >
+                  {primaryAction.label}
+                </a>
+              ) : null}
+              {secondaryAction ? (
+                <a
+                  href={secondaryAction.href}
+                  className="inline-flex min-h-11 items-center justify-center rounded-md border border-[#d8cedc] bg-[#faf8f5] px-5 text-sm font-semibold text-[#7f6d8a] transition-[border-color,background-color,color] duration-200 hover:border-[#9b89a8] hover:bg-[#efe7dd] hover:text-[#2e2b2b] focus:outline-none focus-visible:shadow-[0_0_0_3px_rgba(127,109,138,0.18)]"
+                >
+                  {secondaryAction.label}
+                </a>
+              ) : null}
+            </div>
+          ) : null}
         </div>
 
-        <div className="relative h-48 overflow-hidden rounded-lg border border-[#efe7dd] bg-[#efe7dd] sm:h-56 md:h-64">
-          {image ? (
-            <Image
-              src={image.src}
-              alt={image.alt}
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 420px"
-              className={
-                image.fit === "contain"
-                  ? "object-contain object-center"
-                  : "object-cover object-center"
-              }
-            />
-          ) : (
-            <div className="h-full w-full bg-[#efe7dd]" />
-          )}
-        </div>
+        {visual ? <div className="min-w-0">{visual}</div> : null}
       </div>
     </section>
   );
