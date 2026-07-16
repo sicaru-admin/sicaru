@@ -1,101 +1,101 @@
 import Link from "next/link";
-import Image from "next/image";
+import { BrandWordmark } from "./BrandWordmark";
 
 const footerLinks = {
   tienda: [
-    { href: "/productos", label: "Todos los Productos" },
+    { href: "/productos", label: "Productos" },
     { href: "/marcas", label: "Marcas" },
-    { href: "/salon-pro", label: "Sal\u00f3n Pro" },
+    { href: "/salon-pro", label: "Salón Pro" },
     { href: "/blog", label: "Blog" },
   ],
-  marcas: [
-    { href: "/marcas", label: "Ver Todas las Marcas" },
-  ],
   ayuda: [
-    { href: "/cuenta", label: "Mi Cuenta" },
-    { href: "/cuenta/pedidos", label: "Mis Pedidos" },
+    { href: "/cuenta", label: "Mi cuenta" },
+    { href: "/cuenta/pedidos", label: "Mis pedidos" },
     { href: "/contacto", label: "Contacto" },
-    { href: "/nosotros", label: "Nosotros" },
-  ],
-  informacion: [
-    { href: "/envios", label: "Pol\u00edtica de Env\u00edos" },
+    { href: "/envios", label: "Envíos" },
     { href: "/devoluciones", label: "Devoluciones" },
-    { href: "/terminos", label: "T\u00e9rminos y Condiciones" },
-    { href: "/politica-privacidad", label: "Aviso de Privacidad" },
   ],
   contacto: [
     { href: "https://wa.me/528281111023", label: "WhatsApp" },
     { href: "mailto:hola@sicaru.com", label: "hola@sicaru.com" },
   ],
+  legales: [
+    { href: "/terminos", label: "Términos" },
+    { href: "/politica-privacidad", label: "Privacidad" },
+  ],
 };
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-[#6c5c76] bg-[#7f6d8a] text-[#faf8f5] footer-gradient">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:py-14">
-        <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <Link href="/" className="relative block h-20 w-44" aria-label="Sicarú, inicio">
-            <Image
-              src="/brand/logo-cream.png"
-              alt="Sicarú Productos de Belleza"
-              fill
-              sizes="192px"
-              className="object-contain"
-            />
-          </Link>
-          <p className="max-w-md text-sm leading-6 text-[#faf8f5]/75">
-            Productos de belleza profesional seleccionados con criterio técnico y una experiencia cercana.
-          </p>
-        </div>
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
+    <footer className="sicaru-footer-dark">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1.85fr)] lg:items-start">
           <div>
-            <h3 className="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-[#efe7dd]">Tienda</h3>
-            <ul className="space-y-2">
-              {footerLinks.tienda.map((l) => (
-                <li key={l.href}><Link href={l.href} className="text-sm text-[#faf8f5]/75 transition-colors hover:text-[#faf8f5]">{l.label}</Link></li>
-              ))}
-            </ul>
+            <BrandWordmark variant="light" />
+            <p className="mt-4 max-w-sm text-sm leading-6 text-[#faf8f5]/68">
+              Productos de belleza profesional seleccionados con criterio técnico y una experiencia cercana.
+            </p>
           </div>
-          <div>
-            <h3 className="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-[#efe7dd]">Marcas</h3>
-            <ul className="space-y-2">
-              {footerLinks.marcas.map((l) => (
-                <li key={l.href}><Link href={l.href} className="text-sm text-[#faf8f5]/75 transition-colors hover:text-[#faf8f5]">{l.label}</Link></li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-[#efe7dd]">Ayuda</h3>
-            <ul className="space-y-2">
-              {footerLinks.ayuda.map((l) => (
-                <li key={l.href}><Link href={l.href} className="text-sm text-[#faf8f5]/75 transition-colors hover:text-[#faf8f5]">{l.label}</Link></li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-[#efe7dd]">Informaci&oacute;n</h3>
-            <ul className="space-y-2">
-              {footerLinks.informacion.map((l) => (
-                <li key={l.href}><Link href={l.href} className="text-sm text-[#faf8f5]/75 transition-colors hover:text-[#faf8f5]">{l.label}</Link></li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-[#efe7dd]">Contacto</h3>
-            <ul className="space-y-2">
-              {footerLinks.contacto.map((l) => (
-                <li key={l.href}><a href={l.href} target="_blank" rel="noopener noreferrer" className="text-sm text-[#faf8f5]/75 transition-colors hover:text-[#faf8f5]">{l.label}</a></li>
-              ))}
-            </ul>
+
+          <div className="grid grid-cols-1 gap-7 sm:grid-cols-3">
+            <div>
+              <h3 className="sicaru-footer-heading">Tienda</h3>
+              <ul className="mt-4 space-y-2.5">
+                {footerLinks.tienda.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className="sicaru-footer-link">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="sicaru-footer-heading">Ayuda</h3>
+              <ul className="mt-4 space-y-2.5">
+                {footerLinks.ayuda.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className="sicaru-footer-link">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="sicaru-footer-heading">Contacto</h3>
+              <ul className="mt-4 space-y-2.5">
+                {footerLinks.contacto.map((link) => (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="sicaru-footer-link"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 text-sm leading-6 text-[#faf8f5]/62">
+                Cadereyta Jiménez, Nuevo León
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="mt-10 border-t border-[#faf8f5]/20 pt-6 text-center">
-          <p className="text-lg font-semibold text-[#faf8f5]" style={{ fontFamily: "var(--font-heading)" }}>
-            Distribuidora Sicar&uacute;
-          </p>
-          <p className="mt-1 text-sm text-[#faf8f5]/70">Tienda de productos profesionales de belleza</p>
-          <p className="mt-4 text-xs text-[#faf8f5]/55">&copy; {new Date().getFullYear()} Distribuidora Sicar&uacute;. Todos los derechos reservados.</p>
+        <div className="mt-9 flex flex-col gap-3 border-t border-[#faf8f5]/14 pt-5 text-xs text-[#faf8f5]/52 sm:flex-row sm:items-center sm:justify-between">
+          <p>&copy; {new Date().getFullYear()} Distribuidora Sicarú. Todos los derechos reservados.</p>
+          <div className="flex flex-wrap gap-x-4 gap-y-2">
+            {footerLinks.legales.map((link) => (
+              <Link key={link.href} href={link.href} className="transition-colors hover:text-[#faf8f5] focus:outline-none focus-visible:text-[#faf8f5]">
+                {link.label}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </footer>

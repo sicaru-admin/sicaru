@@ -29,12 +29,12 @@ export function CartButton() {
       <button
         ref={buttonRef}
         onClick={openCart}
-        className="tap-feedback relative flex h-10 w-10 items-center justify-center rounded-[6px] text-[#2e2b2b] transition-colors hover:bg-[#efe7dd] hover:text-[#7f6d8a]"
+        className="tap-feedback sicaru-nav-icon-button relative"
         aria-label="Abrir carrito"
       >
         <ShoppingBag className="h-5 w-5" strokeWidth={1.5} />
         {totalItems > 0 && (
-          <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-[6px] bg-[#7f6d8a] px-1 text-xs font-semibold text-[#faf8f5] transition-transform">
+          <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-[4px] bg-[#7f6d8a] px-1 text-xs font-semibold text-[#faf8f5] transition-transform">
             {totalItems}
           </span>
         )}

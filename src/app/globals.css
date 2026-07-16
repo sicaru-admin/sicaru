@@ -281,3 +281,155 @@ h1, h2, h3, h4, h5, h6 {
 html {
   scroll-behavior: smooth;
 }
+
+/* ─── Sicarú Global Identity Preview ─── */
+.sicaru-wordmark {
+  display: inline-flex;
+  align-items: center;
+  color: #2e2b2b;
+  font-family: var(--font-bodoni), serif;
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+
+.sicaru-wordmark-light {
+  color: #faf8f5;
+}
+
+.sicaru-wordmark-dark {
+  color: #2e2b2b;
+}
+
+.sicaru-wordmark:focus-visible,
+.sicaru-navbar-link:focus-visible,
+.sicaru-mobile-nav-link:focus-visible,
+.sicaru-nav-icon-button:focus-visible,
+.sicaru-account-trigger:focus-visible,
+.sicaru-footer-link:focus-visible {
+  outline: 1px solid #7f6d8a;
+  outline-offset: 4px;
+}
+
+.sicaru-footer-dark .sicaru-wordmark:focus-visible,
+.sicaru-footer-link:focus-visible {
+  outline-color: #faf8f5;
+}
+
+.sicaru-navbar {
+  background: #faf8f5;
+  border-bottom: 1px solid #efe7dd;
+  color: #2e2b2b;
+}
+
+.sicaru-navbar-link {
+  position: relative;
+  color: #2e2b2b;
+  font-family: var(--font-poppins), system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+  padding: 0.5rem 0;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+
+.sicaru-navbar-link::after {
+  background: #7f6d8a;
+  bottom: 0;
+  content: "";
+  height: 1px;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  transform: scaleX(0.6);
+  transform-origin: center;
+  transition: opacity 180ms ease, transform 180ms ease;
+  width: 100%;
+}
+
+.sicaru-navbar-link:hover,
+.sicaru-navbar-link-active {
+  color: #7f6d8a;
+}
+
+.sicaru-navbar-link:hover::after,
+.sicaru-navbar-link-active::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.sicaru-nav-icon-button,
+.sicaru-account-trigger {
+  align-items: center;
+  border-radius: 6px;
+  color: #2e2b2b;
+  display: inline-flex;
+  height: 2.5rem;
+  justify-content: center;
+  min-width: 2.5rem;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.sicaru-nav-icon-button:hover,
+.sicaru-account-trigger:hover {
+  background: #efe7dd;
+  color: #7f6d8a;
+}
+
+.sicaru-account-trigger {
+  gap: 0.25rem;
+  padding: 0 0.25rem;
+}
+
+.sicaru-mobile-nav-link {
+  border-left: 1px solid transparent;
+  color: #2e2b2b;
+  display: block;
+  font-family: var(--font-poppins), system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.82rem 0.75rem;
+  text-decoration: none;
+  transition: border-color 180ms ease, color 180ms ease, background-color 180ms ease;
+}
+
+.sicaru-mobile-nav-link:hover,
+.sicaru-mobile-nav-link-active {
+  border-left-color: #7f6d8a;
+  color: #7f6d8a;
+}
+
+.sicaru-mobile-nav-link:hover {
+  background: #f5f1eb;
+}
+
+.sicaru-footer-dark {
+  background: #2e2b2b;
+  border-top: 1px solid rgba(250, 248, 245, 0.12);
+  color: #faf8f5;
+}
+
+.sicaru-footer-heading {
+  color: #efe7dd;
+  font-family: var(--font-poppins), system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.sicaru-footer-link {
+  color: rgba(250, 248, 245, 0.7);
+  font-family: var(--font-poppins), system-ui, sans-serif;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+
+.sicaru-footer-link:hover {
+  color: #faf8f5;
+}

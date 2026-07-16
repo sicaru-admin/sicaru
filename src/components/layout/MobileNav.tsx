@@ -1,24 +1,30 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { Menu, X } from "lucide-react";
+import { BrandWordmark } from "./BrandWordmark";
 
 const navLinks = [
   { href: "/productos", label: "Productos" },
   { href: "/marcas", label: "Marcas" },
-  { href: "/categorias", label: "Categor\u00edas" },
-  { href: "/salon-pro", label: "Sal\u00f3n Pro" },
+  { href: "/categorias", label: "Categorías" },
+  { href: "/salon-pro", label: "Salón Pro" },
   { href: "/blog", label: "Blog" },
   { href: "/nosotros", label: "Nosotros" },
   { href: "/contacto", label: "Contacto" },
 ];
 
+function isActivePath(pathname: string, href: string) {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
   const { customer, isAuthenticated, logout } = useAuth();
+  const pathname = usePathname();
 
   const handleLogout = async () => {
     setIsOpen(false);
@@ -28,10 +34,9 @@ export function MobileNav() {
 
   return (
     <div className="md:hidden">
-      {/* Hamburger button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="flex h-10 w-10 items-center justify-center rounded-[6px] text-[#2e2b2b] transition-colors hover:bg-[#efe7dd] hover:text-[#7f6d8a]"
+        className="sicaru-nav-icon-button"
         aria-label="Abrir menú"
       >
         <Menu className="h-5 w-5" strokeWidth={1.7} />
@@ -39,35 +44,25 @@ export function MobileNav() {
 
       {isOpen && (
         <>
-          {/* Overlay */}
           <div
-            className="fixed inset-0 z-40 bg-[#2e2b2b]/45"
+            className="fixed inset-0 z-40 bg-[#2e2b2b]/48"
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
           />
 
-          {/* Drawer */}
-          <div className="fixed inset-y-0 left-0 z-50 w-[min(20rem,86vw)] border-r border-[#efe7dd] bg-[#faf8f5]">
+          <div className="fixed inset-y-0 left-0 z-50 flex w-[min(21rem,88vw)] flex-col border-r border-[#efe7dd] bg-[#faf8f5]">
+            <div className="h-1.5 bg-[#7f6d8a]" />
             <div className="flex items-center justify-between border-b border-[#efe7dd] px-5 py-4">
-              <div className="relative h-12 w-28">
-                <Image
-                  src="/brand/logo-violet.png"
-                  alt="Sicarú Productos de Belleza"
-                  fill
-                  sizes="112px"
-                  className="object-contain"
-                />
-              </div>
+              <BrandWordmark className="text-[1.75rem]" />
               <button
                 onClick={() => setIsOpen(false)}
-                className="flex h-10 w-10 items-center justify-center rounded-[6px] text-[#7f6d8a] hover:bg-[#efe7dd]"
+                className="sicaru-nav-icon-button"
                 aria-label="Cerrar menú"
               >
                 <X className="h-5 w-5" strokeWidth={1.7} />
               </button>
             </div>
 
-            {/* Auth section */}
             {isAuthenticated ? (
               <div className="border-b border-[#efe7dd] px-5 py-4">
                 <p className="text-sm font-semibold text-[#2e2b2b]">
@@ -79,41 +74,45 @@ export function MobileNav() {
               </div>
             ) : null}
 
-            <nav className="px-5 py-5">
+            <nav className="flex-1 overflow-y-auto px-5 py-5">
               <ul className="space-y-1">
-                {navLinks.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      onClick={() => setIsOpen(false)}
-                      className="block rounded-[6px] px-3 py-3 text-base font-medium text-[#2e2b2b] transition-colors hover:bg-[#efe7dd] hover:text-[#7f6d8a]"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
+                {navLinks.map((link) => {
+                  const active = isActivePath(pathname, link.href);
 
-                {/* Auth links */}
-                <li className="mt-3 border-t border-[#efe7dd] pt-3">
+                  return (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        onClick={() => setIsOpen(false)}
+                        aria-current={active ? "page" : undefined}
+                        className={`sicaru-mobile-nav-link ${active ? "sicaru-mobile-nav-link-active" : ""}`}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+
+                <li className="mt-4 border-t border-[#efe7dd] pt-4">
                   {isAuthenticated ? (
                     <>
                       <Link
                         href="/cuenta"
                         onClick={() => setIsOpen(false)}
-                        className="block rounded-[6px] px-3 py-3 text-base font-medium text-[#2e2b2b] transition-colors hover:bg-[#efe7dd] hover:text-[#7f6d8a]"
+                        className={`sicaru-mobile-nav-link ${isActivePath(pathname, "/cuenta") ? "sicaru-mobile-nav-link-active" : ""}`}
                       >
                         Mi cuenta
                       </Link>
                       <Link
                         href="/cuenta/pedidos"
                         onClick={() => setIsOpen(false)}
-                        className="block rounded-[6px] px-3 py-3 text-base font-medium text-[#2e2b2b] transition-colors hover:bg-[#efe7dd] hover:text-[#7f6d8a]"
+                        className={`sicaru-mobile-nav-link ${isActivePath(pathname, "/cuenta/pedidos") ? "sicaru-mobile-nav-link-active" : ""}`}
                       >
                         Mis pedidos
                       </Link>
                       <button
                         onClick={handleLogout}
-                        className="block w-full rounded-[6px] px-3 py-3 text-left text-base font-medium text-[#2e2b2b] transition-colors hover:bg-[#efe7dd] hover:text-[#7f6d8a]"
+                        className="sicaru-mobile-nav-link w-full text-left"
                       >
                         Cerrar sesión
                       </button>
@@ -122,7 +121,7 @@ export function MobileNav() {
                     <Link
                       href="/cuenta/login"
                       onClick={() => setIsOpen(false)}
-                      className="block rounded-[6px] border border-[#7f6d8a] px-3 py-3 text-base font-semibold text-[#7f6d8a] transition-colors hover:bg-[#efe7dd]"
+                      className={`sicaru-mobile-nav-link ${isActivePath(pathname, "/cuenta/login") ? "sicaru-mobile-nav-link-active" : ""}`}
                     >
                       Iniciar sesión
                     </Link>
