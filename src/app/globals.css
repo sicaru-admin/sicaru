@@ -317,6 +317,7 @@ html {
 .sicaru-footer-dark .sicaru-wordmark:focus-visible,
 .sicaru-footer-link:focus-visible {
   outline-color: #faf8f5;
+  box-shadow: 0 0 0 3px rgba(250, 248, 245, 0.18);
 }
 
 .sicaru-navbar {
@@ -408,13 +409,13 @@ html {
 }
 
 .sicaru-footer-dark {
-  background: #2e2b2b;
-  border-top: 1px solid rgba(250, 248, 245, 0.12);
+  background: #7f6d8a;
+  border-top: 1px solid rgba(239, 231, 221, 0.28);
   color: #faf8f5;
 }
 
 .sicaru-footer-heading {
-  color: #efe7dd;
+  color: #faf8f5;
   font-family: var(--font-poppins), system-ui, sans-serif;
   font-size: 0.72rem;
   font-weight: 600;
@@ -423,7 +424,7 @@ html {
 }
 
 .sicaru-footer-link {
-  color: rgba(250, 248, 245, 0.7);
+  color: rgba(239, 231, 221, 0.9);
   font-family: var(--font-poppins), system-ui, sans-serif;
   font-size: 0.875rem;
   text-decoration: none;

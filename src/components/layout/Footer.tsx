@@ -32,7 +32,7 @@ export function Footer() {
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1.85fr)] lg:items-start">
           <div>
             <BrandWordmark variant="light" />
-            <p className="mt-4 max-w-sm text-sm leading-6 text-[#faf8f5]/68">
+            <p className="mt-4 max-w-sm text-sm leading-6 text-[#efe7dd]/90">
               Productos de belleza profesional seleccionados con criterio técnico y una experiencia cercana.
             </p>
           </div>
@@ -80,14 +80,14 @@ export function Footer() {
                   </li>
                 ))}
               </ul>
-              <p className="mt-4 text-sm leading-6 text-[#faf8f5]/62">
+              <p className="mt-4 text-sm leading-6 text-[#efe7dd]/85">
                 Cadereyta Jiménez, Nuevo León
               </p>
             </div>
           </div>
         </div>
 
-        <div className="mt-9 flex flex-col gap-3 border-t border-[#faf8f5]/14 pt-5 text-xs text-[#faf8f5]/52 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-9 flex flex-col gap-3 border-t border-[#efe7dd]/28 pt-5 text-xs text-[#efe7dd]/78 sm:flex-row sm:items-center sm:justify-between">
           <p>&copy; {new Date().getFullYear()} Distribuidora Sicarú. Todos los derechos reservados.</p>
           <div className="flex flex-wrap gap-x-4 gap-y-2">
             {footerLinks.legales.map((link) => (
