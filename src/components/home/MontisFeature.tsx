@@ -12,7 +12,7 @@ const benefits = [
 export function MontisFeature() {
   return (
     <section
-      className="py-16 md:py-20"
+      className="py-12 md:py-14"
       style={{
         background: "#efe7dd",
       }}

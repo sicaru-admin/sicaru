@@ -55,7 +55,7 @@ const CATEGORIES = [
 
 export function CategoriesGrid() {
   return (
-    <section className="bg-[#faf8f5] py-16 md:py-20">
+    <section className="bg-[#faf8f5] py-12 md:py-14">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="mb-10 max-w-2xl">
           <p className="text-xs font-semibold uppercase text-[#8e7a9e]">

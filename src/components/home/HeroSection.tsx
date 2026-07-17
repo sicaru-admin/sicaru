@@ -7,8 +7,8 @@ const whatsappHref =
 
 export function HeroSection() {
   return (
-    <section className="overflow-hidden bg-[#f5f1eb]">
-      <div className="mx-auto grid max-w-7xl gap-7 px-5 py-8 sm:px-8 md:grid-cols-[minmax(0,0.9fr)_minmax(360px,1.1fr)] md:items-center md:gap-8 md:py-10 lg:gap-10 lg:py-12">
+    <section className="relative isolate overflow-hidden bg-[#f5f1eb]">
+      <div className="mx-auto grid max-w-7xl gap-7 px-5 py-7 sm:px-8 md:grid-cols-[minmax(0,0.9fr)_minmax(360px,1.1fr)] md:items-center md:gap-8 md:py-9 lg:gap-10 lg:py-10">
         <div className="relative z-10 max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#7f6d8a]">
             SICARÚ · BELLEZA PROFESIONAL
