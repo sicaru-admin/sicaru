@@ -1,59 +1,187 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Droplets, Heart, Leaf, Palette, Sparkles, Wrench } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
-const CATEGORIES = [
+type NeedProduct = {
+  src: string;
+  alt: string;
+  className: string;
+};
+
+type Need = {
+  id: string;
+  number: string;
+  label: string;
+  href: string;
+  title: string;
+  description: string;
+  brands: string;
+  image: string;
+  imageAlt: string;
+  imagePosition?: string;
+  products?: NeedProduct[];
+};
+
+const NEEDS: Need[] = [
   {
-    name: "Shampoo y Acondicionador",
-    brands: "Küül, Nekane, Montis, Vitale",
-    icon: Droplets,
-    href: "/categorias/shampoo-y-acondicionador",
-    image: "/images/mujer-lavando-cabello.jpg",
-    alt: "Mujer lavando su cabello con champú profesional",
-  },
-  {
-    name: "Color y Tintes",
-    brands: "Küül Color, Voglia, Hidra Color",
-    icon: Palette,
-    href: "/categorias/color-y-tintes",
-    image: "/images/marcas-colorista-aplicando-tinte.jpg",
-    alt: "Estilista profesional aplicando tinte rojo a clienta en salón de belleza",
-  },
-  {
-    name: "Styling y Acabado",
-    brands: "Geles, ceras, sprays, protectores",
-    icon: Sparkles,
-    href: "/categorias/styling-y-acabado",
-    image: "/images/salon-estilista-secando-cabello.jpg",
-    alt: "Estilista secando y peinando el cabello de clienta sonriente en salón",
-  },
-  {
-    name: "Línea Natural",
-    brands: "Montis — extractos 100% naturales",
-    icon: Leaf,
-    href: "/categorias/linea-natural",
-    image: "/images/producto-champu-sabila-natural.jpg",
-    alt: "Champú artesanal de sábila con ingredientes naturales mexicanos — romero, manzanilla y aloe vera",
-  },
-  {
-    name: "Tratamientos y Mascarillas",
-    brands: "Keratina, botox, reparación",
-    icon: Heart,
+    id: "repair",
+    number: "01",
+    label: "Reparación",
     href: "/categorias/tratamientos-y-mascarillas",
+    title: "Repara y fortalece el cabello dañado",
+    description:
+      "Tratamientos, mascarillas y fórmulas pensadas para cabello seco, procesado o debilitado.",
+    brands: "Voglia · Vitale · Nekane Capilar",
     image: "/images/salon-aplicacion-tratamiento.jpg",
-    alt: "Manos de estilista aplicando tratamiento capilar cremoso al cabello de clienta",
+    imageAlt:
+      "Manos de estilista aplicando tratamiento capilar cremoso al cabello de clienta",
+    imagePosition: "object-center",
+    products: [
+      {
+        src: "/images/products-hero/voglia-total-repair.webp",
+        alt: "Voglia Total Repair para reparación profesional del cabello",
+        className:
+          "bottom-[9%] right-[18%] w-[28%] sm:bottom-[8%] sm:right-[20%] sm:w-[24%] lg:right-[24%] lg:w-[21%]",
+      },
+      {
+        src: "/images/products-hero/vitale-bifase-pro-keratin.webp",
+        alt: "Vitale Bifase Pro Keratin para protección capilar",
+        className:
+          "bottom-[8%] right-[4%] w-[25%] sm:right-[7%] sm:w-[21%] lg:right-[9%] lg:w-[18%]",
+      },
+    ],
   },
   {
-    name: "Herramientas Pro",
-    brands: "Secadoras, planchas, cepillos",
-    icon: Wrench,
-    href: "/categorias/herramientas-pro",
+    id: "hydration",
+    number: "02",
+    label: "Hidratación",
+    href: "/categorias/tratamientos-y-mascarillas",
+    title: "Devuelve suavidad, brillo y manejabilidad",
+    description:
+      "Opciones de hidratación para cabello seco, opaco o difícil de controlar.",
+    brands: "Nekane Capilar · Vitale · Montis",
+    image: "/images/producto-tratamiento-capilar.jpg",
+    imageAlt: "Producto de tratamiento capilar para hidratación del cabello",
+    imagePosition: "object-center",
+  },
+  {
+    id: "color",
+    number: "03",
+    label: "Color",
+    href: "/categorias/color-y-tintes",
+    title: "Color profesional para transformar tu cabello",
+    description:
+      "Tintes, coloración cremosa y productos para mantener resultados definidos y uniformes.",
+    brands: "Küül · Voglia · Hidra Color",
+    image: "/images/marcas-colorista-aplicando-tinte.jpg",
+    imageAlt: "Estilista profesional aplicando tinte rojo a clienta en salón de belleza",
+    imagePosition: "object-center",
+    products: [
+      {
+        src: "/images/products-hero/hidra-color-mask.webp",
+        alt: "Hidra Color Mask para coloración capilar",
+        className:
+          "bottom-[7%] right-[18%] w-[28%] sm:right-[20%] sm:w-[23%] lg:right-[23%] lg:w-[20%]",
+      },
+      {
+        src: "/images/products-hero/voglia-color-fun.webp",
+        alt: "Voglia Color Fun para coloración profesional",
+        className:
+          "bottom-[7%] right-[3%] w-[27%] sm:right-[7%] sm:w-[22%] lg:right-[8%] lg:w-[19%]",
+      },
+    ],
+  },
+  {
+    id: "frizz",
+    number: "04",
+    label: "Control de frizz",
+    href: "/categorias/styling-y-acabado",
+    title: "Control, definición y acabado para cada estilo",
+    description:
+      "Productos para reducir frizz, mejorar la forma y mantener un acabado más pulido.",
+    brands: "Xiomara · Voglia · Nekane",
+    image: "/images/salon-estilista-secando-cabello.jpg",
+    imageAlt: "Estilista secando y peinando el cabello de clienta sonriente en salón",
+    imagePosition: "object-center",
+    products: [
+      {
+        src: "/images/products-hero/xiomara-ten-tu.webp",
+        alt: "Xiomara Ten+Tú para control y acabado capilar",
+        className:
+          "bottom-[8%] right-[7%] w-[34%] sm:right-[10%] sm:w-[28%] lg:right-[12%] lg:w-[24%]",
+      },
+    ],
+  },
+  {
+    id: "thermal",
+    number: "05",
+    label: "Protección térmica",
+    href: "/categorias/styling-y-acabado",
+    title: "Protege el cabello antes del calor",
+    description:
+      "Fórmulas para acompañar el uso de secadora, plancha y herramientas térmicas.",
+    brands: "Vitale · Xiomara · Voglia",
     image: "/images/salon-alisado-plancha-profesional.jpg",
-    alt: "Plancha profesional alisando cabello con vapor en salón de belleza",
+    imageAlt: "Plancha profesional alisando cabello con vapor en salón de belleza",
+    imagePosition: "object-center",
+    products: [
+      {
+        src: "/images/products-hero/vitale-bifase-pro-keratin.webp",
+        alt: "Vitale Bifase Pro Keratin para protección capilar",
+        className:
+          "bottom-[8%] right-[8%] w-[28%] sm:right-[11%] sm:w-[22%] lg:right-[12%] lg:w-[19%]",
+      },
+    ],
+  },
+  {
+    id: "professional",
+    number: "06",
+    label: "Uso profesional",
+    href: "/categorias/herramientas-pro",
+    title: "Herramientas y productos para el trabajo en salón",
+    description:
+      "Una selección pensada para estilistas que buscan opciones prácticas y profesionales.",
+    brands: "Küül · Voglia · Pomania",
+    image: "/images/salon-tratamiento-cabello.jpg",
+    imageAlt:
+      "Clienta relajándose mientras recibe tratamiento capilar profesional en salón de belleza mexicano",
+    imagePosition: "object-center",
   },
 ];
 
 export function CategoriesGrid() {
+  const [activeId, setActiveId] = useState(NEEDS[0].id);
+  const [isEntering, setIsEntering] = useState(true);
+  const transitionTimer = useRef<number | null>(null);
+  const activeNeed = NEEDS.find((need) => need.id === activeId) ?? NEEDS[0];
+
+  useEffect(() => {
+    return () => {
+      if (transitionTimer.current) {
+        window.clearTimeout(transitionTimer.current);
+      }
+    };
+  }, []);
+
+  const selectNeed = (id: string) => {
+    if (id === activeId) {
+      return;
+    }
+
+    if (transitionTimer.current) {
+      window.clearTimeout(transitionTimer.current);
+    }
+
+    setActiveId(id);
+    setIsEntering(false);
+    transitionTimer.current = window.setTimeout(() => {
+      setIsEntering(true);
+    }, 20);
+  };
+
   return (
     <section className="bg-[#faf8f5] py-12 md:py-14">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
@@ -66,40 +194,98 @@ export function CategoriesGrid() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {CATEGORIES.map((cat) => (
-            <Link
-              key={cat.name}
-              href={cat.href}
-              className="group flex min-h-full flex-col overflow-hidden border border-[#efe7dd] bg-[#faf8f5] transition-colors duration-[220ms] hover:border-[#9b89a8]/55"
+        <div className="grid gap-6 lg:grid-cols-[minmax(240px,0.34fr)_minmax(0,0.66fr)] lg:items-stretch">
+          <div className="border-y border-[#efe7dd]" aria-label="Necesidades capilares">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:flex lg:flex-col">
+              {NEEDS.map((need) => {
+                const active = need.id === activeId;
+
+                return (
+                  <button
+                    key={need.id}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => selectNeed(need.id)}
+                    className={`group flex min-h-16 items-center gap-4 border-b border-[#efe7dd] px-0 py-4 text-left transition-colors duration-[200ms] focus:outline-none focus-visible:bg-[#f5f1eb] focus-visible:shadow-[inset_3px_0_0_#7f6d8a] sm:px-4 lg:border-l lg:px-5 ${
+                      active
+                        ? "border-l-[#7f6d8a] bg-[#f5f1eb] text-[#7f6d8a] shadow-[inset_3px_0_0_#7f6d8a]"
+                        : "border-l-transparent text-[#2e2b2b] hover:bg-[#f5f1eb] hover:text-[#7f6d8a]"
+                    }`}
+                  >
+                    <span className="text-xs font-semibold text-[#9b89a8]">
+                      {need.number}
+                    </span>
+                    <span className="font-heading text-xl font-semibold leading-tight">
+                      {need.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div
+            className="relative min-h-[520px] overflow-hidden border border-[#efe7dd] bg-[#f5f1eb] md:min-h-[560px] lg:min-h-[590px]"
+            aria-live="polite"
+          >
+            <div className="absolute left-0 top-0 hidden h-full w-[34%] bg-[#7f6d8a] lg:block" />
+            <div
+              key={activeNeed.id}
+              className={`relative h-full min-h-[520px] transition-all duration-[200ms] ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none md:min-h-[560px] lg:min-h-[590px] ${
+                isEntering ? "translate-y-0 opacity-100" : "translate-y-2 opacity-95"
+              }`}
             >
-              <div className="relative aspect-[4/3] overflow-hidden bg-[#efe7dd]">
+              <div className="relative h-[260px] overflow-hidden bg-[#efe7dd] sm:h-[340px] lg:absolute lg:inset-y-0 lg:left-[30%] lg:right-0 lg:h-auto">
                 <Image
-                  src={cat.image}
-                  alt={cat.alt}
+                  src={activeNeed.image}
+                  alt={activeNeed.imageAlt}
                   fill
-                  className="object-cover transition-transform duration-[220ms] ease-out group-hover:scale-[1.02]"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  priority={activeNeed.id === NEEDS[0].id}
+                  sizes="(max-width: 1024px) 100vw, 48vw"
+                  className={`object-cover ${activeNeed.imagePosition ?? "object-center"}`}
                 />
+
+                {activeNeed.products?.map((product) => (
+                  <div
+                    key={product.src}
+                    className={`pointer-events-none absolute z-20 aspect-[6/7] drop-shadow-[0_14px_20px_rgba(127,109,138,0.14)] ${product.className}`}
+                  >
+                    <Image
+                      src={product.src}
+                      alt={product.alt}
+                      fill
+                      sizes="(max-width: 640px) 28vw, (max-width: 1024px) 22vw, 180px"
+                      className="object-contain object-center"
+                    />
+                  </div>
+                ))}
               </div>
 
-              <div className="flex flex-1 flex-col border-t border-[#efe7dd] p-5 md:p-6">
-                <div className="mb-5 flex h-10 w-10 items-center justify-center border border-[#9b89a8]/45 bg-[#faf8f5] text-[#7f6d8a] transition-colors duration-[220ms] group-hover:border-[#8e7a9e]/70 group-hover:text-[#8e7a9e]">
-                  <cat.icon className="h-5 w-5" />
+              <div className="relative z-30 flex min-h-[260px] flex-col justify-end p-5 sm:p-6 md:p-7 lg:min-h-[590px] lg:justify-end lg:p-8">
+                <div className="max-w-xl border-t border-[#efe7dd] bg-[#faf8f5] px-5 py-5 sm:px-6 md:px-7 md:py-6 lg:max-w-[58%] lg:border-l lg:border-r">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8e7a9e]">
+                    {activeNeed.label}
+                  </p>
+                  <h3 className="mt-3 font-heading text-3xl font-semibold leading-tight text-[#2e2b2b] md:text-4xl">
+                    {activeNeed.title}
+                  </h3>
+                  <p className="mt-4 text-sm leading-7 text-[#2e2b2b]/70 md:text-base">
+                    {activeNeed.description}
+                  </p>
+                  <p className="mt-5 text-xs font-semibold uppercase tracking-[0.12em] text-[#7f6d8a]">
+                    {activeNeed.brands}
+                  </p>
+                  <Link
+                    href={activeNeed.href}
+                    className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 bg-[#7f6d8a] px-6 py-3 text-sm font-semibold text-[#faf8f5] transition-colors duration-[200ms] hover:bg-[#8e7a9e] focus:outline-none focus-visible:shadow-[0_0_0_3px_rgba(127,109,138,0.22)]"
+                  >
+                    Explorar productos
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
                 </div>
-                <h3 className="font-heading text-2xl font-semibold text-[#2e2b2b]">
-                  {cat.name}
-                </h3>
-                <p className="mt-3 max-w-xs text-sm leading-6 text-[#2e2b2b]/70">
-                  {cat.brands}
-                </p>
-                <span className="mt-auto inline-flex items-center gap-2 pt-6 text-xs font-semibold uppercase text-[#7f6d8a]">
-                  Explorar
-                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-[220ms] group-hover:translate-x-1" />
-                </span>
               </div>
-            </Link>
-          ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
