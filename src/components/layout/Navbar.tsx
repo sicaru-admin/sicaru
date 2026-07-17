@@ -27,7 +27,7 @@ export function Navbar() {
     <header className="sicaru-navbar sticky top-0 z-30">
       <div className="bg-[#7f6d8a] text-[#faf8f5]">
         <div className="mx-auto flex max-w-7xl items-center justify-center gap-3 px-4 py-2 text-center text-[0.68rem] font-medium uppercase tracking-[0.1em] sm:px-6 md:justify-between md:text-xs">
-          <span>Asesoría personalizada en productos profesionales de belleza</span>
+          <span>Tienda de productos profesionales de belleza</span>
           <span className="hidden md:inline">Cadereyta Jiménez, Nuevo León</span>
         </div>
       </div>
