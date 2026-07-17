@@ -13,7 +13,7 @@ const BENEFITS = [
 export function SalonCTA() {
   return (
     <section className="bg-[#f5f1eb] py-12 md:py-14">
-      <div className="mx-auto grid max-w-7xl gap-4 px-5 sm:px-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] lg:items-stretch">
+      <div className="mx-auto grid max-w-[1400px] gap-4 px-5 sm:px-8 lg:px-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] lg:items-stretch">
         <div className="bg-[#7f6d8a] p-6 md:p-8 lg:p-10">
           <span className="mb-4 inline-block text-sm font-medium text-[#efe7dd]">
             Para estilistas

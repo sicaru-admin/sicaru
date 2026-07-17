@@ -7,7 +7,7 @@ const WHATSAPP_MSG =
 export function WhatsAppBanner() {
   return (
     <section className="bg-[#8e7a9e] py-8">
-      <div className="mx-auto flex max-w-5xl flex-col items-center gap-5 px-5 text-center sm:px-8 md:flex-row md:justify-between md:text-left">
+      <div className="mx-auto flex max-w-[1280px] flex-col items-center gap-5 px-5 text-center sm:px-8 lg:px-10 md:flex-row md:justify-between md:text-left">
         <div>
           <p className="text-xs font-semibold uppercase text-[#efe7dd]">
             Atención cercana

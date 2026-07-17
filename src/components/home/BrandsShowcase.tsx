@@ -42,7 +42,7 @@ const BRANDS = [
 export function BrandsShowcase() {
   return (
     <section className="bg-[#faf8f5] py-12 md:py-14">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+      <div className="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10">
         <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase text-[#8e7a9e]">
