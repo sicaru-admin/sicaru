@@ -14,7 +14,7 @@ export function HeroSection() {
             SICARÚ · BELLEZA PROFESIONAL
           </p>
 
-          <h1 className="mt-3 max-w-[15ch] font-heading text-[2.2rem] font-semibold leading-[1.02] text-[#2e2b2b] sm:text-[3.15rem] md:max-w-[15.5ch] lg:text-[3.65rem]">
+          <h1 className="mt-3 max-w-[15ch] font-heading text-[2.2rem] font-medium leading-[1.02] text-[#2e2b2b] sm:text-[3.15rem] md:max-w-[15.5ch] lg:text-[3.65rem]">
             Belleza profesional para transformar y cuidar tu cabello
           </h1>
 

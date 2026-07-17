@@ -19,7 +19,7 @@ export function SalonCTA() {
             Para estilistas
           </span>
 
-          <h2 className="font-heading text-3xl font-semibold text-[#faf8f5] md:text-4xl lg:text-5xl">
+          <h2 className="font-heading text-3xl font-medium text-[#faf8f5] md:text-4xl lg:text-5xl">
             Sicarú para profesionales
           </h2>
 

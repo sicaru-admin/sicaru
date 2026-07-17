@@ -201,7 +201,7 @@ export function CategoriesGrid() {
           <p className="text-xs font-semibold uppercase text-[#8e7a9e]">
             Compra con dirección
           </p>
-          <h2 className="mt-3 font-heading text-3xl font-semibold text-[#2e2b2b] md:text-4xl">
+          <h2 className="mt-3 font-heading text-3xl font-medium text-[#2e2b2b] md:text-4xl">
             Encuentra productos según el resultado que buscas
           </h2>
         </div>
@@ -232,7 +232,7 @@ export function CategoriesGrid() {
                       {need.number}
                     </span>
                     <span
-                      className={`font-heading font-semibold leading-tight transition-[font-size,color] duration-[220ms] ${
+                      className={`font-heading font-medium leading-tight transition-[font-size,color] duration-[220ms] ${
                         active ? "text-[1.05rem] md:text-[1.35rem]" : "text-[0.95rem] md:text-xl"
                       }`}
                     >
@@ -249,7 +249,7 @@ export function CategoriesGrid() {
             aria-live="polite"
           >
             <div className="absolute left-0 top-0 hidden h-full w-[34%] overflow-hidden bg-[#7f6d8a] lg:block" aria-hidden="true">
-              <span className="absolute left-7 top-8 font-heading text-[8rem] font-semibold leading-none text-[#faf8f5]/12">
+              <span className="absolute left-7 top-8 font-heading text-[8rem] font-normal leading-none text-[#faf8f5]/12">
                 {displayNeed.number}
               </span>
             </div>
@@ -292,7 +292,7 @@ export function CategoriesGrid() {
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8e7a9e]">
                     {displayNeed.label}
                   </p>
-                  <h3 className="mt-2 font-heading text-2xl font-semibold leading-tight text-[#2e2b2b] md:text-3xl lg:text-[2.15rem]">
+                  <h3 className="mt-2 font-heading text-2xl font-medium leading-tight text-[#2e2b2b] md:text-3xl lg:text-[2.15rem]">
                     {displayNeed.title}
                   </h3>
                   <p className="mt-3 text-sm leading-7 text-[#2e2b2b]/70 md:text-base">
