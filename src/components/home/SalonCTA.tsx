@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CheckCircle, MessageCircle } from "lucide-react";
+import { ArrowRight, CheckCircle } from "lucide-react";
 
 const BENEFITS = [
   "Coloración profesional",
@@ -9,9 +9,6 @@ const BENEFITS = [
   "Atención personalizada",
 ];
 
-const WHATSAPP_NUMBER = "528281111023";
-const WHATSAPP_MSG =
-  "¡Hola! Quiero consultar disponibilidad de productos profesionales.";
 
 export function SalonCTA() {
   return (
@@ -40,7 +37,7 @@ export function SalonCTA() {
             ))}
           </ul>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="mt-8 flex">
             <Link
               href="/salon-pro"
               className="inline-flex items-center justify-center gap-2 bg-[#faf8f5] px-7 py-3 text-sm font-semibold text-[#7f6d8a] transition-colors hover:bg-[#efe7dd]"
@@ -48,15 +45,6 @@ export function SalonCTA() {
               Consultar disponibilidad
               <ArrowRight className="h-4 w-4" />
             </Link>
-            <a
-              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MSG)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 border border-[#efe7dd]/45 px-7 py-3 text-sm font-semibold text-[#faf8f5] transition-colors hover:border-[#faf8f5] hover:bg-[#8e7a9e]"
-            >
-              <MessageCircle className="h-4 w-4" />
-              WhatsApp
-            </a>
           </div>
         </div>
 
