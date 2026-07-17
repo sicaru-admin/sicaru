@@ -12,9 +12,9 @@ const BENEFITS = [
 
 export function SalonCTA() {
   return (
-    <section className="bg-[#f5f1eb] py-12 md:py-14">
+    <section className="bg-[#f5f1eb] py-9 md:py-14">
       <div className="mx-auto grid max-w-[1400px] gap-4 px-5 sm:px-8 lg:px-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] lg:items-stretch">
-        <div className="bg-[#7f6d8a] p-6 md:p-8 lg:p-10">
+        <div className="bg-[#7f6d8a] p-5 md:p-8 lg:p-10">
           <span className="mb-4 inline-block text-sm font-medium text-[#efe7dd]">
             Para estilistas
           </span>
@@ -23,12 +23,12 @@ export function SalonCTA() {
             Sicarú para profesionales
           </h2>
 
-          <p className="mt-4 max-w-2xl text-base leading-8 text-[#efe7dd] md:text-lg">
+          <p className="mt-3 max-w-2xl text-base leading-7 text-[#efe7dd] md:mt-4 md:text-lg md:leading-8">
             Encuentra coloración, tratamientos, herramientas y productos para
             tu trabajo como estilista.
           </p>
 
-          <ul className="mt-8 grid gap-3 sm:grid-cols-2">
+          <ul className="mt-5 grid gap-2.5 sm:grid-cols-2 md:mt-8 md:gap-3">
             {BENEFITS.map((b) => (
               <li key={b} className="flex items-center gap-3 text-[#faf8f5]">
                 <CheckCircle className="h-5 w-5 shrink-0 text-[#efe7dd]" />
@@ -37,7 +37,7 @@ export function SalonCTA() {
             ))}
           </ul>
 
-          <div className="mt-8 flex">
+          <div className="mt-6 flex md:mt-8">
             <Link
               href="/salon-pro"
               className="inline-flex items-center justify-center gap-2 bg-[#faf8f5] px-7 py-3 text-sm font-semibold text-[#7f6d8a] transition-colors hover:bg-[#efe7dd]"
@@ -48,7 +48,7 @@ export function SalonCTA() {
           </div>
         </div>
 
-        <div className="relative min-h-[260px] overflow-hidden bg-[#efe7dd] sm:min-h-[340px] lg:min-h-full">
+        <div className="relative min-h-[220px] overflow-hidden bg-[#efe7dd] sm:min-h-[300px] md:min-h-[340px] lg:min-h-full">
           <Image
             src="/images/salon-tratamiento-cabello.jpg"
             alt="Clienta relajándose mientras recibe tratamiento capilar profesional en salón de belleza mexicano"
