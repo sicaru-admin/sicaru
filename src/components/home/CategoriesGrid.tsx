@@ -66,24 +66,25 @@ export function CategoriesGrid() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-px overflow-hidden border border-[#efe7dd] bg-[#efe7dd] md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {CATEGORIES.map((cat) => (
             <Link
               key={cat.name}
               href={cat.href}
-              className="group relative flex min-h-[260px] flex-col justify-between overflow-hidden bg-[#faf8f5] p-5 md:p-6"
+              className="group flex min-h-full flex-col overflow-hidden border border-[#efe7dd] bg-[#faf8f5] transition-colors duration-[220ms] hover:border-[#9b89a8]/55"
             >
-              <Image
-                src={cat.image}
-                alt={cat.alt}
-                fill
-                className="object-cover opacity-25 transition-transform duration-500 group-hover:scale-[1.03]"
-                sizes="(max-width: 768px) 100vw, 33vw"
-              />
-              <div className="absolute inset-0 bg-gradient-to-br from-[#faf8f5] via-[#faf8f5]/85 to-[#8e7a9e]/45" />
+              <div className="relative aspect-[4/3] overflow-hidden bg-[#efe7dd]">
+                <Image
+                  src={cat.image}
+                  alt={cat.alt}
+                  fill
+                  className="object-cover transition-transform duration-[220ms] ease-out group-hover:scale-[1.02]"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
+              </div>
 
-              <div className="relative z-10">
-                <div className="mb-8 flex h-10 w-10 items-center justify-center border border-[#9b89a8]/45 bg-[#faf8f5]/70 text-[#7f6d8a]">
+              <div className="flex flex-1 flex-col border-t border-[#efe7dd] p-5 md:p-6">
+                <div className="mb-5 flex h-10 w-10 items-center justify-center border border-[#9b89a8]/45 bg-[#faf8f5] text-[#7f6d8a] transition-colors duration-[220ms] group-hover:border-[#8e7a9e]/70 group-hover:text-[#8e7a9e]">
                   <cat.icon className="h-5 w-5" />
                 </div>
                 <h3 className="font-heading text-2xl font-semibold text-[#2e2b2b]">
@@ -92,11 +93,11 @@ export function CategoriesGrid() {
                 <p className="mt-3 max-w-xs text-sm leading-6 text-[#2e2b2b]/70">
                   {cat.brands}
                 </p>
+                <span className="mt-auto inline-flex items-center gap-2 pt-6 text-xs font-semibold uppercase text-[#7f6d8a]">
+                  Explorar
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-[220ms] group-hover:translate-x-1" />
+                </span>
               </div>
-              <span className="relative z-10 mt-6 inline-flex items-center gap-2 text-xs font-semibold uppercase text-[#7f6d8a]">
-                Explorar
-                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-              </span>
             </Link>
           ))}
         </div>
