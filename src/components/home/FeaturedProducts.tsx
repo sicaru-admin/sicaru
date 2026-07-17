@@ -17,6 +17,19 @@ export async function FeaturedProducts() {
     return null;
   }
 
+  const productsWithImages = products
+    .filter((product) => product.thumbnail?.trim())
+    .slice(0, 4);
+
+  if (productsWithImages.length < 3) {
+    return null;
+  }
+
+  const gridColumns =
+    productsWithImages.length === 3
+      ? "grid-cols-1 lg:grid-cols-3"
+      : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4";
+
   return (
     <section className="bg-[#f5f1eb] py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
@@ -38,8 +51,8 @@ export async function FeaturedProducts() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
-          {products.map((product) => (
+        <div className={`grid ${gridColumns} gap-3 md:gap-5`}>
+          {productsWithImages.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>

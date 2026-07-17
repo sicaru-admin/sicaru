@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bodoni_Moda, Poppins } from "next/font/google";
+import { Libre_Bodoni, Poppins } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { AuthProvider } from "@/components/auth/AuthProvider";
@@ -7,7 +7,7 @@ import { WebVitals } from "@/components/analytics/WebVitals";
 import { NavigationProgress } from "@/components/ui/NavigationProgress";
 import { BrowserCacheReset } from "@/components/system/BrowserCacheReset";
 
-const bodoniModa = Bodoni_Moda({
+const bodoniModa = Libre_Bodoni({
   variable: "--font-bodoni",
   subsets: ["latin"],
   display: "swap",

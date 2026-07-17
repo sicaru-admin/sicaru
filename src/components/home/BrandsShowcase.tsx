@@ -41,14 +41,14 @@ const BRANDS = [
 
 export function BrandsShowcase() {
   return (
-    <section className="bg-[#faf8f5] py-16 md:py-20">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+    <section className="bg-[#faf8f5] py-12 md:py-14">
+      <div className="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10">
         <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase text-[#8e7a9e]">
               Curaduría Sicarú
             </p>
-            <h2 className="mt-3 font-heading text-3xl font-semibold text-[#2e2b2b] md:text-4xl">
+            <h2 className="mt-3 font-heading text-3xl font-medium text-[#2e2b2b] md:text-4xl">
               Marcas profesionales, seleccionadas con intención
             </h2>
           </div>
@@ -66,7 +66,7 @@ export function BrandsShowcase() {
               className="group border-b border-[#efe7dd] bg-[#faf8f5] p-5 transition-colors hover:bg-[#f5f1eb] md:border-r xl:border-b-0"
             >
               <div className="mb-6 h-px w-10 bg-[#9b89a8]" />
-              <h3 className="font-heading text-xl font-semibold text-[#2e2b2b]">
+              <h3 className="font-heading text-xl font-medium text-[#2e2b2b]">
                 {brand.name}
               </h3>
               <p className="mt-3 min-h-14 text-sm leading-6 text-[#2e2b2b]/60">
