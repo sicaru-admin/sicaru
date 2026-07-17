@@ -44,13 +44,13 @@ const NEEDS: Need[] = [
         src: "/images/products-hero/voglia-total-repair.webp",
         alt: "Voglia Total Repair para reparación profesional del cabello",
         className:
-          "bottom-[9%] right-[18%] w-[28%] sm:bottom-[8%] sm:right-[20%] sm:w-[24%] lg:right-[24%] lg:w-[21%]",
+          "bottom-[9%] right-[15%] w-[30%] sm:bottom-[8%] sm:right-[18%] sm:w-[26%] lg:right-[20%] lg:w-[27%]",
       },
       {
         src: "/images/products-hero/vitale-bifase-pro-keratin.webp",
         alt: "Vitale Bifase Pro Keratin para protección capilar",
         className:
-          "bottom-[8%] right-[4%] w-[25%] sm:right-[7%] sm:w-[21%] lg:right-[9%] lg:w-[18%]",
+          "bottom-[8%] right-[3%] w-[27%] sm:right-[6%] sm:w-[23%] lg:right-[5%] lg:w-[23%]",
       },
     ],
   },
@@ -84,13 +84,13 @@ const NEEDS: Need[] = [
         src: "/images/products-hero/hidra-color-mask.webp",
         alt: "Hidra Color Mask para coloración capilar",
         className:
-          "bottom-[7%] right-[18%] w-[28%] sm:right-[20%] sm:w-[23%] lg:right-[23%] lg:w-[20%]",
+          "bottom-[7%] right-[16%] w-[30%] sm:right-[18%] sm:w-[25%] lg:right-[20%] lg:w-[27%]",
       },
       {
         src: "/images/products-hero/voglia-color-fun.webp",
         alt: "Voglia Color Fun para coloración profesional",
         className:
-          "bottom-[7%] right-[3%] w-[27%] sm:right-[7%] sm:w-[22%] lg:right-[8%] lg:w-[19%]",
+          "bottom-[7%] right-[2%] w-[29%] sm:right-[6%] sm:w-[24%] lg:right-[5%] lg:w-[24%]",
       },
     ],
   },
@@ -111,7 +111,7 @@ const NEEDS: Need[] = [
         src: "/images/products-hero/xiomara-ten-tu.webp",
         alt: "Xiomara Ten+Tú para control y acabado capilar",
         className:
-          "bottom-[8%] right-[7%] w-[34%] sm:right-[10%] sm:w-[28%] lg:right-[12%] lg:w-[24%]",
+          "bottom-[7%] right-[5%] w-[35%] sm:right-[8%] sm:w-[30%] lg:right-[8%] lg:w-[31%]",
       },
     ],
   },
@@ -132,7 +132,7 @@ const NEEDS: Need[] = [
         src: "/images/products-hero/vitale-bifase-pro-keratin.webp",
         alt: "Vitale Bifase Pro Keratin para protección capilar",
         className:
-          "bottom-[8%] right-[8%] w-[28%] sm:right-[11%] sm:w-[22%] lg:right-[12%] lg:w-[19%]",
+          "bottom-[7%] right-[6%] w-[30%] sm:right-[9%] sm:w-[25%] lg:right-[8%] lg:w-[28%]",
       },
     ],
   },
@@ -154,32 +154,44 @@ const NEEDS: Need[] = [
 
 export function CategoriesGrid() {
   const [activeId, setActiveId] = useState(NEEDS[0].id);
-  const [isEntering, setIsEntering] = useState(true);
-  const transitionTimer = useRef<number | null>(null);
-  const activeNeed = NEEDS.find((need) => need.id === activeId) ?? NEEDS[0];
+  const [displayNeed, setDisplayNeed] = useState<Need>(NEEDS[0]);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const exitTimer = useRef<number | null>(null);
+  const enterTimer = useRef<number | null>(null);
 
   useEffect(() => {
     return () => {
-      if (transitionTimer.current) {
-        window.clearTimeout(transitionTimer.current);
+      if (exitTimer.current) {
+        window.clearTimeout(exitTimer.current);
+      }
+      if (enterTimer.current) {
+        window.clearTimeout(enterTimer.current);
       }
     };
   }, []);
 
   const selectNeed = (id: string) => {
-    if (id === activeId) {
+    if (id === activeId && id === displayNeed.id) {
       return;
     }
 
-    if (transitionTimer.current) {
-      window.clearTimeout(transitionTimer.current);
+    const nextNeed = NEEDS.find((need) => need.id === id) ?? NEEDS[0];
+
+    if (exitTimer.current) {
+      window.clearTimeout(exitTimer.current);
+    }
+    if (enterTimer.current) {
+      window.clearTimeout(enterTimer.current);
     }
 
     setActiveId(id);
-    setIsEntering(false);
-    transitionTimer.current = window.setTimeout(() => {
-      setIsEntering(true);
-    }, 20);
+    setIsTransitioning(true);
+    exitTimer.current = window.setTimeout(() => {
+      setDisplayNeed(nextNeed);
+      enterTimer.current = window.setTimeout(() => {
+        setIsTransitioning(false);
+      }, 20);
+    }, 120);
   };
 
   return (
@@ -206,16 +218,24 @@ export function CategoriesGrid() {
                     type="button"
                     aria-pressed={active}
                     onClick={() => selectNeed(need.id)}
-                    className={`group flex min-h-16 items-center gap-4 border-b border-[#efe7dd] px-0 py-4 text-left transition-colors duration-[200ms] focus:outline-none focus-visible:bg-[#f5f1eb] focus-visible:shadow-[inset_3px_0_0_#7f6d8a] sm:px-4 lg:border-l lg:px-5 ${
+                    className={`group flex min-h-16 items-center gap-4 border-b border-[#efe7dd] px-0 py-4 text-left transition-colors duration-[220ms] focus:outline-none focus-visible:bg-[#f5f1eb] focus-visible:shadow-[inset_4px_0_0_#7f6d8a] sm:px-4 lg:border-l lg:px-5 ${
                       active
-                        ? "border-l-[#7f6d8a] bg-[#f5f1eb] text-[#7f6d8a] shadow-[inset_3px_0_0_#7f6d8a]"
+                        ? "border-l-[#7f6d8a] bg-[#f5f1eb] text-[#7f6d8a] shadow-[inset_4px_0_0_#7f6d8a]"
                         : "border-l-transparent text-[#2e2b2b] hover:bg-[#f5f1eb] hover:text-[#7f6d8a]"
                     }`}
                   >
-                    <span className="text-xs font-semibold text-[#9b89a8]">
+                    <span
+                      className={`font-semibold transition-colors duration-[220ms] ${
+                        active ? "text-base text-[#7f6d8a]" : "text-xs text-[#9b89a8]"
+                      }`}
+                    >
                       {need.number}
                     </span>
-                    <span className="font-heading text-xl font-semibold leading-tight">
+                    <span
+                      className={`font-heading font-semibold leading-tight transition-[font-size,color] duration-[220ms] ${
+                        active ? "text-[1.35rem]" : "text-xl"
+                      }`}
+                    >
                       {need.label}
                     </span>
                   </button>
@@ -228,27 +248,33 @@ export function CategoriesGrid() {
             className="relative min-h-[520px] overflow-hidden border border-[#efe7dd] bg-[#f5f1eb] md:min-h-[560px] lg:min-h-[590px]"
             aria-live="polite"
           >
-            <div className="absolute left-0 top-0 hidden h-full w-[34%] bg-[#7f6d8a] lg:block" />
+            <div className="absolute left-0 top-0 hidden h-full w-[34%] overflow-hidden bg-[#7f6d8a] lg:block" aria-hidden="true">
+              <span className="absolute left-7 top-8 font-heading text-[8rem] font-semibold leading-none text-[#faf8f5]/12">
+                {displayNeed.number}
+              </span>
+            </div>
             <div
-              key={activeNeed.id}
-              className={`relative h-full min-h-[520px] transition-all duration-[200ms] ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none md:min-h-[560px] lg:min-h-[590px] ${
-                isEntering ? "translate-y-0 opacity-100" : "translate-y-2 opacity-95"
+              key={displayNeed.id}
+              className={`relative h-full min-h-[520px] transition-all duration-[240ms] ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none md:min-h-[560px] lg:min-h-[590px] ${
+                isTransitioning ? "translate-y-2 opacity-90" : "translate-y-0 opacity-100"
               }`}
             >
               <div className="relative h-[260px] overflow-hidden bg-[#efe7dd] sm:h-[340px] lg:absolute lg:inset-y-0 lg:left-[30%] lg:right-0 lg:h-auto">
                 <Image
-                  src={activeNeed.image}
-                  alt={activeNeed.imageAlt}
+                  src={displayNeed.image}
+                  alt={displayNeed.imageAlt}
                   fill
-                  priority={activeNeed.id === NEEDS[0].id}
+                  priority={displayNeed.id === NEEDS[0].id}
                   sizes="(max-width: 1024px) 100vw, 48vw"
-                  className={`object-cover ${activeNeed.imagePosition ?? "object-center"}`}
+                  className={`object-cover ${displayNeed.imagePosition ?? "object-center"}`}
                 />
 
-                {activeNeed.products?.map((product) => (
+                {displayNeed.products?.map((product) => (
                   <div
                     key={product.src}
-                    className={`pointer-events-none absolute z-20 aspect-[6/7] drop-shadow-[0_14px_20px_rgba(127,109,138,0.14)] ${product.className}`}
+                    className={`pointer-events-none absolute z-20 aspect-[6/7] drop-shadow-[0_14px_20px_rgba(127,109,138,0.14)] transition-all delay-[60ms] duration-[240ms] ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none ${
+                      isTransitioning ? "translate-y-2 opacity-0" : "translate-y-0 opacity-100"
+                    } ${product.className}`}
                   >
                     <Image
                       src={product.src}
@@ -262,22 +288,22 @@ export function CategoriesGrid() {
               </div>
 
               <div className="relative z-30 flex min-h-[260px] flex-col justify-end p-5 sm:p-6 md:p-7 lg:min-h-[590px] lg:justify-end lg:p-8">
-                <div className="max-w-xl border-t border-[#efe7dd] bg-[#faf8f5] px-5 py-5 sm:px-6 md:px-7 md:py-6 lg:max-w-[58%] lg:border-l lg:border-r">
+                <div className="max-w-xl border-t border-[#efe7dd] bg-[#faf8f5] px-5 py-4 sm:px-6 md:px-6 md:py-5 lg:max-w-[48%] lg:border-l lg:border-r">
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8e7a9e]">
-                    {activeNeed.label}
+                    {displayNeed.label}
                   </p>
-                  <h3 className="mt-3 font-heading text-3xl font-semibold leading-tight text-[#2e2b2b] md:text-4xl">
-                    {activeNeed.title}
+                  <h3 className="mt-2 font-heading text-2xl font-semibold leading-tight text-[#2e2b2b] md:text-3xl lg:text-[2.15rem]">
+                    {displayNeed.title}
                   </h3>
-                  <p className="mt-4 text-sm leading-7 text-[#2e2b2b]/70 md:text-base">
-                    {activeNeed.description}
+                  <p className="mt-3 text-sm leading-7 text-[#2e2b2b]/70 md:text-base">
+                    {displayNeed.description}
                   </p>
-                  <p className="mt-5 text-xs font-semibold uppercase tracking-[0.12em] text-[#7f6d8a]">
-                    {activeNeed.brands}
+                  <p className="mt-4 text-xs font-semibold uppercase tracking-[0.12em] text-[#7f6d8a]">
+                    {displayNeed.brands}
                   </p>
                   <Link
-                    href={activeNeed.href}
-                    className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 bg-[#7f6d8a] px-6 py-3 text-sm font-semibold text-[#faf8f5] transition-colors duration-[200ms] hover:bg-[#8e7a9e] focus:outline-none focus-visible:shadow-[0_0_0_3px_rgba(127,109,138,0.22)]"
+                    href={displayNeed.href}
+                    className="mt-5 inline-flex min-h-11 items-center justify-center gap-2 bg-[#7f6d8a] px-6 py-3 text-sm font-semibold text-[#faf8f5] transition-colors duration-[200ms] hover:bg-[#8e7a9e] focus:outline-none focus-visible:shadow-[0_0_0_3px_rgba(127,109,138,0.22)]"
                   >
                     Explorar productos
                     <ArrowRight className="h-4 w-4" />
