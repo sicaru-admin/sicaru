@@ -208,7 +208,7 @@ export function CategoriesGrid() {
 
         <div className="grid gap-6 lg:grid-cols-[minmax(240px,0.34fr)_minmax(0,0.66fr)] lg:items-stretch">
           <div className="border-y border-[#efe7dd]" aria-label="Necesidades capilares">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:flex lg:flex-col">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:flex lg:flex-col">
               {NEEDS.map((need) => {
                 const active = need.id === activeId;
 
@@ -218,7 +218,7 @@ export function CategoriesGrid() {
                     type="button"
                     aria-pressed={active}
                     onClick={() => selectNeed(need.id)}
-                    className={`group flex min-h-16 items-center gap-4 border-b border-[#efe7dd] px-0 py-4 text-left transition-colors duration-[220ms] focus:outline-none focus-visible:bg-[#f5f1eb] focus-visible:shadow-[inset_4px_0_0_#7f6d8a] sm:px-4 lg:border-l lg:px-5 ${
+                    className={`group flex min-h-[58px] items-center gap-2.5 border-b border-[#efe7dd] px-3 py-3 text-left transition-colors duration-[220ms] focus:outline-none focus-visible:bg-[#f5f1eb] focus-visible:shadow-[inset_4px_0_0_#7f6d8a] md:min-h-16 md:gap-4 md:px-4 md:py-4 lg:border-l lg:px-5 ${
                       active
                         ? "border-l-[#7f6d8a] bg-[#f5f1eb] text-[#7f6d8a] shadow-[inset_4px_0_0_#7f6d8a]"
                         : "border-l-transparent text-[#2e2b2b] hover:bg-[#f5f1eb] hover:text-[#7f6d8a]"
@@ -226,14 +226,14 @@ export function CategoriesGrid() {
                   >
                     <span
                       className={`font-semibold transition-colors duration-[220ms] ${
-                        active ? "text-base text-[#7f6d8a]" : "text-xs text-[#9b89a8]"
+                        active ? "text-sm text-[#7f6d8a] md:text-base" : "text-[0.7rem] text-[#9b89a8] md:text-xs"
                       }`}
                     >
                       {need.number}
                     </span>
                     <span
                       className={`font-heading font-semibold leading-tight transition-[font-size,color] duration-[220ms] ${
-                        active ? "text-[1.35rem]" : "text-xl"
+                        active ? "text-[1.05rem] md:text-[1.35rem]" : "text-[0.95rem] md:text-xl"
                       }`}
                     >
                       {need.label}
