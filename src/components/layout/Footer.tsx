@@ -28,7 +28,7 @@ const footerLinks = {
 export function Footer() {
   return (
     <footer className="sicaru-footer-dark">
-      <div className="mx-auto max-w-[1400px] px-5 py-10 sm:px-8 lg:px-10 lg:py-12">
+      <div className="mx-auto max-w-[1400px] px-5 pb-24 pt-10 sm:px-8 md:py-10 lg:px-10 lg:py-12">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1.85fr)] lg:items-start">
           <div>
             <BrandWordmark variant="light" />
