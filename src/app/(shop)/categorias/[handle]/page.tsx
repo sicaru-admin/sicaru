@@ -4,7 +4,8 @@ import { notFound } from "next/navigation"
 import { ChevronRight } from "lucide-react"
 import { getCategoryByHandle } from "@/lib/data/categories"
 import { getProducts } from "@/lib/data/products"
-import { ProductCard } from "@/components/ui/ProductCard"
+import { InternalPageHeader } from "@/components/internal/InternalPageHeader"
+import { ProductCatalogCard } from "@/components/products/ProductCatalogCard"
 import { JsonLd } from "@/components/seo/JsonLd"
 import {
   generateCollectionPageSchema,
@@ -70,73 +71,72 @@ export default async function CategoryPage({ params }: Props) {
     category.description ||
     `Explora nuestra colección de ${category.name}. Encuentra los mejores productos en Sicarú.`
 
-  const gradientClasses = categoryData?.gradient
-    ? `bg-gradient-to-br ${categoryData.gradient}`
-    : "bg-gradient-to-br from-sicaru-purple-700 to-sicaru-purple-500"
-
   return (
     <>
       <JsonLd schema={[collectionSchema, breadcrumbSchema]} />
 
-      {/* Category Hero */}
-      <section className={`${gradientClasses} py-14 text-white`}>
-        <div className="mx-auto max-w-4xl px-4 text-center">
-          <nav
-            aria-label="Breadcrumb"
-            className="flex items-center justify-center gap-1 text-sm"
+      <div className="bg-[#f5f1eb] pt-3 md:pt-5">
+        <nav
+          aria-label="Breadcrumb"
+          className="mx-auto flex max-w-[1400px] flex-wrap items-center gap-1.5 px-5 text-sm text-[#2e2b2b]/60 sm:px-8 lg:px-10"
+        >
+          <Link
+            href="/"
+            className="transition-colors hover:text-[#7f6d8a] focus:outline-none focus-visible:text-[#7f6d8a]"
           >
-            <Link
-              href="/"
-              className="text-white/70 transition-colors hover:text-white"
-            >
-              Inicio
-            </Link>
-            <ChevronRight className="h-4 w-4 text-white/50" />
-            <Link
-              href="/productos"
-              className="text-white/70 transition-colors hover:text-white"
-            >
-              Productos
-            </Link>
-            <ChevronRight className="h-4 w-4 text-white/50" />
-            <span className="text-white">{category.name}</span>
-          </nav>
+            Inicio
+          </Link>
+          <ChevronRight className="h-4 w-4 text-[#9b89a8]" aria-hidden="true" />
+          <Link
+            href="/productos"
+            className="transition-colors hover:text-[#7f6d8a] focus:outline-none focus-visible:text-[#7f6d8a]"
+          >
+            Productos
+          </Link>
+          <ChevronRight className="h-4 w-4 text-[#9b89a8]" aria-hidden="true" />
+          <span className="text-[#2e2b2b]">{category.name}</span>
+        </nav>
+      </div>
 
-          <h1 className="mt-4 font-heading text-3xl font-bold md:text-4xl">
-            {category.name}
-          </h1>
+      <div className="[&>section]:py-8 md:[&>section]:py-16 [&_h1]:mt-3 md:[&_h1]:mt-4 [&_p]:mt-3 md:[&_p]:mt-5">
+        <InternalPageHeader
+          eyebrow="CATEGORÍA SICARÚ"
+          title={category.name}
+          description={description}
+        />
+      </div>
 
-          <p className="mx-auto mt-3 max-w-2xl text-lg text-white/80">
-            {description}
-          </p>
-
-          <span className="mt-4 inline-block rounded-full bg-white/20 px-4 py-1.5 text-sm">
-            {products.length} productos
-          </span>
-        </div>
-      </section>
-
-      {/* Product Grid */}
-      <section className="mx-auto max-w-7xl px-4 py-12">
-        {products.length === 0 ? (
-          <div className="py-16 text-center">
-            <p className="text-lg text-gray-500">
-              No hay productos disponibles en esta categoría por el momento.
+      <section className="bg-[#faf8f5] py-7 md:py-12 lg:py-14">
+        <div className="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10">
+          <div className="mb-5 border-y border-[#efe7dd] py-4 md:mb-10 md:py-6">
+            <p className="text-sm font-medium text-[#2e2b2b]/65" aria-live="polite">
+              {products.length} producto{products.length === 1 ? "" : "s"}
             </p>
-            <Link
-              href="/productos"
-              className="mt-4 inline-block text-sicaru-purple-600 underline hover:text-sicaru-purple-800"
-            >
-              Ver todos los productos
-            </Link>
           </div>
-        ) : (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        )}
+
+          {products.length === 0 ? (
+            <div className="border border-[#efe7dd] bg-[#f5f1eb] px-5 py-14 text-center md:px-8 md:py-16">
+              <h2 className="font-heading text-2xl font-medium text-[#2e2b2b] md:text-3xl">
+                No hay productos disponibles en esta categoría
+              </h2>
+              <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[#2e2b2b]/65">
+                Puedes explorar el catálogo completo mientras actualizamos esta selección.
+              </p>
+              <Link
+                href="/productos"
+                className="mt-6 inline-flex min-h-11 items-center justify-center bg-[#7f6d8a] px-6 py-3 text-sm font-semibold text-[#faf8f5] transition-colors hover:bg-[#8e7a9e] focus:outline-none focus-visible:shadow-[0_0_0_3px_rgba(127,109,138,0.22)]"
+              >
+                Ver todos los productos
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3 xl:grid-cols-4 xl:gap-6">
+              {products.map((product) => (
+                <ProductCatalogCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
+        </div>
       </section>
     </>
   )
