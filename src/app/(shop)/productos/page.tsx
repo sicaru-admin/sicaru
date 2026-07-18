@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { ProductosContent } from "./ProductosContent";
+import { InternalPageHeader } from "@/components/internal/InternalPageHeader";
 import { getProducts } from "@/lib/data/products";
 
 export const metadata: Metadata = {
@@ -16,32 +16,12 @@ export default async function ProductosPage() {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-[#2e2b2b] py-20 text-[#faf8f5] md:py-24">
-        <Image
-          src="/images/productos-carta-colores-tienda.jpg"
-          alt="Carta de colores profesional y productos capilares en exhibición en tienda Sicarú"
-          fill
-          className="object-cover opacity-30"
-          priority
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#2e2b2b]/90 via-[#7f6d8a]/64 to-[#efe7dd]/16" />
-        <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#efe7dd]">
-            Catálogo Sicarú
-          </p>
-          <h1 className="mt-3 max-w-3xl font-heading text-4xl font-semibold leading-tight md:text-5xl">
-            Productos profesionales para cuidar, tratar y estilizar tu cabello
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-8 text-[#faf8f5]/80">
-            Explora una selección pensada para uso personal y salón. Si tienes
-            dudas, escríbenos y te ayudamos a elegir.
-          </p>
-        </div>
-      </section>
-      <div className="sicaru-section mx-auto max-w-7xl px-5 py-12 sm:px-8 md:py-16">
-        <ProductosContent products={products} />
-      </div>
+      <InternalPageHeader
+        eyebrow="CATÁLOGO SICARÚ"
+        title="Productos profesionales para cada necesidad"
+        description="Explora coloración, tratamientos, cuidado diario y herramientas seleccionadas para uso en casa o salón."
+      />
+      <ProductosContent products={products} />
     </>
   );
 }
