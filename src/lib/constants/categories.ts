@@ -11,14 +11,14 @@ export const CATEGORIES: Record<string, CategoryData> = {
     handle: "shampoo-y-acondicionador",
     gradient: "from-sicaru-purple-600 to-sicaru-purple-800",
     description:
-      "Shampoos y acondicionadores profesionales de las mejores marcas mexicanas. Productos formulados para todo tipo de cabello: seco, graso, teñido, dañado y con tratamiento de keratina.",
+      "Shampoos y acondicionadores profesionales para distintas necesidades del cabello: hidratación, limpieza, cuidado del color y mantenimiento diario.",
   },
   "color-y-tintes": {
     name: "Color y Tintes",
     handle: "color-y-tintes",
     gradient: "from-sicaru-purple-700 to-sicaru-purple-600",
     description:
-      "Tintes profesionales en crema, oxidantes y decolorantes de Küül, Voglia e Hidra Color. Amplia carta de colores con cobertura total de canas y resultados duraderos.",
+      "Tintes profesionales en crema, oxidantes y productos de coloración de Küül, Voglia e Hidra Color. Opciones para renovar el tono, cubrir canas y mantener un acabado uniforme.",
   },
   "styling-y-acabado": {
     name: "Styling y Acabado",

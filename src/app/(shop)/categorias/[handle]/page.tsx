@@ -75,7 +75,7 @@ export default async function CategoryPage({ params }: Props) {
     <>
       <JsonLd schema={[collectionSchema, breadcrumbSchema]} />
 
-      <div className="bg-[#f5f1eb] pt-5">
+      <div className="bg-[#f5f1eb] pt-3 md:pt-5">
         <nav
           aria-label="Breadcrumb"
           className="mx-auto flex max-w-[1400px] flex-wrap items-center gap-1.5 px-5 text-sm text-[#2e2b2b]/60 sm:px-8 lg:px-10"
@@ -98,15 +98,17 @@ export default async function CategoryPage({ params }: Props) {
         </nav>
       </div>
 
-      <InternalPageHeader
-        eyebrow="CATEGORÍA SICARÚ"
-        title={category.name}
-        description={description}
-      />
+      <div className="[&>section]:py-8 md:[&>section]:py-16 [&_h1]:mt-3 md:[&_h1]:mt-4 [&_p]:mt-3 md:[&_p]:mt-5">
+        <InternalPageHeader
+          eyebrow="CATEGORÍA SICARÚ"
+          title={category.name}
+          description={description}
+        />
+      </div>
 
-      <section className="bg-[#faf8f5] py-10 md:py-12 lg:py-14">
+      <section className="bg-[#faf8f5] py-7 md:py-12 lg:py-14">
         <div className="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10">
-          <div className="mb-8 border-y border-[#efe7dd] py-5 md:mb-10 md:py-6">
+          <div className="mb-5 border-y border-[#efe7dd] py-4 md:mb-10 md:py-6">
             <p className="text-sm font-medium text-[#2e2b2b]/65" aria-live="polite">
               {products.length} producto{products.length === 1 ? "" : "s"}
             </p>
