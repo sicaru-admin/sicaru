@@ -25,35 +25,34 @@ export function ProductTabs({ description, material }: ProductTabsProps) {
       label: "Ingredientes",
       content: material,
     },
-    {
-      id: "como-usar",
-      label: "Cómo Usar",
-      content:
-        "Consulta las instrucciones de uso en el empaque del producto. Para mejores resultados, sigue las recomendaciones del fabricante.",
-    },
-    {
-      id: "resenas",
-      label: "Reseñas",
-      content:
-        "Las reseñas de clientes estarán disponibles próximamente. ¡Sé el primero en dejar tu opinión!",
-    },
-  ];
+  ].filter((tab) => tab.content && tab.content.trim().length > 0);
 
-  const [active, setActive] = useState(tabs[0].id);
+  const [active, setActive] = useState(tabs[0]?.id ?? "");
   const activeTab = tabs.find((t) => t.id === active) ?? tabs[0];
 
+  if (!activeTab) return null;
+
   return (
-    <div>
+    <section aria-label="Información del producto">
       {/* Tab bar */}
-      <div className="flex gap-1 overflow-x-auto border-b border-gray-200">
+      <div
+        role="tablist"
+        aria-label="Secciones de información del producto"
+        className="flex gap-1 overflow-x-auto border-b border-[#efe7dd]"
+      >
         {tabs.map((tab) => (
           <button
             key={tab.id}
+            type="button"
+            role="tab"
+            aria-selected={tab.id === active}
+            aria-controls={`product-panel-${tab.id}`}
+            id={`product-tab-${tab.id}`}
             onClick={() => setActive(tab.id)}
-            className={`whitespace-nowrap px-4 py-3 text-sm font-medium transition-colors ${
+            className={`min-h-11 whitespace-nowrap px-4 py-3 text-sm font-medium transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8] ${
               tab.id === active
-                ? "border-b-2 border-sicaru-pink text-sicaru-pink"
-                : "text-gray-500 hover:text-sicaru-purple-700"
+                ? "border-b-2 border-[#7f6d8a] text-[#7f6d8a]"
+                : "text-[#2e2b2b]/60 hover:text-[#2e2b2b]"
             }`}
           >
             {tab.label}
@@ -62,9 +61,14 @@ export function ProductTabs({ description, material }: ProductTabsProps) {
       </div>
 
       {/* Content */}
-      <div className="py-6 text-sm leading-relaxed text-gray-600">
-        {activeTab.content || "Información no disponible para este producto."}
+      <div
+        role="tabpanel"
+        id={`product-panel-${activeTab.id}`}
+        aria-labelledby={`product-tab-${activeTab.id}`}
+        className="py-6 text-sm leading-7 text-[#2e2b2b]/70 md:text-base"
+      >
+        {activeTab.content}
       </div>
-    </div>
+    </section>
   );
 }

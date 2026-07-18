@@ -50,22 +50,22 @@ export function ProductActions({ product }: ProductActionsProps) {
     price.original_amount > price.calculated_amount;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 [&_button]:min-h-11 [&_button]:min-w-11 [&_button]:focus-visible:outline [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-[#9b89a8]">
       {/* Price */}
       <div>
         <div className="flex items-baseline gap-3">
           <PriceDisplay
             variant={selectedVariant}
-            className="text-2xl font-bold text-sicaru-purple-900 md:text-3xl"
+            className="text-2xl font-semibold text-[#2e2b2b] md:text-3xl"
           />
           {hasDiscount && price?.original_amount != null && (
             <PriceDisplay
               amount={price.original_amount}
-              className="text-lg text-gray-400 line-through"
+              className="text-lg text-[#7f6d8a]/55 line-through"
             />
           )}
         </div>
-        <p className="mt-1 text-xs text-gray-500">IVA incluido</p>
+        <p className="mt-1 text-xs text-[#2e2b2b]/55">IVA incluido</p>
       </div>
 
       {/* Variant selector */}
@@ -78,12 +78,13 @@ export function ProductActions({ product }: ProductActionsProps) {
       {/* Quantity */}
       <QuantitySelector quantity={quantity} onChange={setQuantity} />
 
-      {/* Action buttons — sticky on mobile */}
-      <div className="sticky bottom-0 z-20 -mx-4 bg-white px-4 py-4 md:static md:mx-0 md:p-0">
+      {/* Action buttons */}
+      <div className="space-y-3">
         <button
+          type="button"
           onClick={handleAddToCart}
           disabled={isLoading}
-          className="btn-ripple tap-feedback w-full rounded-full bg-sicaru-pink px-8 py-3.5 text-base font-semibold text-white transition-colors hover:bg-sicaru-pink/90 disabled:cursor-not-allowed disabled:opacity-50 md:text-lg"
+          className="btn-ripple tap-feedback w-full bg-[#7f6d8a] px-8 py-3.5 text-base font-semibold text-[#faf8f5] transition-colors duration-200 hover:bg-[#8e7a9e] disabled:cursor-not-allowed disabled:opacity-50 md:text-lg"
         >
           {isLoading ? "Agregando..." : "Agregar al Carrito"}
         </button>
@@ -92,7 +93,7 @@ export function ProductActions({ product }: ProductActionsProps) {
           href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMsg)}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#25D366] px-8 py-3 text-base font-semibold text-[#25D366] transition-colors hover:bg-[#25D366] hover:text-white"
+          className="flex min-h-11 w-full items-center justify-center gap-2 border border-[#7f6d8a] px-8 py-3 text-base font-semibold text-[#7f6d8a] transition-colors duration-200 hover:bg-[#f5f1eb] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8]"
         >
           <MessageCircle className="h-5 w-5" />
           Preguntar por WhatsApp
@@ -100,13 +101,13 @@ export function ProductActions({ product }: ProductActionsProps) {
       </div>
 
       {/* Trust row */}
-      <div className="flex flex-wrap items-center justify-center gap-4 border-t border-gray-100 pt-4 md:justify-start">
+      <div className="flex flex-wrap items-center justify-center gap-4 border-t border-[#efe7dd] pt-4 md:justify-start">
         {TRUST_ITEMS.map((item) => (
           <div
             key={item.text}
-            className="flex items-center gap-1.5 text-xs text-gray-500"
+            className="flex items-center gap-1.5 text-xs text-[#2e2b2b]/60"
           >
-            <item.icon className="h-4 w-4 text-sicaru-purple-400" />
+            <item.icon className="h-4 w-4 text-[#8e7a9e]" />
             <span>{item.text}</span>
           </div>
         ))}
