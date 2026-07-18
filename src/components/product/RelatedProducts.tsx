@@ -39,7 +39,7 @@ export async function RelatedProducts({
       <h2 className="mb-6 font-heading text-2xl font-bold text-[#2E2B2B]">
         {title}
       </h2>
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {filtered.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

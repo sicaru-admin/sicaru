@@ -65,7 +65,7 @@ export function ProductTabs({ description, material }: ProductTabsProps) {
         role="tabpanel"
         id={`product-panel-${activeTab.id}`}
         aria-labelledby={`product-tab-${activeTab.id}`}
-        className="py-6 text-sm leading-7 text-[#8e7a9e] md:text-base"
+        className="py-6 text-sm leading-7 text-[#7F6D8A] md:text-base"
       >
         {activeTab.content}
       </div>
