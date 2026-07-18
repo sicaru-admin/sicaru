@@ -36,7 +36,7 @@ export async function RelatedProducts({
 
   return (
     <section>
-      <h2 className="mb-6 font-heading text-2xl font-bold text-[#7f6d8a]">
+      <h2 className="mb-6 font-heading text-2xl font-bold text-[#2E2B2B]">
         {title}
       </h2>
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">

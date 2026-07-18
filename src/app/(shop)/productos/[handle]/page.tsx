@@ -185,7 +185,7 @@ export default async function ProductDetailPage({
             )}
 
             {/* Title */}
-            <h1 className="font-heading text-3xl font-medium leading-tight text-[#7f6d8a] md:text-4xl">
+            <h1 className="font-heading text-3xl font-medium leading-tight text-[#2E2B2B] md:text-4xl">
               {product.title}
             </h1>
 
