@@ -189,13 +189,6 @@ export default async function ProductDetailPage({
               {product.title}
             </h1>
 
-            {/* Short description */}
-            {product.description && (
-              <p className="mt-4 text-sm leading-7 text-[#2e2b2b]/70 md:text-base">
-                {product.description}
-              </p>
-            )}
-
             {/* Actions (price, variants, quantity, buttons, trust) */}
             <div className="mt-6 md:mt-8">
               <ProductActions product={product} />

@@ -50,7 +50,7 @@ export function ProductActions({ product }: ProductActionsProps) {
     price.original_amount > price.calculated_amount;
 
   return (
-    <div className="space-y-5 [&_button]:min-h-11 [&_button]:min-w-11 [&_button]:focus-visible:outline [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-[#9b89a8]">
+    <div className="space-y-4 md:space-y-5 [&_button]:min-h-11 [&_button]:min-w-11 [&_button]:focus-visible:outline [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-[#9b89a8]">
       {/* Price */}
       <div>
         <div className="flex items-baseline gap-3">
@@ -79,7 +79,7 @@ export function ProductActions({ product }: ProductActionsProps) {
       <QuantitySelector quantity={quantity} onChange={setQuantity} />
 
       {/* Action buttons */}
-      <div className="space-y-3">
+      <div className="space-y-2.5 md:space-y-3">
         <button
           type="button"
           onClick={handleAddToCart}
@@ -101,7 +101,7 @@ export function ProductActions({ product }: ProductActionsProps) {
       </div>
 
       {/* Trust row */}
-      <div className="flex flex-wrap items-center justify-center gap-4 border-t border-[#efe7dd] pt-4 md:justify-start">
+      <div className="flex flex-wrap items-center justify-center gap-3 border-t border-[#efe7dd] pt-3 md:justify-start md:gap-4 md:pt-4">
         {TRUST_ITEMS.map((item) => (
           <div
             key={item.text}
