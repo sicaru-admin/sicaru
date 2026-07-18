@@ -29,8 +29,8 @@ export function ProductCatalogCard({ product }: ProductCatalogCardProps) {
       href={`/productos/${product.handle}`}
       className="group flex h-full flex-col overflow-hidden border border-[#efe7dd] bg-[#faf8f5] transition-colors duration-[200ms] hover:border-[#9b89a8] focus:outline-none focus-visible:border-[#7f6d8a] focus-visible:shadow-[0_0_0_3px_rgba(127,109,138,0.16)]"
     >
-      <div className="relative aspect-[16/10] overflow-hidden border-b border-[#efe7dd] bg-[#f5f1eb] md:aspect-[4/3]">
-        {thumbnail ? (
+      {thumbnail ? (
+        <div className="relative aspect-[16/10] overflow-hidden border-b border-[#efe7dd] bg-[#f5f1eb] md:aspect-[4/3]">
           <Image
             src={thumbnail}
             alt={product.title || "Producto Sicarú"}
@@ -38,26 +38,26 @@ export function ProductCatalogCard({ product }: ProductCatalogCardProps) {
             sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, (max-width: 1279px) 33vw, 25vw"
             className="object-contain p-4 transition-transform duration-[220ms] group-hover:scale-[1.015] md:p-5"
           />
-        ) : (
-          <div className="flex h-full items-center justify-center p-4 md:p-5">
-            <div className="flex h-full w-full flex-col items-center justify-center gap-1.5 border border-[#efe7dd] bg-[#faf8f5]/55 px-4 text-center text-[#9b89a8] md:gap-2">
-              <ImageIcon className="h-4 w-4 md:h-5 md:w-5" strokeWidth={1.35} />
-              <span className="max-w-[8.5rem] text-[0.58rem] font-semibold uppercase leading-3 tracking-[0.08em] md:text-[0.62rem] md:leading-4">
-                Imagen próximamente
-              </span>
-            </div>
+        </div>
+      ) : (
+        <div className="flex h-[180px] items-center justify-center border-b border-[#efe7dd] bg-[#f5f1eb] p-4 md:aspect-[4/3] md:h-auto md:p-5">
+          <div className="flex h-full w-full flex-col items-center justify-center gap-1.5 border border-[#efe7dd] bg-[#faf8f5]/55 px-4 text-center text-[#9b89a8] md:gap-2">
+            <ImageIcon className="h-4 w-4 md:h-5 md:w-5" strokeWidth={1.35} />
+            <span className="max-w-[8.5rem] text-[0.58rem] font-semibold uppercase leading-3 tracking-[0.08em] md:text-[0.62rem] md:leading-4">
+              Imagen próximamente
+            </span>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
-      <div className="flex flex-1 flex-col p-5">
+      <div className="flex flex-1 flex-col p-4 pb-5 pr-14 md:p-5">
         <h2 className="line-clamp-3 text-sm font-medium leading-5 text-[#2e2b2b] md:min-h-[3.75rem]">
           {product.title}
         </h2>
-        <p className="mt-2.5 text-sm font-semibold text-[#7f6d8a] md:mt-3">
+        <p className="mt-2 text-sm font-semibold text-[#7f6d8a] md:mt-3">
           {formatPrice(product)}
         </p>
-        <span className="mt-3 inline-flex min-h-9 items-center gap-1.5 self-start text-xs font-semibold uppercase text-[#7f6d8a] transition-colors group-hover:text-[#8e7a9e] md:mt-4 md:min-h-10">
+        <span className="mt-2.5 inline-flex min-h-9 items-center gap-1.5 self-start text-xs font-semibold uppercase text-[#7f6d8a] transition-colors group-hover:text-[#8e7a9e] md:mt-4 md:min-h-10">
           Ver detalle
           <ArrowRight className="h-3.5 w-3.5" />
         </span>
