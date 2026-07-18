@@ -56,7 +56,7 @@ export function ProductActions({ product }: ProductActionsProps) {
         <div className="flex items-baseline gap-3">
           <PriceDisplay
             variant={selectedVariant}
-            className="text-2xl font-semibold text-[#2e2b2b] md:text-3xl"
+            className="text-2xl font-semibold text-[#7f6d8a] md:text-3xl"
           />
           {hasDiscount && price?.original_amount != null && (
             <PriceDisplay
@@ -65,7 +65,7 @@ export function ProductActions({ product }: ProductActionsProps) {
             />
           )}
         </div>
-        <p className="mt-1 text-xs text-[#2e2b2b]/55">IVA incluido</p>
+        <p className="mt-1 text-xs text-[#9b89a8]">IVA incluido</p>
       </div>
 
       {/* Variant selector */}
@@ -105,7 +105,7 @@ export function ProductActions({ product }: ProductActionsProps) {
         {TRUST_ITEMS.map((item) => (
           <div
             key={item.text}
-            className="flex items-center gap-1.5 text-xs text-[#2e2b2b]/60"
+            className="flex items-center gap-1.5 text-xs text-[#9b89a8]"
           >
             <item.icon className="h-4 w-4 text-[#8e7a9e]" />
             <span>{item.text}</span>

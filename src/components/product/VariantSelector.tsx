@@ -17,23 +17,29 @@ export function VariantSelector({
 
   return (
     <div>
-      <p className="mb-2 text-sm font-medium text-gray-700">
+      <p className="mb-2 text-sm font-medium text-[#7f6d8a]">
         Presentación
       </p>
       <div className="flex flex-wrap gap-2">
-        {variants.map((v) => (
-          <button
-            key={v.id}
-            onClick={() => onSelect(v)}
-            className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
-              v.id === selected.id
-                ? "border-sicaru-pink bg-sicaru-pink/10 text-sicaru-pink"
-                : "border-gray-200 text-gray-700 hover:border-sicaru-purple-300"
-            }`}
-          >
-            {v.title}
-          </button>
-        ))}
+        {variants.map((v) => {
+          const isSelected = v.id === selected.id;
+
+          return (
+            <button
+              key={v.id}
+              type="button"
+              onClick={() => onSelect(v)}
+              aria-pressed={isSelected}
+              className={`min-h-11 border px-4 py-2.5 text-sm font-medium transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8] ${
+                isSelected
+                  ? "border-[#7f6d8a] bg-[#f5f1eb] text-[#7f6d8a] shadow-[inset_0_-3px_0_#7f6d8a]"
+                  : "border-[#efe7dd] bg-[#faf8f5] text-[#9b89a8] hover:border-[#9b89a8] hover:text-[#7f6d8a]"
+              }`}
+            >
+              {v.title}
+            </button>
+          );
+        })}
       </div>
     </div>
   );

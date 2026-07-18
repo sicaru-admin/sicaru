@@ -52,7 +52,7 @@ export function ProductTabs({ description, material }: ProductTabsProps) {
             className={`min-h-11 whitespace-nowrap px-4 py-3 text-sm font-medium transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8] ${
               tab.id === active
                 ? "border-b-2 border-[#7f6d8a] text-[#7f6d8a]"
-                : "text-[#2e2b2b]/60 hover:text-[#2e2b2b]"
+                : "text-[#9b89a8] hover:text-[#7f6d8a]"
             }`}
           >
             {tab.label}
@@ -65,7 +65,7 @@ export function ProductTabs({ description, material }: ProductTabsProps) {
         role="tabpanel"
         id={`product-panel-${activeTab.id}`}
         aria-labelledby={`product-tab-${activeTab.id}`}
-        className="py-6 text-sm leading-7 text-[#2e2b2b]/70 md:text-base"
+        className="py-6 text-sm leading-7 text-[#8e7a9e] md:text-base"
       >
         {activeTab.content}
       </div>

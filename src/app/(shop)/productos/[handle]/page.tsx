@@ -144,7 +144,7 @@ export default async function ProductDetailPage({
         >
           <Link
             href="/"
-            className="shrink-0 transition-colors hover:text-[#2e2b2b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8]"
+            className="shrink-0 transition-colors hover:text-[#8e7a9e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8]"
           >
             Inicio
           </Link>
@@ -153,14 +153,14 @@ export default async function ProductDetailPage({
             <>
               <Link
                 href={`/marcas/${product.collection?.handle || ""}`}
-                className="truncate transition-colors hover:text-[#2e2b2b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8]"
+                className="truncate transition-colors hover:text-[#8e7a9e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8]"
               >
                 {brandName}
               </Link>
               <ChevronRight className="h-3.5 w-3.5 shrink-0" />
             </>
           )}
-          <span className="truncate font-medium text-[#2e2b2b]">
+          <span className="truncate font-medium text-[#8e7a9e]">
             {product.title}
           </span>
         </nav>
@@ -185,7 +185,7 @@ export default async function ProductDetailPage({
             )}
 
             {/* Title */}
-            <h1 className="font-heading text-3xl font-medium leading-tight text-[#2e2b2b] md:text-4xl">
+            <h1 className="font-heading text-3xl font-medium leading-tight text-[#7f6d8a] md:text-4xl">
               {product.title}
             </h1>
 
