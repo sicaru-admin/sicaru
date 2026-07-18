@@ -14,6 +14,7 @@ export function BrandWordmark({
       href="/"
       aria-label="Sicarú, inicio"
       className={`sicaru-wordmark ${variant === "light" ? "sicaru-wordmark-light" : "sicaru-wordmark-dark"} ${className}`}
+      style={variant === "dark" ? { color: "#7f6d8a" } : undefined}
     >
       SICARÚ
     </Link>
