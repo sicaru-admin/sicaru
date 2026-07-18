@@ -14,9 +14,9 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
   // If no images, show a restrained editorial placeholder.
   if (images.length === 0) {
     return (
-      <div className="aspect-[16/10] w-full overflow-hidden border border-[#efe7dd] bg-[#f5f1eb] md:aspect-square">
+      <div className="aspect-[16/10] w-full overflow-hidden border border-[#efe7dd] bg-[#faf8f5] md:aspect-square">
         <div className="flex h-full items-center justify-center px-6 text-center">
-          <span className="text-sm font-medium text-[#7f6d8a]/70 md:text-base">
+          <span className="text-sm font-medium text-[#9b89a8] md:text-base">
             Imagen no disponible
           </span>
         </div>
@@ -27,13 +27,13 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
   return (
     <div>
       {/* Main image */}
-      <div className="relative aspect-[16/10] w-full overflow-hidden border border-[#efe7dd] bg-[#f5f1eb] md:aspect-square">
+      <div className="relative aspect-[16/10] w-full overflow-hidden border border-[#efe7dd] bg-[#faf8f5] md:aspect-square">
         <Image
           src={images[selected].url}
           alt={`${title} - imagen ${selected + 1}`}
           fill
           sizes="(max-width: 768px) 100vw, 60vw"
-          className="object-contain p-4 md:p-6"
+          className="object-contain"
           priority
         />
       </div>
