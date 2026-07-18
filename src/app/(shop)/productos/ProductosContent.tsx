@@ -1,10 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import type { HttpTypes } from "@medusajs/types";
-import { ArrowRight, ImageIcon, Search } from "lucide-react";
+import { Search } from "lucide-react";
+import { ProductCatalogCard } from "@/components/products/ProductCatalogCard";
 
 const CATEGORY_LINKS = [
   {
@@ -28,17 +28,6 @@ const CATEGORY_LINKS = [
     label: "Shampoo y acondicionador",
   },
 ];
-
-function formatPrice(product: HttpTypes.StoreProduct) {
-  const price = product.variants?.[0]?.calculated_price;
-
-  if (price?.calculated_amount == null) return "Precio no disponible";
-
-  return new Intl.NumberFormat("es-MX", {
-    style: "currency",
-    currency: price.currency_code || "MXN",
-  }).format(price.calculated_amount);
-}
 
 export function ProductosContent({
   products,
@@ -158,44 +147,9 @@ export function ProductosContent({
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4 min-[360px]:grid-cols-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4 lg:gap-6">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3 xl:grid-cols-4 xl:gap-6">
             {filteredProducts.map((product) => (
-              <Link
-                key={product.id}
-                href={`/productos/${product.handle}`}
-                className="sicaru-card group block overflow-hidden transition-colors duration-[200ms] hover:border-[#9b89a8] focus:outline-none focus-visible:border-[#7f6d8a] focus-visible:shadow-[0_0_0_3px_rgba(127,109,138,0.16)]"
-              >
-                <div className="relative aspect-square overflow-hidden bg-[#f5f1eb]">
-                  {product.thumbnail ? (
-                    <Image
-                      src={product.thumbnail}
-                      alt={product.title}
-                      fill
-                      sizes="(max-width: 360px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                      className="object-cover transition-transform duration-[220ms] group-hover:scale-[1.02]"
-                    />
-                  ) : (
-                    <div className="flex h-full flex-col items-center justify-center gap-2 px-3 text-center text-[#9b89a8]">
-                      <ImageIcon className="h-6 w-6" strokeWidth={1.4} />
-                      <span className="text-[0.68rem] font-semibold uppercase tracking-[0.08em]">
-                        Imagen próximamente
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <div className="p-4">
-                  <h2 className="line-clamp-2 min-h-10 text-sm font-medium leading-5 text-[#2e2b2b]">
-                    {product.title}
-                  </h2>
-                  <p className="mt-3 text-sm font-semibold text-[#7f6d8a]">
-                    {formatPrice(product)}
-                  </p>
-                  <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold uppercase text-[#7f6d8a] opacity-100 transition-opacity md:opacity-0 md:group-hover:opacity-100 md:group-focus-visible:opacity-100">
-                    Ver detalle
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                </div>
-              </Link>
+              <ProductCatalogCard key={product.id} product={product} />
             ))}
           </div>
         )}
