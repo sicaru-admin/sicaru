@@ -29,7 +29,7 @@ export function ProductInfoSections({ sections }: ProductInfoSectionsProps) {
         aria-labelledby="product-info-heading"
         className="border-y border-[#efe7dd] py-7 md:py-9 lg:py-10"
       >
-        <div className="max-w-[860px]">
+        <div className="max-w-[800px]">
           <h2
             id="product-info-heading"
             className="font-heading text-2xl font-medium text-[#2E2B2B] md:text-3xl"
@@ -57,7 +57,7 @@ export function ProductInfoSections({ sections }: ProductInfoSectionsProps) {
       aria-labelledby="product-info-heading"
       className="border-y border-[#efe7dd] py-7 md:py-9 lg:py-10"
     >
-      <div className="max-w-[860px]">
+      <div className="max-w-[800px]">
         <h2
           id="product-info-heading"
           className="font-heading text-2xl font-medium text-[#2E2B2B] md:text-3xl"

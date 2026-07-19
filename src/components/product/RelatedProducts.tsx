@@ -7,6 +7,7 @@ type RelatedProductsProps = {
   excludeProductId: string;
   excludeCollectionId?: string | null;
   limit?: number;
+  minItems?: number;
 };
 
 export async function RelatedProducts({
@@ -15,6 +16,7 @@ export async function RelatedProducts({
   excludeProductId,
   excludeCollectionId,
   limit = 4,
+  minItems = 1,
 }: RelatedProductsProps) {
   let products;
   try {
@@ -34,7 +36,7 @@ export async function RelatedProducts({
     .filter((p) => !excludeCollectionId || p.collection?.id !== excludeCollectionId)
     .slice(0, limit);
 
-  if (filtered.length === 0) return null;
+  if (filtered.length < minItems) return null;
 
   return (
     <section className="min-w-0 overflow-hidden">

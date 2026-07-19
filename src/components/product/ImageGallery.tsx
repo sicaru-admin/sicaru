@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { ImageIcon } from "lucide-react";
 
 type ImageGalleryProps = {
   images: { id: string; url: string }[];
@@ -15,10 +16,20 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
   if (images.length === 0) {
     return (
       <div className="aspect-[16/10] w-full overflow-hidden border border-[#efe7dd] bg-[#faf8f5] md:aspect-square lg:aspect-auto lg:h-[460px] xl:h-[500px]">
-        <div className="flex h-full items-center justify-center px-6 text-center">
-          <span className="text-sm font-medium text-[#9b89a8] md:text-base">
-            Imagen no disponible
-          </span>
+        <div className="flex h-full flex-col items-center justify-center gap-2 px-6 text-center">
+          <ImageIcon
+            aria-hidden="true"
+            className="h-5 w-5 text-[#9b89a8] md:h-6 md:w-6"
+            strokeWidth={1.35}
+          />
+          <div>
+            <span className="block text-sm font-medium text-[#8E7A9E] md:text-base">
+              Imagen no disponible
+            </span>
+            <span className="mt-1 block text-xs font-medium text-[#9B89A8] md:text-sm">
+              Fotografía en actualización
+            </span>
+          </div>
         </div>
       </div>
     );

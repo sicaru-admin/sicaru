@@ -228,6 +228,7 @@ export default async function ProductDetailPage({
               excludeProductId={product.id}
               excludeCollectionId={collectionId}
               limit={4}
+              minItems={collectionId ? 2 : 1}
             />
           </Suspense>
         </div>
