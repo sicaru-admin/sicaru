@@ -72,7 +72,7 @@ export default function MarcasPage() {
               </Link>
             </div>
           ) : (
-            <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3 lg:gap-6">
+            <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4">
               {brands.map((brand) => (
                 <BrandDirectoryCard key={brand.handle} brand={brand} />
               ))}

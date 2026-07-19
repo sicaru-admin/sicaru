@@ -12,7 +12,7 @@ type BrandDirectoryCardProps = {
 };
 
 const cardBaseClass =
-  "flex min-h-[15rem] flex-col border border-[#efe7dd] bg-[#faf8f5] p-5 transition-colors duration-200 md:p-6";
+  "flex min-h-[15rem] flex-col border border-[#efe7dd] bg-[#faf8f5] p-5 transition-colors duration-200 md:p-6 xl:min-h-[13.5rem]";
 
 function BrandCardContent({
   brand,
