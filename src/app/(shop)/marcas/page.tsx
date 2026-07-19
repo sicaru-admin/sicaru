@@ -37,6 +37,7 @@ export default function MarcasPage() {
     description:
       BRAND_DESCRIPTIONS[brand.handle] ||
       "Línea disponible en el catálogo Sicarú para necesidades profesionales de belleza.",
+    available: false,
   }))
 
   return (
