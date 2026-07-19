@@ -5,6 +5,7 @@ type RelatedProductsProps = {
   title: string;
   collectionId?: string | null;
   excludeProductId: string;
+  excludeCollectionId?: string | null;
   limit?: number;
 };
 
@@ -12,6 +13,7 @@ export async function RelatedProducts({
   title,
   collectionId,
   excludeProductId,
+  excludeCollectionId,
   limit = 4,
 }: RelatedProductsProps) {
   let products;
@@ -29,6 +31,7 @@ export async function RelatedProducts({
 
   const filtered = products
     .filter((p) => p.id !== excludeProductId)
+    .filter((p) => !excludeCollectionId || p.collection?.id !== excludeCollectionId)
     .slice(0, limit);
 
   if (filtered.length === 0) return null;
@@ -38,7 +41,7 @@ export async function RelatedProducts({
       <h2 className="mb-5 font-heading text-2xl font-bold text-[#2E2B2B] md:mb-6">
         {title}
       </h2>
-      <div className="-mx-5 overflow-x-auto px-5 pb-2 [scrollbar-width:none] sm:-mx-8 sm:px-8 md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-4">
+      <div className="-mx-5 overflow-x-auto px-5 pb-2 [scrollbar-width:none] sm:-mx-8 sm:px-8 md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-4 lg:gap-3 xl:gap-4">
         <div className="flex snap-x snap-mandatory gap-4 md:contents">
           {filtered.map((product) => (
             <ProductRelatedCard

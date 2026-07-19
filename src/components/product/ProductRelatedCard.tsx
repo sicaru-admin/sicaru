@@ -31,7 +31,7 @@ export function ProductRelatedCard({
             alt={product.title || "Producto Sicarú"}
             fill
             sizes="(max-width: 767px) 82vw, (max-width: 1023px) 50vw, 25vw"
-            className="object-contain p-4 transition-transform duration-200 group-hover:scale-[1.015]"
+            className="object-contain p-3.5 transition-transform duration-200 group-hover:scale-[1.015] md:p-3"
           />
         ) : (
           <div className="flex h-full flex-col items-center justify-center gap-2 px-4 text-center text-[#9b89a8]">
@@ -43,13 +43,13 @@ export function ProductRelatedCard({
         )}
       </div>
 
-      <div className="flex flex-1 flex-col px-4 py-4">
+      <div className="flex flex-1 flex-col px-4 py-4 md:px-3.5 md:py-3.5">
         <h3 className="text-sm font-medium leading-5 text-[#2E2B2B]">
           {product.title}
         </h3>
         <PriceDisplay
           variant={firstVariant}
-          className="mt-2 text-sm font-semibold text-[#7F6D8A]"
+          className="mt-2 text-sm font-semibold text-[#7F6D8A] md:mt-1.5"
         />
       </div>
     </Link>

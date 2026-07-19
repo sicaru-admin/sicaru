@@ -141,7 +141,7 @@ export default async function ProductDetailPage({
       <JsonLd schema={[productSchema, breadcrumbSchema, faqSchema]} />
 
       <div className="bg-[#faf8f5]">
-      <div className="mx-auto max-w-[1400px] px-5 py-5 sm:px-8 md:py-10 lg:px-10">
+      <div className="mx-auto max-w-[1400px] px-5 py-5 sm:px-8 md:py-8 lg:px-10 lg:py-9">
         {/* Breadcrumb */}
         <nav
           aria-label="Breadcrumb"
@@ -170,15 +170,15 @@ export default async function ProductDetailPage({
           </span>
         </nav>
 
-        {/* Product grid — 60/40 split */}
-        <div className="grid gap-7 md:grid-cols-5 lg:gap-12">
-          {/* Left: Image gallery (3/5 = 60%) */}
-          <div className="min-w-0 md:col-span-3">
+        {/* Product grid */}
+        <div className="grid gap-7 lg:grid-cols-[minmax(0,1.28fr)_minmax(360px,1fr)] lg:items-center lg:gap-10 xl:gap-12">
+          {/* Left: Image gallery */}
+          <div className="min-w-0">
             <ImageGallery images={images} title={product.title || ""} />
           </div>
 
-          {/* Right: Product info (2/5 = 40%) */}
-          <div className="min-w-0 border-t border-[#efe7dd] pt-6 md:col-span-2 md:border-t-0 md:pt-0">
+          {/* Right: Product info */}
+          <div className="min-w-0 border-t border-[#efe7dd] pt-6 lg:max-w-[520px] lg:border-t-0 lg:pt-0">
             {/* Brand badge */}
             {brandName && (
               <Link
@@ -202,7 +202,7 @@ export default async function ProductDetailPage({
         </div>
 
         {/* Below fold */}
-        <div className="mt-9 space-y-12 md:mt-14 md:space-y-16">
+        <div className="mt-8 space-y-10 md:mt-12 md:space-y-12 lg:mt-12 lg:space-y-12">
           {/* Tabs */}
           <ProductTabs
             description={product.description ?? null}
@@ -210,20 +210,23 @@ export default async function ProductDetailPage({
           />
 
           {/* Cross-sell: same brand */}
-          <Suspense fallback={<RelatedSkeleton />}>
-            <RelatedProducts
-              title="Completa Tu Rutina"
-              collectionId={collectionId}
-              excludeProductId={product.id}
-              limit={4}
-            />
-          </Suspense>
+          {collectionId && (
+            <Suspense fallback={<RelatedSkeleton />}>
+              <RelatedProducts
+                title="Completa Tu Rutina"
+                collectionId={collectionId}
+                excludeProductId={product.id}
+                limit={4}
+              />
+            </Suspense>
+          )}
 
-          {/* Cross-sell: same category / general */}
+          {/* Cross-sell: general without duplicating the same brand */}
           <Suspense fallback={<RelatedSkeleton />}>
             <RelatedProducts
               title="También Te Puede Gustar"
               excludeProductId={product.id}
+              excludeCollectionId={collectionId}
               limit={4}
             />
           </Suspense>
