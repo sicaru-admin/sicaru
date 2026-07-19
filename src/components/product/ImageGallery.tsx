@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { ImageIcon } from "lucide-react";
 
 type ImageGalleryProps = {
   images: { id: string; url: string }[];
@@ -11,14 +12,24 @@ type ImageGalleryProps = {
 export function ImageGallery({ images, title }: ImageGalleryProps) {
   const [selected, setSelected] = useState(0);
 
-  // If no images, show gradient placeholder
+  // If no images, show a restrained editorial placeholder.
   if (images.length === 0) {
     return (
-      <div className="aspect-square w-full overflow-hidden rounded-xl bg-gradient-to-br from-sicaru-purple-200 to-sicaru-purple-400">
-        <div className="flex h-full items-center justify-center">
-          <span className="text-lg font-medium text-white/60">
-            Imagen no disponible
-          </span>
+      <div className="aspect-[16/10] w-full overflow-hidden border border-[#efe7dd] bg-[#faf8f5] md:aspect-square lg:aspect-auto lg:h-[460px] xl:h-[500px]">
+        <div className="flex h-full flex-col items-center justify-center gap-2 px-6 text-center">
+          <ImageIcon
+            aria-hidden="true"
+            className="h-5 w-5 text-[#9b89a8] md:h-6 md:w-6"
+            strokeWidth={1.35}
+          />
+          <div>
+            <span className="block text-sm font-medium text-[#8E7A9E] md:text-base">
+              Imagen no disponible
+            </span>
+            <span className="mt-1 block text-xs font-medium text-[#9B89A8] md:text-sm">
+              Fotografía en actualización
+            </span>
+          </div>
         </div>
       </div>
     );
@@ -27,13 +38,13 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
   return (
     <div>
       {/* Main image */}
-      <div className="group relative aspect-square w-full overflow-hidden rounded-xl bg-gray-100">
+      <div className="relative aspect-[16/10] w-full overflow-hidden border border-[#efe7dd] bg-[#faf8f5] md:aspect-square lg:aspect-auto lg:h-[600px] xl:h-[620px]">
         <Image
           src={images[selected].url}
           alt={`${title} - imagen ${selected + 1}`}
           fill
-          sizes="(max-width: 768px) 100vw, 60vw"
-          className="object-cover transition-transform duration-300 group-hover:scale-110"
+          sizes="(max-width: 767px) 100vw, (max-width: 1023px) 60vw, 56vw"
+          className="object-contain"
           priority
         />
       </div>
@@ -44,12 +55,13 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
           {images.map((img, i) => (
             <button
               key={img.id}
+              type="button"
               onClick={() => setSelected(i)}
               aria-label={`Ver imagen ${i + 1}`}
-              className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 transition-all ${
+              className={`relative h-16 w-16 shrink-0 overflow-hidden border transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8] ${
                 i === selected
-                  ? "border-sicaru-pink"
-                  : "border-transparent opacity-60 hover:opacity-100"
+                  ? "border-[#7f6d8a] bg-[#faf8f5]"
+                  : "border-[#efe7dd] bg-[#f5f1eb] opacity-75 hover:opacity-100"
               }`}
             >
               <Image
@@ -57,7 +69,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
                 alt={`${title} - miniatura ${i + 1}`}
                 fill
                 sizes="64px"
-                className="object-cover"
+                className="object-contain p-1.5"
               />
             </button>
           ))}

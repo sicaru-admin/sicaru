@@ -8,9 +8,6 @@ import { ImageGallery } from "@/components/product/ImageGallery";
 import { ProductActions } from "@/components/product/ProductActions";
 import { ProductTabs } from "@/components/product/ProductTabs";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
-import { ViewerCounter } from "@/components/ui/ViewerCounter";
-import { StarRating } from "@/components/ui/StarRating";
-import { StickyAddToCart } from "@/components/product/StickyAddToCart";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
   generateProductSchema,
@@ -80,18 +77,23 @@ export async function generateMetadata({
 
 function RelatedSkeleton() {
   return (
-    <div>
-      <div className="mb-6 h-7 w-56 animate-pulse rounded bg-gray-200" />
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="overflow-hidden rounded-xl bg-white shadow-sm">
-            <div className="aspect-square animate-pulse bg-gray-200" />
-            <div className="p-3">
-              <div className="h-4 w-3/4 animate-pulse rounded bg-gray-200" />
-              <div className="mt-2 h-4 w-1/2 animate-pulse rounded bg-gray-200" />
+    <div className="overflow-hidden">
+      <div className="mb-5 h-7 w-56 animate-pulse bg-[#efe7dd] md:mb-6" />
+      <div className="-mx-5 overflow-hidden px-5 sm:-mx-8 sm:px-8 md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:px-0 lg:grid-cols-4">
+        <div className="flex gap-4 md:contents">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div
+              key={i}
+              className="w-[78vw] max-w-[320px] flex-none overflow-hidden border border-[#efe7dd] bg-[#faf8f5] md:w-auto md:max-w-none md:flex-auto"
+            >
+              <div className="aspect-[4/3] animate-pulse bg-[#f5f1eb]" />
+              <div className="p-4">
+                <div className="h-4 w-3/4 animate-pulse bg-[#efe7dd]" />
+                <div className="mt-2 h-4 w-1/2 animate-pulse bg-[#efe7dd]" />
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -138,78 +140,69 @@ export default async function ProductDetailPage({
     <>
       <JsonLd schema={[productSchema, breadcrumbSchema, faqSchema]} />
 
-      <div className="mx-auto max-w-7xl px-4 py-6 md:py-12">
+      <div className="bg-[#faf8f5]">
+      <div className="mx-auto max-w-[1400px] px-5 py-5 sm:px-8 md:py-8 lg:px-10 lg:py-9">
         {/* Breadcrumb */}
         <nav
           aria-label="Breadcrumb"
-          className="mb-6 flex items-center gap-1 text-sm text-gray-500"
+          className="mb-5 flex min-w-0 items-center gap-1.5 text-xs text-[#7f6d8a] md:mb-7 md:text-sm"
         >
-          <Link href="/" className="hover:text-sicaru-purple-600">
+          <Link
+            href="/"
+            className="shrink-0 transition-colors hover:text-[#8e7a9e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8]"
+          >
             Inicio
           </Link>
-          <ChevronRight className="h-3.5 w-3.5" />
+          <ChevronRight className="h-3.5 w-3.5 shrink-0" />
           {brandName && (
             <>
               <Link
                 href={`/marcas/${product.collection?.handle || ""}`}
-                className="hover:text-sicaru-purple-600"
+                className="truncate transition-colors hover:text-[#8e7a9e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8]"
               >
                 {brandName}
               </Link>
-              <ChevronRight className="h-3.5 w-3.5" />
+              <ChevronRight className="h-3.5 w-3.5 shrink-0" />
             </>
           )}
-          <span className="truncate text-sicaru-purple-900 font-medium">
+          <span className="truncate font-medium text-[#8e7a9e]">
             {product.title}
           </span>
         </nav>
 
-        {/* Product grid — 60/40 split */}
-        <div className="grid gap-8 md:grid-cols-5 lg:gap-12">
-          {/* Left: Image gallery (3/5 = 60%) */}
-          <div className="md:col-span-3">
+        {/* Product grid */}
+        <div className="grid gap-7 lg:grid-cols-[minmax(0,1.28fr)_minmax(360px,1fr)] lg:items-center lg:gap-10 xl:gap-12">
+          {/* Left: Image gallery */}
+          <div className="min-w-0">
             <ImageGallery images={images} title={product.title || ""} />
           </div>
 
-          {/* Right: Product info (2/5 = 40%) */}
-          <div className="md:col-span-2">
+          {/* Right: Product info */}
+          <div className="min-w-0 border-t border-[#efe7dd] pt-6 lg:max-w-[520px] lg:border-t-0 lg:pt-0">
             {/* Brand badge */}
             {brandName && (
               <Link
                 href={`/marcas/${product.collection?.handle || ""}`}
-                className="mb-3 inline-block rounded-full bg-sicaru-purple-100 px-3 py-1 text-xs font-semibold text-sicaru-purple-700 transition-colors hover:bg-sicaru-purple-200"
+                className="mb-4 inline-flex min-h-9 items-center border border-[#efe7dd] bg-[#f5f1eb] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-[#7f6d8a] transition-colors hover:border-[#9b89a8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8]"
               >
                 {brandName}
               </Link>
             )}
 
             {/* Title */}
-            <h1 className="font-heading text-2xl font-bold text-sicaru-purple-900 md:text-3xl">
+            <h1 className="font-heading text-3xl font-medium leading-tight text-[#2E2B2B] md:text-4xl">
               {product.title}
             </h1>
 
-            {/* Star Rating & Viewer Counter */}
-            <div className="mt-2 flex flex-wrap items-center gap-3">
-              <StarRating />
-              <ViewerCounter />
-            </div>
-
-            {/* Short description */}
-            {product.description && (
-              <p className="mt-3 text-sm leading-relaxed text-gray-600 md:text-base">
-                {product.description}
-              </p>
-            )}
-
             {/* Actions (price, variants, quantity, buttons, trust) */}
-            <div className="mt-6">
+            <div className="mt-6 md:mt-8">
               <ProductActions product={product} />
             </div>
           </div>
         </div>
 
         {/* Below fold */}
-        <div className="mt-12 space-y-12 md:mt-16">
+        <div className="mt-8 space-y-10 md:mt-12 md:space-y-12 lg:mt-12 lg:space-y-12">
           {/* Tabs */}
           <ProductTabs
             description={product.description ?? null}
@@ -217,27 +210,30 @@ export default async function ProductDetailPage({
           />
 
           {/* Cross-sell: same brand */}
-          <Suspense fallback={<RelatedSkeleton />}>
-            <RelatedProducts
-              title="Completa Tu Rutina"
-              collectionId={collectionId}
-              excludeProductId={product.id}
-              limit={4}
-            />
-          </Suspense>
+          {collectionId && (
+            <Suspense fallback={<RelatedSkeleton />}>
+              <RelatedProducts
+                title="Completa Tu Rutina"
+                collectionId={collectionId}
+                excludeProductId={product.id}
+                limit={4}
+              />
+            </Suspense>
+          )}
 
-          {/* Cross-sell: same category / general */}
+          {/* Cross-sell: general without duplicating the same brand */}
           <Suspense fallback={<RelatedSkeleton />}>
             <RelatedProducts
               title="También Te Puede Gustar"
               excludeProductId={product.id}
+              excludeCollectionId={collectionId}
               limit={4}
+              minItems={collectionId ? 2 : 1}
             />
           </Suspense>
         </div>
       </div>
-
-      <StickyAddToCart product={product} />
+      </div>
     </>
   );
 }

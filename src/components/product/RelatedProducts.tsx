@@ -1,18 +1,22 @@
 import { getProducts, getProductsByCollection } from "@/lib/data/products";
-import { ProductCard } from "@/components/ui/ProductCard";
+import { ProductRelatedCard } from "./ProductRelatedCard";
 
 type RelatedProductsProps = {
   title: string;
   collectionId?: string | null;
   excludeProductId: string;
+  excludeCollectionId?: string | null;
   limit?: number;
+  minItems?: number;
 };
 
 export async function RelatedProducts({
   title,
   collectionId,
   excludeProductId,
+  excludeCollectionId,
   limit = 4,
+  minItems = 1,
 }: RelatedProductsProps) {
   let products;
   try {
@@ -27,22 +31,28 @@ export async function RelatedProducts({
     return null;
   }
 
-  // Exclude current product
   const filtered = products
     .filter((p) => p.id !== excludeProductId)
+    .filter((p) => !excludeCollectionId || p.collection?.id !== excludeCollectionId)
     .slice(0, limit);
 
-  if (filtered.length === 0) return null;
+  if (filtered.length < minItems) return null;
 
   return (
-    <section>
-      <h2 className="mb-6 font-heading text-2xl font-bold text-sicaru-purple-900">
+    <section className="min-w-0 overflow-hidden">
+      <h2 className="mb-5 font-heading text-2xl font-bold text-[#2E2B2B] md:mb-6">
         {title}
       </h2>
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-        {filtered.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+      <div className="-mx-5 overflow-x-auto px-5 pb-2 [scrollbar-width:none] sm:-mx-8 sm:px-8 md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-4 lg:gap-3 xl:gap-4">
+        <div className="flex snap-x snap-mandatory gap-4 md:contents">
+          {filtered.map((product) => (
+            <ProductRelatedCard
+              key={product.id}
+              product={product}
+              className="w-[78vw] max-w-[320px] flex-none snap-start md:w-auto md:max-w-none md:flex-auto"
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
