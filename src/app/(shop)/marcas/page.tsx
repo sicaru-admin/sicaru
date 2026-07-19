@@ -1,76 +1,82 @@
 import type { Metadata } from "next"
-import Image from "next/image"
 import Link from "next/link"
 import { BRANDS } from "@/lib/constants/brands"
+import { InternalPageHeader } from "@/components/internal/InternalPageHeader"
+import { BrandDirectoryCard } from "@/components/brands/BrandDirectoryCard"
 
 export const metadata: Metadata = {
-  title: "Nuestras Marcas — Distribuidora Sicarú",
+  title: "Marcas profesionales — Distribuidora Sicarú",
   description:
-    "Distribuidores autorizados de 7 marcas mexicanas de belleza profesional: Küül, Voglia, Nekane Capilar, Hidra Color, Xiomara, Vitale y Montis. Productos originales con envío a todo México.",
+    "Explora las marcas disponibles en Sicarú para coloración, cuidado, tratamiento y acabado profesional.",
+  openGraph: {
+    title: "Marcas profesionales — Distribuidora Sicarú",
+    description:
+      "Explora las marcas disponibles en Sicarú para coloración, cuidado, tratamiento y acabado profesional.",
+  },
+}
+
+const BRAND_DESCRIPTIONS: Record<string, string> = {
+  kuul: "Coloración, oxidantes y cuidado técnico para rutinas profesionales de salón.",
+  voglia: "Líneas para color, tratamiento, barbería y acabado con enfoque profesional.",
+  "nekane-capilar":
+    "Tratamientos capilares enfocados en hidratación, nutrición y cuidado del cabello.",
+  "hidra-color":
+    "Opciones de coloración y cuidado para mantener un acabado uniforme.",
+  xiomara:
+    "Productos de styling, fijación y acabado para distintas necesidades de peinado.",
+  vitale:
+    "Tratamientos y fórmulas de apoyo para cabello procesado o con necesidad de reparación.",
+  montis:
+    "Cuidado capilar con una propuesta más natural dentro del catálogo Sicarú.",
 }
 
 export default function MarcasPage() {
-  const brands = Object.values(BRANDS)
+  const brands = Object.values(BRANDS).map((brand) => ({
+    name: brand.name,
+    handle: brand.handle,
+    description:
+      BRAND_DESCRIPTIONS[brand.handle] ||
+      "Línea disponible en el catálogo Sicarú para necesidades profesionales de belleza.",
+  }))
 
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-sicaru-purple-700 to-sicaru-purple-500 py-16 text-white md:py-20 overflow-hidden">
-        <Image
-          src="/images/marcas-colorista-aplicando-tinte.jpg"
-          alt="Estilista profesional aplicando tinte de color rojo a clienta en salón de belleza mexicano"
-          fill
-          className="object-cover opacity-20"
-          priority
-          sizes="100vw"
-        />
-        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
-          <h1 className="font-heading text-3xl font-bold md:text-5xl">
-            Nuestras Marcas
-          </h1>
-          <p className="mt-4 text-lg text-white/80">
-            Distribuidores autorizados de las mejores marcas mexicanas de
-            belleza profesional
-          </p>
-        </div>
-      </section>
+      <InternalPageHeader
+        eyebrow="MARCAS SICARÚ"
+        title="Marcas profesionales para cada necesidad"
+        description="Explora las líneas disponibles en Sicarú y encuentra opciones para coloración, cuidado, tratamiento y acabado profesional."
+      />
 
-      {/* Brand Cards Section */}
-      <section className="mx-auto max-w-7xl px-4 py-12">
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {brands.map((brand) => (
-            <Link
-              key={brand.handle}
-              href={`/marcas/${brand.handle}`}
-              className="group flex flex-col overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-md"
-            >
-              <div
-                className="h-2"
-                style={{ backgroundColor: brand.color }}
-              />
-              <div className="p-6">
-                <div className="flex items-center gap-4">
-                  <div
-                    className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full text-xl font-bold text-white"
-                    style={{ backgroundColor: brand.color }}
-                  >
-                    {brand.name.charAt(0)}
-                  </div>
-                  <h2 className="text-lg font-bold text-sicaru-purple-900">
-                    {brand.name}
-                  </h2>
-                </div>
-                <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-gray-600">
-                  {brand.description}
-                </p>
-                <div className="mt-4">
-                  <span className="text-sm font-semibold text-sicaru-pink transition-colors group-hover:text-sicaru-purple-600">
-                    Ver Productos &rarr;
-                  </span>
-                </div>
-              </div>
-            </Link>
-          ))}
+      <section className="bg-[#faf8f5] py-10 md:py-14 lg:py-16">
+        <div className="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10">
+          <p className="max-w-2xl text-sm leading-7 text-[#2e2b2b]/70 md:text-base md:leading-8">
+            Consulta las marcas disponibles en nuestro catálogo y explora sus
+            distintas líneas de productos profesionales.
+          </p>
+
+          {brands.length === 0 ? (
+            <div className="mt-8 border border-[#efe7dd] bg-[#f5f1eb] p-6 md:p-8">
+              <h2 className="font-heading text-2xl font-medium text-[#2e2b2b]">
+                No hay marcas disponibles
+              </h2>
+              <p className="mt-3 max-w-xl text-sm leading-7 text-[#8e7a9e]">
+                Consulta el catálogo general para descubrir los productos
+                disponibles.
+              </p>
+              <Link
+                href="/productos"
+                className="mt-5 inline-flex min-h-11 items-center text-sm font-semibold text-[#7f6d8a] transition-colors hover:text-[#8e7a9e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8]"
+              >
+                Ver todos los productos
+              </Link>
+            </div>
+          ) : (
+            <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3 lg:gap-6">
+              {brands.map((brand) => (
+                <BrandDirectoryCard key={brand.handle} brand={brand} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </>
