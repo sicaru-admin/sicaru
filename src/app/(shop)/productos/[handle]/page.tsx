@@ -77,18 +77,23 @@ export async function generateMetadata({
 
 function RelatedSkeleton() {
   return (
-    <div>
-      <div className="mb-6 h-7 w-56 animate-pulse bg-[#efe7dd]" />
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="overflow-hidden border border-[#efe7dd] bg-[#faf8f5]">
-            <div className="aspect-[16/10] animate-pulse bg-[#f5f1eb] md:aspect-square" />
-            <div className="p-3">
-              <div className="h-4 w-3/4 animate-pulse bg-[#efe7dd]" />
-              <div className="mt-2 h-4 w-1/2 animate-pulse bg-[#efe7dd]" />
+    <div className="overflow-hidden">
+      <div className="mb-5 h-7 w-56 animate-pulse bg-[#efe7dd] md:mb-6" />
+      <div className="-mx-5 overflow-hidden px-5 sm:-mx-8 sm:px-8 md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:px-0 lg:grid-cols-4">
+        <div className="flex gap-4 md:contents">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div
+              key={i}
+              className="w-[78vw] max-w-[320px] flex-none overflow-hidden border border-[#efe7dd] bg-[#faf8f5] md:w-auto md:max-w-none md:flex-auto"
+            >
+              <div className="aspect-[4/3] animate-pulse bg-[#f5f1eb]" />
+              <div className="p-4">
+                <div className="h-4 w-3/4 animate-pulse bg-[#efe7dd]" />
+                <div className="mt-2 h-4 w-1/2 animate-pulse bg-[#efe7dd]" />
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -197,7 +202,7 @@ export default async function ProductDetailPage({
         </div>
 
         {/* Below fold */}
-        <div className="mt-10 space-y-10 md:mt-16 md:space-y-14">
+        <div className="mt-9 space-y-12 md:mt-14 md:space-y-16">
           {/* Tabs */}
           <ProductTabs
             description={product.description ?? null}
