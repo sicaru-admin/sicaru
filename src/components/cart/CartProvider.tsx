@@ -6,6 +6,7 @@ import {
   useState,
   useCallback,
   useEffect,
+  useRef,
   type ReactNode,
 } from "react";
 import {
@@ -58,9 +59,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [cartId, setCartId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const cartRef = useRef<Cart | null>(null);
+  const initCartPromiseRef = useRef<Promise<Cart> | null>(null);
+  const addToCartPromiseRef = useRef<Promise<void> | null>(null);
 
   const openCart = useCallback(() => setIsOpen(true), []);
   const closeCart = useCallback(() => setIsOpen(false), []);
+
+  const storeCart = useCallback((nextCart: Cart) => {
+    localStorage.setItem(CART_ID_KEY, nextCart.id);
+    cartRef.current = nextCart;
+    setCartId(nextCart.id);
+    setCart(nextCart);
+  }, []);
 
   const initCart = useCallback(async () => {
     const storedCartId = localStorage.getItem(CART_ID_KEY);
@@ -68,58 +79,87 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (storedCartId) {
       try {
         const existingCart = await getCart(storedCartId);
-        if (existingCart) {
-          setCartId(storedCartId);
-          setCart(existingCart as unknown as Cart);
-          return;
+        if (existingCart?.id) {
+          const nextCart = existingCart as unknown as Cart;
+          storeCart(nextCart);
+          return nextCart;
         }
-      } catch {
+      } catch (error) {
+        console.error("Error retrieving cart:", error);
         localStorage.removeItem(CART_ID_KEY);
       }
     }
 
-    try {
-      const region = await getMexicoRegion();
-      if (region) {
-        const newCart = await createCart(region.id);
-        localStorage.setItem(CART_ID_KEY, newCart.id);
-        setCartId(newCart.id);
-        setCart(newCart as unknown as Cart);
-      }
-    } catch (error) {
-      console.error("Error initializing cart:", error);
+    const region = await getMexicoRegion();
+    if (!region?.id) {
+      throw new Error("No pudimos encontrar la region de compra.");
     }
-  }, []);
+
+    const newCart = await createCart(region.id);
+    if (!newCart?.id) {
+      throw new Error("No pudimos crear el carrito.");
+    }
+
+    const nextCart = newCart as unknown as Cart;
+    storeCart(nextCart);
+    return nextCart;
+  }, [storeCart]);
+
+  const ensureCart = useCallback(async () => {
+    if (cartRef.current?.id) {
+      return cartRef.current;
+    }
+
+    if (!initCartPromiseRef.current) {
+      initCartPromiseRef.current = initCart().finally(() => {
+        initCartPromiseRef.current = null;
+      });
+    }
+
+    return initCartPromiseRef.current;
+  }, [initCart]);
+
+  useEffect(() => {
+    cartRef.current = cart;
+  }, [cart]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
-      initCart();
+      ensureCart().catch((error) => {
+        console.error("Error initializing cart:", error);
+      });
     }, 0);
 
     return () => window.clearTimeout(timer);
-  }, [initCart]);
+  }, [ensureCart]);
 
   const addToCart = useCallback(
     async (variantId: string, quantity = 1) => {
-      if (!cart) {
-        throw new Error(
-          "El carrito todavia no esta listo. Intenta de nuevo en unos segundos."
-        );
+      if (addToCartPromiseRef.current) {
+        return addToCartPromiseRef.current;
       }
 
-      setIsLoading(true);
-      try {
-        const updatedCart = await addItem(cart.id, variantId, quantity);
-        setCart(updatedCart as unknown as Cart);
-        openCart();
-      } catch (error) {
-        console.error("Error adding to cart:", error);
-        throw error;
-      } finally {
-        setIsLoading(false);
-      }
+      const addPromise = (async () => {
+        setIsLoading(true);
+        try {
+          const activeCart = await ensureCart();
+          const updatedCart = await addItem(activeCart.id, variantId, quantity);
+          const nextCart = updatedCart as unknown as Cart;
+          storeCart(nextCart);
+          openCart();
+        } catch (error) {
+          console.error("Error adding to cart:", error);
+          throw error;
+        } finally {
+          setIsLoading(false);
+          addToCartPromiseRef.current = null;
+        }
+      })();
+
+      addToCartPromiseRef.current = addPromise;
+      return addPromise;
     },
-    [cart, openCart]
+    [ensureCart, openCart, storeCart]
   );
 
   const updateQuantity = useCallback(
@@ -128,14 +168,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
       setIsLoading(true);
       try {
         const updatedCart = await updateItem(cart.id, lineItemId, quantity);
-        setCart(updatedCart as unknown as Cart);
+        const nextCart = updatedCart as unknown as Cart;
+        storeCart(nextCart);
       } catch (error) {
         console.error("Error updating cart:", error);
       } finally {
         setIsLoading(false);
       }
     },
-    [cart]
+    [cart, storeCart]
   );
 
   const removeFromCart = useCallback(
@@ -144,31 +185,34 @@ export function CartProvider({ children }: { children: ReactNode }) {
       setIsLoading(true);
       try {
         const updatedCart = await removeItem(cart.id, lineItemId);
-        setCart(updatedCart as unknown as Cart);
+        const nextCart = updatedCart as unknown as Cart;
+        storeCart(nextCart);
       } catch (error) {
         console.error("Error removing from cart:", error);
       } finally {
         setIsLoading(false);
       }
     },
-    [cart]
+    [cart, storeCart]
   );
 
   const refreshCart = useCallback(async () => {
-    const id = cartId || localStorage.getItem(CART_ID_KEY);
+    const id = cartRef.current?.id || localStorage.getItem(CART_ID_KEY);
     if (!id) return;
     try {
       const refreshed = await getCart(id);
       if (refreshed) {
-        setCart(refreshed as unknown as Cart);
+        const nextCart = refreshed as unknown as Cart;
+        storeCart(nextCart);
       }
     } catch (error) {
       console.error("Error refreshing cart:", error);
     }
-  }, [cartId]);
+  }, [storeCart]);
 
   const clearCart = useCallback(() => {
     localStorage.removeItem(CART_ID_KEY);
+    cartRef.current = null;
     setCart(null);
     setCartId(null);
   }, []);
