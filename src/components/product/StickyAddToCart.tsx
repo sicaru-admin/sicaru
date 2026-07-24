@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { HttpTypes } from "@medusajs/types";
 import { useCart } from "@/components/cart/CartProvider";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
+import { getSelectableOptions } from "./VariantSelector";
 
 type StickyAddToCartProps = {
   product: HttpTypes.StoreProduct;
@@ -14,6 +15,9 @@ export function StickyAddToCart({ product }: StickyAddToCartProps) {
   const { addToCart, isLoading } = useCart();
 
   const firstVariant = product.variants?.[0];
+  const requiresVariantSelection =
+    (product.variants?.length ?? 0) > 1 &&
+    getSelectableOptions(product).length > 0;
 
   useEffect(() => {
     const onScroll = () => {
@@ -24,6 +28,7 @@ export function StickyAddToCart({ product }: StickyAddToCartProps) {
   }, []);
 
   if (!firstVariant || !visible) return null;
+  if (requiresVariantSelection) return null;
 
   const handleAdd = () => {
     addToCart(firstVariant.id, 1);
