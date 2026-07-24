@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { HttpTypes } from "@medusajs/types";
 import { useCart } from "@/components/cart/CartProvider";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
+import { getSelectableOptions } from "./VariantSelector";
 
 type StickyAddToCartProps = {
   product: HttpTypes.StoreProduct;
@@ -11,9 +12,13 @@ type StickyAddToCartProps = {
 
 export function StickyAddToCart({ product }: StickyAddToCartProps) {
   const [visible, setVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { addToCart, isLoading } = useCart();
 
   const firstVariant = product.variants?.[0];
+  const requiresVariantSelection =
+    (product.variants?.length ?? 0) > 1 &&
+    getSelectableOptions(product).length > 0;
 
   useEffect(() => {
     const onScroll = () => {
@@ -24,9 +29,21 @@ export function StickyAddToCart({ product }: StickyAddToCartProps) {
   }, []);
 
   if (!firstVariant || !visible) return null;
+  if (requiresVariantSelection) return null;
 
-  const handleAdd = () => {
-    addToCart(firstVariant.id, 1);
+  const handleAdd = async () => {
+    setErrorMessage(null);
+
+    try {
+      await addToCart(firstVariant.id, 1);
+    } catch (error) {
+      console.error("Error adding sticky variant to cart:", error);
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "No pudimos agregar el producto al carrito. Intenta de nuevo."
+      );
+    }
   };
 
   return (
@@ -49,6 +66,11 @@ export function StickyAddToCart({ product }: StickyAddToCartProps) {
           {isLoading ? "..." : "Agregar"}
         </button>
       </div>
+      {errorMessage && (
+        <p role="alert" className="mt-2 text-xs font-medium text-red-600">
+          {errorMessage}
+        </p>
+      )}
     </div>
   );
 }
