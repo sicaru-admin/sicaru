@@ -22,6 +22,7 @@ type VariantOption = {
   value?: string | null;
   option?: {
     id?: string | null;
+    title?: string | null;
   } | null;
 };
 
@@ -31,6 +32,32 @@ type VariantWithOptions = HttpTypes.StoreProductVariant & {
 
 function getCalculatedAmount(variant: HttpTypes.StoreProductVariant) {
   return variant.calculated_price?.calculated_amount ?? null;
+}
+
+function normalizeOptionValue(value?: string | null) {
+  return value?.trim().toLocaleLowerCase("es-MX") ?? "";
+}
+
+function optionMatches(
+  variantOption: VariantOption,
+  optionId: string,
+  optionTitle: string,
+  selectedValue: string
+) {
+  const variantOptionId =
+    variantOption.option_id ?? variantOption.option?.id ?? "";
+  const variantOptionTitle = variantOption.option?.title ?? "";
+
+  const matchesOption =
+    variantOptionId === optionId ||
+    normalizeOptionValue(variantOptionTitle) ===
+      normalizeOptionValue(optionTitle);
+
+  return (
+    matchesOption &&
+    normalizeOptionValue(variantOption.value) ===
+      normalizeOptionValue(selectedValue)
+  );
 }
 
 const WHATSAPP_NUMBER = "528281111023";
@@ -52,6 +79,7 @@ export function ProductActions({ product }: ProductActionsProps) {
   const [selectedOptions, setSelectedOptions] =
     useState<ProductOptionSelection>({});
   const [quantity, setQuantity] = useState(1);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { addToCart, isLoading } = useCart();
 
   const selectedVariant = useMemo(() => {
@@ -78,15 +106,14 @@ export function ProductActions({ product }: ProductActionsProps) {
         }
 
         return selectableOptions.every((option) =>
-          (variant.options ?? []).some((variantOption) => {
-            const optionId =
-              variantOption.option_id ?? variantOption.option?.id ?? "";
-
-            return (
-              optionId === option.id &&
-              variantOption.value === selectedOptions[option.id]
-            );
-          })
+          (variant.options ?? []).some((variantOption) =>
+            optionMatches(
+              variantOption,
+              option.id,
+              option.title,
+              selectedOptions[option.id]
+            )
+          )
         );
       }) ?? null
     );
@@ -131,11 +158,27 @@ export function ProductActions({ product }: ProductActionsProps) {
   const canAddToCart = !!selectedVariant && !isLoading;
 
   const handleAddToCart = async () => {
-    if (!selectedVariant) return;
-    await addToCart(selectedVariant.id, quantity);
+    setErrorMessage(null);
+
+    if (!selectedVariant?.id) {
+      setErrorMessage(selectionMessage);
+      return;
+    }
+
+    try {
+      await addToCart(selectedVariant.id, quantity);
+    } catch (error) {
+      console.error("Error adding selected variant to cart:", error);
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "No pudimos agregar el producto al carrito. Intenta de nuevo."
+      );
+    }
   };
 
   const handleSelectOption = (optionId: string, value: string) => {
+    setErrorMessage(null);
     setSelectedOptions((current) => ({
       ...current,
       [optionId]: value,
@@ -175,6 +218,11 @@ export function ProductActions({ product }: ProductActionsProps) {
       {requiresVariantSelection && !selectedVariant && (
         <p className="text-sm font-medium text-[#7f6d8a]">
           {selectionMessage}
+        </p>
+      )}
+      {errorMessage && (
+        <p role="alert" className="text-sm font-medium text-red-600">
+          {errorMessage}
         </p>
       )}
 

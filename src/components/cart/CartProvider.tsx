@@ -92,12 +92,21 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    initCart();
+    const timer = window.setTimeout(() => {
+      initCart();
+    }, 0);
+
+    return () => window.clearTimeout(timer);
   }, [initCart]);
 
   const addToCart = useCallback(
     async (variantId: string, quantity = 1) => {
-      if (!cart) return;
+      if (!cart) {
+        throw new Error(
+          "El carrito todavia no esta listo. Intenta de nuevo en unos segundos."
+        );
+      }
+
       setIsLoading(true);
       try {
         const updatedCart = await addItem(cart.id, variantId, quantity);
@@ -105,6 +114,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         openCart();
       } catch (error) {
         console.error("Error adding to cart:", error);
+        throw error;
       } finally {
         setIsLoading(false);
       }
