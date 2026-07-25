@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
+const TEST_VARIANT_ID = "variant_01KVV3GD87A2S476H48GGKQWK7";
+const SALES_CHANNEL_ID =
+  process.env.NEXT_PUBLIC_SALES_CHANNEL_ID ??
+  "sc_01KVRH65XAA1QMW6TP5CT5G4ME";
+
 export async function GET() {
   const backendUrl = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL;
   const publishableKey = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY;
@@ -56,13 +61,6 @@ export async function GET() {
           ok: false,
           stage: "region-selection",
           regionsCount: regions.length,
-          regionSummary: regions.map(
-            (item: { id?: string; name?: string; currency_code?: string }) => ({
-              id: item.id,
-              name: item.name,
-              currency_code: item.currency_code,
-            })
-          ),
         },
         { status: 500 }
       );
@@ -71,24 +69,79 @@ export async function GET() {
     const cartResponse = await fetch(`${backendUrl}/store/carts`, {
       method: "POST",
       headers,
-      body: JSON.stringify({ region_id: region.id }),
+      body: JSON.stringify({
+        region_id: region.id,
+        sales_channel_id: SALES_CHANNEL_ID,
+      }),
       cache: "no-store",
     });
     const cartBody = await cartResponse.json().catch(() => null);
 
+    if (!cartResponse.ok || !cartBody?.cart?.id) {
+      return NextResponse.json(
+        {
+          ok: false,
+          stage: "cart-create",
+          region,
+          status: cartResponse.status,
+          body: cartBody,
+        },
+        { status: 500 }
+      );
+    }
+
+    const lineResponse = await fetch(
+      `${backendUrl}/store/carts/${cartBody.cart.id}/line-items`,
+      {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          variant_id: TEST_VARIANT_ID,
+          quantity: 1,
+        }),
+        cache: "no-store",
+      }
+    );
+    const lineBody = await lineResponse.json().catch(() => null);
+    const cart = lineBody?.cart;
+    const item = cart?.items?.[0];
+
     return NextResponse.json(
       {
-        ok: cartResponse.ok,
-        stage: "cart-create",
+        ok: lineResponse.ok,
+        stage: "line-item",
         region: {
           id: region.id,
           name: region.name,
           currency_code: region.currency_code,
+          is_tax_inclusive: region.is_tax_inclusive,
+          automatic_taxes: region.automatic_taxes,
         },
-        status: cartResponse.status,
-        body: cartBody,
+        status: lineResponse.status,
+        cart: cart
+          ? {
+              id: cart.id,
+              subtotal: cart.subtotal,
+              item_subtotal: cart.item_subtotal,
+              item_tax_total: cart.item_tax_total,
+              tax_total: cart.tax_total,
+              total: cart.total,
+            }
+          : null,
+        item: item
+          ? {
+              title: item.title,
+              variant_title: item.variant_title,
+              unit_price: item.unit_price,
+              subtotal: item.subtotal,
+              tax_total: item.tax_total,
+              total: item.total,
+              is_tax_inclusive: item.is_tax_inclusive,
+            }
+          : null,
+        error: lineResponse.ok ? null : lineBody,
       },
-      { status: cartResponse.ok ? 200 : 500 }
+      { status: lineResponse.ok ? 200 : 500 }
     );
   } catch (error) {
     return NextResponse.json(
