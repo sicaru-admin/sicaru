@@ -16,7 +16,7 @@ import {
   generateProductFAQs,
 } from "@/lib/schema";
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export async function generateStaticParams() {
   try {

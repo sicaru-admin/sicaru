@@ -1,16 +1,64 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { HttpTypes } from "@medusajs/types";
 import { MessageCircle, Search, ShieldCheck, BadgeCheck } from "lucide-react";
 import { useCart } from "@/components/cart/CartProvider";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
-import { VariantSelector } from "./VariantSelector";
+import {
+  getSelectableOptions,
+  VariantSelector,
+  VARIANT_TITLE_OPTION_ID,
+  type ProductOptionSelection,
+} from "./VariantSelector";
 import { QuantitySelector } from "./QuantitySelector";
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct;
 };
+
+type VariantOption = {
+  option_id?: string | null;
+  value?: string | null;
+  option?: {
+    id?: string | null;
+    title?: string | null;
+  } | null;
+};
+
+type VariantWithOptions = HttpTypes.StoreProductVariant & {
+  options?: VariantOption[] | null;
+};
+
+function getCalculatedAmount(variant: HttpTypes.StoreProductVariant) {
+  return variant.calculated_price?.calculated_amount ?? null;
+}
+
+function normalizeOptionValue(value?: string | null) {
+  return value?.trim().toLocaleLowerCase("es-MX") ?? "";
+}
+
+function optionMatches(
+  variantOption: VariantOption,
+  optionId: string,
+  optionTitle: string,
+  selectedValue: string
+) {
+  const variantOptionId =
+    variantOption.option_id ?? variantOption.option?.id ?? "";
+  const variantOptionTitle = variantOption.option?.title ?? "";
+
+  const matchesOption =
+    variantOptionId === optionId ||
+    normalizeOptionValue(variantOptionTitle) ===
+      normalizeOptionValue(optionTitle);
+
+  return (
+    matchesOption &&
+    normalizeOptionValue(variantOption.value) ===
+      normalizeOptionValue(selectedValue)
+  );
+}
 
 const WHATSAPP_NUMBER = "528281111023";
 
@@ -21,16 +69,79 @@ const TRUST_ITEMS = [
 ];
 
 export function ProductActions({ product }: ProductActionsProps) {
-  const variants = product.variants ?? [];
-  const [selectedVariant, setSelectedVariant] = useState(
-    variants[0] ?? null
+  const variants = useMemo(() => product.variants ?? [], [product.variants]);
+  const selectableOptions = useMemo(
+    () => getSelectableOptions(product),
+    [product]
   );
+  const requiresVariantSelection =
+    variants.length > 1 && selectableOptions.length > 0;
+  const [selectedOptions, setSelectedOptions] =
+    useState<ProductOptionSelection>({});
   const [quantity, setQuantity] = useState(1);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { addToCart, isLoading } = useCart();
 
-  if (!selectedVariant) return null;
+  const selectedVariant = useMemo(() => {
+    if (variants.length === 1 && !requiresVariantSelection) {
+      return variants[0];
+    }
 
-  const price = selectedVariant.calculated_price;
+    if (!requiresVariantSelection) {
+      return variants[0] ?? null;
+    }
+
+    const allOptionsSelected = selectableOptions.every(
+      (option) => selectedOptions[option.id]
+    );
+
+    if (!allOptionsSelected) {
+      return null;
+    }
+
+    return (
+      (variants as VariantWithOptions[]).find((variant) => {
+        if (selectedOptions[VARIANT_TITLE_OPTION_ID]) {
+          return variant.title === selectedOptions[VARIANT_TITLE_OPTION_ID];
+        }
+
+        return selectableOptions.every((option) =>
+          (variant.options ?? []).some((variantOption) =>
+            optionMatches(
+              variantOption,
+              option.id,
+              option.title,
+              selectedOptions[option.id]
+            )
+          )
+        );
+      }) ?? null
+    );
+  }, [requiresVariantSelection, selectableOptions, selectedOptions, variants]);
+
+  const lowestPricedVariant = useMemo(
+    () =>
+      variants.reduce<HttpTypes.StoreProductVariant | null>((lowest, variant) => {
+        if (!lowest) return variant;
+
+        const lowestAmount = getCalculatedAmount(lowest);
+        const variantAmount = getCalculatedAmount(variant);
+
+        if (lowestAmount == null) return variant;
+        if (variantAmount == null) return lowest;
+
+        return variantAmount < lowestAmount ? variant : lowest;
+      }, null),
+    [variants]
+  );
+
+  const displayVariant =
+    selectedVariant ??
+    (requiresVariantSelection ? lowestPricedVariant : variants[0] ?? null);
+
+  if (!displayVariant) return null;
+
+  const price = displayVariant.calculated_price;
   const formattedPrice = price?.calculated_amount != null
     ? new Intl.NumberFormat("es-MX", {
         style: "currency",
@@ -39,9 +150,39 @@ export function ProductActions({ product }: ProductActionsProps) {
     : "";
 
   const whatsappMsg = `Hola! Me interesa el ${product.title} (${formattedPrice}). ¿Tienen disponible?`;
+  const selectionMessage = selectableOptions.some((option) =>
+    option.title.toLocaleLowerCase("es-MX").includes("tono")
+  )
+    ? "Selecciona un tono"
+    : "Selecciona una opción";
+  const canAddToCart = !!selectedVariant && !isLoading;
 
   const handleAddToCart = async () => {
-    await addToCart(selectedVariant.id, quantity);
+    setErrorMessage(null);
+
+    if (!selectedVariant?.id) {
+      setErrorMessage(selectionMessage);
+      return;
+    }
+
+    try {
+      await addToCart(selectedVariant.id, quantity);
+    } catch (error) {
+      console.error("Error adding selected variant to cart:", error);
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "No pudimos agregar el producto al carrito. Intenta de nuevo."
+      );
+    }
+  };
+
+  const handleSelectOption = (optionId: string, value: string) => {
+    setErrorMessage(null);
+    setSelectedOptions((current) => ({
+      ...current,
+      [optionId]: value,
+    }));
   };
 
   const hasDiscount =
@@ -55,7 +196,7 @@ export function ProductActions({ product }: ProductActionsProps) {
       <div>
         <div className="flex items-baseline gap-3">
           <PriceDisplay
-            variant={selectedVariant}
+            variant={displayVariant}
             className="text-2xl font-semibold text-[#7f6d8a] md:text-3xl"
           />
           {hasDiscount && price?.original_amount != null && (
@@ -70,10 +211,20 @@ export function ProductActions({ product }: ProductActionsProps) {
 
       {/* Variant selector */}
       <VariantSelector
-        variants={variants}
-        selected={selectedVariant}
-        onSelect={setSelectedVariant}
+        options={selectableOptions}
+        selectedOptions={selectedOptions}
+        onSelect={handleSelectOption}
       />
+      {requiresVariantSelection && !selectedVariant && (
+        <p className="text-sm font-medium text-[#7f6d8a]">
+          {selectionMessage}
+        </p>
+      )}
+      {errorMessage && (
+        <p role="alert" className="text-sm font-medium text-red-600">
+          {errorMessage}
+        </p>
+      )}
 
       {/* Quantity */}
       <QuantitySelector quantity={quantity} onChange={setQuantity} />
@@ -83,7 +234,7 @@ export function ProductActions({ product }: ProductActionsProps) {
         <button
           type="button"
           onClick={handleAddToCart}
-          disabled={isLoading}
+          disabled={!canAddToCart}
           className="btn-ripple tap-feedback w-full bg-[#7f6d8a] px-8 py-3.5 text-base font-semibold text-[#faf8f5] transition-colors duration-200 hover:bg-[#8e7a9e] disabled:cursor-not-allowed disabled:opacity-50 md:text-lg"
         >
           {isLoading ? "Agregando..." : "Agregar al Carrito"}

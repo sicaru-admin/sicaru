@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useCart } from "./CartProvider";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
+import { getCartLineVariantLabel } from "./cart-line-variant";
 
 export function CartDrawer() {
   const {
@@ -64,51 +65,63 @@ export function CartDrawer() {
               </p>
             ) : (
               <ul className="space-y-4">
-                {cart.items.map((item) => (
-                  <li key={item.id} className="flex gap-4">
-                    {item.thumbnail && (
-                      <Image
-                        src={item.thumbnail}
-                        alt={item.title}
-                        width={80}
-                        height={80}
-                        className="h-20 w-20 rounded-lg object-cover"
-                      />
-                    )}
-                    <div className="flex flex-1 flex-col">
-                      <h3 className="text-sm font-medium">{item.title}</h3>
-                      <PriceDisplay amount={item.unit_price} className="text-sm text-gray-600" />
-                      <div className="mt-2 flex items-center gap-2">
-                        <button
-                          onClick={() =>
-                            updateQuantity(item.id, item.quantity - 1)
-                          }
-                          disabled={isLoading || item.quantity <= 1}
-                          className="flex h-8 w-8 items-center justify-center rounded-full border text-sm hover:bg-gray-100 disabled:opacity-50"
-                        >
-                          &minus;
-                        </button>
-                        <span className="text-sm">{item.quantity}</span>
-                        <button
-                          onClick={() =>
-                            updateQuantity(item.id, item.quantity + 1)
-                          }
-                          disabled={isLoading}
-                          className="flex h-8 w-8 items-center justify-center rounded-full border text-sm hover:bg-gray-100 disabled:opacity-50"
-                        >
-                          +
-                        </button>
-                        <button
-                          onClick={() => removeFromCart(item.id)}
-                          disabled={isLoading}
-                          className="ml-auto text-sm text-red-500 hover:text-red-700"
-                        >
-                          Eliminar
-                        </button>
+                {cart.items.map((item) => {
+                  const variantLabel = getCartLineVariantLabel(item);
+
+                  return (
+                    <li key={item.id} className="flex gap-4">
+                      {item.thumbnail && (
+                        <Image
+                          src={item.thumbnail}
+                          alt={item.title}
+                          width={80}
+                          height={80}
+                          className="h-20 w-20 rounded-lg object-cover"
+                        />
+                      )}
+                      <div className="flex flex-1 flex-col">
+                        <h3 className="text-sm font-medium">{item.title}</h3>
+                        {variantLabel && (
+                          <p className="text-xs text-gray-500">
+                            {variantLabel}
+                          </p>
+                        )}
+                        <PriceDisplay
+                          amount={item.unit_price}
+                          className="text-sm text-gray-600"
+                        />
+                        <div className="mt-2 flex items-center gap-2">
+                          <button
+                            onClick={() =>
+                              updateQuantity(item.id, item.quantity - 1)
+                            }
+                            disabled={isLoading || item.quantity <= 1}
+                            className="flex h-8 w-8 items-center justify-center rounded-full border text-sm hover:bg-gray-100 disabled:opacity-50"
+                          >
+                            &minus;
+                          </button>
+                          <span className="text-sm">{item.quantity}</span>
+                          <button
+                            onClick={() =>
+                              updateQuantity(item.id, item.quantity + 1)
+                            }
+                            disabled={isLoading}
+                            className="flex h-8 w-8 items-center justify-center rounded-full border text-sm hover:bg-gray-100 disabled:opacity-50"
+                          >
+                            +
+                          </button>
+                          <button
+                            onClick={() => removeFromCart(item.id)}
+                            disabled={isLoading}
+                            className="ml-auto text-sm text-red-500 hover:text-red-700"
+                          >
+                            Eliminar
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                ))}
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </div>
