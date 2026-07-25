@@ -1,7 +1,7 @@
 "use client";
 
 import { CardPayment } from "@mercadopago/sdk-react";
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ensureMercadoPagoInit,
   hasMercadoPagoPublicKey,
@@ -15,7 +15,7 @@ export type CardTokenData = {
 
 type MercadoPagoCardFormProps = {
   amount: number;
-  onTokenized: (data: CardTokenData) => void;
+  onTokenized: (data: CardTokenData) => void | Promise<void>;
   onError?: (error: string) => void;
 };
 
@@ -25,10 +25,40 @@ export function MercadoPagoCardForm({
   onError,
 }: MercadoPagoCardFormProps) {
   const isConfigured = hasMercadoPagoPublicKey();
+  const isSubmittingRef = useRef(false);
+  const onErrorRef = useRef(onError);
+  const onTokenizedRef = useRef(onTokenized);
+  const [isPreparingPayment, setIsPreparingPayment] = useState(false);
+
+  const initialization = useMemo(() => ({ amount }), [amount]);
+  const customization = useMemo(
+    () => ({
+      visual: {
+        texts: {
+          formSubmit: "Continuar",
+        },
+        style: {
+          customVariables: {
+            formBackgroundColor: "transparent",
+            baseColor: "#8e7a9e",
+          },
+        },
+      },
+    }),
+    []
+  );
+
+  useEffect(() => {
+    onErrorRef.current = onError;
+  }, [onError]);
+
+  useEffect(() => {
+    onTokenizedRef.current = onTokenized;
+  }, [onTokenized]);
 
   useEffect(() => {
     if (!isConfigured) {
-      onError?.(
+      onErrorRef.current?.(
         "Mercado Pago no está configurado para recibir pagos con tarjeta."
       );
       return;
@@ -36,11 +66,69 @@ export function MercadoPagoCardForm({
 
     const initialized = ensureMercadoPagoInit();
     if (!initialized) {
-      onError?.(
+      onErrorRef.current?.(
         "No se pudo inicializar Mercado Pago. Revisa la configuración de pago."
       );
     }
-  }, [isConfigured, onError]);
+  }, [isConfigured]);
+
+  const handleReady = useCallback(() => {
+    onErrorRef.current?.("");
+  }, []);
+
+  const handleSubmit = useCallback(
+    async (formData: {
+      token?: string;
+      payment_method_id?: string;
+      installments?: number;
+    }) => {
+      if (isSubmittingRef.current) return;
+
+      isSubmittingRef.current = true;
+      setIsPreparingPayment(true);
+
+      try {
+        const token = formData.token;
+        const paymentMethodId = formData.payment_method_id;
+        const installments = formData.installments ?? 1;
+
+        if (!token) {
+          throw new Error("No se pudo tokenizar la tarjeta. Intenta de nuevo.");
+        }
+
+        if (!paymentMethodId) {
+          throw new Error(
+            "Mercado Pago no devolvió el método de pago. Intenta de nuevo."
+          );
+        }
+
+        await onTokenizedRef.current({
+          token,
+          payment_method_id: paymentMethodId,
+          installments,
+        });
+      } catch (error) {
+        const message =
+          error instanceof Error && error.message
+            ? error.message
+            : "Error al procesar la tarjeta. Intenta de nuevo.";
+        onErrorRef.current?.(message);
+        throw error;
+      } finally {
+        isSubmittingRef.current = false;
+        setIsPreparingPayment(false);
+      }
+    },
+    []
+  );
+
+  const handleBrickError = useCallback(
+    (error: unknown) => {
+      console.error("MercadoPago CardPayment error:", error);
+      onErrorRef.current?.("Error en el formulario de pago. Intenta de nuevo.");
+    },
+    []
+  );
 
   if (!isConfigured) {
     return (
@@ -61,55 +149,15 @@ export function MercadoPagoCardForm({
   return (
     <div className="mt-4">
       <CardPayment
-        initialization={{ amount }}
-        onReady={() => {
-          onError?.("");
-        }}
-        onSubmit={async (formData) => {
-          try {
-            const token = formData.token;
-            const paymentMethodId = formData.payment_method_id;
-            const installments = formData.installments ?? 1;
-
-            if (!token) {
-              onError?.("No se pudo tokenizar la tarjeta. Intenta de nuevo.");
-              return;
-            }
-
-            if (!paymentMethodId) {
-              onError?.(
-                "Mercado Pago no devolvió el método de pago. Intenta de nuevo."
-              );
-              return;
-            }
-
-            onTokenized({
-              token,
-              payment_method_id: paymentMethodId,
-              installments,
-            });
-          } catch {
-            onError?.("Error al procesar la tarjeta. Intenta de nuevo.");
-          }
-        }}
-        onError={(error) => {
-          console.error("MercadoPago CardPayment error:", error);
-          onError?.("Error en el formulario de pago. Intenta de nuevo.");
-        }}
-        customization={{
-          visual: {
-            texts: {
-              formSubmit: "Continuar",
-            },
-            style: {
-              customVariables: {
-                formBackgroundColor: "transparent",
-                baseColor: "#8e7a9e",
-              },
-            },
-          },
-        }}
+        initialization={initialization}
+        onReady={handleReady}
+        onSubmit={handleSubmit}
+        onError={handleBrickError}
+        customization={customization}
       />
+      {isPreparingPayment && (
+        <p className="mt-3 text-sm text-gray-500">Preparando tu pago...</p>
+      )}
     </div>
   );
 }
