@@ -4,6 +4,7 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { useCart } from "@/components/cart/CartProvider";
+import { getCartLineVariantLabel } from "@/components/cart/cart-line-variant";
 
 export default function CarritoPage() {
   const { cart, isLoading, updateQuantity, removeFromCart, totalItems } =
@@ -32,62 +33,71 @@ export default function CarritoPage() {
           {/* Lista de productos */}
           <div className="lg:col-span-8">
             <ul className="divide-y divide-gray-200">
-              {cart.items.map((item) => (
-                <li key={item.id} className="flex gap-4 py-6">
-                  {item.thumbnail && (
-                    <img
-                      src={item.thumbnail}
-                      alt={item.title}
-                      className="h-24 w-24 rounded-lg object-cover sm:h-32 sm:w-32"
-                    />
-                  )}
-                  <div className="flex flex-1 flex-col">
-                    <h3 className="text-sm font-medium text-sicaru-purple-900 sm:text-base">
-                      {item.title}
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-600">
-                      ${item.unit_price.toFixed(2)} MXN c/u
-                    </p>
+              {cart.items.map((item) => {
+                const variantLabel = getCartLineVariantLabel(item);
 
-                    <div className="mt-3 flex items-center gap-3">
-                      <button
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity - 1)
-                        }
-                        disabled={isLoading || item.quantity <= 1}
-                        className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-sm hover:bg-gray-100 disabled:opacity-50"
-                      >
-                        &minus;
-                      </button>
-                      <span className="min-w-[2rem] text-center text-sm font-medium">
-                        {item.quantity}
-                      </span>
-                      <button
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity + 1)
-                        }
-                        disabled={isLoading}
-                        className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-sm hover:bg-gray-100 disabled:opacity-50"
-                      >
-                        +
-                      </button>
-                    </div>
-
-                    <div className="mt-3 flex items-center justify-between">
-                      <p className="text-sm font-semibold text-sicaru-purple-900">
-                        ${(item.unit_price * item.quantity).toFixed(2)} MXN
+                return (
+                  <li key={item.id} className="flex gap-4 py-6">
+                    {item.thumbnail && (
+                      <img
+                        src={item.thumbnail}
+                        alt={item.title}
+                        className="h-24 w-24 rounded-lg object-cover sm:h-32 sm:w-32"
+                      />
+                    )}
+                    <div className="flex flex-1 flex-col">
+                      <h3 className="text-sm font-medium text-sicaru-purple-900 sm:text-base">
+                        {item.title}
+                      </h3>
+                      {variantLabel && (
+                        <p className="mt-1 text-sm text-gray-500">
+                          {variantLabel}
+                        </p>
+                      )}
+                      <p className="mt-1 text-sm text-gray-600">
+                        ${item.unit_price.toFixed(2)} MXN c/u
                       </p>
-                      <button
-                        onClick={() => removeFromCart(item.id)}
-                        disabled={isLoading}
-                        className="text-sm text-red-500 hover:text-red-700 disabled:opacity-50"
-                      >
-                        Eliminar
-                      </button>
+
+                      <div className="mt-3 flex items-center gap-3">
+                        <button
+                          onClick={() =>
+                            updateQuantity(item.id, item.quantity - 1)
+                          }
+                          disabled={isLoading || item.quantity <= 1}
+                          className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-sm hover:bg-gray-100 disabled:opacity-50"
+                        >
+                          &minus;
+                        </button>
+                        <span className="min-w-[2rem] text-center text-sm font-medium">
+                          {item.quantity}
+                        </span>
+                        <button
+                          onClick={() =>
+                            updateQuantity(item.id, item.quantity + 1)
+                          }
+                          disabled={isLoading}
+                          className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-sm hover:bg-gray-100 disabled:opacity-50"
+                        >
+                          +
+                        </button>
+                      </div>
+
+                      <div className="mt-3 flex items-center justify-between">
+                        <p className="text-sm font-semibold text-sicaru-purple-900">
+                          ${(item.unit_price * item.quantity).toFixed(2)} MXN
+                        </p>
+                        <button
+                          onClick={() => removeFromCart(item.id)}
+                          disabled={isLoading}
+                          className="text-sm text-red-500 hover:text-red-700 disabled:opacity-50"
+                        >
+                          Eliminar
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </li>
-              ))}
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
