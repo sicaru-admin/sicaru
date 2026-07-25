@@ -1,8 +1,15 @@
 import { sdk } from "@/lib/medusa";
 
 export async function createCart(regionId: string) {
+  const salesChannelId = process.env.NEXT_PUBLIC_SALES_CHANNEL_ID;
+
+  if (!salesChannelId) {
+    throw new Error("Falta configurar el canal de ventas de la tienda.");
+  }
+
   const { cart } = await sdk.store.cart.create({
     region_id: regionId,
+    sales_channel_id: salesChannelId,
   });
 
   return cart;
