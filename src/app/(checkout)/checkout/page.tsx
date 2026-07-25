@@ -71,10 +71,29 @@ const EMPTY_ADDRESS: Address = {
   country_code: "mx",
 };
 
-// The Medusa provider ID for our MercadoPago module
-const MP_PROVIDER_ID = "pp_mercadopago_mercadopago";
-
 // ─── Main Checkout Page ──────────────────────────────────────────
+
+function getCheckoutErrorMessage(error: unknown, fallback: string) {
+  if (error instanceof Error && error.message) return error.message;
+  if (
+    error &&
+    typeof error === "object" &&
+    "message" in error &&
+    typeof error.message === "string"
+  ) {
+    return error.message;
+  }
+  return fallback;
+}
+
+function findMercadoPagoProvider(
+  providers: HttpTypes.StorePaymentProvider[]
+) {
+  return providers.find((provider) => {
+    const id = provider.id.toLowerCase();
+    return id.includes("mercadopago") || id.includes("mercado_pago");
+  });
+}
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -169,6 +188,7 @@ export default function CheckoutPage() {
 
     // Pre-fill email if not already set
     if (customer.email && !email) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setEmail(customer.email);
     }
 
@@ -253,6 +273,18 @@ export default function CheckoutPage() {
     }
   };
 
+  const handlePaymentMethodChange = (method: PaymentMethod) => {
+    setSelectedMethod(method);
+    setCardTokenData(null);
+    setSubmitError(null);
+    setCompletedSteps((prev) => {
+      const next = new Set(prev);
+      next.delete("payment");
+      next.delete("review");
+      return next;
+    });
+  };
+
   const handleContactSubmit = async () => {
     if (!cartId) return;
     setStepLoading(true);
@@ -260,8 +292,13 @@ export default function CheckoutPage() {
       const cart = await updateCart(cartId, { email });
       setFullCart(cart);
       completeStep("contact");
-    } catch {
-      setSubmitError("Error al guardar el correo. Intenta de nuevo.");
+    } catch (error) {
+      setSubmitError(
+        getCheckoutErrorMessage(
+          error,
+          "Error al guardar el correo. Intenta de nuevo."
+        )
+      );
     } finally {
       setStepLoading(false);
     }
@@ -287,8 +324,13 @@ export default function CheckoutPage() {
       }
 
       completeStep("shipping");
-    } catch {
-      setSubmitError("Error al guardar la dirección. Intenta de nuevo.");
+    } catch (error) {
+      setSubmitError(
+        getCheckoutErrorMessage(
+          error,
+          "Error al guardar la dirección. Intenta de nuevo."
+        )
+      );
     } finally {
       setStepLoading(false);
     }
@@ -308,45 +350,37 @@ export default function CheckoutPage() {
       }
 
       completeStep("delivery");
-    } catch {
+    } catch (error) {
       setSubmitError(
-        "Error al seleccionar el método de envío. Intenta de nuevo."
+        getCheckoutErrorMessage(
+          error,
+          "Error al seleccionar el método de envío. Intenta de nuevo."
+        )
       );
     } finally {
       setStepLoading(false);
     }
   };
 
-  // Card: MP brick tokenized the card → store token and advance
-  const handleCardTokenized = useCallback((data: CardTokenData) => {
-    setCardTokenData(data);
-    setSubmitError(null);
-    completeStep("payment");
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const preparePaymentSession = useCallback(
+    async (method: PaymentMethod, tokenData?: CardTokenData) => {
+      if (!fullCart) {
+        throw new Error("No se pudo cargar el carrito para preparar el pago.");
+      }
 
-  // OXXO: no token needed, just advance
-  const handleOxxoSubmit = useCallback(() => {
-    setCardTokenData(null);
-    setSubmitError(null);
-    completeStep("payment");
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+      const mpProvider = findMercadoPagoProvider(paymentProviders);
+      if (!mpProvider) {
+        throw new Error(
+          "Mercado Pago no está disponible para esta región. Intenta de nuevo más tarde."
+        );
+      }
 
-  // Review step: initiate MP payment session then complete cart
-  const handleOrderConfirm = async () => {
-    if (!cartId || !fullCart || !selectedMethod) return;
-    setIsSubmitting(true);
-    setSubmitError(null);
-
-    try {
-      // Build payment data based on selected method
       const paymentData: Record<string, unknown> =
-        selectedMethod === "card" && cardTokenData
+        method === "card" && tokenData
           ? {
-              token: cardTokenData.token,
-              payment_method_id: cardTokenData.payment_method_id,
-              installments: cardTokenData.installments,
+              token: tokenData.token,
+              payment_method_id: tokenData.payment_method_id,
+              installments: tokenData.installments,
               payer_email: email,
             }
           : {
@@ -354,15 +388,82 @@ export default function CheckoutPage() {
               payer_email: email,
             };
 
-      // Determine the provider ID — use the first mercadopago provider if available,
-      // otherwise fall back to the constant
-      const mpProvider = paymentProviders.find((p) =>
-        p.id.includes("mercadopago")
+      const paymentCollection = await initiatePaymentSession(
+        fullCart,
+        mpProvider.id,
+        paymentData
       );
-      const providerId = mpProvider?.id ?? MP_PROVIDER_ID;
 
-      // Initiate payment session with MP-specific data
-      await initiatePaymentSession(fullCart, providerId, paymentData);
+      setFullCart((current) =>
+        current
+          ? {
+              ...current,
+              payment_collection: paymentCollection,
+            }
+          : current
+      );
+    },
+    [email, fullCart, paymentProviders]
+  );
+
+  // Card: MP brick tokenized the card → create Medusa payment session
+  const handleCardTokenized = useCallback(
+    async (data: CardTokenData) => {
+      setStepLoading(true);
+      setSubmitError(null);
+
+      try {
+        await preparePaymentSession("card", data);
+        setCardTokenData(data);
+        setSelectedMethod("card");
+        completeStep("payment");
+      } catch (error) {
+        setSubmitError(
+          getCheckoutErrorMessage(
+            error,
+            "Error al preparar el pago con tarjeta. Intenta de nuevo."
+          )
+        );
+      } finally {
+        setStepLoading(false);
+      }
+    },
+    [preparePaymentSession]
+  );
+
+  // OXXO: create Medusa payment session before review
+  const handleOxxoSubmit = useCallback(async () => {
+    setStepLoading(true);
+    setSubmitError(null);
+
+    try {
+      await preparePaymentSession("oxxo");
+      setCardTokenData(null);
+      setSelectedMethod("oxxo");
+      completeStep("payment");
+    } catch (error) {
+      setSubmitError(
+        getCheckoutErrorMessage(
+          error,
+          "Error al preparar el pago en OXXO. Intenta de nuevo."
+        )
+      );
+    } finally {
+      setStepLoading(false);
+    }
+  }, [preparePaymentSession]);
+
+  // Review step: complete cart after a valid payment session exists
+  const handleOrderConfirm = async () => {
+    if (!cartId || !fullCart || !selectedMethod) return;
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      if (selectedMethod === "card" && !cardTokenData) {
+        setSubmitError("Ingresa los datos de tu tarjeta para continuar.");
+        return;
+      }
 
       // Complete the cart → creates the order
       const result = await completeCart(cartId);
@@ -380,8 +481,13 @@ export default function CheckoutPage() {
           result.error?.message ?? "Error al completar el pedido."
         );
       }
-    } catch {
-      setSubmitError("Error al procesar el pedido. Intenta de nuevo.");
+    } catch (error) {
+      setSubmitError(
+        getCheckoutErrorMessage(
+          error,
+          "Error al procesar el pedido. Intenta de nuevo."
+        )
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -501,12 +607,13 @@ export default function CheckoutPage() {
           >
             <PaymentSelector
               selectedMethod={selectedMethod}
-              onMethodChange={setSelectedMethod}
+              onMethodChange={handlePaymentMethodChange}
               onCardTokenized={handleCardTokenized}
               onOxxoSubmit={handleOxxoSubmit}
               cartTotal={fullCart?.total ?? 0}
               isLoading={stepLoading}
               error={submitError}
+              onError={setSubmitError}
             />
           </CheckoutStepSection>
 

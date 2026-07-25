@@ -11,11 +11,12 @@ export type PaymentMethod = "card" | "oxxo";
 type PaymentSelectorProps = {
   selectedMethod: PaymentMethod | null;
   onMethodChange: (method: PaymentMethod) => void;
-  onCardTokenized: (data: CardTokenData) => void;
-  onOxxoSubmit: () => void;
+  onCardTokenized: (data: CardTokenData) => void | Promise<void>;
+  onOxxoSubmit: () => void | Promise<void>;
   cartTotal: number;
   isLoading: boolean;
   error?: string | null;
+  onError: (error: string | null) => void;
 };
 
 const METHODS: {
@@ -47,6 +48,7 @@ export function PaymentSelector({
   cartTotal,
   isLoading,
   error,
+  onError,
 }: PaymentSelectorProps) {
   return (
     <div className="space-y-4">
@@ -89,7 +91,7 @@ export function PaymentSelector({
                 <MercadoPagoCardForm
                   amount={cartTotal}
                   onTokenized={onCardTokenized}
-                  onError={(err) => console.error(err)}
+                  onError={(err) => onError(err || null)}
                 />
               )}
             </div>
