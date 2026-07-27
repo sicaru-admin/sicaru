@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import type { HttpTypes } from "@medusajs/types";
 import { ensureMercadoPagoInit } from "@/lib/mercadopago";
@@ -59,6 +59,29 @@ type Address = {
   country_code: string;
 };
 
+type PaymentSessionStatus =
+  | "authorized"
+  | "captured"
+  | "pending"
+  | "requires_more"
+  | "error"
+  | "canceled"
+  | "pending_authorization";
+
+type PaymentSessionLike = {
+  id?: string;
+  status?: PaymentSessionStatus | "rejected" | "failed" | string;
+};
+
+type PaymentCollectionLike = {
+  status?: "not_paid" | "awaiting" | "authorized" | "partially_authorized" | "canceled" | "completed" | "failed" | string;
+  payment_sessions?: PaymentSessionLike[];
+};
+
+type CartWithPaymentSessions = HttpTypes.StoreCart & {
+  payment_collection?: PaymentCollectionLike | null;
+};
+
 const EMPTY_ADDRESS: Address = {
   first_name: "",
   last_name: "",
@@ -70,6 +93,20 @@ const EMPTY_ADDRESS: Address = {
   postal_code: "",
   country_code: "mx",
 };
+
+const PAYMENT_RETRY_MESSAGE =
+  "No pudimos aprobar tu pago. Vuelve a ingresar tus datos o elige otro método de pago.";
+const PAYMENT_PROCESSING_MESSAGE =
+  "No pudimos procesar el pago. Vuelve a ingresar tus datos o elige otro método de pago.";
+const TECHNICAL_PAYMENT_SESSION_ERROR =
+  "payment sessions are required to complete cart";
+const USABLE_PAYMENT_SESSION_STATUSES = new Set<PaymentSessionStatus>([
+  "authorized",
+  "captured",
+  "pending",
+  "requires_more",
+  "pending_authorization",
+]);
 
 // ─── Main Checkout Page ──────────────────────────────────────────
 
@@ -86,12 +123,40 @@ function getCheckoutErrorMessage(error: unknown, fallback: string) {
   return fallback;
 }
 
+function getSafeCheckoutErrorMessage(error: unknown, fallback: string) {
+  const message = getCheckoutErrorMessage(error, fallback);
+  return message.toLowerCase().includes(TECHNICAL_PAYMENT_SESSION_ERROR)
+    ? PAYMENT_PROCESSING_MESSAGE
+    : message;
+}
+
 function findMercadoPagoProvider(
   providers: HttpTypes.StorePaymentProvider[]
 ) {
   return providers.find((provider) => {
     const id = provider.id.toLowerCase();
     return id.includes("mercadopago") || id.includes("mercado_pago");
+  });
+}
+
+function hasUsablePaymentSession(cart: HttpTypes.StoreCart | null) {
+  const paymentCollection = (cart as CartWithPaymentSessions | null)
+    ?.payment_collection;
+
+  if (!paymentCollection) return false;
+  if (["canceled", "failed"].includes(paymentCollection.status ?? "")) {
+    return false;
+  }
+
+  const sessions = paymentCollection.payment_sessions ?? [];
+  if (sessions.length === 0) return false;
+
+  return sessions.some((session) => {
+    if (!session.id) return false;
+    if (!session.status) return false;
+    return USABLE_PAYMENT_SESSION_STATUSES.has(
+      session.status as PaymentSessionStatus
+    );
   });
 }
 
@@ -136,6 +201,8 @@ export default function CheckoutPage() {
   const [stepLoading, setStepLoading] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isValidatingPayment, setIsValidatingPayment] = useState(false);
+  const orderSubmissionLockRef = useRef(false);
 
   // Initialize MercadoPago SDK
   useEffect(() => {
@@ -242,6 +309,18 @@ export default function CheckoutPage() {
       setActiveStep(STEPS[nextIdx]);
     }
   };
+
+  const invalidatePaymentStep = useCallback((message: string) => {
+    setCompletedSteps((prev) => {
+      const next = new Set(prev);
+      next.delete("payment");
+      next.delete("review");
+      return next;
+    });
+    setActiveStep("payment");
+    setCardTokenData(null);
+    setSubmitError(message);
+  }, []);
 
   const editStep = (step: CheckoutStep) => {
     setActiveStep(step);
@@ -402,6 +481,15 @@ export default function CheckoutPage() {
             }
           : current
       );
+
+      if (
+        !hasUsablePaymentSession({
+          ...fullCart,
+          payment_collection: paymentCollection,
+        } as HttpTypes.StoreCart)
+      ) {
+        throw new Error(PAYMENT_PROCESSING_MESSAGE);
+      }
     },
     [email, fullCart, paymentProviders]
   );
@@ -455,13 +543,26 @@ export default function CheckoutPage() {
 
   // Review step: complete cart after a valid payment session exists
   const handleOrderConfirm = async () => {
-    if (!cartId || !fullCart || !selectedMethod) return;
-    setIsSubmitting(true);
-    setSubmitError(null);
+    if (orderSubmissionLockRef.current) return;
+    orderSubmissionLockRef.current = true;
 
     try {
+      if (!cartId || !fullCart || !selectedMethod) return;
+
+      setIsSubmitting(true);
+      setIsValidatingPayment(true);
+      setSubmitError(null);
+
       if (selectedMethod === "card" && !cardTokenData) {
-        setSubmitError("Ingresa los datos de tu tarjeta para continuar.");
+        invalidatePaymentStep("Ingresa los datos de tu tarjeta para continuar.");
+        return;
+      }
+
+      const refreshedCart = await getFullCart(cartId);
+      setFullCart(refreshedCart);
+
+      if (!hasUsablePaymentSession(refreshedCart)) {
+        invalidatePaymentStep(PAYMENT_RETRY_MESSAGE);
         return;
       }
 
@@ -478,20 +579,39 @@ export default function CheckoutPage() {
         router.push("/checkout/confirmacion");
       } else {
         setSubmitError(
-          result.error?.message ?? "Error al completar el pedido."
+          getSafeCheckoutErrorMessage(
+            result.error,
+            "Error al completar el pedido."
+          )
         );
       }
     } catch (error) {
       setSubmitError(
-        getCheckoutErrorMessage(
+        getSafeCheckoutErrorMessage(
           error,
           "Error al procesar el pedido. Intenta de nuevo."
         )
       );
     } finally {
+      orderSubmissionLockRef.current = false;
+      setIsValidatingPayment(false);
       setIsSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    const shouldReconcilePayment =
+      completedSteps.has("payment") || activeStep === "review" || !!cardTokenData;
+
+    if (!shouldReconcilePayment || !fullCart) return;
+    if (hasUsablePaymentSession(fullCart)) return;
+
+    const timer = window.setTimeout(() => {
+      invalidatePaymentStep(PAYMENT_RETRY_MESSAGE);
+    }, 0);
+
+    return () => window.clearTimeout(timer);
+  }, [activeStep, cardTokenData, completedSteps, fullCart, invalidatePaymentStep]);
 
   // ─── Summaries for completed steps ─────────────────────────────
 
@@ -511,6 +631,7 @@ export default function CheckoutPage() {
       : selectedMethod === "oxxo"
         ? "OXXO Pay"
         : "Método de pago";
+  const isPaymentReady = hasUsablePaymentSession(fullCart);
 
   // ─── Loading state ─────────────────────────────────────────────
 
@@ -635,6 +756,8 @@ export default function CheckoutPage() {
                 paymentMethodName={paymentMethodName}
                 onConfirm={handleOrderConfirm}
                 isSubmitting={isSubmitting}
+                isPaymentReady={isPaymentReady}
+                isValidatingPayment={isValidatingPayment}
                 error={submitError}
               />
             )}

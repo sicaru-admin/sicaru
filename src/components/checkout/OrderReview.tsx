@@ -20,6 +20,8 @@ type OrderReviewProps = {
   paymentMethodName: string;
   onConfirm: () => Promise<void>;
   isSubmitting: boolean;
+  isPaymentReady: boolean;
+  isValidatingPayment: boolean;
   error: string | null;
 };
 
@@ -39,6 +41,8 @@ export function OrderReview({
   paymentMethodName,
   onConfirm,
   isSubmitting,
+  isPaymentReady,
+  isValidatingPayment,
   error,
 }: OrderReviewProps) {
   const stateName =
@@ -126,13 +130,13 @@ export function OrderReview({
       <button
         type="button"
         onClick={onConfirm}
-        disabled={isSubmitting}
+        disabled={isSubmitting || isValidatingPayment || !isPaymentReady}
         className="w-full rounded-full bg-sicaru-purple-700 px-6 py-4 text-base font-bold text-white transition-colors hover:bg-sicaru-purple-600 disabled:opacity-50"
       >
-        {isSubmitting ? (
+        {isSubmitting || isValidatingPayment ? (
           <span className="flex items-center justify-center gap-2">
             <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-            Procesando...
+            {isValidatingPayment ? "Validando pago..." : "Procesando..."}
           </span>
         ) : (
           "Confirmar y Pagar"
