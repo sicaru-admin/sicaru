@@ -98,6 +98,8 @@ const PAYMENT_RETRY_MESSAGE =
   "No pudimos aprobar tu pago. Vuelve a ingresar tus datos o elige otro método de pago.";
 const PAYMENT_PROCESSING_MESSAGE =
   "No pudimos procesar el pago. Vuelve a ingresar tus datos o elige otro método de pago.";
+const CART_PREPARATION_ERROR =
+  "No pudimos preparar tu carrito. Revisa tu conexión e inténtalo nuevamente.";
 const TECHNICAL_PAYMENT_SESSION_ERROR =
   "payment sessions are required to complete cart";
 const USABLE_PAYMENT_SESSION_STATUSES = new Set<PaymentSessionStatus>([
@@ -162,12 +164,22 @@ function hasUsablePaymentSession(cart: HttpTypes.StoreCart | null) {
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { cartId, clearCart, totalItems } = useCart();
+  const {
+    cart,
+    cartId,
+    clearCart,
+    totalItems,
+    isInitializingCart,
+    cartError,
+    retryInitializeCart,
+  } = useCart();
   const { customer, isAuthenticated } = useAuth();
 
   // Full Medusa cart
   const [fullCart, setFullCart] = useState<HttpTypes.StoreCart | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
+  const [fullCartError, setFullCartError] = useState<string | null>(null);
+  const [fullCartRetryCount, setFullCartRetryCount] = useState(0);
 
   // Step management
   const [activeStep, setActiveStep] = useState<CheckoutStep>("contact");
@@ -211,10 +223,23 @@ export default function CheckoutPage() {
 
   // Initialize: fetch full cart
   useEffect(() => {
-    if (!cartId) return;
+    if (isInitializingCart) return;
+
+    if (!cartId) {
+      const timer = window.setTimeout(() => {
+        setFullCart(null);
+        setIsInitializing(false);
+      }, 0);
+
+      return () => window.clearTimeout(timer);
+    }
+
     let cancelled = false;
 
     async function init() {
+      setIsInitializing(true);
+      setFullCartError(null);
+
       try {
         const cart = await getFullCart(cartId!);
         if (cancelled) return;
@@ -238,6 +263,9 @@ export default function CheckoutPage() {
         }
       } catch (error) {
         console.error("Error loading cart:", error);
+        if (!cancelled) {
+          setFullCartError(CART_PREPARATION_ERROR);
+        }
       } finally {
         if (!cancelled) setIsInitializing(false);
       }
@@ -247,7 +275,7 @@ export default function CheckoutPage() {
     return () => {
       cancelled = true;
     };
-  }, [cartId]);
+  }, [cartId, fullCartRetryCount, isInitializingCart]);
 
   // Pre-fill from customer profile when logged in
   useEffect(() => {
@@ -295,10 +323,25 @@ export default function CheckoutPage() {
 
   // Redirect if no cart or empty
   useEffect(() => {
-    if (!isInitializing && (!cartId || totalItems === 0)) {
+    if (
+      !isInitializingCart &&
+      !isInitializing &&
+      !cartError &&
+      !fullCartError &&
+      cartId &&
+      totalItems === 0
+    ) {
       router.replace("/carrito");
     }
-  }, [isInitializing, cartId, totalItems, router]);
+  }, [
+    cartError,
+    cartId,
+    fullCartError,
+    isInitializing,
+    isInitializingCart,
+    router,
+    totalItems,
+  ]);
 
   // ─── Step handlers ─────────────────────────────────────────────
 
@@ -632,10 +675,12 @@ export default function CheckoutPage() {
         ? "OXXO Pay"
         : "Método de pago";
   const isPaymentReady = hasUsablePaymentSession(fullCart);
+  const visibleCartError = cartError || fullCartError;
+  const isCheckoutLoading = isInitializingCart || isInitializing;
 
   // ─── Loading state ─────────────────────────────────────────────
 
-  if (isInitializing) {
+  if (isCheckoutLoading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="text-center">
@@ -643,6 +688,54 @@ export default function CheckoutPage() {
           <p className="mt-3 text-sm text-gray-500">
             Cargando tu carrito...
           </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (visibleCartError) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-16">
+        <div
+          role="alert"
+          className="rounded-lg border border-red-200 bg-red-50 p-5 text-center"
+        >
+          <p className="text-sm font-medium text-red-800">
+            {visibleCartError}
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              if (cartError) {
+                void retryInitializeCart().catch(() => {});
+                return;
+              }
+              setFullCartRetryCount((count) => count + 1);
+            }}
+            disabled={isInitializingCart || isInitializing}
+            className="mt-4 rounded-full bg-sicaru-purple-700 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-sicaru-purple-600 disabled:opacity-50"
+          >
+            Intentar nuevamente
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!cartId || !cart) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-16">
+        <div className="rounded-lg border border-gray-200 bg-white p-5 text-center">
+          <p className="text-sm font-medium text-gray-900">
+            Tu carrito está vacío.
+          </p>
+          <button
+            type="button"
+            onClick={() => router.push("/carrito")}
+            className="mt-4 rounded-full bg-sicaru-purple-700 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-sicaru-purple-600"
+          >
+            Volver al carrito
+          </button>
         </div>
       </div>
     );
