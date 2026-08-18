@@ -1,15 +1,19 @@
 import { sdk } from "@/lib/medusa";
 
-const DEFAULT_SALES_CHANNEL_ID = "sc_01KVRH65XAA1QMW6TP5CT5G4ME";
+const PREVIEW_PAYMENTS_SALES_CHANNEL_ID = "sc_01KYV6FN212F2TC60EGBY2KNED";
 
 export async function createCart(regionId: string) {
-  const salesChannelId =
-    process.env.NEXT_PUBLIC_SALES_CHANNEL_ID || DEFAULT_SALES_CHANNEL_ID;
+  const backendUrl = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "";
+  const salesChannelId = backendUrl.includes("preview-payments")
+    ? PREVIEW_PAYMENTS_SALES_CHANNEL_ID
+    : process.env.NEXT_PUBLIC_SALES_CHANNEL_ID;
 
-  const { cart } = await sdk.store.cart.create({
+  const payload = {
     region_id: regionId,
-    sales_channel_id: salesChannelId,
-  });
+    ...(salesChannelId ? { sales_channel_id: salesChannelId } : {}),
+  };
+
+  const { cart } = await sdk.store.cart.create(payload);
 
   return cart;
 }
