@@ -1,6 +1,6 @@
 import { sdk } from "@/lib/medusa";
 
-const PREVIEW_PAYMENTS_SALES_CHANNEL_ID = "sc_01KYV6FN212F2TC60EGBY2KNED";
+const PREVIEW_PAYMENTS_SALES_CHANNEL_ID = "sc_01KZD6DTFPXNTG52EGDHYY00BJ";
 
 export async function createCart(regionId: string) {
   const backendUrl = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "";
