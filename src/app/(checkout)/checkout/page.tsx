@@ -503,6 +503,9 @@ export default function CheckoutPage() {
               token: tokenData.token,
               payment_method_id: tokenData.payment_method_id,
               installments: tokenData.installments,
+              ...(tokenData.issuer_id
+                ? { issuer_id: tokenData.issuer_id }
+                : {}),
               payer_email: email,
             }
           : {

@@ -11,6 +11,7 @@ export type CardTokenData = {
   token: string;
   payment_method_id: string;
   installments: number;
+  issuer_id?: string;
 };
 
 type MercadoPagoCardFormProps = {
@@ -70,6 +71,7 @@ export function MercadoPagoCardForm({
             const token = formData.token;
             const paymentMethodId = formData.payment_method_id;
             const installments = formData.installments ?? 1;
+            const issuerId = (formData as { issuer_id?: string }).issuer_id;
 
             if (!token) {
               onError?.("No se pudo tokenizar la tarjeta. Intenta de nuevo.");
@@ -87,6 +89,7 @@ export function MercadoPagoCardForm({
               token,
               payment_method_id: paymentMethodId,
               installments,
+              ...(issuerId ? { issuer_id: issuerId } : {}),
             });
           } catch {
             onError?.("Error al procesar la tarjeta. Intenta de nuevo.");
