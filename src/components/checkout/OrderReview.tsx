@@ -2,6 +2,7 @@
 
 import type { HttpTypes } from "@medusajs/types";
 import { MEXICAN_STATES } from "@/lib/constants/mexican-states";
+import { formatCurrency, normalizeOrderTotals } from "@/lib/order-totals";
 
 type OrderReviewProps = {
   cart: HttpTypes.StoreCart;
@@ -25,14 +26,6 @@ type OrderReviewProps = {
   error: string | null;
 };
 
-function formatPrice(amount: number | undefined | null, currency = "MXN") {
-  if (amount == null) return "$0.00";
-  return new Intl.NumberFormat("es-MX", {
-    style: "currency",
-    currency,
-  }).format(amount);
-}
-
 export function OrderReview({
   cart,
   email,
@@ -50,6 +43,7 @@ export function OrderReview({
     shippingAddress.province;
 
   const currency = cart.currency_code?.toUpperCase() || "MXN";
+  const totals = normalizeOrderTotals(cart);
 
   return (
     <div className="space-y-5">
@@ -100,23 +94,29 @@ export function OrderReview({
       {/* Totals */}
       <div className="space-y-2 border-t pt-4 text-sm">
         <div className="flex justify-between">
-          <span className="text-gray-600">Subtotal</span>
-          <span>{formatPrice(cart.item_subtotal, currency)}</span>
+          <span className="text-gray-600">Productos</span>
+          <span>{formatCurrency(totals.products, currency)}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-gray-600">Envío</span>
-          <span>{formatPrice(cart.shipping_total, currency)}</span>
+          <span>{formatCurrency(totals.shipping, currency)}</span>
         </div>
-        {(cart.tax_total ?? 0) > 0 && (
+        {totals.taxes > 0 && (
           <div className="flex justify-between">
             <span className="text-gray-600">Impuestos</span>
-            <span>{formatPrice(cart.tax_total, currency)}</span>
+            <span>{formatCurrency(totals.taxes, currency)}</span>
+          </div>
+        )}
+        {totals.discount > 0 && (
+          <div className="flex justify-between text-green-600">
+            <span>Descuento</span>
+            <span>-{formatCurrency(totals.discount, currency)}</span>
           </div>
         )}
         <div className="flex justify-between border-t pt-2 text-base font-bold">
           <span>Total</span>
           <span className="text-sicaru-purple-900">
-            {formatPrice(cart.total, currency)}
+            {formatCurrency(totals.total, currency)}
           </span>
         </div>
       </div>

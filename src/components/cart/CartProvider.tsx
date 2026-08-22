@@ -33,6 +33,14 @@ type Cart = {
   total: number;
   subtotal: number;
   item_total: number;
+  item_subtotal?: number | null;
+  shipping_subtotal?: number | null;
+  shipping_total?: number | null;
+  tax_total?: number | null;
+  item_tax_total?: number | null;
+  shipping_tax_total?: number | null;
+  discount_total?: number | null;
+  shipping_methods?: Array<unknown>;
 };
 
 type CartContextType = {
