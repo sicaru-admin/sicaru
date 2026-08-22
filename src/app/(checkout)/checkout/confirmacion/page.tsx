@@ -4,13 +4,16 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { CheckCircle, ShoppingBag, MessageCircle } from "lucide-react";
+import { CheckCircle, Clock, ShoppingBag, MessageCircle } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { ConfettiCelebration } from "@/components/ui/ConfettiCelebration";
 
 export const dynamic = "force-dynamic";
 
 type PaymentSessionData = {
+  mp_status?: string;
+  status_detail?: string;
+  payment_type_id?: string;
   payment_method_id?: string;
   voucher_url?: string;
   barcode?: string;
@@ -93,22 +96,36 @@ export default function ConfirmacionPage() {
 
   const currency = order.currency_code?.toUpperCase() || "MXN";
   const items = order.items ?? [];
+  const paymentSessions =
+    order.payment_collections?.flatMap((pc) => pc.payment_sessions ?? []) ?? [];
 
   // Find OXXO payment session data (if any)
-  const oxxoSession = order.payment_collections
-    ?.flatMap((pc) => pc.payment_sessions ?? [])
-    .find((s) => s.data?.payment_method_id === "oxxo");
+  const oxxoSession = paymentSessions.find(
+    (s) => s.data?.payment_method_id === "oxxo"
+  );
   const isOxxoPayment = !!oxxoSession;
   const oxxoData = oxxoSession?.data;
+  const cardSession = paymentSessions.find((s) =>
+    ["credit_card", "debit_card"].includes(s.data?.payment_type_id ?? "")
+  );
+  const cardData = cardSession?.data;
+  const isCardPendingCapture =
+    cardData?.mp_status === "authorized" &&
+    cardData?.status_detail === "pending_capture";
+  const isPendingPayment = isOxxoPayment || isCardPendingCapture;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 lg:py-16">
-      <ConfettiCelebration />
+      {!isPendingPayment && <ConfettiCelebration />}
       {/* Success header */}
       <div className="mb-10 text-center">
-        <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
+        {isPendingPayment ? (
+          <Clock className="mx-auto h-16 w-16 text-amber-500" />
+        ) : (
+          <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
+        )}
         <h1 className="mt-4 text-2xl font-bold text-sicaru-purple-900 lg:text-3xl">
-          ¡Pedido Confirmado!
+          {isPendingPayment ? "Pedido recibido" : "¡Pedido Confirmado!"}
         </h1>
         <p className="mt-2 text-gray-600">
           Pedido #{order.display_id ?? order.id.slice(-8).toUpperCase()}
@@ -140,6 +157,17 @@ export default function ConfirmacionPage() {
                 </p>
                 <p className="mt-1 font-mono text-lg font-bold text-amber-900">
                   {oxxoData.reference}
+                </p>
+              </div>
+            )}
+
+            {oxxoData?.barcode && (
+              <div className="rounded-md bg-white p-3">
+                <p className="text-xs font-medium uppercase text-gray-500">
+                  Código de barras
+                </p>
+                <p className="mt-1 break-all font-mono text-sm font-bold text-amber-900">
+                  {oxxoData.barcode}
                 </p>
               </div>
             )}
@@ -187,8 +215,16 @@ export default function ConfirmacionPage() {
 
       {/* Card payment success */}
       {!isOxxoPayment && (
-        <div className="mb-8 rounded-lg border border-green-200 bg-green-50 p-4 text-center text-sm text-green-700">
-          Tu pago ha sido procesado exitosamente.
+        <div
+          className={
+            isCardPendingCapture
+              ? "mb-8 rounded-lg border border-amber-200 bg-amber-50 p-4 text-center text-sm text-amber-800"
+              : "mb-8 rounded-lg border border-green-200 bg-green-50 p-4 text-center text-sm text-green-700"
+          }
+        >
+          {isCardPendingCapture
+            ? "Tu pago con tarjeta fue autorizado y está pendiente de confirmación final."
+            : "Tu pago ha sido confirmado exitosamente."}
         </div>
       )}
 
