@@ -2,6 +2,7 @@
 
 import type { HttpTypes } from "@medusajs/types";
 import { MEXICAN_STATES } from "@/lib/constants/mexican-states";
+import { formatCurrency, normalizeOrderTotals } from "@/lib/order-totals";
 
 type OrderReviewProps = {
   cart: HttpTypes.StoreCart;
@@ -20,16 +21,10 @@ type OrderReviewProps = {
   paymentMethodName: string;
   onConfirm: () => Promise<void>;
   isSubmitting: boolean;
+  isPaymentReady: boolean;
+  isValidatingPayment: boolean;
   error: string | null;
 };
-
-function formatPrice(amount: number | undefined | null, currency = "MXN") {
-  if (amount == null) return "$0.00";
-  return new Intl.NumberFormat("es-MX", {
-    style: "currency",
-    currency,
-  }).format(amount);
-}
 
 export function OrderReview({
   cart,
@@ -39,6 +34,8 @@ export function OrderReview({
   paymentMethodName,
   onConfirm,
   isSubmitting,
+  isPaymentReady,
+  isValidatingPayment,
   error,
 }: OrderReviewProps) {
   const stateName =
@@ -46,6 +43,7 @@ export function OrderReview({
     shippingAddress.province;
 
   const currency = cart.currency_code?.toUpperCase() || "MXN";
+  const totals = normalizeOrderTotals(cart);
 
   return (
     <div className="space-y-5">
@@ -96,23 +94,29 @@ export function OrderReview({
       {/* Totals */}
       <div className="space-y-2 border-t pt-4 text-sm">
         <div className="flex justify-between">
-          <span className="text-gray-600">Subtotal</span>
-          <span>{formatPrice(cart.item_subtotal, currency)}</span>
+          <span className="text-gray-600">Productos</span>
+          <span>{formatCurrency(totals.products, currency)}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-gray-600">Envío</span>
-          <span>{formatPrice(cart.shipping_total, currency)}</span>
+          <span>{formatCurrency(totals.shipping, currency)}</span>
         </div>
-        {(cart.tax_total ?? 0) > 0 && (
+        {totals.taxes > 0 && (
           <div className="flex justify-between">
             <span className="text-gray-600">Impuestos</span>
-            <span>{formatPrice(cart.tax_total, currency)}</span>
+            <span>{formatCurrency(totals.taxes, currency)}</span>
+          </div>
+        )}
+        {totals.discount > 0 && (
+          <div className="flex justify-between text-green-600">
+            <span>Descuento</span>
+            <span>-{formatCurrency(totals.discount, currency)}</span>
           </div>
         )}
         <div className="flex justify-between border-t pt-2 text-base font-bold">
           <span>Total</span>
           <span className="text-sicaru-purple-900">
-            {formatPrice(cart.total, currency)}
+            {formatCurrency(totals.total, currency)}
           </span>
         </div>
       </div>
@@ -126,13 +130,13 @@ export function OrderReview({
       <button
         type="button"
         onClick={onConfirm}
-        disabled={isSubmitting}
+        disabled={isSubmitting || isValidatingPayment || !isPaymentReady}
         className="w-full rounded-full bg-sicaru-purple-700 px-6 py-4 text-base font-bold text-white transition-colors hover:bg-sicaru-purple-600 disabled:opacity-50"
       >
-        {isSubmitting ? (
+        {isSubmitting || isValidatingPayment ? (
           <span className="flex items-center justify-center gap-2">
             <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-            Procesando...
+            {isValidatingPayment ? "Validando pago..." : "Procesando..."}
           </span>
         ) : (
           "Confirmar y Pagar"

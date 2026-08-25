@@ -4,7 +4,7 @@ import type { HttpTypes } from "@medusajs/types";
 export async function getFullCart(cartId: string) {
   const { cart } = await sdk.store.cart.retrieve(cartId, {
     fields:
-      "+shipping_address,+billing_address,+shipping_methods,+payment_collection,+region,+promotions",
+      "+shipping_address,+billing_address,+shipping_methods,+payment_collection,+payment_collection.payment_sessions,+region,+promotions",
   });
   return cart;
 }
@@ -44,10 +44,16 @@ export async function initiatePaymentSession(
   data?: Record<string, unknown>
 ) {
   const { payment_collection } =
-    await sdk.store.payment.initiatePaymentSession(cart, {
-      provider_id: providerId,
-      ...(data ? { data } : {}),
-    });
+    await sdk.store.payment.initiatePaymentSession(
+      cart,
+      {
+        provider_id: providerId,
+        ...(data ? { data } : {}),
+      },
+      {
+        fields: "+payment_sessions",
+      }
+    );
   return payment_collection;
 }
 

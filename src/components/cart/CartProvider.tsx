@@ -33,15 +33,26 @@ type Cart = {
   total: number;
   subtotal: number;
   item_total: number;
+  item_subtotal?: number | null;
+  shipping_subtotal?: number | null;
+  shipping_total?: number | null;
+  tax_total?: number | null;
+  item_tax_total?: number | null;
+  shipping_tax_total?: number | null;
+  discount_total?: number | null;
+  shipping_methods?: Array<unknown>;
 };
 
 type CartContextType = {
   cart: Cart | null;
   cartId: string | null;
   isLoading: boolean;
+  isInitializingCart: boolean;
+  cartError: string | null;
   isOpen: boolean;
   openCart: () => void;
   closeCart: () => void;
+  retryInitializeCart: () => Promise<void>;
   addToCart: (variantId: string, quantity?: number) => Promise<void>;
   updateQuantity: (lineItemId: string, quantity: number) => Promise<void>;
   removeFromCart: (lineItemId: string) => Promise<void>;
@@ -53,11 +64,15 @@ type CartContextType = {
 const CartContext = createContext<CartContextType | null>(null);
 
 const CART_ID_KEY = "sicaru_cart_id";
+const CART_INITIALIZATION_ERROR =
+  "No pudimos preparar tu carrito. Revisa tu conexión e inténtalo nuevamente.";
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<Cart | null>(null);
   const [cartId, setCartId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isInitializingCart, setIsInitializingCart] = useState(true);
+  const [cartError, setCartError] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const cartRef = useRef<Cart | null>(null);
   const initCartPromiseRef = useRef<Promise<Cart> | null>(null);
@@ -71,6 +86,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
     cartRef.current = nextCart;
     setCartId(nextCart.id);
     setCart(nextCart);
+    setCartError(null);
+  }, []);
+
+  const resetCartState = useCallback(() => {
+    cartRef.current = null;
+    setCart(null);
+    setCartId(null);
   }, []);
 
   const initCart = useCallback(async () => {
@@ -111,13 +133,29 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
 
     if (!initCartPromiseRef.current) {
-      initCartPromiseRef.current = initCart().finally(() => {
-        initCartPromiseRef.current = null;
-      });
+      setIsInitializingCart(true);
+      setCartError(null);
+
+      initCartPromiseRef.current = initCart()
+        .catch((error) => {
+          console.error("Error initializing cart:", error);
+          localStorage.removeItem(CART_ID_KEY);
+          resetCartState();
+          setCartError(CART_INITIALIZATION_ERROR);
+          throw error;
+        })
+        .finally(() => {
+          setIsInitializingCart(false);
+          initCartPromiseRef.current = null;
+        });
     }
 
     return initCartPromiseRef.current;
-  }, [initCart]);
+  }, [initCart, resetCartState]);
+
+  const retryInitializeCart = useCallback(async () => {
+    await ensureCart();
+  }, [ensureCart]);
 
   useEffect(() => {
     cartRef.current = cart;
@@ -125,9 +163,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
-      ensureCart().catch((error) => {
-        console.error("Error initializing cart:", error);
-      });
+      ensureCart().catch(() => {});
     }, 0);
 
     return () => window.clearTimeout(timer);
@@ -226,9 +262,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
         cart,
         cartId,
         isLoading,
+        isInitializingCart,
+        cartError,
         isOpen,
         openCart,
         closeCart,
+        retryInitializeCart,
         addToCart,
         updateQuantity,
         removeFromCart,
