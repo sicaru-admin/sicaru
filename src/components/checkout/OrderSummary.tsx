@@ -60,8 +60,10 @@ function LoyaltySection({
       const updated = await getLoyaltyAccount();
       setLoyalty(updated.loyalty_account);
       onCartRefresh?.();
-    } catch (err: any) {
-      setError(err.message || "Error al aplicar puntos");
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error ? err.message : "Error al aplicar puntos"
+      );
     } finally {
       setIsApplying(false);
     }
