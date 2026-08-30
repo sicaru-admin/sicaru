@@ -18,10 +18,12 @@ export default async function ProductosPage() {
     <>
       <InternalPageHeader
         eyebrow="CATÁLOGO SICARÚ"
-        title="Productos profesionales para cada necesidad"
-        description="Explora coloración, tratamientos, cuidado diario y herramientas seleccionadas para uso en casa o salón."
+        title="Productos profesionales para cada necesidad de tu cabello"
+        description="Explora coloración, tratamientos, herramientas y cuidado capilar para uso profesional y en casa."
       />
-      <ProductosContent products={products} />
+      <div className="sicaru-section mx-auto max-w-7xl px-5 pb-14 pt-6 sm:px-8 md:pb-20 md:pt-8">
+        <ProductosContent products={products} />
+      </div>
     </>
   );
 }
