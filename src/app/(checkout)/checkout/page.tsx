@@ -70,6 +70,7 @@ type PaymentSessionStatus =
 
 type PaymentSessionLike = {
   id?: string;
+  provider_id?: string;
   status?: PaymentSessionStatus | "rejected" | "failed" | string;
 };
 
@@ -490,6 +491,10 @@ export default function CheckoutPage() {
         throw new Error("No se pudo cargar el carrito para preparar el pago.");
       }
 
+      if (!cartId) {
+        throw new Error("No se pudo identificar el carrito para preparar el pago.");
+      }
+
       const mpProvider = findMercadoPagoProvider(paymentProviders);
       if (!mpProvider) {
         throw new Error(
@@ -513,31 +518,32 @@ export default function CheckoutPage() {
               payer_email: email,
             };
 
-      const paymentCollection = await initiatePaymentSession(
+      await initiatePaymentSession(
         fullCart,
         mpProvider.id,
         paymentData
       );
 
-      setFullCart((current) =>
-        current
-          ? {
-              ...current,
-              payment_collection: paymentCollection,
-            }
-          : current
+      const refreshedCart = await getFullCart(cartId);
+      const refreshedPaymentCollection = (refreshedCart as CartWithPaymentSessions)
+        .payment_collection;
+
+      console.log(
+        "[checkout] payment sessions after refresh",
+        refreshedPaymentCollection?.payment_sessions?.map((session) => ({
+          id: session.id,
+          provider_id: session.provider_id,
+          status: session.status,
+        }))
       );
 
-      if (
-        !hasUsablePaymentSession({
-          ...fullCart,
-          payment_collection: paymentCollection,
-        } as HttpTypes.StoreCart)
-      ) {
+      setFullCart(refreshedCart);
+
+      if (!hasUsablePaymentSession(refreshedCart)) {
         throw new Error(PAYMENT_PROCESSING_MESSAGE);
       }
     },
-    [email, fullCart, paymentProviders]
+    [cartId, email, fullCart, paymentProviders]
   );
 
   // Card: MP brick tokenized the card → create Medusa payment session

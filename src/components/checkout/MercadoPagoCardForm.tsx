@@ -63,9 +63,6 @@ export function MercadoPagoCardForm({
     <div className="mt-4">
       <CardPayment
         initialization={{ amount }}
-        onReady={() => {
-          onError?.("");
-        }}
         onSubmit={async (formData) => {
           try {
             const token = formData.token;
