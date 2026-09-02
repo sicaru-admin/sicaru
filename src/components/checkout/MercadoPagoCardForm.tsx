@@ -16,7 +16,7 @@ export type CardTokenData = {
 
 type MercadoPagoCardFormProps = {
   amount: number;
-  onTokenized: (data: CardTokenData) => void;
+  onTokenized: (data: CardTokenData) => void | Promise<void>;
   onError?: (error: string) => void;
 };
 
@@ -82,7 +82,7 @@ export function MercadoPagoCardForm({
               return;
             }
 
-            onTokenized({
+            await onTokenized({
               token,
               payment_method_id: paymentMethodId,
               installments,

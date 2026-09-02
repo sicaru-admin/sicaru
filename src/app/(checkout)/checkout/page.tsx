@@ -525,18 +525,6 @@ export default function CheckoutPage() {
       );
 
       const refreshedCart = await getFullCart(cartId);
-      const refreshedPaymentCollection = (refreshedCart as CartWithPaymentSessions)
-        .payment_collection;
-
-      console.log(
-        "[checkout] payment sessions after refresh",
-        refreshedPaymentCollection?.payment_sessions?.map((session) => ({
-          id: session.id,
-          provider_id: session.provider_id,
-          status: session.status,
-        }))
-      );
-
       setFullCart(refreshedCart);
 
       if (!hasUsablePaymentSession(refreshedCart)) {
