@@ -70,6 +70,7 @@ type PaymentSessionStatus =
 
 type PaymentSessionLike = {
   id?: string;
+  provider_id?: string;
   status?: PaymentSessionStatus | "rejected" | "failed" | string;
 };
 
@@ -283,7 +284,6 @@ export default function CheckoutPage() {
 
     // Pre-fill email if not already set
     if (customer.email && !email) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setEmail(customer.email);
     }
 
@@ -490,6 +490,10 @@ export default function CheckoutPage() {
         throw new Error("No se pudo cargar el carrito para preparar el pago.");
       }
 
+      if (!cartId) {
+        throw new Error("No se pudo identificar el carrito para preparar el pago.");
+      }
+
       const mpProvider = findMercadoPagoProvider(paymentProviders);
       if (!mpProvider) {
         throw new Error(
@@ -513,31 +517,20 @@ export default function CheckoutPage() {
               payer_email: email,
             };
 
-      const paymentCollection = await initiatePaymentSession(
+      await initiatePaymentSession(
         fullCart,
         mpProvider.id,
         paymentData
       );
 
-      setFullCart((current) =>
-        current
-          ? {
-              ...current,
-              payment_collection: paymentCollection,
-            }
-          : current
-      );
+      const refreshedCart = await getFullCart(cartId);
+      setFullCart(refreshedCart);
 
-      if (
-        !hasUsablePaymentSession({
-          ...fullCart,
-          payment_collection: paymentCollection,
-        } as HttpTypes.StoreCart)
-      ) {
+      if (!hasUsablePaymentSession(refreshedCart)) {
         throw new Error(PAYMENT_PROCESSING_MESSAGE);
       }
     },
-    [email, fullCart, paymentProviders]
+    [cartId, email, fullCart, paymentProviders]
   );
 
   // Card: MP brick tokenized the card → create Medusa payment session

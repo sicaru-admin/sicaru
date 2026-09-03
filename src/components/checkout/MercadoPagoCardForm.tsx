@@ -16,7 +16,7 @@ export type CardTokenData = {
 
 type MercadoPagoCardFormProps = {
   amount: number;
-  onTokenized: (data: CardTokenData) => void;
+  onTokenized: (data: CardTokenData) => void | Promise<void>;
   onError?: (error: string) => void;
 };
 
@@ -63,9 +63,6 @@ export function MercadoPagoCardForm({
     <div className="mt-4">
       <CardPayment
         initialization={{ amount }}
-        onReady={() => {
-          onError?.("");
-        }}
         onSubmit={async (formData) => {
           try {
             const token = formData.token;
@@ -85,7 +82,7 @@ export function MercadoPagoCardForm({
               return;
             }
 
-            onTokenized({
+            await onTokenized({
               token,
               payment_method_id: paymentMethodId,
               installments,
