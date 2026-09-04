@@ -6,14 +6,7 @@ import Image from "next/image";
 import { listOrders } from "@/lib/data/customer";
 import { ShoppingBag, ChevronDown, Package } from "lucide-react";
 import type { HttpTypes } from "@medusajs/types";
-
-function formatPrice(amount: number | undefined | null, currency = "MXN") {
-  if (amount == null) return "$0.00";
-  return new Intl.NumberFormat("es-MX", {
-    style: "currency",
-    currency,
-  }).format(amount);
-}
+import { formatCurrency, normalizeOrderTotals } from "@/lib/order-totals";
 
 function formatDate(dateStr: string) {
   return new Intl.DateTimeFormat("es-MX", {
@@ -62,6 +55,14 @@ function OrderCard({ order }: { order: HttpTypes.StoreOrder }) {
   const currency = order.currency_code?.toUpperCase() || "MXN";
   const items = order.items ?? [];
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+  const itemsSubtotal = items.reduce(
+    (sum, item) => sum + item.unit_price * item.quantity,
+    0
+  );
+  const totals = normalizeOrderTotals({
+    ...order,
+    item_subtotal: order.item_subtotal ?? itemsSubtotal,
+  });
 
   return (
     <div className="rounded-lg border bg-white">
@@ -85,7 +86,7 @@ function OrderCard({ order }: { order: HttpTypes.StoreOrder }) {
         </div>
         <div className="ml-4 flex items-center gap-3">
           <span className="text-sm font-bold text-sicaru-purple-900">
-            {formatPrice(order.total, currency)}
+            {formatCurrency(totals.total, currency)}
           </span>
           <ChevronDown
             className={`h-4 w-4 text-gray-400 transition-transform ${
@@ -131,7 +132,7 @@ function OrderCard({ order }: { order: HttpTypes.StoreOrder }) {
                     </p>
                   </div>
                   <p className="ml-2 text-sm font-medium">
-                    {formatPrice(item.unit_price * item.quantity, currency)}
+                    {formatCurrency(item.unit_price * item.quantity, currency)}
                   </p>
                 </div>
               </div>
@@ -164,20 +165,32 @@ function OrderCard({ order }: { order: HttpTypes.StoreOrder }) {
           {/* Totals */}
           <div className="mt-4 space-y-1 border-t pt-4 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-600">Subtotal</span>
-              <span>{formatPrice(order.subtotal, currency)}</span>
+              <span className="text-gray-600">Productos</span>
+              <span>{formatCurrency(totals.products, currency)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Envio</span>
+              <span className="text-gray-600">Envío</span>
               <span>
-                {order.shipping_total === 0
+                {totals.shipping === 0
                   ? "Gratis"
-                  : formatPrice(order.shipping_total, currency)}
+                  : formatCurrency(totals.shipping, currency)}
               </span>
             </div>
+            {totals.taxes > 0 && (
+              <div className="flex justify-between">
+                <span className="text-gray-600">Impuestos</span>
+                <span>{formatCurrency(totals.taxes, currency)}</span>
+              </div>
+            )}
+            {totals.discount > 0 && (
+              <div className="flex justify-between text-green-600">
+                <span>Descuento</span>
+                <span>-{formatCurrency(totals.discount, currency)}</span>
+              </div>
+            )}
             <div className="flex justify-between font-bold">
               <span>Total</span>
-              <span>{formatPrice(order.total, currency)}</span>
+              <span>{formatCurrency(totals.total, currency)}</span>
             </div>
           </div>
         </div>

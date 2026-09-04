@@ -10,20 +10,13 @@ import {
   type LoyaltyAccount,
 } from "@/lib/data/loyalty";
 import { applyPromoCode, removePromoCode } from "@/lib/data/checkout";
+import { formatCurrency, normalizeOrderTotals } from "@/lib/order-totals";
 
 type OrderSummaryProps = {
   cart: HttpTypes.StoreCart | null;
   isAuthenticated?: boolean;
   onCartRefresh?: () => void;
 };
-
-function formatPrice(amount: number | undefined | null, currency = "MXN") {
-  if (amount == null) return "$0.00";
-  return new Intl.NumberFormat("es-MX", {
-    style: "currency",
-    currency,
-  }).format(amount);
-}
 
 function LoyaltySection({
   cart,
@@ -67,8 +60,10 @@ function LoyaltySection({
       const updated = await getLoyaltyAccount();
       setLoyalty(updated.loyalty_account);
       onCartRefresh?.();
-    } catch (err: any) {
-      setError(err.message || "Error al aplicar puntos");
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error ? err.message : "Error al aplicar puntos"
+      );
     } finally {
       setIsApplying(false);
     }
@@ -98,7 +93,7 @@ function LoyaltySection({
       {appliedCode ? (
         <div className="mt-2 flex items-center justify-between rounded-lg bg-green-50 p-3 text-sm">
           <span className="text-green-700">
-            -{formatPrice(discountMXN)} aplicado
+            -{formatCurrency(discountMXN)} aplicado
           </span>
           <button
             onClick={handleRemove}
@@ -161,6 +156,7 @@ export function OrderSummary({
   const items = cart.items ?? [];
   const currency = cart.currency_code?.toUpperCase() || "MXN";
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+  const totals = normalizeOrderTotals(cart);
 
   const content = (
     <>
@@ -196,7 +192,7 @@ export function OrderSummary({
                 )}
               </div>
               <p className="ml-2 text-sm font-medium text-gray-900">
-                {formatPrice(item.unit_price * item.quantity, currency)}
+                {formatCurrency(item.unit_price * item.quantity, currency)}
               </p>
             </div>
           </div>
@@ -211,35 +207,35 @@ export function OrderSummary({
       {/* Totals */}
       <div className="mt-4 space-y-2 border-t pt-4 text-sm">
         <div className="flex justify-between">
-          <span className="text-gray-600">Subtotal</span>
-          <span>{formatPrice(cart.item_subtotal, currency)}</span>
+          <span className="text-gray-600">Productos</span>
+          <span>{formatCurrency(totals.products, currency)}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-gray-600">Envio</span>
+          <span className="text-gray-600">Envío</span>
           <span>
-            {cart.shipping_total != null && cart.shipping_total > 0
-              ? formatPrice(cart.shipping_total, currency)
+            {totals.shipping > 0
+              ? formatCurrency(totals.shipping, currency)
               : cart.shipping_methods?.length
                 ? "Gratis"
                 : "Por calcular"}
           </span>
         </div>
-        {(cart.tax_total ?? 0) > 0 && (
+        {totals.taxes > 0 && (
           <div className="flex justify-between">
             <span className="text-gray-600">Impuestos</span>
-            <span>{formatPrice(cart.tax_total, currency)}</span>
+            <span>{formatCurrency(totals.taxes, currency)}</span>
           </div>
         )}
-        {(cart.discount_total ?? 0) > 0 && (
+        {totals.discount > 0 && (
           <div className="flex justify-between text-green-600">
             <span>Descuento</span>
-            <span>-{formatPrice(cart.discount_total, currency)}</span>
+            <span>-{formatCurrency(totals.discount, currency)}</span>
           </div>
         )}
         <div className="flex justify-between border-t pt-2 text-base font-bold">
           <span>Total</span>
           <span className="text-sicaru-purple-900">
-            {formatPrice(cart.total, currency)}
+            {formatCurrency(totals.total, currency)}
           </span>
         </div>
       </div>
@@ -261,7 +257,7 @@ export function OrderSummary({
           </span>
           <div className="flex items-center gap-2">
             <span className="font-bold text-sicaru-purple-900">
-              {formatPrice(cart.total, currency)}
+              {formatCurrency(totals.total, currency)}
             </span>
             <ChevronDown
               className={`h-4 w-4 text-gray-400 transition-transform ${

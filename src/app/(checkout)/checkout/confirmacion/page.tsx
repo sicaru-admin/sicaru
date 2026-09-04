@@ -4,13 +4,17 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { CheckCircle, ShoppingBag, MessageCircle } from "lucide-react";
+import { CheckCircle, Clock, ShoppingBag, MessageCircle } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { ConfettiCelebration } from "@/components/ui/ConfettiCelebration";
+import { formatCurrency, normalizeOrderTotals } from "@/lib/order-totals";
 
 export const dynamic = "force-dynamic";
 
 type PaymentSessionData = {
+  mp_status?: string;
+  status_detail?: string;
+  payment_type_id?: string;
   payment_method_id?: string;
   voucher_url?: string;
   barcode?: string;
@@ -41,9 +45,16 @@ type OrderData = {
     phone?: string;
   };
   total?: number;
+  item_subtotal?: number;
+  item_total?: number;
   subtotal?: number;
+  shipping_subtotal?: number;
   shipping_total?: number;
   tax_total?: number;
+  item_tax_total?: number;
+  shipping_tax_total?: number;
+  discount_total?: number;
+  original_total?: number;
   currency_code?: string;
   payment_collections?: Array<{
     payment_sessions?: Array<{
@@ -52,14 +63,6 @@ type OrderData = {
     }>;
   }>;
 };
-
-function formatPrice(amount: number | undefined | null, currency = "MXN") {
-  if (amount == null) return "$0.00";
-  return new Intl.NumberFormat("es-MX", {
-    style: "currency",
-    currency,
-  }).format(amount);
-}
 
 export default function ConfirmacionPage() {
   const router = useRouter();
@@ -93,22 +96,44 @@ export default function ConfirmacionPage() {
 
   const currency = order.currency_code?.toUpperCase() || "MXN";
   const items = order.items ?? [];
+  const itemsSubtotal = items.reduce(
+    (sum, item) => sum + item.unit_price * item.quantity,
+    0
+  );
+  const totals = normalizeOrderTotals({
+    ...order,
+    item_subtotal: order.item_subtotal ?? itemsSubtotal,
+  });
+  const paymentSessions =
+    order.payment_collections?.flatMap((pc) => pc.payment_sessions ?? []) ?? [];
 
   // Find OXXO payment session data (if any)
-  const oxxoSession = order.payment_collections
-    ?.flatMap((pc) => pc.payment_sessions ?? [])
-    .find((s) => s.data?.payment_method_id === "oxxo");
+  const oxxoSession = paymentSessions.find(
+    (s) => s.data?.payment_method_id === "oxxo"
+  );
   const isOxxoPayment = !!oxxoSession;
   const oxxoData = oxxoSession?.data;
+  const cardSession = paymentSessions.find((s) =>
+    ["credit_card", "debit_card"].includes(s.data?.payment_type_id ?? "")
+  );
+  const cardData = cardSession?.data;
+  const isCardPendingCapture =
+    cardData?.mp_status === "authorized" &&
+    cardData?.status_detail === "pending_capture";
+  const isPendingPayment = isOxxoPayment || isCardPendingCapture;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 lg:py-16">
-      <ConfettiCelebration />
+      {!isPendingPayment && <ConfettiCelebration />}
       {/* Success header */}
       <div className="mb-10 text-center">
-        <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
+        {isPendingPayment ? (
+          <Clock className="mx-auto h-16 w-16 text-amber-500" />
+        ) : (
+          <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
+        )}
         <h1 className="mt-4 text-2xl font-bold text-sicaru-purple-900 lg:text-3xl">
-          ¡Pedido Confirmado!
+          {isPendingPayment ? "Pedido recibido" : "¡Pedido Confirmado!"}
         </h1>
         <p className="mt-2 text-gray-600">
           Pedido #{order.display_id ?? order.id.slice(-8).toUpperCase()}
@@ -144,12 +169,23 @@ export default function ConfirmacionPage() {
               </div>
             )}
 
+            {oxxoData?.barcode && (
+              <div className="rounded-md bg-white p-3">
+                <p className="text-xs font-medium uppercase text-gray-500">
+                  Código de barras
+                </p>
+                <p className="mt-1 break-all font-mono text-sm font-bold text-amber-900">
+                  {oxxoData.barcode}
+                </p>
+              </div>
+            )}
+
             <div className="rounded-md bg-white p-3">
               <p className="text-xs font-medium uppercase text-gray-500">
                 Monto a pagar
               </p>
               <p className="mt-1 text-lg font-bold text-amber-900">
-                {formatPrice(order.total, currency)}
+                {formatCurrency(totals.total, currency)}
               </p>
             </div>
 
@@ -187,8 +223,16 @@ export default function ConfirmacionPage() {
 
       {/* Card payment success */}
       {!isOxxoPayment && (
-        <div className="mb-8 rounded-lg border border-green-200 bg-green-50 p-4 text-center text-sm text-green-700">
-          Tu pago ha sido procesado exitosamente.
+        <div
+          className={
+            isCardPendingCapture
+              ? "mb-8 rounded-lg border border-amber-200 bg-amber-50 p-4 text-center text-sm text-amber-800"
+              : "mb-8 rounded-lg border border-green-200 bg-green-50 p-4 text-center text-sm text-green-700"
+          }
+        >
+          {isCardPendingCapture
+            ? "Tu pago con tarjeta fue autorizado y está pendiente de confirmación final."
+            : "Tu pago ha sido confirmado exitosamente."}
         </div>
       )}
 
@@ -230,7 +274,7 @@ export default function ConfirmacionPage() {
                   </p>
                 </div>
                 <p className="text-sm font-medium">
-                  {formatPrice(item.unit_price * item.quantity, currency)}
+                  {formatCurrency(item.unit_price * item.quantity, currency)}
                 </p>
               </div>
             </div>
@@ -240,27 +284,33 @@ export default function ConfirmacionPage() {
         {/* Totals */}
         <div className="mt-4 space-y-2 border-t pt-4 text-sm">
           <div className="flex justify-between">
-            <span className="text-gray-600">Subtotal</span>
-            <span>{formatPrice(order.subtotal, currency)}</span>
+            <span className="text-gray-600">Productos</span>
+            <span>{formatCurrency(totals.products, currency)}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-600">Envío</span>
             <span>
-              {order.shipping_total === 0
+              {totals.shipping === 0
                 ? "Gratis"
-                : formatPrice(order.shipping_total, currency)}
+                : formatCurrency(totals.shipping, currency)}
             </span>
           </div>
-          {(order.tax_total ?? 0) > 0 && (
+          {totals.taxes > 0 && (
             <div className="flex justify-between">
               <span className="text-gray-600">Impuestos</span>
-              <span>{formatPrice(order.tax_total, currency)}</span>
+              <span>{formatCurrency(totals.taxes, currency)}</span>
+            </div>
+          )}
+          {totals.discount > 0 && (
+            <div className="flex justify-between text-green-600">
+              <span>Descuento</span>
+              <span>-{formatCurrency(totals.discount, currency)}</span>
             </div>
           )}
           <div className="flex justify-between border-t pt-2 text-base font-bold">
             <span>Total</span>
             <span className="text-sicaru-purple-900">
-              {formatPrice(order.total, currency)}
+              {formatCurrency(totals.total, currency)}
             </span>
           </div>
         </div>

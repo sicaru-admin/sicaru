@@ -5,10 +5,12 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { useCart } from "@/components/cart/CartProvider";
 import { getCartLineVariantLabel } from "@/components/cart/cart-line-variant";
+import { formatCurrency, normalizeOrderTotals } from "@/lib/order-totals";
 
 export default function CarritoPage() {
   const { cart, isLoading, updateQuantity, removeFromCart, totalItems } =
     useCart();
+  const totals = normalizeOrderTotals(cart);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12">
@@ -55,7 +57,7 @@ export default function CarritoPage() {
                         </p>
                       )}
                       <p className="mt-1 text-sm text-gray-600">
-                        ${item.unit_price.toFixed(2)} MXN c/u
+                        {formatCurrency(item.unit_price)} c/u
                       </p>
 
                       <div className="mt-3 flex items-center gap-3">
@@ -84,7 +86,7 @@ export default function CarritoPage() {
 
                       <div className="mt-3 flex items-center justify-between">
                         <p className="text-sm font-semibold text-sicaru-purple-900">
-                          ${(item.unit_price * item.quantity).toFixed(2)} MXN
+                          {formatCurrency(item.unit_price * item.quantity)}
                         </p>
                         <button
                           onClick={() => removeFromCart(item.id)}
@@ -109,15 +111,45 @@ export default function CarritoPage() {
               </h2>
               <dl className="mt-4 space-y-3">
                 <div className="flex justify-between text-sm text-gray-600">
-                  <dt>Articulos ({totalItems})</dt>
-                  <dd>${cart.subtotal.toFixed(2)} MXN</dd>
+                  <dt>Productos ({totalItems})</dt>
+                  <dd>{formatCurrency(totals.products)}</dd>
                 </div>
+                {totals.taxes > 0 && (
+                  <div className="flex justify-between text-sm text-gray-600">
+                    <dt>Impuestos</dt>
+                    <dd>{formatCurrency(totals.taxes)}</dd>
+                  </div>
+                )}
+                {totals.discount > 0 && (
+                  <div className="flex justify-between text-sm text-green-600">
+                    <dt>Descuento</dt>
+                    <dd>-{formatCurrency(totals.discount)}</dd>
+                  </div>
+                )}
+                {totals.shipping > 0 && (
+                  <div className="flex justify-between text-sm text-gray-600">
+                    <dt>Envío</dt>
+                    <dd>{formatCurrency(totals.shipping)}</dd>
+                  </div>
+                )}
+                {cart.shipping_methods?.length && totals.shipping === 0 ? (
+                  <div className="flex justify-between text-sm text-gray-600">
+                    <dt>Envío</dt>
+                    <dd>Gratis</dd>
+                  </div>
+                ) : null}
+                {!cart.shipping_methods?.length ? (
+                  <div className="flex justify-between text-sm text-gray-600">
+                    <dt>Envío</dt>
+                    <dd>Por calcular</dd>
+                  </div>
+                ) : null}
                 <div className="border-t border-gray-200 pt-3 flex justify-between">
                   <dt className="text-base font-semibold text-sicaru-purple-900">
                     Total
                   </dt>
                   <dd className="text-base font-bold text-sicaru-purple-900">
-                    ${cart.total.toFixed(2)} MXN
+                    {formatCurrency(totals.total)}
                   </dd>
                 </div>
               </dl>
