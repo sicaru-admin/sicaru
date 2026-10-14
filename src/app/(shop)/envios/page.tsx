@@ -42,7 +42,7 @@ export default function EnviosPage() {
               Mismo día (pedidos antes de 2pm)
             </p>
             <p className="text-sm text-sicaru-purple-700 font-medium mt-2">
-              Gratis en pedidos mayores a $300 MXN
+              Envío local estándar: $40 MXN
             </p>
           </div>
 
@@ -69,11 +69,11 @@ export default function EnviosPage() {
           Costos de Envío
         </h2>
         <p className="text-gray-600 leading-relaxed">
-          Los costos de envío se calculan automáticamente al momento del checkout
-          según tu ubicación y el peso del pedido.
+          Consulta el costo y la cobertura de envío para tu dirección antes de
+          confirmar el pedido.
         </p>
         <p className="text-gray-600 leading-relaxed mt-3">
-          Envío gratis en pedidos locales (Cadereyta) mayores a $300 MXN.
+          El envío local estándar en Cadereyta tiene un costo de $40 MXN.
         </p>
 
         {/* Métodos de pago */}
