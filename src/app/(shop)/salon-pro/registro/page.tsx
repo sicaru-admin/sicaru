@@ -77,7 +77,7 @@ export default function SalonProRegistroPage() {
   const [submitError, setSubmitError] = useState("")
   const [submitted, setSubmitted] = useState(false)
 
-  const update = (field: keyof FormData, value: any) => {
+  const update = <K extends keyof FormData,>(field: K, value: FormData[K]) => {
     setForm((prev) => ({ ...prev, [field]: value }))
     if (errors[field]) {
       setErrors((prev) => {
@@ -177,8 +177,8 @@ export default function SalonProRegistroPage() {
         comments: form.comments.trim() || undefined,
       })
       setSubmitted(true)
-    } catch (err: any) {
-      setSubmitError(err.message || "Error al enviar solicitud")
+    } catch (err: unknown) {
+      setSubmitError(err instanceof Error && err.message ? err.message : "Error al enviar solicitud")
     } finally {
       setIsSubmitting(false)
     }
