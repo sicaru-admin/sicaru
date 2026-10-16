@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build --webpack",
     "start": "next start",
+    "test:shipping": "node tests/shipping.test.mjs",
     "lint": "eslint"
   },
   "dependencies": {
@@ -38,3 +39,4 @@
     "typescript": "^5"
   }
 }
+

@@ -3,6 +3,7 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
+import { LocalDeliveryNotice } from "@/components/checkout/LocalDeliveryNotice";
 import { useCart } from "@/components/cart/CartProvider";
 import { getCartLineVariantLabel } from "@/components/cart/cart-line-variant";
 import { formatCurrency, normalizeOrderTotals } from "@/lib/order-totals";
@@ -157,8 +158,9 @@ export default function CarritoPage() {
                 href="/checkout"
                 className="mt-6 block w-full rounded-full bg-sicaru-pink py-3 text-center text-lg font-semibold text-white transition-colors hover:bg-sicaru-pink/90"
               >
-                Proceder al Pago
+                Continuar con envío DHL
               </Link>
+              <LocalDeliveryNotice items={cart.items} />
             </div>
           </div>
         </div>
@@ -166,3 +168,4 @@ export default function CarritoPage() {
     </div>
   );
 }
+

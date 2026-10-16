@@ -21,6 +21,7 @@ import { CheckoutProgress } from "@/components/checkout/CheckoutProgress";
 import { ContactForm } from "@/components/checkout/ContactForm";
 import { ShippingAddressForm } from "@/components/checkout/ShippingAddressForm";
 import { ShippingMethodSelector } from "@/components/checkout/ShippingMethodSelector";
+import { LocalDeliveryNotice } from "@/components/checkout/LocalDeliveryNotice";
 import {
   PaymentSelector,
   type PaymentMethod,
@@ -429,6 +430,9 @@ export default function CheckoutPage() {
   const handleShippingSubmit = async () => {
     if (!cartId) return;
     setStepLoading(true);
+    setSubmitError(null);
+    setShippingOptions([]);
+    setSelectedShippingId(null);
     try {
       const cart = await updateCart(cartId, {
         shipping_address: shippingAddress,
@@ -461,6 +465,7 @@ export default function CheckoutPage() {
   const handleDeliverySubmit = async () => {
     if (!cartId || !selectedShippingId) return;
     setStepLoading(true);
+    setSubmitError(null);
     try {
       const cart = await addShippingMethod(cartId, selectedShippingId);
       setFullCart(cart);
@@ -742,8 +747,15 @@ export default function CheckoutPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 lg:py-10">
       <h1 className="mb-6 text-2xl font-bold text-sicaru-purple-900 lg:mb-8 lg:text-3xl">
-        Checkout
+        Finaliza tu compra con envío DHL
       </h1>
+      <div className="mb-6">
+        <p className="text-sm text-gray-600">
+          El costo de DHL debe estar confirmado antes de pagar. Si necesitamos
+          verificar el peso del paquete o la cobertura, te ayudamos por WhatsApp.
+        </p>
+        <LocalDeliveryNotice items={fullCart?.items} />
+      </div>
 
       <CheckoutProgress activeStep={activeStep} completedSteps={completedSteps} />
 
@@ -784,12 +796,17 @@ export default function CheckoutPage() {
               onSubmit={handleShippingSubmit}
               isLoading={stepLoading}
             />
+            {submitError && activeStep === "shipping" && (
+              <p role="alert" className="mt-3 text-sm text-red-600">
+                {submitError}
+              </p>
+            )}
           </CheckoutStepSection>
 
           {/* Step 3: Shipping Method */}
           <CheckoutStepSection
             stepNumber={3}
-            title="Método de envío"
+            title="Envío DHL"
             isActive={activeStep === "delivery"}
             isCompleted={completedSteps.has("delivery")}
             isDisabled={!completedSteps.has("shipping")}
@@ -797,12 +814,18 @@ export default function CheckoutPage() {
             onEdit={() => editStep("delivery")}
           >
             <ShippingMethodSelector
+              items={fullCart?.items ?? []}
               options={shippingOptions}
               selectedId={selectedShippingId}
               onSelect={setSelectedShippingId}
               onSubmit={handleDeliverySubmit}
               isLoading={stepLoading}
             />
+            {submitError && activeStep === "delivery" && (
+              <p role="alert" className="mt-3 text-sm text-red-600">
+                {submitError}
+              </p>
+            )}
           </CheckoutStepSection>
 
           {/* Step 4: Payment Method */}
@@ -872,3 +895,4 @@ export default function CheckoutPage() {
     </div>
   );
 }
+

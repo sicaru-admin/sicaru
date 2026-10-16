@@ -1,18 +1,22 @@
 "use client";
 
 import { Truck } from "lucide-react";
+import { getShippingOptionPrice, getDhlWhatsAppUrl } from "@/lib/shipping";
+import type { LocalDeliveryItem } from "@/lib/shipping";
+import { STORE } from "@/lib/constants/store";
 
 type ShippingOption = {
   id: string;
   name: string;
-  amount: number;
+  amount?: number | null;
   calculated_price?: {
     calculated_amount?: number | null;
     currency_code?: string | null;
-  };
+  } | null;
 };
 
 type ShippingMethodSelectorProps = {
+  items?: LocalDeliveryItem[];
   options: ShippingOption[];
   selectedId: string | null;
   onSelect: (optionId: string) => void;
@@ -29,6 +33,7 @@ function formatPrice(amount: number, currency = "MXN") {
 }
 
 export function ShippingMethodSelector({
+  items,
   options,
   selectedId,
   onSelect,
@@ -37,14 +42,28 @@ export function ShippingMethodSelector({
 }: ShippingMethodSelectorProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedId) return;
+    const selected = options.find((option) => option.id === selectedId);
+    if (!selected || getShippingOptionPrice(selected) === null) return;
     await onSubmit();
   };
 
   if (options.length === 0) {
     return (
-      <div className="py-4 text-center text-sm text-gray-500">
-        No hay opciones de envío disponibles para esta dirección.
+      <div className="space-y-3 py-4 text-sm text-gray-600" role="status">
+        <p>No hay una tarifa DHL verificada para este paquete y dirección.</p>
+        <p>
+          Revisa tu dirección o{" "}
+          <a
+            href={getDhlWhatsAppUrl(STORE.whatsapp, items)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-green-800 underline"
+          >
+            cotiza tu envío DHL por WhatsApp
+            <span className="sr-only"> (abre una nueva pestaña)</span>
+          </a>
+          .
+        </p>
       </div>
     );
   }
@@ -53,8 +72,8 @@ export function ShippingMethodSelector({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-3">
         {options.map((option) => {
-          const price =
-            option.calculated_price?.calculated_amount ?? option.amount ?? 0;
+          const price = getShippingOptionPrice(option);
+          if (price === null) return null;
           const currency =
             option.calculated_price?.currency_code?.toUpperCase() || "MXN";
           const isSelected = selectedId === option.id;
@@ -92,7 +111,12 @@ export function ShippingMethodSelector({
 
       <button
         type="submit"
-        disabled={isLoading || !selectedId}
+        disabled={
+          isLoading ||
+          !options.some(
+            (option) => option.id === selectedId && getShippingOptionPrice(option) !== null
+          )
+        }
         className="w-full rounded-full bg-sicaru-pink px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-sicaru-pink/90 disabled:opacity-50"
       >
         {isLoading ? "Guardando..." : "Continuar"}
@@ -100,3 +124,4 @@ export function ShippingMethodSelector({
     </form>
   );
 }
+

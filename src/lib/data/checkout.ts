@@ -1,5 +1,7 @@
 import { sdk } from "@/lib/medusa";
 import type { HttpTypes } from "@medusajs/types";
+import { getParcelShippingOptions, hasParcelShippingMethod } from "@/lib/shipping";
+import type { DhlQuote } from "@/lib/shipping";
 
 export async function getFullCart(cartId: string) {
   const { cart } = await sdk.store.cart.retrieve(cartId, {
@@ -18,16 +20,40 @@ export async function updateCart(
 }
 
 export async function listShippingOptions(cartId: string) {
-  const { shipping_options } = await sdk.store.fulfillment.listCartOptions({
-    cart_id: cartId,
-  });
-  return shipping_options;
+  try {
+    const { quote, shipping_options } = await sdk.client.fetch<{
+      quote: DhlQuote;
+      shipping_options: HttpTypes.StoreCartShippingOption[];
+    }>(`/store/carts/${cartId}/dhl-quote`, { method: "GET", cache: "no-store" });
+    return getParcelShippingOptions(shipping_options, quote);
+  } catch {
+    // Missing/unreachable verification is a WhatsApp quote, never free shipping.
+    return [];
+  }
 }
 
 export async function addShippingMethod(cartId: string, optionId: string) {
+  const options = await listShippingOptions(cartId);
+  if (!options.some((option) => option.id === optionId)) {
+    throw new Error(
+      "La tarifa DHL ya no está disponible. Cotiza tu envío por WhatsApp antes de pagar."
+    );
+  }
+
   const { cart } = await sdk.store.cart.addShippingMethod(cartId, {
     option_id: optionId,
   });
+  return cart;
+}
+
+async function requireParcelShipping(cartId: string) {
+  const cart = await getFullCart(cartId);
+  const options = await listShippingOptions(cartId);
+  if (!hasParcelShippingMethod(cart, options)) {
+    throw new Error(
+      "Selecciona una tarifa DHL verificada antes de pagar. El envío local de $40 se coordina por WhatsApp."
+    );
+  }
   return cart;
 }
 
@@ -43,9 +69,10 @@ export async function initiatePaymentSession(
   providerId: string,
   data?: Record<string, unknown>
 ) {
+  const currentCart = await requireParcelShipping(cart.id);
   const { payment_collection } =
     await sdk.store.payment.initiatePaymentSession(
-      cart,
+      currentCart,
       {
         provider_id: providerId,
         ...(data ? { data } : {}),
@@ -58,6 +85,7 @@ export async function initiatePaymentSession(
 }
 
 export async function completeCart(cartId: string) {
+  await requireParcelShipping(cartId);
   return await sdk.store.cart.complete(cartId);
 }
 
@@ -91,3 +119,4 @@ export async function removePromoCode(cartId: string, promoCode: string) {
   if (!res.ok) throw new Error("Error al remover codigo de descuento");
   return res.json();
 }
+
