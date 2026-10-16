@@ -136,7 +136,7 @@ export default function CarritoPage() {
                 {cart.shipping_methods?.length && totals.shipping === 0 ? (
                   <div className="flex justify-between text-sm text-gray-600">
                     <dt>Envío</dt>
-                    <dd>Gratis</dd>
+                    <dd>Por calcular</dd>
                   </div>
                 ) : null}
                 {!cart.shipping_methods?.length ? (
