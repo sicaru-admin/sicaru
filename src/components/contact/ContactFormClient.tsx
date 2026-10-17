@@ -1,5 +1,7 @@
 "use client";
 
+import { getSalesWhatsAppUrl } from "@/lib/contact";
+
 import { useState, type FormEvent } from "react";
 
 interface FormData {
@@ -94,7 +96,7 @@ export default function ContactFormClient() {
         </p>
 
         <a
-          href="https://wa.me/528281111023"
+          href={getSalesWhatsAppUrl("")} aria-disabled={!getSalesWhatsAppUrl()}
           target="_blank"
           rel="noopener noreferrer"
           className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-3 font-semibold text-white transition-colors hover:bg-[#25D366]/90"

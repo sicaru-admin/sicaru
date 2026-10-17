@@ -2,7 +2,7 @@
 
 import { Truck } from "lucide-react";
 import { getShippingOptionPrice, getDhlWhatsAppUrl } from "@/lib/shipping";
-import type { LocalDeliveryItem } from "@/lib/shipping";
+import type { DhlQuote, LocalDeliveryItem } from "@/lib/shipping";
 import { STORE } from "@/lib/constants/store";
 
 type ShippingOption = {
@@ -18,6 +18,7 @@ type ShippingOption = {
 type ShippingMethodSelectorProps = {
   items?: LocalDeliveryItem[];
   options: ShippingOption[];
+  quote?: DhlQuote;
   selectedId: string | null;
   onSelect: (optionId: string) => void;
   onSubmit: () => Promise<void>;
@@ -25,7 +26,6 @@ type ShippingMethodSelectorProps = {
 };
 
 function formatPrice(amount: number, currency = "MXN") {
-  if (amount === 0) return "Gratis";
   return new Intl.NumberFormat("es-MX", {
     style: "currency",
     currency,
@@ -35,6 +35,7 @@ function formatPrice(amount: number, currency = "MXN") {
 export function ShippingMethodSelector({
   items,
   options,
+  quote,
   selectedId,
   onSelect,
   onSubmit,
@@ -50,20 +51,15 @@ export function ShippingMethodSelector({
   if (options.length === 0) {
     return (
       <div className="space-y-3 py-4 text-sm text-gray-600" role="status">
-        <p>No hay una tarifa DHL verificada para este paquete y dirección.</p>
-        <p>
-          Revisa tu dirección o{" "}
-          <a
-            href={getDhlWhatsAppUrl(STORE.whatsapp, items)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-medium text-green-800 underline"
-          >
-            cotiza tu envío DHL por WhatsApp
-            <span className="sr-only"> (abre una nueva pestaña)</span>
-          </a>
-          .
-        </p>
+        <p>{quote?.status === "quote_required" && quote.reason === "tariff_unconfirmed"
+          ? "DHL todavía no está disponible para compras en línea. Estamos confirmando la tarifa y la cobertura."
+          : "Todavía no podemos ofrecer una tarifa DHL para este paquete y dirección."}</p>
+        <p>No se puede continuar al pago sin un costo de envío confirmado. Puedes revisar tu dirección y volver a intentarlo.</p>
+        {STORE.whatsapp && <a href={getDhlWhatsAppUrl(STORE.whatsapp, items) ?? undefined}
+          target="_blank" rel="noopener noreferrer" className="font-medium text-green-800 underline">
+          Consultar una cotización por WhatsApp (opcional)
+        </a>}
+
       </div>
     );
   }

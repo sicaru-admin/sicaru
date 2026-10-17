@@ -1,3 +1,4 @@
+import { getSalesWhatsAppUrl } from "@/lib/contact";
 import type { HttpTypes } from "@medusajs/types";
 import { BRANDS } from "@/lib/constants/brands";
 
@@ -67,7 +68,7 @@ export function generateOrganizationSchema(): Record<string, unknown> {
     ],
     currenciesAccepted: "MXN",
     priceRange: "$",
-    sameAs: ["https://wa.me/528281111023"],
+    sameAs: [getSalesWhatsAppUrl("")].filter(Boolean),
   };
 }
 

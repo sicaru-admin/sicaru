@@ -11,6 +11,7 @@ import {
   VARIANT_TITLE_OPTION_ID,
   type ProductOptionSelection,
 } from "./VariantSelector";
+import { WhatsAppLink } from "@/components/ui/WhatsAppLink";
 import { QuantitySelector } from "./QuantitySelector";
 
 type ProductActionsProps = {
@@ -60,7 +61,7 @@ function optionMatches(
   );
 }
 
-const WHATSAPP_NUMBER = "528281111023";
+
 
 const TRUST_ITEMS = [
   { icon: Search, text: "Consulta disponibilidad" },
@@ -155,7 +156,9 @@ export function ProductActions({ product }: ProductActionsProps) {
   )
     ? "Selecciona un tono"
     : "Selecciona una opción";
-  const canAddToCart = !!selectedVariant && !isLoading;
+  const hasPrice = selectedVariant?.calculated_price?.calculated_amount != null;
+  const isSoldOut = selectedVariant?.manage_inventory === true && selectedVariant?.allow_backorder !== true && typeof selectedVariant?.inventory_quantity === "number" && selectedVariant.inventory_quantity < quantity;
+  const canAddToCart = !!selectedVariant && hasPrice && !isSoldOut && !isLoading;
 
   const handleAddToCart = async () => {
     setErrorMessage(null);
@@ -206,7 +209,7 @@ export function ProductActions({ product }: ProductActionsProps) {
             />
           )}
         </div>
-        <p className="mt-1 text-xs text-[#9b89a8]">IVA incluido</p>
+        <p className="mt-1 text-xs text-[#9b89a8]">{price?.is_calculated_price_tax_inclusive ? "IVA incluido" : "IVA se calcula en el carrito"}</p>
       </div>
 
       {/* Variant selector */}
@@ -226,6 +229,7 @@ export function ProductActions({ product }: ProductActionsProps) {
         </p>
       )}
 
+      {isSoldOut && <p role="status" className="text-sm text-red-700">No hay existencias para esta cantidad.</p>}
       {/* Quantity */}
       <QuantitySelector quantity={quantity} onChange={setQuantity} />
 
@@ -240,15 +244,12 @@ export function ProductActions({ product }: ProductActionsProps) {
           {isLoading ? "Agregando..." : "Agregar al Carrito"}
         </button>
 
-        <a
-          href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMsg)}`}
-          target="_blank"
-          rel="noopener noreferrer"
+        <WhatsAppLink message={whatsappMsg}
           className="flex min-h-11 w-full items-center justify-center gap-2 border border-[#7f6d8a] px-8 py-3 text-base font-semibold text-[#7f6d8a] transition-colors duration-200 hover:bg-[#f5f1eb] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8]"
         >
           <MessageCircle className="h-5 w-5" />
           Preguntar por WhatsApp
-        </a>
+        </WhatsAppLink>
       </div>
 
       {/* Trust row */}

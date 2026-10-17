@@ -1,13 +1,16 @@
 "use client";
 
+import { getSalesWhatsAppUrl } from "@/lib/contact";
+
 import { MessageCircle } from "lucide-react";
 
-const WHATSAPP_NUMBER = "528281111023";
 const MESSAGE =
   "\u00a1Hola! Me interesa saber m\u00e1s sobre los productos de Sicar\u00fa.";
 
 export function WhatsAppButton() {
-  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(MESSAGE)}`;
+  const url = getSalesWhatsAppUrl(MESSAGE);
+
+  if (!url) return null;
 
   return (
     <a

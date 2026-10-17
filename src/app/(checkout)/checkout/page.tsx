@@ -10,7 +10,7 @@ import { listAddresses } from "@/lib/data/customer";
 import {
   getFullCart,
   updateCart,
-  listShippingOptions,
+  getDhlShippingState,
   addShippingMethod,
   listPaymentProviders,
   initiatePaymentSession,
@@ -29,6 +29,7 @@ import {
 import { OrderReview } from "@/components/checkout/OrderReview";
 import { OrderSummary } from "@/components/checkout/OrderSummary";
 import { MEXICAN_STATES } from "@/lib/constants/mexican-states";
+import type { DhlQuote } from "@/lib/shipping";
 import type { CardTokenData } from "@/components/checkout/MercadoPagoCardForm";
 
 export const dynamic = "force-dynamic";
@@ -115,14 +116,14 @@ const USABLE_PAYMENT_SESSION_STATUSES = new Set<PaymentSessionStatus>([
 // ─── Main Checkout Page ──────────────────────────────────────────
 
 function getCheckoutErrorMessage(error: unknown, fallback: string) {
-  if (error instanceof Error && error.message) return error.message;
+  if (error instanceof Error && /^(No pudimos|No se pudo|La tarifa DHL|Selecciona|Ingresa|Tu carrito)/.test(error.message)) return error.message;
   if (
     error &&
     typeof error === "object" &&
     "message" in error &&
     typeof error.message === "string"
   ) {
-    return error.message;
+    return fallback;
   }
   return fallback;
 }
@@ -196,6 +197,7 @@ export default function CheckoutPage() {
   const [shippingOptions, setShippingOptions] = useState<
     HttpTypes.StoreCartShippingOption[]
   >([]);
+  const [shippingQuote, setShippingQuote] = useState<DhlQuote | undefined>();
   const [selectedShippingId, setSelectedShippingId] = useState<string | null>(
     null
   );
@@ -217,6 +219,9 @@ export default function CheckoutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isValidatingPayment, setIsValidatingPayment] = useState(false);
   const orderSubmissionLockRef = useRef(false);
+  const paymentPreparationRef = useRef(false);
+  const observedCartVersionRef = useRef("");
+  const cartVersion = cart ? JSON.stringify(cart.items.map(item => [item.id, item.quantity, item.unit_price])) + ":" + cart.total : "";
 
   // Initialize MercadoPago SDK
   useEffect(() => {
@@ -246,6 +251,18 @@ export default function CheckoutPage() {
         const cart = await getFullCart(cartId!);
         if (cancelled) return;
         setFullCart(cart);
+        if (observedCartVersionRef.current && observedCartVersionRef.current !== cartVersion) {
+          setShippingOptions([]);
+          setShippingQuote(undefined);
+          setSelectedShippingId(null);
+          setPaymentProviders([]);
+          setSelectedMethod(null);
+          setCardTokenData(null);
+          setCompletedSteps(new Set(cart.email ? ["contact"] : []));
+          setActiveStep(cart.email ? "shipping" : "contact");
+          setSubmitError("Tu carrito cambió. Revisa nuevamente el envío y el total antes de pagar.");
+        }
+        observedCartVersionRef.current = cartVersion;
 
         // Pre-fill from existing cart data
         if (cart.email) setEmail(cart.email);
@@ -277,7 +294,7 @@ export default function CheckoutPage() {
     return () => {
       cancelled = true;
     };
-  }, [cartId, fullCartRetryCount, isInitializingCart]);
+  }, [cartId, cartVersion, fullCartRetryCount, isInitializingCart]);
 
   // Pre-fill from customer profile when logged in
   useEffect(() => {
@@ -441,7 +458,9 @@ export default function CheckoutPage() {
       setFullCart(cart);
 
       // Fetch shipping options
-      const options = await listShippingOptions(cartId);
+      const state = await getDhlShippingState(cartId);
+      const options = state.options;
+      setShippingQuote(state.quote);
       setShippingOptions(options as HttpTypes.StoreCartShippingOption[]);
 
       // Auto-select if only one option
@@ -491,6 +510,9 @@ export default function CheckoutPage() {
 
   const preparePaymentSession = useCallback(
     async (method: PaymentMethod, tokenData?: CardTokenData) => {
+      if (paymentPreparationRef.current) throw new Error("No pudimos iniciar otro pago mientras el anterior se está preparando.");
+      paymentPreparationRef.current = true;
+      try {
       if (!fullCart) {
         throw new Error("No se pudo cargar el carrito para preparar el pago.");
       }
@@ -534,6 +556,7 @@ export default function CheckoutPage() {
       if (!hasUsablePaymentSession(refreshedCart)) {
         throw new Error(PAYMENT_PROCESSING_MESSAGE);
       }
+      } finally { paymentPreparationRef.current = false; }
     },
     [cartId, email, fullCart, paymentProviders]
   );
@@ -816,6 +839,7 @@ export default function CheckoutPage() {
             <ShippingMethodSelector
               items={fullCart?.items ?? []}
               options={shippingOptions}
+              quote={shippingQuote}
               selectedId={selectedShippingId}
               onSelect={setSelectedShippingId}
               onSubmit={handleDeliverySubmit}
@@ -884,6 +908,13 @@ export default function CheckoutPage() {
               isAuthenticated={isAuthenticated}
               onCartRefresh={async () => {
                 if (cartId) {
+                  editStep("delivery");
+                  setShippingOptions([]);
+                  setSelectedShippingId(null);
+                  setShippingQuote(undefined);
+                  const state = await getDhlShippingState(cartId);
+                  setShippingOptions(state.options as HttpTypes.StoreCartShippingOption[]);
+                  setShippingQuote(state.quote);
                   const updated = await getFullCart(cartId);
                   setFullCart(updated);
                 }

@@ -1,3 +1,4 @@
+import { getSalesWhatsAppUrl } from "@/lib/contact";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { MapPin, Clock, Phone, Mail, MessageCircle } from "lucide-react";
@@ -107,7 +108,7 @@ export default function ContactoPage() {
             Escríbenos directamente para atención inmediata
           </p>
           <a
-            href="https://wa.me/528281111023"
+            href={getSalesWhatsAppUrl("")} aria-disabled={!getSalesWhatsAppUrl()}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-6 inline-block rounded-full bg-white px-8 py-3 font-semibold text-[#25D366] transition-colors hover:bg-white/90"

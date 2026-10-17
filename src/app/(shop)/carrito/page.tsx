@@ -9,7 +9,7 @@ import { getCartLineVariantLabel } from "@/components/cart/cart-line-variant";
 import { formatCurrency, normalizeOrderTotals } from "@/lib/order-totals";
 
 export default function CarritoPage() {
-  const { cart, isLoading, updateQuantity, removeFromCart, totalItems } =
+  const { cart, isLoading, isInitializingCart, cartError, retryInitializeCart, updateQuantity, removeFromCart, totalItems } =
     useCart();
   const totals = normalizeOrderTotals(cart);
 
@@ -19,7 +19,10 @@ export default function CarritoPage() {
         Tu Carrito
       </h1>
 
-      {isLoading && !cart ? (
+      {cartError && <div role="alert" className="mb-4 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+        <p>{cartError}</p>{!cart && <button className="mt-2 min-h-11 underline" onClick={() => void retryInitializeCart().catch(() => {})}>Reintentar</button>}
+      </div>}
+      {(isLoading || isInitializingCart) && !cart ? (
         <p className="text-center text-gray-500">Cargando carrito...</p>
       ) : !cart?.items?.length ? (
         <div className="text-center py-16">
@@ -64,10 +67,10 @@ export default function CarritoPage() {
                       <div className="mt-3 flex items-center gap-3">
                         <button
                           onClick={() =>
-                            updateQuantity(item.id, item.quantity - 1)
+                            void updateQuantity(item.id, item.quantity - 1).catch(() => {})
                           }
                           disabled={isLoading || item.quantity <= 1}
-                          className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-sm hover:bg-gray-100 disabled:opacity-50"
+                          className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-300 text-sm hover:bg-gray-100 disabled:opacity-50"
                         >
                           &minus;
                         </button>
@@ -76,10 +79,10 @@ export default function CarritoPage() {
                         </span>
                         <button
                           onClick={() =>
-                            updateQuantity(item.id, item.quantity + 1)
+                            void updateQuantity(item.id, item.quantity + 1).catch(() => {})
                           }
                           disabled={isLoading}
-                          className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-sm hover:bg-gray-100 disabled:opacity-50"
+                          className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-300 text-sm hover:bg-gray-100 disabled:opacity-50"
                         >
                           +
                         </button>
@@ -90,7 +93,7 @@ export default function CarritoPage() {
                           {formatCurrency(item.unit_price * item.quantity)}
                         </p>
                         <button
-                          onClick={() => removeFromCart(item.id)}
+                          onClick={() => void removeFromCart(item.id).catch(() => {})}
                           disabled={isLoading}
                           className="text-sm text-red-500 hover:text-red-700 disabled:opacity-50"
                         >
@@ -160,7 +163,7 @@ export default function CarritoPage() {
               >
                 Continuar con envío DHL
               </Link>
-              <LocalDeliveryNotice items={cart.items} />
+              <LocalDeliveryNotice items={cart.items.map(item => ({...item, variant_title: getCartLineVariantLabel(item)}))} subtotal={cart.item_total} />
             </div>
           </div>
         </div>

@@ -1,3 +1,4 @@
+import { getSalesWhatsAppUrl } from "@/lib/contact";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -254,7 +255,7 @@ export default function NosotrosPage() {
               </ul>
 
               <a
-                href={`https://wa.me/${STORE.whatsapp}`}
+                href={getSalesWhatsAppUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-6 inline-flex items-center gap-2 rounded-full bg-green-600 px-6 py-3 text-sm font-semibold text-white hover:bg-green-700 transition-colors"

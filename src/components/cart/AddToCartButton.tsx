@@ -15,9 +15,7 @@ export function AddToCartButton({ variantId }: { variantId: string }) {
     } catch (error) {
       console.error("Error adding product to cart:", error);
       setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : "No pudimos agregar el producto al carrito. Intenta de nuevo."
+        "No pudimos agregar el producto. Revisa la disponibilidad e inténtalo nuevamente."
       );
     }
   };

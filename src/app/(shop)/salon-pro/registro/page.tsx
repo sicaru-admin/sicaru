@@ -1,4 +1,6 @@
-"use client"
+"use client";
+
+import { getSalesWhatsAppUrl } from "@/lib/contact";
 
 import { useState } from "react"
 import Link from "next/link"
@@ -206,7 +208,7 @@ export default function SalonProRegistroPage() {
             Volver a Sicaru PRO
           </Link>
           <a
-            href="https://wa.me/528281111023?text=Hola%2C%20acabo%20de%20enviar%20mi%20solicitud%20PRO"
+            href={getSalesWhatsAppUrl("Hola, acabo de enviar mi solicitud PRO")} aria-disabled={!getSalesWhatsAppUrl()}
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm font-medium text-sicaru-purple-600 hover:text-sicaru-purple-700"

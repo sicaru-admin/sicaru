@@ -1,3 +1,4 @@
+import { getSalesWhatsAppUrl } from "@/lib/contact";
 import Link from "next/link";
 import { BrandWordmark } from "./BrandWordmark";
 
@@ -16,7 +17,7 @@ const footerLinks = {
     { href: "/devoluciones", label: "Devoluciones" },
   ],
   contacto: [
-    { href: "https://wa.me/528281111023", label: "WhatsApp" },
+    { href: getSalesWhatsAppUrl(""), label: getSalesWhatsAppUrl() ? "WhatsApp" : "WhatsApp pendiente de confirmar" },
     { href: "mailto:hola@sicaru.com", label: "hola@sicaru.com" },
   ],
   legales: [
@@ -42,7 +43,7 @@ export function Footer() {
               <h3 className="sicaru-footer-heading">Tienda</h3>
               <ul className="mt-4 space-y-2.5">
                 {footerLinks.tienda.map((link) => (
-                  <li key={link.href}>
+                  <li key={link.label}>
                     <Link href={link.href} className="sicaru-footer-link">
                       {link.label}
                     </Link>
@@ -55,7 +56,7 @@ export function Footer() {
               <h3 className="sicaru-footer-heading">Ayuda</h3>
               <ul className="mt-4 space-y-2.5">
                 {footerLinks.ayuda.map((link) => (
-                  <li key={link.href}>
+                  <li key={link.label}>
                     <Link href={link.href} className="sicaru-footer-link">
                       {link.label}
                     </Link>
@@ -68,7 +69,7 @@ export function Footer() {
               <h3 className="sicaru-footer-heading">Contacto</h3>
               <ul className="mt-4 space-y-2.5">
                 {footerLinks.contacto.map((link) => (
-                  <li key={link.href}>
+                  <li key={link.label}>
                     <a
                       href={link.href}
                       target="_blank"
@@ -91,7 +92,7 @@ export function Footer() {
           <p>&copy; {new Date().getFullYear()} Distribuidora Sicarú. Todos los derechos reservados.</p>
           <div className="flex flex-wrap gap-x-4 gap-y-2">
             {footerLinks.legales.map((link) => (
-              <Link key={link.href} href={link.href} className="transition-colors hover:text-[#faf8f5] focus:outline-none focus-visible:text-[#faf8f5]">
+              <Link key={link.label} href={link.href} className="transition-colors hover:text-[#faf8f5] focus:outline-none focus-visible:text-[#faf8f5]">
                 {link.label}
               </Link>
             ))}

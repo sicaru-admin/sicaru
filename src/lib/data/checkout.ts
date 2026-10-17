@@ -19,24 +19,22 @@ export async function updateCart(
   return cart;
 }
 
+export async function getDhlShippingState(cartId: string) {
+  const response = await sdk.client.fetch<{
+    quote: DhlQuote; shipping_options: HttpTypes.StoreCartShippingOption[];
+  }>(`/store/carts/${cartId}/dhl-quote`, { method: "GET", cache: "no-store" });
+  return { quote: response.quote, options: getParcelShippingOptions(response.shipping_options, response.quote) };
+}
 export async function listShippingOptions(cartId: string) {
-  try {
-    const { quote, shipping_options } = await sdk.client.fetch<{
-      quote: DhlQuote;
-      shipping_options: HttpTypes.StoreCartShippingOption[];
-    }>(`/store/carts/${cartId}/dhl-quote`, { method: "GET", cache: "no-store" });
-    return getParcelShippingOptions(shipping_options, quote);
-  } catch {
-    // Missing/unreachable verification is a WhatsApp quote, never free shipping.
-    return [];
-  }
+  try { return (await getDhlShippingState(cartId)).options; }
+  catch { return []; } // Payment guards remain closed if verification is unreachable.
 }
 
 export async function addShippingMethod(cartId: string, optionId: string) {
   const options = await listShippingOptions(cartId);
   if (!options.some((option) => option.id === optionId)) {
     throw new Error(
-      "La tarifa DHL ya no está disponible. Cotiza tu envío por WhatsApp antes de pagar."
+      "La tarifa DHL cambió o ya no está disponible. Vuelve al paso de envío antes de pagar."
     );
   }
 
@@ -51,7 +49,7 @@ async function requireParcelShipping(cartId: string) {
   const options = await listShippingOptions(cartId);
   if (!hasParcelShippingMethod(cart, options)) {
     throw new Error(
-      "Selecciona una tarifa DHL verificada antes de pagar. El envío local de $40 se coordina por WhatsApp."
+      "Selecciona una tarifa DHL disponible antes de pagar."
     );
   }
   return cart;

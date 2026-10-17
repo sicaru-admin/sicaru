@@ -1,35 +1,16 @@
-import { STORE } from "@/lib/constants/store";
-import {
-  getLocalDeliveryWhatsAppUrl,
-  type LocalDeliveryItem,
-} from "@/lib/shipping";
-
-export function LocalDeliveryNotice({
-  items,
-}: {
-  items?: LocalDeliveryItem[] | null;
+import { WhatsAppLink } from "@/components/ui/WhatsAppLink";
+import { getLocalDeliveryMessage, type LocalDeliveryItem } from "@/lib/shipping";
+export function LocalDeliveryNotice({items, subtotal}: {
+  items?: LocalDeliveryItem[] | null; subtotal?: number | null;
 }) {
-  return (
-    <aside
-      aria-label="Entrega local en Cadereyta"
-      className="mt-5 rounded-xl border border-green-200 bg-green-50 p-5"
-    >
-      <p className="font-semibold text-gray-900">¿Entrega local en Cadereyta?</p>
-      <p className="mt-2 text-sm leading-relaxed text-gray-700">
-        El envío local cuesta $40 MXN y se coordina por WhatsApp, fuera del
-        checkout. Te confirmamos disponibilidad y cobertura antes de acordar la
-        entrega.
-      </p>
-      <a
-        href={getLocalDeliveryWhatsAppUrl(STORE.whatsapp, items ?? [])}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-4 inline-flex rounded-full bg-green-700 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-green-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-700"
-      >
-        Coordinar entrega local por WhatsApp
-        <span className="sr-only"> (abre una nueva pestaña)</span>
-      </a>
-    </aside>
-  );
+  return <aside aria-label="Entrega local en Cadereyta" className="mt-5 rounded-xl border border-green-200 bg-green-50 p-5">
+    <p className="font-semibold text-gray-900">¿Entrega local en Cadereyta?</p>
+    <p className="mt-2 text-sm leading-relaxed text-gray-700">
+      Entrega local de $40 MXN, coordinada por WhatsApp fuera del checkout. Confirmaremos disponibilidad y cobertura.
+    </p>
+    <WhatsAppLink message={getLocalDeliveryMessage(items ?? [], subtotal)}
+      className="mt-4 inline-block rounded-full bg-green-700 px-5 py-3 text-sm font-semibold text-white">
+      Pedir entrega local por WhatsApp · $40
+    </WhatsAppLink>
+  </aside>;
 }
-

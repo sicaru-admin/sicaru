@@ -33,6 +33,7 @@ export type LocalDeliveryItem = {
   title?: string | null;
   product_title?: string | null;
   variant_title?: string | null;
+  unit_price?: number | null;
 };
 
 export function getShippingOptionPrice(option: ShippingPrice): number | null {
@@ -76,37 +77,34 @@ export function hasParcelShippingMethod(
     cart.total! >= amount;
 }
 
-export function getLocalDeliveryWhatsAppUrl(
-  phone: string,
-  items: LocalDeliveryItem[] = []
-): string {
-  const products = items.map((item) => {
+export function getWhatsAppUrl(phone: string, message = ""): string | null {
+  const digits = phone.replace(/[^0-9]/g, "");
+  if (!/^[1-9][0-9]{9,14}$/.test(digits)) return null;
+  return "https://wa.me/" + digits + (message ? "?text=" + encodeURIComponent(message) : "");
+}
+
+export function getLocalDeliveryMessage(items: LocalDeliveryItem[] = [], subtotal?: number | null): string {
+  const products = items.map(item => {
     const title = item.product_title || item.title || "Producto";
-    const variant =
-      item.variant_title && item.variant_title !== "Default Variant"
-        ? ` (${item.variant_title})`
-        : "";
-    return `- ${item.quantity} × ${title}${variant}`;
+    const variant = item.variant_title && item.variant_title !== "Default Variant" ? " (" + item.variant_title + ")" : "";
+    return "- " + item.quantity + " × " + title + variant;
   });
-  const message = [
-    "Hola, quiero coordinar una entrega local en Cadereyta con Sicarú.",
-    ...(products.length ? ["", "Estos son los productos de mi carrito:", ...products] : []),
-    "",
-    "Quiero coordinar el envío local de $40 MXN fuera del checkout. ¿Me confirman disponibilidad y cobertura?",
-  ].join("\n");
-
-  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  const amount = typeof subtotal === "number" && Number.isFinite(subtotal) && subtotal >= 0
+    ? new Intl.NumberFormat("es-MX", {style:"currency", currency:"MXN"}).format(subtotal) + " MXN" : "por confirmar";
+  return ["Hola, quiero coordinar una entrega local en Cadereyta con Sicarú.", "",
+    ...products, "", "Subtotal de productos: " + amount,
+    "Entrega local: $40 MXN fuera del checkout (se coordina por WhatsApp).",
+    "¿Me confirman disponibilidad y cobertura?"].join("\n");
 }
 
-export function getDhlWhatsAppUrl(phone: string, items: LocalDeliveryItem[] = []): string {
-  const url = new URL(getLocalDeliveryWhatsAppUrl(phone, items));
-  const message = url.searchParams.get("text")!
-    .replace("coordinar una entrega local en Cadereyta", "cotizar un envío DHL")
-    .replace(
-      "Quiero coordinar el envío local de $40 MXN fuera del checkout. ¿Me confirman disponibilidad y cobertura?",
-      "¿Me ayudan a confirmar el peso con empaque, cobertura y costo de DHL antes de pagar?"
-    );
-  url.searchParams.set("text", message);
-  return url.toString();
+export function getLocalDeliveryWhatsAppUrl(phone: string, items: LocalDeliveryItem[] = [], subtotal?: number | null): string | null {
+  return getWhatsAppUrl(phone, getLocalDeliveryMessage(items, subtotal));
 }
 
+export function getDhlWhatsAppUrl(phone: string, items: LocalDeliveryItem[] = []): string | null {
+  const products = items.map(item => "- " + item.quantity + " × " +
+    (item.product_title || item.title || "Producto") +
+    (item.variant_title && item.variant_title !== "Default Variant" ? " (" + item.variant_title + ")" : ""));
+  return getWhatsAppUrl(phone, ["Hola, quisiera consultar una cotización DHL para estos productos:", ...products,
+    "Necesito confirmar costo y cobertura antes de pagar."].join("\n"));
+}
