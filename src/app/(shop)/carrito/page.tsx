@@ -24,6 +24,8 @@ export default function CarritoPage() {
       </div>}
       {(isLoading || isInitializingCart) && !cart ? (
         <p className="text-center text-gray-500">Cargando carrito...</p>
+      ) : cartError && !cart ? (
+        <p className="py-8 text-center text-gray-600">Tu carrito sigue guardado. Reintenta para consultar tus productos.</p>
       ) : !cart?.items?.length ? (
         <div className="text-center py-16">
           <p className="text-lg text-gray-500 mb-6">Tu carrito esta vacio.</p>

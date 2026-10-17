@@ -61,7 +61,9 @@ export function CartDrawer() {
           {cartError && <p role="alert" className="mx-4 mt-3 rounded-lg bg-red-50 p-3 text-sm text-red-700">{cartError}</p>}
           {/* Items */}
           <div className="flex-1 overflow-y-auto px-4 py-4">
-            {!cart?.items?.length ? (
+            {cartError && !cart ? (
+              <p className="py-8 text-center text-gray-600">No pudimos consultar tus productos. <a href="/carrito" className="underline">Reintentar en tu carrito</a></p>
+            ) : !cart?.items?.length ? (
               <p className="py-8 text-center text-gray-500">
                 Tu carrito est&aacute; vac&iacute;o
               </p>
