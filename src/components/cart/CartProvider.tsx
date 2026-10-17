@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useCallback, useEffect, useRef, type ReactNode } from "react";
-import { createCart, getCart, addItem, updateItem, removeItem } from "@/lib/data/cart";
+import { createCart, getCart, restoreCart, addItem, updateItem, removeItem } from "@/lib/data/cart";
 import { getMexicoRegion } from "@/lib/data/regions";
 
 type CartItem = {
@@ -52,7 +52,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         const storedId = localStorage.getItem(CART_ID_KEY);
         if (storedId) {
           try {
-            const existing = await getCart(storedId);
+            const existing = await restoreCart(storedId);
             if (existing?.id && !existing.completed_at) {
               const restored = existing as unknown as Cart; storeCart(restored); return restored;
             }
