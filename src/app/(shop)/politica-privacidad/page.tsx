@@ -1,3 +1,4 @@
+import { getSalesWhatsAppUrl } from "@/lib/contact";
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -175,7 +176,7 @@ export default function PoliticaPrivacidadPage() {
           o contactarnos por WhatsApp.
         </p>
         <a
-          href="https://wa.me/528281111023"
+          href={getSalesWhatsAppUrl("")} aria-disabled={!getSalesWhatsAppUrl()}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 rounded-full bg-green-600 px-6 py-3 text-sm font-semibold text-white hover:bg-green-700 transition-colors"

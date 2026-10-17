@@ -1,6 +1,6 @@
+import { getSalesWhatsAppUrl } from "@/lib/contact";
 import { MessageCircle } from "lucide-react";
 
-const WHATSAPP_NUMBER = "528281111023";
 const WHATSAPP_MSG =
   "¡Hola! Tengo una duda sobre los productos de Sicarú.";
 
@@ -17,7 +17,7 @@ export function WhatsAppBanner() {
           </p>
         </div>
         <a
-          href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MSG)}`}
+          href={getSalesWhatsAppUrl(WHATSAPP_MSG)}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex shrink-0 items-center gap-2 bg-[#faf8f5] px-7 py-3 text-sm font-semibold text-[#7f6d8a] transition-colors hover:bg-[#efe7dd]"

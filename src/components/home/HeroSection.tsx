@@ -1,9 +1,10 @@
+import { getSalesWhatsAppUrl } from "@/lib/contact";
 import Link from "next/link";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { HomeHeroVisual } from "./HomeHeroVisual";
 
 const whatsappHref =
-  "https://wa.me/528281111023?text=Hola%2C%20quiero%20asesor%C3%ADa%20para%20elegir%20productos%20Sicar%C3%BA.";
+  getSalesWhatsAppUrl("Hola, quiero asesoría para elegir productos Sicarú.");
 
 export function HeroSection() {
   return (

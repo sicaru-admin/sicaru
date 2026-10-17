@@ -49,8 +49,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    refreshCustomer().finally(() => setIsLoading(false));
-  }, [refreshCustomer]);
+    let active = true;
+    getCustomer()
+      .then((currentCustomer) => {
+        if (active) setCustomer(currentCustomer);
+      })
+      .catch(() => {
+        if (active) setCustomer(null);
+      })
+      .finally(() => {
+        if (active) setIsLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const login = useCallback(
     async (email: string, password: string) => {

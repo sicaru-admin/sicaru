@@ -13,6 +13,7 @@ export function CartDrawer() {
     updateQuantity,
     removeFromCart,
     isLoading,
+    cartError,
     totalItems,
   } = useCart();
 
@@ -57,9 +58,12 @@ export function CartDrawer() {
             </button>
           </div>
 
+          {cartError && <p role="alert" className="mx-4 mt-3 rounded-lg bg-red-50 p-3 text-sm text-red-700">{cartError}</p>}
           {/* Items */}
           <div className="flex-1 overflow-y-auto px-4 py-4">
-            {!cart?.items?.length ? (
+            {cartError && !cart ? (
+              <p className="py-8 text-center text-gray-600">No pudimos consultar tus productos. <a href="/carrito" className="underline">Reintentar en tu carrito</a></p>
+            ) : !cart?.items?.length ? (
               <p className="py-8 text-center text-gray-500">
                 Tu carrito est&aacute; vac&iacute;o
               </p>
@@ -92,26 +96,26 @@ export function CartDrawer() {
                         />
                         <div className="mt-2 flex items-center gap-2">
                           <button
-                            onClick={() =>
-                              updateQuantity(item.id, item.quantity - 1)
+                            aria-label={`Disminuir cantidad de ${item.title}`}
+                          onClick={() => void updateQuantity(item.id, item.quantity - 1).catch(() => {})
                             }
                             disabled={isLoading || item.quantity <= 1}
-                            className="flex h-8 w-8 items-center justify-center rounded-full border text-sm hover:bg-gray-100 disabled:opacity-50"
+                            className="flex h-11 w-11 items-center justify-center rounded-full border text-sm hover:bg-gray-100 disabled:opacity-50"
                           >
                             &minus;
                           </button>
                           <span className="text-sm">{item.quantity}</span>
                           <button
-                            onClick={() =>
-                              updateQuantity(item.id, item.quantity + 1)
+                            aria-label={`Aumentar cantidad de ${item.title}`}
+                          onClick={() => void updateQuantity(item.id, item.quantity + 1).catch(() => {})
                             }
                             disabled={isLoading}
-                            className="flex h-8 w-8 items-center justify-center rounded-full border text-sm hover:bg-gray-100 disabled:opacity-50"
+                            className="flex h-11 w-11 items-center justify-center rounded-full border text-sm hover:bg-gray-100 disabled:opacity-50"
                           >
                             +
                           </button>
                           <button
-                            onClick={() => removeFromCart(item.id)}
+                            onClick={() => void removeFromCart(item.id).catch(() => {})}
                             disabled={isLoading}
                             className="ml-auto text-sm text-red-500 hover:text-red-700"
                           >
@@ -129,6 +133,7 @@ export function CartDrawer() {
           {/* Footer */}
           {cart?.items?.length ? (
             <div className="border-t px-4 py-4">
+              <p className="mb-2 text-sm text-gray-600">IVA: <PriceDisplay amount={cart.tax_total ?? 0} /> · Envío por calcular</p>
               <div className="mb-4 flex items-center justify-between">
                 <span className="text-lg font-semibold">Total</span>
                 <PriceDisplay
@@ -146,7 +151,7 @@ export function CartDrawer() {
                 href="/checkout"
                 className="block w-full rounded-full bg-sicaru-pink py-3 text-center font-semibold text-white transition-colors hover:bg-sicaru-pink/90"
               >
-                Proceder al Pago
+                Continuar con envío DHL
               </a>
             </div>
           ) : null}

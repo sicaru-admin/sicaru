@@ -39,9 +39,7 @@ export function StickyAddToCart({ product }: StickyAddToCartProps) {
     } catch (error) {
       console.error("Error adding sticky variant to cart:", error);
       setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : "No pudimos agregar el producto al carrito. Intenta de nuevo."
+        "No pudimos agregar el producto. Revisa la disponibilidad e inténtalo nuevamente."
       );
     }
   };

@@ -9,7 +9,7 @@ export const STORE = {
     full: "La Plaza, Local 204, Cadereyta Jiménez, Nuevo León, 67480",
   },
   phone: "+52 828 111 1023",
-  whatsapp: "528281111023",
+  whatsapp: "",
   email: "contacto@sicaru.com",
   hours: "Lunes a Sábado 9:00 - 19:00",
   coordinates: { lat: 25.5933, lng: -99.9836 },

@@ -75,13 +75,14 @@ export function ShippingAddressForm({
       {/* Name row */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label htmlFor="shipping-first-name" className="block text-sm font-medium text-gray-700">
             Nombre
           </label>
           <input
             type="text"
             value={address.first_name}
             onChange={(e) => update("first_name", e.target.value)}
+            id="shipping-first-name"
             autoComplete="given-name"
             className={errors.first_name ? errorInputClass : inputClass}
           />
@@ -90,13 +91,14 @@ export function ShippingAddressForm({
           )}
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label htmlFor="shipping-last-name" className="block text-sm font-medium text-gray-700">
             Apellido
           </label>
           <input
             type="text"
             value={address.last_name}
             onChange={(e) => update("last_name", e.target.value)}
+            id="shipping-last-name"
             autoComplete="family-name"
             className={errors.last_name ? errorInputClass : inputClass}
           />
@@ -108,8 +110,8 @@ export function ShippingAddressForm({
 
       {/* Phone */}
       <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Teléfono
+        <label htmlFor="shipping-phone" className="block text-sm font-medium text-gray-700">
+            Teléfono
         </label>
         <div className="relative mt-1">
           <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-400">
@@ -123,6 +125,7 @@ export function ShippingAddressForm({
             }
             placeholder="10 dígitos"
             inputMode="numeric"
+            id="shipping-phone"
             autoComplete="tel-national"
             className={`${errors.phone ? errorInputClass : inputClass} pl-12`}
           />
@@ -134,14 +137,15 @@ export function ShippingAddressForm({
 
       {/* Street */}
       <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Calle y número
+        <label htmlFor="shipping-street" className="block text-sm font-medium text-gray-700">
+            Calle y número
         </label>
         <input
           type="text"
           value={address.address_1}
           onChange={(e) => update("address_1", e.target.value)}
-          autoComplete="address-line1"
+          id="shipping-street"
+            autoComplete="address-line1"
           className={errors.address_1 ? errorInputClass : inputClass}
         />
         {errors.address_1 && (
@@ -152,7 +156,7 @@ export function ShippingAddressForm({
       {/* Colonia + City */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label htmlFor="shipping-extra" className="block text-sm font-medium text-gray-700">
             Colonia / Interior{" "}
             <span className="text-gray-400">(opcional)</span>
           </label>
@@ -160,18 +164,20 @@ export function ShippingAddressForm({
             type="text"
             value={address.address_2}
             onChange={(e) => update("address_2", e.target.value)}
+            id="shipping-extra"
             autoComplete="address-line2"
             className={inputClass}
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label htmlFor="shipping-city" className="block text-sm font-medium text-gray-700">
             Ciudad
           </label>
           <input
             type="text"
             value={address.city}
             onChange={(e) => update("city", e.target.value)}
+            id="shipping-city"
             autoComplete="address-level2"
             className={errors.city ? errorInputClass : inputClass}
           />
@@ -184,12 +190,13 @@ export function ShippingAddressForm({
       {/* State + Postal Code */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label htmlFor="shipping-state" className="block text-sm font-medium text-gray-700">
             Estado
           </label>
           <select
             value={address.province}
             onChange={(e) => update("province", e.target.value)}
+            id="shipping-state"
             autoComplete="address-level1"
             className={errors.province ? errorInputClass : inputClass}
           >
@@ -205,7 +212,7 @@ export function ShippingAddressForm({
           )}
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label htmlFor="shipping-postal" className="block text-sm font-medium text-gray-700">
             Código Postal
           </label>
           <input
@@ -219,6 +226,7 @@ export function ShippingAddressForm({
             }
             inputMode="numeric"
             maxLength={5}
+            id="shipping-postal"
             autoComplete="postal-code"
             className={errors.postal_code ? errorInputClass : inputClass}
           />
@@ -230,9 +238,10 @@ export function ShippingAddressForm({
 
       {/* Country (read-only) */}
       <div>
-        <label className="block text-sm font-medium text-gray-700">País</label>
+        <label htmlFor="shipping-country" className="block text-sm font-medium text-gray-700">País</label>
         <input
           type="text"
+          id="shipping-country"
           value="México"
           disabled
           className="mt-1 block w-full rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-500"
