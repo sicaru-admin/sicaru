@@ -21,6 +21,10 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  icons: {
+    icon: { url: "/favicon.ico?v=sicaru-20261017", type: "image/x-icon" },
+    shortcut: "/favicon.ico?v=sicaru-20261017",
+  },
   title: {
     template: "%s | Distribuidora Sicarú",
     default: "Distribuidora Sicarú — Productos de Belleza Profesional",
