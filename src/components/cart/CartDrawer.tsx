@@ -94,8 +94,8 @@ export function CartDrawer() {
                         />
                         <div className="mt-2 flex items-center gap-2">
                           <button
-                            onClick={() =>
-                              void updateQuantity(item.id, item.quantity - 1).catch(() => {})
+                            aria-label={`Disminuir cantidad de ${item.title}`}
+                          onClick={() => void updateQuantity(item.id, item.quantity - 1).catch(() => {})
                             }
                             disabled={isLoading || item.quantity <= 1}
                             className="flex h-11 w-11 items-center justify-center rounded-full border text-sm hover:bg-gray-100 disabled:opacity-50"
@@ -104,8 +104,8 @@ export function CartDrawer() {
                           </button>
                           <span className="text-sm">{item.quantity}</span>
                           <button
-                            onClick={() =>
-                              void updateQuantity(item.id, item.quantity + 1).catch(() => {})
+                            aria-label={`Aumentar cantidad de ${item.title}`}
+                          onClick={() => void updateQuantity(item.id, item.quantity + 1).catch(() => {})
                             }
                             disabled={isLoading}
                             className="flex h-11 w-11 items-center justify-center rounded-full border text-sm hover:bg-gray-100 disabled:opacity-50"

@@ -66,8 +66,8 @@ export default function CarritoPage() {
 
                       <div className="mt-3 flex items-center gap-3">
                         <button
-                          onClick={() =>
-                            void updateQuantity(item.id, item.quantity - 1).catch(() => {})
+                          aria-label={`Disminuir cantidad de ${item.title}`}
+                          onClick={() => void updateQuantity(item.id, item.quantity - 1).catch(() => {})
                           }
                           disabled={isLoading || item.quantity <= 1}
                           className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-300 text-sm hover:bg-gray-100 disabled:opacity-50"
@@ -78,8 +78,8 @@ export default function CarritoPage() {
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() =>
-                            void updateQuantity(item.id, item.quantity + 1).catch(() => {})
+                          aria-label={`Aumentar cantidad de ${item.title}`}
+                          onClick={() => void updateQuantity(item.id, item.quantity + 1).catch(() => {})
                           }
                           disabled={isLoading}
                           className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-300 text-sm hover:bg-gray-100 disabled:opacity-50"
