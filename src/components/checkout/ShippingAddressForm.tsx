@@ -17,6 +17,8 @@ type Address = {
 
 type ShippingAddressFormProps = {
   address: Address;
+  email?: string;
+  onEmailChange?: (email: string) => void;
   onAddressChange: (address: Address) => void;
   onSubmit: () => Promise<void>;
   isLoading: boolean;
@@ -24,6 +26,8 @@ type ShippingAddressFormProps = {
 
 export function ShippingAddressForm({
   address,
+  email,
+  onEmailChange,
   onAddressChange,
   onSubmit,
   isLoading,
@@ -43,6 +47,7 @@ export function ShippingAddressForm({
 
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
+    if (onEmailChange && (!email?.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) newErrors.email = "Ingresa un correo electrónico válido";
     if (!address.first_name.trim()) newErrors.first_name = "Obligatorio";
     if (!address.last_name.trim()) newErrors.last_name = "Obligatorio";
     if (!address.phone.trim()) newErrors.phone = "Obligatorio";
@@ -72,6 +77,11 @@ export function ShippingAddressForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {onEmailChange && <div>
+        <label htmlFor="checkout-email" className="block text-sm font-medium text-gray-700">Correo electrónico</label>
+        <input id="checkout-email" type="email" autoComplete="email" value={email ?? ""} onChange={e => onEmailChange(e.target.value)} className={errors.email ? errorInputClass : inputClass} />
+        {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
+      </div>}
       {/* Name row */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
@@ -253,7 +263,7 @@ export function ShippingAddressForm({
         disabled={isLoading}
         className="w-full rounded-full bg-sicaru-pink px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-sicaru-pink/90 disabled:opacity-50"
       >
-        {isLoading ? "Guardando..." : "Continuar"}
+        {isLoading ? "Guardando..." : "Continuar compra"}
       </button>
     </form>
   );

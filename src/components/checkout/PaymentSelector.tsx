@@ -111,7 +111,7 @@ export function PaymentSelector({
           disabled={isLoading}
           className="w-full rounded-full bg-sicaru-pink px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-sicaru-pink/90 disabled:opacity-50"
         >
-          {isLoading ? "Procesando..." : "Continuar"}
+          {isLoading ? "Procesando..." : "Continuar compra"}
         </button>
       )}
     </div>

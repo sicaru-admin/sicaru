@@ -116,7 +116,7 @@ test("only explicitly enabled courier services reach the selector", async () => 
 test("an unconfigured checkout does not fall back to the local service", async () => {
   approvedQuote = { status: "quote_required", reason: "coverage_unknown", message: "Cotiza por WhatsApp" };
   assert.deepEqual(await checkout.listShippingOptions("cart_test"), []);
-  await assert.rejects(checkout.completeCart("cart_test"), /DHL/);
+  await assert.rejects(checkout.completeCart("cart_test"), /envío/);
   assert.equal(orderWrites, 0);
 });
 
@@ -139,7 +139,7 @@ test("missing, negative, or invalid prices cannot become free delivery", () => {
 });
 
 test("a local service cannot be submitted directly to the checkout helper", async () => {
-  await assert.rejects(checkout.addShippingMethod("cart_test", "local_cadereyta"), /DHL/);
+  await assert.rejects(checkout.addShippingMethod("cart_test", "local_cadereyta"), /envío/);
   assert.equal(shippingWrites, 0);
 });
 
@@ -157,8 +157,8 @@ test("payment uses the refreshed cart including the server's shipping total", as
 
 test("a courier service that is no longer available cannot be paid or completed", async () => {
   availableOptions = availableOptions.filter((o) => o.id === "local_cadereyta");
-  await assert.rejects(checkout.initiatePaymentSession(currentCart, "test_provider"), /DHL/);
-  await assert.rejects(checkout.completeCart("cart_test"), /DHL/);
+  await assert.rejects(checkout.initiatePaymentSession(currentCart, "test_provider"), /envío/);
+  await assert.rejects(checkout.completeCart("cart_test"), /envío/);
   assert.equal(paymentWrites, 0);
   assert.equal(orderWrites, 0);
 });
@@ -172,7 +172,7 @@ test("empty, local, or mixed shipping selections cannot reach payment", async ()
   ]) {
     currentCart.shipping_methods = methods;
     assert.equal(hasParcelShippingMethod(currentCart, getParcelShippingOptions(availableOptions, approvedQuote)), false);
-    await assert.rejects(checkout.initiatePaymentSession(currentCart, "test_provider"), /DHL/);
+    await assert.rejects(checkout.initiatePaymentSession(currentCart, "test_provider"), /envío/);
   }
   assert.equal(paymentWrites, 0);
 });
@@ -200,7 +200,7 @@ test("the retired public allowlist cannot approve a local $49 service", () => {
 test("missing backend verification exposes no payable shipping option", async () => {
   quoteFails = true;
   assert.deepEqual(await checkout.listShippingOptions("cart_test"), []);
-  await assert.rejects(checkout.initiatePaymentSession(currentCart, "test_provider"), /DHL/);
+  await assert.rejects(checkout.initiatePaymentSession(currentCart, "test_provider"), /envío/);
   assert.equal(paymentWrites, 0);
 });
 
@@ -217,8 +217,8 @@ test("a saved $49 method or a stale DHL amount cannot be retained for payment", 
   ]) {
     currentCart.shipping_methods = [method];
     currentCart.shipping_total = 49;
-    await assert.rejects(checkout.initiatePaymentSession(currentCart, "test_provider"), /DHL/);
-    await assert.rejects(checkout.completeCart("cart_test"), /DHL/);
+    await assert.rejects(checkout.initiatePaymentSession(currentCart, "test_provider"), /envío/);
+    await assert.rejects(checkout.completeCart("cart_test"), /envío/);
   }
   assert.equal(paymentWrites, 0);
   assert.equal(orderWrites, 0);
@@ -226,10 +226,10 @@ test("a saved $49 method or a stale DHL amount cannot be retained for payment", 
 
 test("a stale order total or unexpected shipping tax prevents payment", async () => {
   currentCart.total = 100;
-  await assert.rejects(checkout.completeCart("cart_test"), /DHL/);
+  await assert.rejects(checkout.completeCart("cart_test"), /envío/);
   currentCart.total = 514;
   currentCart.shipping_total = 248.24;
-  await assert.rejects(checkout.completeCart("cart_test"), /DHL/);
+  await assert.rejects(checkout.completeCart("cart_test"), /envío/);
   assert.equal(orderWrites, 0);
 });
 

@@ -34,7 +34,7 @@ export async function addShippingMethod(cartId: string, optionId: string) {
   const options = await listShippingOptions(cartId);
   if (!options.some((option) => option.id === optionId)) {
     throw new Error(
-      "La tarifa DHL cambió o ya no está disponible. Vuelve al paso de envío antes de pagar."
+      "El envío cambió o ya no está disponible. Vuelve al paso de envío antes de pagar."
     );
   }
 
@@ -49,7 +49,7 @@ async function requireParcelShipping(cartId: string) {
   const options = await listShippingOptions(cartId);
   if (!hasParcelShippingMethod(cart, options)) {
     throw new Error(
-      "Selecciona una tarifa DHL disponible antes de pagar."
+      "Selecciona un servicio de envío disponible antes de pagar."
     );
   }
   return cart;

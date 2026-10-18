@@ -30,7 +30,7 @@ export function MercadoPagoCardForm({
   useEffect(() => {
     if (!isConfigured) {
       onError?.(
-        "Mercado Pago no está configurado para recibir pagos con tarjeta."
+        "El pago con tarjeta no está disponible. Inténtalo más tarde."
       );
       return;
     }
@@ -38,7 +38,7 @@ export function MercadoPagoCardForm({
     const initialized = ensureMercadoPagoInit();
     if (!initialized) {
       onError?.(
-        "No se pudo inicializar Mercado Pago. Revisa la configuración de pago."
+        "No pudimos abrir el pago con tarjeta. Recarga e inténtalo nuevamente."
       );
     }
   }, [isConfigured, onError]);
@@ -46,7 +46,7 @@ export function MercadoPagoCardForm({
   if (!isConfigured) {
     return (
       <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-        Mercado Pago no está configurado para recibir pagos con tarjeta.
+        El pago con tarjeta no está disponible. Inténtalo más tarde.
       </div>
     );
   }
@@ -71,13 +71,13 @@ export function MercadoPagoCardForm({
             const issuerId = (formData as { issuer_id?: string }).issuer_id;
 
             if (!token) {
-              onError?.("No se pudo tokenizar la tarjeta. Intenta de nuevo.");
+              onError?.("No pudimos validar tu tarjeta. Revisa los datos e inténtalo nuevamente.");
               return;
             }
 
             if (!paymentMethodId) {
               onError?.(
-                "Mercado Pago no devolvió el método de pago. Intenta de nuevo."
+                "No pudimos validar tu tarjeta. Inténtalo nuevamente."
               );
               return;
             }
@@ -99,7 +99,7 @@ export function MercadoPagoCardForm({
         customization={{
           visual: {
             texts: {
-              formSubmit: "Continuar",
+              formSubmit: "Continuar compra",
             },
             style: {
               customVariables: {

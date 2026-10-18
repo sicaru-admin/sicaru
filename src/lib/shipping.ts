@@ -26,6 +26,7 @@ export type DhlQuote =
       shipping_option_id: string;
       amount: number;
       currency_code: "mxn";
+      delivery_estimate?: string;
     };
 
 export type LocalDeliveryItem = {
@@ -94,7 +95,9 @@ export function getLocalDeliveryMessage(items: LocalDeliveryItem[] = [], subtota
   return ["Hola, quiero coordinar una entrega local en Cadereyta con Sicarú.", "",
     ...products, "", "Subtotal de productos: " + amount,
     "Entrega local: $40 MXN fuera del checkout (se coordina por WhatsApp).",
-    "¿Me confirman disponibilidad y cobertura?"].join("\n");
+    "Total con entrega local: " + (typeof subtotal === "number" && Number.isFinite(subtotal) && subtotal >= 0
+      ? new Intl.NumberFormat("es-MX", {style:"currency", currency:"MXN"}).format(subtotal + 40) + " MXN" : "por confirmar"),
+    "Entrega sujeta a confirmar cobertura local y disponibilidad antes de pagar."].join("\n");
 }
 
 export function getLocalDeliveryWhatsAppUrl(phone: string, items: LocalDeliveryItem[] = [], subtotal?: number | null): string | null {

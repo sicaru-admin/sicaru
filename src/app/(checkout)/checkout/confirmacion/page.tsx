@@ -38,6 +38,7 @@ type OrderData = {
     unit_price: number;
     thumbnail?: string | null;
   }>;
+  shipping_methods?: Array<{ name?: string; data?: { delivery_estimate?: string } }>;
   shipping_address?: {
     first_name?: string;
     last_name?: string;
@@ -85,7 +86,8 @@ export default function ConfirmacionPage() {
       try {
         const saved = JSON.parse(stored);
         if (typeof saved.id !== "string" || !saved.id.startsWith("order_")) throw new Error("Invalid order");
-        sdk.store.order.retrieve(saved.id).then(({order}) => {
+        sdk.store.order.retrieve(saved.id, {fields: "+payment_collections,+payment_collections.payment_sessions,+shipping_methods,+shipping_address"}).then(({order}) => {
+          if (order.id !== saved.id) throw new Error("Order mismatch");
           setOrder(order as unknown as OrderData);
           sessionStorage.setItem("sicaru_last_order", JSON.stringify(order));
         }).catch(() => setOrderError("No pudimos consultar el estado de tu pedido. Conserva tu número y vuelve a intentarlo."));
@@ -153,7 +155,7 @@ export default function ConfirmacionPage() {
       </div>
 
       {/* OXXO payment: show voucher instructions */}
-      {isOxxoPayment && (
+      {isOxxoPayment && paymentState === "pending" && (
         <div className="mb-8 rounded-lg border-2 border-amber-300 bg-amber-50 p-6">
           <h2 className="text-lg font-bold text-amber-800">
             Tu pedido está pendiente de pago
@@ -249,7 +251,7 @@ export default function ConfirmacionPage() {
         </h2>
         <div className="space-y-3">
           {items.map((item) => (
-            <div key={item.id} className="flex gap-3">
+            <div key={item.id} className="flex flex-col gap-3 sm:flex-row">
               <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-md border bg-gray-50">
                 {item.thumbnail ? (
                   <Image
@@ -322,6 +324,10 @@ export default function ConfirmacionPage() {
         </div>
       </div>
 
+      {order.shipping_methods?.length ? <section className="mt-6 rounded-lg border bg-white p-6" aria-label="Entrega">
+        <h2 className="text-sm font-semibold text-sicaru-purple-900">Entrega</h2>
+        {order.shipping_methods.map((method, index) => <p key={index} className="mt-2 text-sm text-gray-700">{method.name}{method.data?.delivery_estimate ? " · " + method.data.delivery_estimate : ""}</p>)}
+      </section> : null}
       {/* Shipping address */}
       {order.shipping_address && (
         <div className="mt-6 rounded-lg border bg-white p-6">
@@ -392,7 +398,7 @@ export default function ConfirmacionPage() {
               value={createAccountPassword}
               onChange={(e) => setCreateAccountPassword(e.target.value)}
               placeholder="Elige una contraseña (min. 8 caracteres)"
-              className="flex-1 rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-sicaru-purple-500 focus:outline-none focus:ring-1 focus:ring-sicaru-purple-500"
+              className="min-w-0 flex-1 rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-sicaru-purple-500 focus:outline-none focus:ring-1 focus:ring-sicaru-purple-500"
             />
             <button
               type="submit"

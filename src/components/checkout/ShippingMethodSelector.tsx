@@ -1,14 +1,14 @@
 "use client";
 
 import { Truck } from "lucide-react";
-import { getShippingOptionPrice, getDhlWhatsAppUrl } from "@/lib/shipping";
+import { getShippingOptionPrice } from "@/lib/shipping";
 import type { DhlQuote, LocalDeliveryItem } from "@/lib/shipping";
-import { STORE } from "@/lib/constants/store";
 
 type ShippingOption = {
   id: string;
   name: string;
   amount?: number | null;
+  metadata?: Record<string, unknown> | null;
   calculated_price?: {
     calculated_amount?: number | null;
     currency_code?: string | null;
@@ -33,9 +33,7 @@ function formatPrice(amount: number, currency = "MXN") {
 }
 
 export function ShippingMethodSelector({
-  items,
   options,
-  quote,
   selectedId,
   onSelect,
   onSubmit,
@@ -51,14 +49,8 @@ export function ShippingMethodSelector({
   if (options.length === 0) {
     return (
       <div className="space-y-3 py-4 text-sm text-gray-600" role="status">
-        <p>{quote?.status === "quote_required" && quote.reason === "tariff_unconfirmed"
-          ? "DHL todavía no está disponible para compras en línea. Estamos confirmando la tarifa y la cobertura."
-          : "Todavía no podemos ofrecer una tarifa DHL para este paquete y dirección."}</p>
-        <p>No se puede continuar al pago sin un costo de envío confirmado. Puedes revisar tu dirección y volver a intentarlo.</p>
-        {STORE.whatsapp && <a href={getDhlWhatsAppUrl(STORE.whatsapp, items) ?? undefined}
-          target="_blank" rel="noopener noreferrer" className="font-medium text-green-800 underline">
-          Consultar una cotización por WhatsApp (opcional)
-        </a>}
+        <p>El envío no está disponible para esta compra.</p>
+        <p>Revisa tu dirección o vuelve a intentarlo más tarde. No se realizará ningún cobro.</p>
 
       </div>
     );
@@ -96,6 +88,7 @@ export function ShippingMethodSelector({
                 <p className="text-sm font-medium text-gray-900">
                   {option.name}
                 </p>
+                {typeof option.metadata?.delivery_estimate === "string" && <p className="mt-1 text-xs text-gray-600">Entrega estimada: {option.metadata.delivery_estimate}</p>}
               </div>
               <span className="text-sm font-semibold text-gray-900">
                 {formatPrice(price, currency)}
@@ -115,7 +108,7 @@ export function ShippingMethodSelector({
         }
         className="w-full rounded-full bg-sicaru-pink px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-sicaru-pink/90 disabled:opacity-50"
       >
-        {isLoading ? "Guardando..." : "Continuar"}
+        {isLoading ? "Guardando..." : "Continuar compra"}
       </button>
     </form>
   );

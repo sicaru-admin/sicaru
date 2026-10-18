@@ -135,9 +135,9 @@ export function CartDrawer() {
             <div className="border-t px-4 py-4">
               <p className="mb-2 text-sm text-gray-600">IVA: <PriceDisplay amount={cart.tax_total ?? 0} /> · Envío por calcular</p>
               <div className="mb-4 flex items-center justify-between">
-                <span className="text-lg font-semibold">Total</span>
+                <span className="text-lg font-semibold">Subtotal</span>
                 <PriceDisplay
-                  amount={cart.total}
+                  amount={cart.item_total}
                   className="text-lg font-bold text-sicaru-purple-900"
                 />
               </div>
@@ -151,7 +151,7 @@ export function CartDrawer() {
                 href="/checkout"
                 className="block w-full rounded-full bg-sicaru-pink py-3 text-center font-semibold text-white transition-colors hover:bg-sicaru-pink/90"
               >
-                Continuar con envío DHL
+                Continuar compra
               </a>
             </div>
           ) : null}

@@ -16,6 +16,7 @@ type OrderSummaryProps = {
   cart: HttpTypes.StoreCart | null;
   isAuthenticated?: boolean;
   onCartRefresh?: () => void;
+  shippingConfirmed?: boolean;
 };
 
 function LoyaltySection({
@@ -140,6 +141,7 @@ export function OrderSummary({
   cart,
   isAuthenticated,
   onCartRefresh,
+  shippingConfirmed = false,
 }: OrderSummaryProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -213,11 +215,9 @@ export function OrderSummary({
         <div className="flex justify-between">
           <span className="text-gray-600">Envío</span>
           <span>
-            {totals.shipping > 0
-              ? formatCurrency(totals.shipping, currency)
-              : cart.shipping_methods?.length
-                ? "Gratis"
-                : "Por calcular"}
+            {shippingConfirmed && totals.shipping > 0
+              ? formatCurrency(cart.shipping_total, currency)
+              : "Por calcular"}
           </span>
         </div>
         {totals.taxes > 0 && (
@@ -233,9 +233,9 @@ export function OrderSummary({
           </div>
         )}
         <div className="flex justify-between border-t pt-2 text-base font-bold">
-          <span>Total</span>
+          <span>{shippingConfirmed ? "Total" : "Subtotal"}</span>
           <span className="text-sicaru-purple-900">
-            {formatCurrency(totals.total, currency)}
+            {formatCurrency(shippingConfirmed ? totals.total : cart.item_total, currency)}
           </span>
         </div>
       </div>

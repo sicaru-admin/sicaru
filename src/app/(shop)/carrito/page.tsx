@@ -28,7 +28,7 @@ export default function CarritoPage() {
         <p className="py-8 text-center text-gray-600">Tu carrito sigue guardado. Reintenta para consultar tus productos.</p>
       ) : !cart?.items?.length ? (
         <div className="text-center py-16">
-          <p className="text-lg text-gray-500 mb-6">Tu carrito esta vacio.</p>
+          <p className="text-lg text-gray-500 mb-6">Tu carrito está vacío.</p>
           <Link
             href="/productos"
             className="inline-block rounded-full bg-sicaru-pink px-8 py-3 font-semibold text-white transition-colors hover:bg-sicaru-pink/90"
@@ -152,10 +152,10 @@ export default function CarritoPage() {
                 ) : null}
                 <div className="border-t border-gray-200 pt-3 flex justify-between">
                   <dt className="text-base font-semibold text-sicaru-purple-900">
-                    Total
+                    Subtotal
                   </dt>
                   <dd className="text-base font-bold text-sicaru-purple-900">
-                    {formatCurrency(totals.total)}
+                    {formatCurrency(cart.item_total)}
                   </dd>
                 </div>
               </dl>
@@ -163,7 +163,7 @@ export default function CarritoPage() {
                 href="/checkout"
                 className="mt-6 block w-full rounded-full bg-sicaru-pink py-3 text-center text-lg font-semibold text-white transition-colors hover:bg-sicaru-pink/90"
               >
-                Continuar con envío DHL
+                Continuar compra
               </Link>
               <LocalDeliveryNotice items={cart.items.map(item => ({...item, variant_title: getCartLineVariantLabel(item)}))} subtotal={cart.item_total} />
             </div>

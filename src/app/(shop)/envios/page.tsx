@@ -1,21 +1,22 @@
 import type { Metadata } from "next";
 import { LocalDeliveryNotice } from "@/components/checkout/LocalDeliveryNotice";
-export const metadata: Metadata = {
-  title: "Envíos y entregas",
-  description: "Entregas locales de $40 por WhatsApp y estado de los envíos DHL en SICARÚ.",
-};
+export const metadata: Metadata = {title: "Envíos y entregas", description: "Consulta las opciones de entrega de SICARÚ y coordina tu entrega local por WhatsApp."};
 export default function EnviosPage() {
   return <main className="mx-auto max-w-3xl space-y-6 px-4 py-12">
     <h1 className="text-3xl font-bold text-sicaru-purple-900">Envíos y entregas</h1>
-    <h2 className="text-xl font-semibold">Envíos DHL</h2>
-    <p>DHL todavía no está disponible para compras en línea. Estamos confirmando la modalidad, el importe, la cobertura y las condiciones del servicio.</p>
-    <p>Cuando esté disponible, podrás seleccionar DHL, ver su costo sumado al total y pagar directamente en la tienda. WhatsApp no será obligatorio para una compra normal por DHL.</p>
-    <p>Por ahora puedes explorar productos y preparar tu carrito. El checkout no permite pagar sin una tarifa disponible para tu paquete y dirección.</p>
-    <p>El costo dependerá de las condiciones confirmadas del servicio. No hay una tarifa general publicada ni envío gratuito por falta de cotización.</p>
-    <LocalDeliveryNotice />
-    <h2 className="text-xl font-semibold">Pagos y confirmación</h2>
-    <p>El resumen separará productos, impuestos y envío antes de pagar. Un pago pendiente o rechazado no se considera pagado. La confirmación del pedido mostrará su estado.</p>
-    <h2 className="text-xl font-semibold">Fotografías y disponibilidad</h2>
-    <p>Si un producto todavía no tiene fotografía, lo indicaremos sin mostrar la imagen de otro producto. La disponibilidad se confirma al agregarlo al carrito.</p>
+    <section className="space-y-3">
+      <h2 className="text-xl font-semibold text-sicaru-purple-900">Envío por paquetería</h2>
+      <p>Consulta las opciones para tu dirección al continuar tu compra. Antes de pagar verás el servicio, el costo, el plazo estimado y el importe final.</p>
+      <p>Si el envío no está disponible para tu compra, no podrás continuar al pago. Tus productos permanecerán en el carrito.</p>
+    </section>
+    <section className="space-y-3">
+      <h2 className="text-xl font-semibold text-sicaru-purple-900">Entrega local</h2>
+      <p>Coordinamos la entrega local por WhatsApp por $40 MXN, sujeta a confirmar cobertura. No necesitas completar el checkout para solicitarla.</p>
+      <LocalDeliveryNotice />
+    </section>
+    <section className="space-y-3">
+      <h2 className="text-xl font-semibold text-sicaru-purple-900">Tu pedido</h2>
+      <p>Al completar una compra, consulta su número, productos, importes, entrega y estado del pago en la confirmación.</p>
+    </section>
   </main>;
 }

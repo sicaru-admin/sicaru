@@ -13,6 +13,7 @@ import {
 } from "./VariantSelector";
 import { WhatsAppLink } from "@/components/ui/WhatsAppLink";
 import { QuantitySelector } from "./QuantitySelector";
+import { getProductAvailability } from "@/lib/product-availability";
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct;
@@ -157,8 +158,10 @@ export function ProductActions({ product }: ProductActionsProps) {
     ? "Selecciona un tono"
     : "Selecciona una opción";
   const hasPrice = selectedVariant?.calculated_price?.calculated_amount != null;
-  const isSoldOut = selectedVariant?.manage_inventory === true && selectedVariant?.allow_backorder !== true && typeof selectedVariant?.inventory_quantity === "number" && selectedVariant.inventory_quantity < quantity;
-  const canAddToCart = !!selectedVariant && hasPrice && !isSoldOut && !isLoading;
+  const availability = getProductAvailability(selectedVariant, quantity);
+  const isSoldOut = availability === "out_of_stock";
+  const exceedsStock = availability === "insufficient";
+  const canAddToCart = !!selectedVariant && hasPrice && !isSoldOut && !exceedsStock && !isLoading;
 
   const handleAddToCart = async () => {
     setErrorMessage(null);
@@ -168,6 +171,7 @@ export function ProductActions({ product }: ProductActionsProps) {
       return;
     }
 
+    if (!canAddToCart) return;
     try {
       await addToCart(selectedVariant.id, quantity);
     } catch (error) {
@@ -229,7 +233,8 @@ export function ProductActions({ product }: ProductActionsProps) {
         </p>
       )}
 
-      {isSoldOut && <p role="status" className="text-sm text-red-700">No hay existencias para esta cantidad.</p>}
+      {isSoldOut && <p role="status" className="text-sm text-red-700">Agotado</p>}
+      {exceedsStock && <p role="status" className="text-sm text-red-700">Reduce la cantidad: solo hay {selectedVariant?.inventory_quantity} disponibles.</p>}
       {/* Quantity */}
       <QuantitySelector quantity={quantity} onChange={setQuantity} />
 
@@ -241,7 +246,7 @@ export function ProductActions({ product }: ProductActionsProps) {
           disabled={!canAddToCart}
           className="btn-ripple tap-feedback w-full bg-[#7f6d8a] px-8 py-3.5 text-base font-semibold text-[#faf8f5] transition-colors duration-200 hover:bg-[#8e7a9e] disabled:cursor-not-allowed disabled:opacity-50 md:text-lg"
         >
-          {isLoading ? "Agregando..." : "Agregar al Carrito"}
+          {isLoading ? "Agregando..." : isSoldOut ? "Agotado" : "Agregar al carrito"}
         </button>
 
         <WhatsAppLink message={whatsappMsg}
