@@ -3,13 +3,20 @@ import { useEffect, useMemo, useState } from "react";
 import type { HttpTypes } from "@medusajs/types";
 import { ProductCatalogCard } from "@/components/products/ProductCatalogCard";
 import { categoryLabel, getProductPriceRange, matchesCatalogQuery } from "@/lib/catalog";
+import { BRANDS } from "@/lib/constants/brands";
+const knownBrands=Object.values(BRANDS).map(brand=>brand.name);
+function catalogBrand(product:HttpTypes.StoreProduct) {
+  const normalized=(value:string)=>value.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+  const title=normalized(product.title??"");
+  return knownBrands.find(name=>{const brand=normalized(name);return normalized(product.collection?.title??"")===brand||title===brand||title.startsWith(brand+" ")||title.startsWith(brand+" ·");});
+}
 type Filters={q:string;categoria:string;marca:string;min:string;max:string};
 export function ProductosContent({products,initialFilters}:{products:HttpTypes.StoreProduct[];initialFilters?:Partial<Filters>}) {
   const [filters,setFilters]=useState<Filters>({q:"",categoria:"",marca:"",min:"",max:"",...initialFilters});
   const [hydrated,setHydrated]=useState(false);
   useEffect(()=>{const params=new URLSearchParams(location.search);queueMicrotask(()=>{setFilters({q:params.get("q")??"",categoria:params.get("categoria")??"",marca:params.get("marca")??"",min:params.get("min")??"",max:params.get("max")??""});setHydrated(true);});},[]);
   const categories=useMemo(()=>Array.from(new Map(products.flatMap(p=>(p.categories??[]).map(c=>[c.id,c] as const))).values()),[products]);
-  const brands=useMemo(()=>Array.from(new Set(products.map(p=>p.collection?.title).filter((v):v is string=>!!v))).sort(),[products]);
+  const brands=useMemo(()=>Array.from(new Set(products.map(catalogBrand).filter((v):v is string=>!!v))).sort(),[products]);
   function update(key:keyof Filters,value:string){setFilters(current=>({...current,[key]:value}));}
   useEffect(()=>{
     if(!hydrated)return;
@@ -31,7 +38,7 @@ export function ProductosContent({products,initialFilters}:{products:HttpTypes.S
   const shown=useMemo(()=>products.filter(product=>{
     if(!matchesCatalogQuery(product,filters.q))return false;
     if(filters.categoria&&!(product.categories??[]).some(c=>c.id===filters.categoria||c.handle===filters.categoria))return false;
-    if(filters.marca&&product.collection?.title!==filters.marca)return false;
+    if(filters.marca&&catalogBrand(product)!==filters.marca)return false;
     const price=getProductPriceRange(product);
     if(filters.min&&(!price||price.minimum<Number(filters.min)))return false;
     if(filters.max&&(!price||price.minimum>Number(filters.max)))return false;
