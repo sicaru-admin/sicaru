@@ -10,7 +10,7 @@ export async function getProducts(
     limit: 20,
     region_id: region?.id,
     sales_channel_id: process.env.NEXT_PUBLIC_SALES_CHANNEL_ID,
-    fields: "+variants.inventory_quantity",
+    fields: "+variants.inventory_quantity,+categories.id,+categories.name,+categories.handle",
     ...queryParams,
   });
 
@@ -24,7 +24,7 @@ export async function getProductByHandle(handle: string) {
     limit: 1,
     region_id: region?.id,
     sales_channel_id: process.env.NEXT_PUBLIC_SALES_CHANNEL_ID,
-    fields: "+variants.inventory_quantity",
+    fields: "+variants.inventory_quantity,+categories.id,+categories.name,+categories.handle",
   });
 
   return products[0] || null;
@@ -37,8 +37,9 @@ export async function getProductsByCollection(collectionId: string) {
     limit: 50,
     region_id: region?.id,
     sales_channel_id: process.env.NEXT_PUBLIC_SALES_CHANNEL_ID,
-    fields: "+variants.inventory_quantity",
+    fields: "+variants.inventory_quantity,+categories.id,+categories.name,+categories.handle",
   });
 
   return { products, count, offset, limit };
 }
+

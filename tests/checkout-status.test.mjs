@@ -13,7 +13,7 @@ test("pending, missing and rejected payments never render paid", () => {
 test("local draft includes both variants, quantities, server subtotal and the separate local fee", () => {
  const url = new URL(getLocalDeliveryWhatsAppUrl("525500000000",[
   {title:"Tinte",variant_title:"6/1",quantity:2},{title:"Tinte",variant_title:"7/0",quantity:1}
- ],255));
+ ],255,"Centro"));
  const text=url.searchParams.get("text");
  assert.match(text,/2 × Tinte \(6\/1\)/); assert.match(text,/1 × Tinte \(7\/0\)/);
  assert.match(text,/Subtotal de productos: \$255.00 MXN/); assert.match(text,/Entrega local: \$40 MXN fuera del checkout/);

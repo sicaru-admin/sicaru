@@ -20,7 +20,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
   // If no images, show a restrained editorial placeholder.
   if (visibleImages.length === 0) {
     return (
-      <div className="aspect-[16/10] w-full overflow-hidden border border-[#efe7dd] bg-[#faf8f5] md:aspect-square lg:aspect-auto lg:h-[460px] xl:h-[500px]">
+      <div className="aspect-square w-full overflow-hidden border border-[#efe7dd] bg-[#faf8f5] md:aspect-square lg:aspect-auto lg:h-[460px] xl:h-[500px]">
         <div className="flex h-full flex-col items-center justify-center gap-2 px-6 text-center">
           <ImageIcon
             aria-hidden="true"
@@ -43,7 +43,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
   return (
     <div>
       {/* Main image */}
-      <div className="relative aspect-[16/10] w-full overflow-hidden border border-[#efe7dd] bg-[#faf8f5] md:aspect-square lg:aspect-auto lg:h-[600px] xl:h-[620px]">
+      <div className="relative aspect-square w-full overflow-hidden border border-[#efe7dd] bg-[#faf8f5] md:aspect-square lg:aspect-auto lg:h-[500px] xl:h-[520px]">
         <Image
           src={visibleImages[activeIndex].url}
           onError={() => markFailed(visibleImages[activeIndex].url)}
@@ -85,3 +85,4 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
     </div>
   );
 }
+

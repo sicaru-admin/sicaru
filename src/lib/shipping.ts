@@ -1,4 +1,5 @@
 export const LOCAL_DELIVERY_FEE = 40;
+export const LOCAL_STANDARD_ZONES = ["Centro", "Alberos", "Bella Vista", "Candelario"] as const;
 export const LOCAL_DELIVERY_COVERAGE = "Disponible en la zona urbana de Cadereyta Jiménez. Coordina tu pedido por WhatsApp.";
 export const LOCAL_DELIVERY_OUTSKIRTS = "Santa Anita, Palma Nova, Valle del Roble y otras zonas de las afueras requieren consultar cobertura y costo.";
 
@@ -88,26 +89,27 @@ export function getWhatsAppUrl(phone: string, message = ""): string | null {
   return "https://wa.me/" + digits + (message ? "?text=" + encodeURIComponent(message) : "");
 }
 
-export function getLocalDeliveryMessage(items: LocalDeliveryItem[] = [], subtotal?: number | null): string {
+export function getLocalDeliveryMessage(items: LocalDeliveryItem[] = [], subtotal?: number | null, zone?: string): string {
+  const standard = LOCAL_STANDARD_ZONES.some(value => value === zone);
   const products = items.map(item => {
     const title = item.product_title || item.title || "Producto";
     const variant = item.variant_title && item.variant_title !== "Default Variant" ? " (" + item.variant_title + ")" : "";
     return "- " + item.quantity + " × " + title + variant;
   });
-  const amount = typeof subtotal === "number" && Number.isFinite(subtotal) && subtotal >= 0
-    ? new Intl.NumberFormat("es-MX", {style:"currency", currency:"MXN"}).format(subtotal) + " MXN" : "por confirmar";
-  return ["Hola, quiero coordinar una entrega local en Cadereyta con Sicarú.", "",
-    ...products, "", "Subtotal de productos: " + amount,
-    "Entrega local: $" + LOCAL_DELIVERY_FEE + " MXN fuera del checkout (zona urbana de Cadereyta Jiménez; se coordina por WhatsApp).",
-    "Total con entrega local: " + (typeof subtotal === "number" && Number.isFinite(subtotal) && subtotal >= 0
-      ? new Intl.NumberFormat("es-MX", {style:"currency", currency:"MXN"}).format(subtotal + LOCAL_DELIVERY_FEE) + " MXN" : "por confirmar"),
-    LOCAL_DELIVERY_COVERAGE, LOCAL_DELIVERY_OUTSKIRTS,
-    "La suma anterior aplica a la zona urbana. Para otras zonas, el envío y la suma quedan por cotizar.",
-    "Entrega sujeta a confirmar cobertura local y disponibilidad antes de pagar."].join("\n");
+  const valid = typeof subtotal === "number" && Number.isFinite(subtotal) && subtotal >= 0;
+  const money = (value: number) => new Intl.NumberFormat("es-MX", {style:"currency",currency:"MXN"}).format(value) + " MXN";
+  return ["Hola, quiero coordinar una entrega local con Sicarú.", "", ...products, "",
+    "Subtotal de productos: " + (valid ? money(subtotal) : "por confirmar"),
+    ...(zone ? ["Zona de entrega: " + zone] : []),
+    standard ? "Entrega local: $40 MXN fuera del checkout (zona urbana de Cadereyta Jiménez)." : "Entrega local: costo por confirmar. La tarifa de $40 MXN aplica solo a cobertura urbana estándar.",
+    "Total con entrega local: " + (standard && valid ? money(subtotal + LOCAL_DELIVERY_FEE) : "por confirmar"),
+    "Cobertura estándar: Centro, Alberos, Bella Vista y Candelario, en Cadereyta Jiménez.",
+    LOCAL_DELIVERY_OUTSKIRTS,
+    "Necesito confirmar cobertura, disponibilidad y coordinación antes de pagar."
+  ].join("\n");
 }
-
-export function getLocalDeliveryWhatsAppUrl(phone: string, items: LocalDeliveryItem[] = [], subtotal?: number | null): string | null {
-  return getWhatsAppUrl(phone, getLocalDeliveryMessage(items, subtotal));
+export function getLocalDeliveryWhatsAppUrl(phone: string, items: LocalDeliveryItem[] = [], subtotal?: number | null, zone?: string): string | null {
+  return getWhatsAppUrl(phone, getLocalDeliveryMessage(items, subtotal, zone));
 }
 
 export function getDhlWhatsAppUrl(phone: string, items: LocalDeliveryItem[] = []): string | null {
@@ -117,3 +119,4 @@ export function getDhlWhatsAppUrl(phone: string, items: LocalDeliveryItem[] = []
   return getWhatsAppUrl(phone, ["Hola, quisiera consultar una cotización DHL para estos productos:", ...products,
     "Necesito confirmar costo y cobertura antes de pagar."].join("\n"));
 }
+

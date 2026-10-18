@@ -17,29 +17,18 @@ export async function FeaturedProducts() {
     return null;
   }
 
-  const productsWithImages = products
-    .filter((product) => product.thumbnail?.trim())
-    .slice(0, 4);
-
-  if (productsWithImages.length < 3) {
-    return null;
-  }
-
-  const gridColumns =
-    productsWithImages.length === 3
-      ? "grid-cols-1 lg:grid-cols-3"
-      : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4";
-
+  const selectedProducts=[...products].sort((a,b)=>Number(!!b.thumbnail)-Number(!!a.thumbnail)).slice(0,4);
+  const gridColumns="grid-cols-2 lg:grid-cols-4";
   return (
-    <section className="bg-[#f5f1eb] py-16 md:py-20">
+    <section className="bg-[#f5f1eb] py-7 md:py-10">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div className="mb-4 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase text-[#8e7a9e]">
               Selección de tienda
             </p>
-            <h2 className="mt-3 font-heading text-3xl font-semibold text-[#2e2b2b] md:text-4xl">
-              Productos que vale la pena tener a la mano
+            <h2 className="mt-1 font-heading text-2xl font-medium text-[#2e2b2b] md:text-4xl">
+              Destacados
             </h2>
           </div>
           <Link
@@ -52,7 +41,7 @@ export async function FeaturedProducts() {
         </div>
 
         <div className={`grid ${gridColumns} gap-3 md:gap-5`}>
-          {productsWithImages.map((product) => (
+          {selectedProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
@@ -60,3 +49,4 @@ export async function FeaturedProducts() {
     </section>
   );
 }
+

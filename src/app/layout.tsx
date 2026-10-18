@@ -6,6 +6,7 @@ import { AuthProvider } from "@/components/auth/AuthProvider";
 import { WebVitals } from "@/components/analytics/WebVitals";
 import { NavigationProgress } from "@/components/ui/NavigationProgress";
 import { BrowserCacheReset } from "@/components/system/BrowserCacheReset";
+import { CheckoutMemoryProvider } from "@/components/checkout/CheckoutMemoryProvider";
 
 const bodoniModa = Libre_Bodoni({
   variable: "--font-bodoni",
@@ -49,7 +50,7 @@ export default function RootLayout({
       >
         <NavigationProgress />
         <AuthProvider>
-          <CartProvider>{children}</CartProvider>
+          <CartProvider><CheckoutMemoryProvider>{children}</CheckoutMemoryProvider></CartProvider>
         </AuthProvider>
         <BrowserCacheReset />
         <WebVitals />
@@ -57,3 +58,4 @@ export default function RootLayout({
     </html>
   );
 }
+

@@ -189,7 +189,7 @@ test("WhatsApp opens the store chat with quantities and escaped product details"
   assert.equal(url.hostname, "wa.me");
   assert.equal(url.pathname, "/528281136652");
   assert.match(url.searchParams.get("text"), /2 × Tinte & cuidado \(6\/1\)/);
-  assert.match(url.searchParams.get("text"), /\$40 MXN fuera del checkout/);
+  assert.match(url.searchParams.get("text"), /costo por confirmar/);
 });
 
 test("the retired public allowlist cannot approve a local $49 service", () => {

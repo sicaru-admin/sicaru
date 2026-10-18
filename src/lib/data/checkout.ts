@@ -118,3 +118,10 @@ export async function removePromoCode(cartId: string, promoCode: string) {
   return res.json();
 }
 
+
+
+export async function listVerifiedPaymentMethods():Promise<("card"|"oxxo")[]> {
+  try { const response=await sdk.client.fetch<{methods?:string[];methodsVerified?:boolean}>("/store/review-readiness",{method:"GET",cache:"no-store"});
+    return response.methodsVerified===true ? (response.methods??[]).filter((method):method is "card"|"oxxo"=>method==="card"||method==="oxxo") : [];
+  }catch{return [];}
+}

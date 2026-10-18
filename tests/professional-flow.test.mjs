@@ -5,10 +5,10 @@ import { getProductAvailability } from "../src/lib/product-availability.ts";
 import { readCheckoutDraft, saveCheckoutDraft, clearCheckoutDraft } from "../src/lib/checkout-draft.ts";
 test("the local draft includes distinct tones, quantities, server merchandise subtotal and the separate delivery sum", () => {
   const items = [{title:"Tinte",variant_title:"6/1",quantity:2},{title:"Tinte",variant_title:"7/0",quantity:1}];
-  const url = new URL(getLocalDeliveryWhatsAppUrl("528281136652",items,255));
+  const url = new URL(getLocalDeliveryWhatsAppUrl("528281136652",items,255,"Centro"));
   assert.equal(url.pathname,"/528281136652");
   const text=url.searchParams.get("text");
-  for (const expected of ["2 × Tinte (6/1)","1 × Tinte (7/0)","Subtotal de productos: $255.00 MXN","Entrega local: $40 MXN","Total con entrega local: $295.00 MXN","confirmar cobertura","zona urbana de Cadereyta Jiménez","Santa Anita, Palma Nova, Valle del Roble","el envío y la suma quedan por cotizar"]) assert(text.includes(expected),expected);
+  for (const expected of ["2 × Tinte (6/1)","1 × Tinte (7/0)","Subtotal de productos: $255.00 MXN","Entrega local: $40 MXN","Total con entrega local: $295.00 MXN","confirmar cobertura","zona urbana de Cadereyta Jiménez","Santa Anita, Palma Nova, Valle del Roble"]) assert(text.includes(expected),expected);
 });
 test("missing or invalid merchandise amounts do not invent a local total", () => {
   for (const amount of [undefined,null,NaN,-1]) assert(getLocalDeliveryMessage([],amount).includes("Total con entrega local: por confirmar"));

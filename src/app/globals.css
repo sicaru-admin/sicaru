@@ -4,7 +4,7 @@
   --sicaru-purple: #8e7a9e;
   --sicaru-purple-soft: #9b89a8;
   --sicaru-purple-deep: #7f6d8a;
-  --sicaru-background: #f5f1eb;
+  --sicaru-background: #FAF8F5;
   --sicaru-background-warm: #efe7dd;
   --sicaru-white: #faf8f5;
   --sicaru-text: #2e2b2b;
@@ -44,6 +44,12 @@ body {
   font-family: var(--font-poppins), system-ui, sans-serif;
   font-weight: 400;
 }
+
+.mobile-bottom-nav { position:fixed; inset:auto 0 0; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); padding-bottom:env(safe-area-inset-bottom,0px); z-index:40; background:white; border-top:1px solid #efe7dd; }
+.whatsapp-dock { position:fixed; right:16px; bottom:calc(72px + env(safe-area-inset-bottom,0px)); z-index:35; }
+@media(max-width:767px) { .shop-content { padding-bottom:5rem; } body:has(.mobile-bottom-nav) footer { padding-bottom:calc(80px + env(safe-area-inset-bottom,0px)); } }
+@media(min-width:768px) { .mobile-bottom-nav { display:none; } .whatsapp-dock { bottom:24px; } }
+input,select,textarea,button { font-family:var(--font-poppins),system-ui,sans-serif; }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-bodoni), serif;
@@ -434,3 +440,4 @@ html {
 .sicaru-footer-link:hover {
   color: #faf8f5;
 }
+

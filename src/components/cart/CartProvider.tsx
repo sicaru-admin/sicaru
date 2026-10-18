@@ -19,6 +19,7 @@ type CartContextType = {
   cartError: string | null; isOpen: boolean; openCart: () => void; closeCart: () => void;
   retryInitializeCart: () => Promise<void>; addToCart: (id: string, quantity?: number) => Promise<void>;
   updateQuantity: (id: string, quantity: number) => Promise<void>; removeFromCart: (id: string) => Promise<void>;
+  buyNow: (id: string, quantity: number) => Promise<void>;
   refreshCart: () => Promise<void>; clearCart: () => void; totalItems: number;
 };
 const CartContext = createContext<CartContextType | null>(null);
@@ -102,11 +103,20 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (pending) return pending;
     const task = mutate(async active => {
       const next = await addItem(active.id, variantId, quantity);
-      openCart(); return next as unknown as Cart;
+      return next as unknown as Cart;
     }, "No pudimos agregar el producto. Revisa la disponibilidad e inténtalo nuevamente.")
       .finally(() => addsRef.current.delete(key));
     addsRef.current.set(key, task); return task;
-  }, [mutate, openCart]);
+  }, [mutate]);
+
+  const buyNow = useCallback((variantId: string, quantity: number) => {
+    if (!Number.isSafeInteger(quantity) || quantity < 1) return Promise.reject(new Error("Selecciona una cantidad válida."));
+    return mutate(async active => {
+      const line = active.items.find(item => item.variant_id === variantId);
+      if (line?.quantity === quantity) return active;
+      return (line ? await updateItem(active.id, line.id, quantity) : await addItem(active.id, variantId, quantity)) as unknown as Cart;
+    }, "No pudimos preparar este producto. Revisa su disponibilidad antes de continuar.");
+  }, [mutate]);
 
   const updateQuantity = useCallback((id: string, quantity: number) => {
     if (!Number.isSafeInteger(quantity) || quantity < 1) return Promise.reject(new Error("Selecciona una cantidad válida."));
@@ -128,7 +138,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, []);
   const totalItems = cart?.items?.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
   return <CartContext.Provider value={{cart, cartId, isLoading, isInitializingCart, cartError, isOpen,
-    openCart, closeCart, retryInitializeCart, addToCart, updateQuantity, removeFromCart, refreshCart, clearCart, totalItems}}>
+    openCart, closeCart, retryInitializeCart, addToCart, buyNow, updateQuantity, removeFromCart, refreshCart, clearCart, totalItems}}>
     {children}
   </CartContext.Provider>;
 }
@@ -137,3 +147,4 @@ export function useCart() {
   if (!context) throw new Error("useCart must be used within a CartProvider");
   return context;
 }
+

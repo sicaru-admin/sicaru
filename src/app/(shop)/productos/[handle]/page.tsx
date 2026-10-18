@@ -4,8 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { getProductByHandle, getProducts } from "@/lib/data/products";
-import { ImageGallery } from "@/components/product/ImageGallery";
-import { ProductActions } from "@/components/product/ProductActions";
+import { ProductDetailClient } from "@/components/product/ProductDetailClient";
 import { ProductTabs } from "@/components/product/ProductTabs";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -170,39 +169,10 @@ export default async function ProductDetailPage({
           </span>
         </nav>
 
-        {/* Product grid */}
-        <div className="grid gap-7 lg:grid-cols-[minmax(0,1.28fr)_minmax(360px,1fr)] lg:items-center lg:gap-10 xl:gap-12">
-          {/* Left: Image gallery */}
-          <div className="min-w-0">
-            <ImageGallery images={images} title={product.title || ""} />
-          </div>
-
-          {/* Right: Product info */}
-          <div className="min-w-0 border-t border-[#efe7dd] pt-6 lg:max-w-[520px] lg:border-t-0 lg:pt-0">
-            {/* Brand badge */}
-            {brandName && (
-              <Link
-                href={`/marcas/${product.collection?.handle || ""}`}
-                className="mb-4 inline-flex min-h-9 items-center border border-[#efe7dd] bg-[#f5f1eb] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-[#7f6d8a] transition-colors hover:border-[#9b89a8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8]"
-              >
-                {brandName}
-              </Link>
-            )}
-
-            {/* Title */}
-            <h1 className="font-heading text-3xl font-medium leading-tight text-[#2E2B2B] md:text-4xl">
-              {product.title}
-            </h1>
-
-            {/* Actions (price, variants, quantity, buttons, trust) */}
-            <div className="mt-6 md:mt-8">
-              <ProductActions product={product} />
-            </div>
-          </div>
-        </div>
+        <ProductDetailClient product={product} images={images} brand={brandName??undefined} />
 
         {/* Below fold */}
-        <div className="mt-8 space-y-10 md:mt-12 md:space-y-12 lg:mt-12 lg:space-y-12">
+        <div className="mt-6 space-y-6">
           {/* Tabs */}
           <ProductTabs
             description={product.description ?? null}
@@ -221,19 +191,11 @@ export default async function ProductDetailPage({
             </Suspense>
           )}
 
-          {/* Cross-sell: general without duplicating the same brand */}
-          <Suspense fallback={<RelatedSkeleton />}>
-            <RelatedProducts
-              title="También Te Puede Gustar"
-              excludeProductId={product.id}
-              excludeCollectionId={collectionId}
-              limit={4}
-              minItems={collectionId ? 2 : 1}
-            />
-          </Suspense>
+
         </div>
       </div>
       </div>
     </>
   );
 }
+

@@ -1,5 +1,7 @@
 "use client";
 
+import { STORE } from "@/lib/constants/store";
+import { getDhlWhatsAppUrl } from "@/lib/shipping";
 import { Truck } from "lucide-react";
 import { getShippingOptionPrice } from "@/lib/shipping";
 import type { DhlQuote, LocalDeliveryItem } from "@/lib/shipping";
@@ -34,6 +36,8 @@ function formatPrice(amount: number, currency = "MXN") {
 
 export function ShippingMethodSelector({
   options,
+  quote,
+  items,
   selectedId,
   onSelect,
   onSubmit,
@@ -49,8 +53,8 @@ export function ShippingMethodSelector({
   if (options.length === 0) {
     return (
       <div className="space-y-3 py-4 text-sm text-gray-600" role="status">
-        <p>El envío no está disponible para esta compra.</p>
-        <p>Revisa tu dirección o vuelve a intentarlo más tarde. No se realizará ningún cobro.</p>
+        <p>{isLoading ? "Consultando opciones de envío…" : !quote ? "No pudimos consultar el envío. Tus productos y datos siguen guardados." : quote.status==="quote_required"&&quote.reason==="no_coverage" ? "El servicio de paquetería no tiene cobertura para esta dirección." : "Necesitamos cotizar el envío a esta dirección"}</p>
+        {quote&&<a href={getDhlWhatsAppUrl(STORE.whatsapp,items)??undefined} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-medium text-sicaru-purple-700 underline">Consultar envío</a>}
 
       </div>
     );
@@ -113,4 +117,5 @@ export function ShippingMethodSelector({
     </form>
   );
 }
+
 

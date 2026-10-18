@@ -10,6 +10,7 @@ export type PaymentMethod = "card" | "oxxo";
 
 type PaymentSelectorProps = {
   selectedMethod: PaymentMethod | null;
+  enabledMethods?: PaymentMethod[];
   onMethodChange: (method: PaymentMethod) => void;
   onCardTokenized: (data: CardTokenData) => void | Promise<void>;
   onOxxoSubmit: () => void | Promise<void>;
@@ -42,6 +43,7 @@ const METHODS: {
 
 export function PaymentSelector({
   selectedMethod,
+  enabledMethods = [],
   onMethodChange,
   onCardTokenized,
   onOxxoSubmit,
@@ -52,8 +54,9 @@ export function PaymentSelector({
 }: PaymentSelectorProps) {
   return (
     <div className="space-y-4">
+      {!enabledMethods.length&&<p className="text-sm text-gray-600">No hay métodos de pago disponibles para esta compra. No se realizará ningún cobro.</p>}
       <div className="space-y-3">
-        {METHODS.map((method) => {
+        {METHODS.filter(method=>enabledMethods.includes(method.id)).map((method) => {
           const isSelected = selectedMethod === method.id;
 
           return (
@@ -117,3 +120,4 @@ export function PaymentSelector({
     </div>
   );
 }
+

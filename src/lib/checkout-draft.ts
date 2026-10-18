@@ -15,3 +15,17 @@ export function saveCheckoutDraft(storage: StorageLike, cartId: string, draft: C
 export function clearCheckoutDraft(storage: StorageLike, cartId: string) {
   try { storage.removeItem(prefix + cartId); } catch { /* Order confirmation must still open. */ }
 }
+
+
+const rememberedKey="sicaru_checkout_remembered_v1";
+const addressKeys=["first_name","last_name","phone","address_1","address_2","interior","references","city","province","postal_code","country_code"];
+export function rememberCheckout(storage:StorageLike,draft:CheckoutDraft){
+  const address=Object.fromEntries(addressKeys.filter(key=>typeof draft.address[key]==="string").map(key=>[key,draft.address[key].slice(0,250)]));
+  try{storage.setItem(rememberedKey,JSON.stringify({version:1,consent:true,email:draft.email.slice(0,254),address}));}catch{}
+}
+export function readRememberedCheckout(storage:StorageLike):CheckoutDraft|null{
+  try{const value=JSON.parse(storage.getItem(rememberedKey)||"null");if(value?.version!==1||value.consent!==true||typeof value.email!=="string"||!value.address||typeof value.address!=="object"||Array.isArray(value.address))return null;
+    return {email:value.email,address:Object.fromEntries(addressKeys.filter(key=>typeof value.address[key]==="string").map(key=>[key,value.address[key]]))};
+  }catch{return null;}
+}
+export function forgetRememberedCheckout(storage:StorageLike){try{storage.removeItem(rememberedKey);}catch{}}
