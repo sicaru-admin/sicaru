@@ -6,23 +6,27 @@ import { categoryLabel, getProductPriceRange, matchesCatalogQuery } from "@/lib/
 type Filters={q:string;categoria:string;marca:string;min:string;max:string};
 export function ProductosContent({products,initialFilters}:{products:HttpTypes.StoreProduct[];initialFilters?:Partial<Filters>}) {
   const [filters,setFilters]=useState<Filters>({q:"",categoria:"",marca:"",min:"",max:"",...initialFilters});
+  const [hydrated,setHydrated]=useState(false);
+  useEffect(()=>{const params=new URLSearchParams(location.search);queueMicrotask(()=>{setFilters({q:params.get("q")??"",categoria:params.get("categoria")??"",marca:params.get("marca")??"",min:params.get("min")??"",max:params.get("max")??""});setHydrated(true);});},[]);
   const categories=useMemo(()=>Array.from(new Map(products.flatMap(p=>(p.categories??[]).map(c=>[c.id,c] as const))).values()),[products]);
   const brands=useMemo(()=>Array.from(new Set(products.map(p=>p.collection?.title).filter((v):v is string=>!!v))).sort(),[products]);
   function update(key:keyof Filters,value:string){setFilters(current=>({...current,[key]:value}));}
   useEffect(()=>{
+    if(!hydrated)return;
     const params=new URLSearchParams(location.search);
     for(const [key,value]of Object.entries(filters)){if(value)params.set(key,value);else params.delete(key);}
     const url=location.pathname+(params.size?"?"+params.toString():"");
     history.replaceState(history.state,"",url);
-  },[filters]);
+  },[filters,hydrated]);
   useEffect(()=>{
+    if(!hydrated)return;
     const key="sicaru_catalog_scroll:"+location.pathname+location.search;
     let frame=0;const save=()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>{try{sessionStorage.setItem(key,String(scrollY));}catch{}});};
     let saved=0;try{saved=Number(sessionStorage.getItem(key)||0);}catch{}
     const restore=requestAnimationFrame(()=>requestAnimationFrame(()=>scrollTo(0,saved)));
     addEventListener("scroll",save,{passive:true});
     return()=>{cancelAnimationFrame(frame);cancelAnimationFrame(restore);removeEventListener("scroll",save);};
-  },[filters]);
+  },[filters,hydrated]);
   useEffect(()=>{const pop=()=>{const p=new URLSearchParams(location.search);setFilters({q:p.get("q")??"",categoria:p.get("categoria")??"",marca:p.get("marca")??"",min:p.get("min")??"",max:p.get("max")??""});};addEventListener("popstate",pop);return()=>removeEventListener("popstate",pop);},[]);
   const shown=useMemo(()=>products.filter(product=>{
     if(!matchesCatalogQuery(product,filters.q))return false;
