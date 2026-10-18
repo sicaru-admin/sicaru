@@ -183,11 +183,11 @@ test("a valid courier selection can complete the cart", async () => {
 });
 
 test("WhatsApp opens the store chat with quantities and escaped product details", () => {
-  const url = new URL(getLocalDeliveryWhatsAppUrl("528281111023", [
+  const url = new URL(getLocalDeliveryWhatsAppUrl("528281136652", [
     { quantity: 2, product_title: "Tinte & cuidado", variant_title: "6/1" },
   ]));
   assert.equal(url.hostname, "wa.me");
-  assert.equal(url.pathname, "/528281111023");
+  assert.equal(url.pathname, "/528281136652");
   assert.match(url.searchParams.get("text"), /2 × Tinte & cuidado \(6\/1\)/);
   assert.match(url.searchParams.get("text"), /\$40 MXN fuera del checkout/);
 });
@@ -234,7 +234,7 @@ test("a stale order total or unexpected shipping tax prevents payment", async ()
 });
 
 test("the DHL WhatsApp route preserves products without offering local delivery", () => {
-  const url = new URL(getDhlWhatsAppUrl("528281111023", [
+  const url = new URL(getDhlWhatsAppUrl("528281136652", [
     { quantity: 3, product_title: "Mascarilla", variant_title: "250 ml" },
   ]));
   const message = url.searchParams.get("text");

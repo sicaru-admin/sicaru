@@ -1,3 +1,7 @@
+export const LOCAL_DELIVERY_FEE = 40;
+export const LOCAL_DELIVERY_COVERAGE = "Disponible en la zona urbana de Cadereyta Jiménez. Coordina tu pedido por WhatsApp.";
+export const LOCAL_DELIVERY_OUTSKIRTS = "Santa Anita, Palma Nova, Valle del Roble y otras zonas de las afueras requieren consultar cobertura y costo.";
+
 type ShippingPrice = {
   amount?: number | null;
   price_type?: string;
@@ -94,9 +98,11 @@ export function getLocalDeliveryMessage(items: LocalDeliveryItem[] = [], subtota
     ? new Intl.NumberFormat("es-MX", {style:"currency", currency:"MXN"}).format(subtotal) + " MXN" : "por confirmar";
   return ["Hola, quiero coordinar una entrega local en Cadereyta con Sicarú.", "",
     ...products, "", "Subtotal de productos: " + amount,
-    "Entrega local: $40 MXN fuera del checkout (se coordina por WhatsApp).",
+    "Entrega local: $" + LOCAL_DELIVERY_FEE + " MXN fuera del checkout (zona urbana de Cadereyta Jiménez; se coordina por WhatsApp).",
     "Total con entrega local: " + (typeof subtotal === "number" && Number.isFinite(subtotal) && subtotal >= 0
-      ? new Intl.NumberFormat("es-MX", {style:"currency", currency:"MXN"}).format(subtotal + 40) + " MXN" : "por confirmar"),
+      ? new Intl.NumberFormat("es-MX", {style:"currency", currency:"MXN"}).format(subtotal + LOCAL_DELIVERY_FEE) + " MXN" : "por confirmar"),
+    LOCAL_DELIVERY_COVERAGE, LOCAL_DELIVERY_OUTSKIRTS,
+    "La suma anterior aplica a la zona urbana. Para otras zonas, el envío y la suma quedan por cotizar.",
     "Entrega sujeta a confirmar cobertura local y disponibilidad antes de pagar."].join("\n");
 }
 

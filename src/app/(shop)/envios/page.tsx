@@ -10,8 +10,8 @@ export default function EnviosPage() {
       <p>Si el envío no está disponible para tu compra, no podrás continuar al pago. Tus productos permanecerán en el carrito.</p>
     </section>
     <section className="space-y-3">
-      <h2 className="text-xl font-semibold text-sicaru-purple-900">Entrega local</h2>
-      <p>Coordinamos la entrega local por WhatsApp por $40 MXN, sujeta a confirmar cobertura. No necesitas completar el checkout para solicitarla.</p>
+      <h2 className="text-xl font-semibold text-sicaru-purple-900">Entrega local · $40 MXN</h2>
+      <p>No necesitas completar el checkout para solicitar tu entrega local. Se coordina por WhatsApp y se paga por separado.</p>
       <LocalDeliveryNotice />
     </section>
     <section className="space-y-3">

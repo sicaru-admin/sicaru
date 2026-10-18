@@ -8,7 +8,7 @@ test("the local draft includes distinct tones, quantities, server merchandise su
   const url = new URL(getLocalDeliveryWhatsAppUrl("528281136652",items,255));
   assert.equal(url.pathname,"/528281136652");
   const text=url.searchParams.get("text");
-  for (const expected of ["2 × Tinte (6/1)","1 × Tinte (7/0)","Subtotal de productos: $255.00 MXN","Entrega local: $40 MXN","Total con entrega local: $295.00 MXN","confirmar cobertura"]) assert(text.includes(expected),expected);
+  for (const expected of ["2 × Tinte (6/1)","1 × Tinte (7/0)","Subtotal de productos: $255.00 MXN","Entrega local: $40 MXN","Total con entrega local: $295.00 MXN","confirmar cobertura","zona urbana de Cadereyta Jiménez","Santa Anita, Palma Nova, Valle del Roble","el envío y la suma quedan por cotizar"]) assert(text.includes(expected),expected);
 });
 test("missing or invalid merchandise amounts do not invent a local total", () => {
   for (const amount of [undefined,null,NaN,-1]) assert(getLocalDeliveryMessage([],amount).includes("Total con entrega local: por confirmar"));

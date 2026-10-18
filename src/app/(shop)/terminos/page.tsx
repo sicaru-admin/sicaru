@@ -1,3 +1,4 @@
+import { STORE } from "@/lib/constants/store";
 import { getSalesWhatsAppUrl } from "@/lib/contact";
 import type { Metadata } from "next"
 import Link from "next/link"
@@ -185,7 +186,7 @@ export default function TerminosPage() {
             rel="noopener noreferrer"
             className="text-sicaru-purple-700 underline"
           >
-            +52 828 111 1023
+            {STORE.phone}
           </a>
           .
         </p>

@@ -1,3 +1,5 @@
+import { STORE } from "./store";
+
 export interface BrandData {
   name: string
   handle: string
@@ -39,7 +41,7 @@ export const BRANDS: Record<string, BrandData> = {
       {
         question: "¿Küül tiene precios de mayoreo?",
         answer:
-          "Sí, en Distribuidora Sicarú ofrecemos precios especiales de mayoreo para profesionales y salones de belleza a través de nuestro programa Salón Pro. Contáctanos por WhatsApp al +52 828 111 1023.",
+          `Sí, en Distribuidora Sicarú ofrecemos precios especiales de mayoreo para profesionales y salones de belleza a través de nuestro programa Salón Pro. Contáctanos por WhatsApp al ${STORE.phone}.`,
       },
     ],
   },
@@ -74,7 +76,7 @@ export const BRANDS: Record<string, BrandData> = {
       {
         question: "¿Voglia tiene precios de mayoreo?",
         answer:
-          "Sí, ofrecemos precios de mayoreo para profesionales a través de nuestro programa Salón Pro. Contáctanos por WhatsApp al +52 828 111 1023 para cotizaciones.",
+          `Sí, ofrecemos precios de mayoreo para profesionales a través de nuestro programa Salón Pro. Contáctanos por WhatsApp al ${STORE.phone} para cotizaciones.`,
       },
     ],
   },
@@ -144,7 +146,7 @@ export const BRANDS: Record<string, BrandData> = {
       {
         question: "¿Hidra Color tiene precios de mayoreo?",
         answer:
-          "Sí, ofrecemos precios de mayoreo para Hidra Color a través de nuestro programa Salón Pro. Contáctanos por WhatsApp al +52 828 111 1023.",
+          `Sí, ofrecemos precios de mayoreo para Hidra Color a través de nuestro programa Salón Pro. Contáctanos por WhatsApp al ${STORE.phone}.`,
       },
     ],
   },
@@ -214,7 +216,7 @@ export const BRANDS: Record<string, BrandData> = {
       {
         question: "¿Vitale tiene precios de mayoreo?",
         answer:
-          "Sí, ofrecemos precios de mayoreo para Vitale a través de nuestro programa Salón Pro. Contáctanos por WhatsApp al +52 828 111 1023.",
+          `Sí, ofrecemos precios de mayoreo para Vitale a través de nuestro programa Salón Pro. Contáctanos por WhatsApp al ${STORE.phone}.`,
       },
     ],
   },
@@ -250,7 +252,7 @@ export const BRANDS: Record<string, BrandData> = {
       {
         question: "¿Montis tiene precios de mayoreo?",
         answer:
-          "Sí, ofrecemos precios de mayoreo para Montis a través de nuestro programa Salón Pro. Contáctanos por WhatsApp al +52 828 111 1023.",
+          `Sí, ofrecemos precios de mayoreo para Montis a través de nuestro programa Salón Pro. Contáctanos por WhatsApp al ${STORE.phone}.`,
       },
     ],
   },

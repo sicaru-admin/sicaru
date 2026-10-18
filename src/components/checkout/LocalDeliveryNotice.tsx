@@ -1,5 +1,5 @@
 import { WhatsAppLink } from "@/components/ui/WhatsAppLink";
-import { getLocalDeliveryMessage, type LocalDeliveryItem } from "@/lib/shipping";
+import { getLocalDeliveryMessage, LOCAL_DELIVERY_COVERAGE, LOCAL_DELIVERY_OUTSKIRTS, type LocalDeliveryItem } from "@/lib/shipping";
 export function LocalDeliveryNotice({items, subtotal}: {
   items?: LocalDeliveryItem[] | null; subtotal?: number | null;
 }) {
@@ -9,7 +9,10 @@ export function LocalDeliveryNotice({items, subtotal}: {
       ¿Entrega local? Pídela por WhatsApp · $40
     </WhatsAppLink>
     <p className="mt-2 text-xs leading-relaxed text-gray-600">
-      Sujeta a cobertura local. Se coordina y paga por separado.
+      {LOCAL_DELIVERY_COVERAGE}
+    </p>
+    <p className="mt-2 text-xs leading-relaxed text-gray-600">
+      {LOCAL_DELIVERY_OUTSKIRTS}
     </p>
   </aside>;
 }

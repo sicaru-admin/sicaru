@@ -1,3 +1,4 @@
+import { STORE } from "@/lib/constants/store";
 import { getSalesWhatsAppUrl } from "@/lib/contact";
 import type { Metadata } from "next"
 
@@ -43,10 +44,10 @@ export default function PoliticaPrivacidadPage() {
           <br />
           Teléfono:{" "}
           <a
-            href="tel:+528281111023"
+            href={"tel:+" + STORE.whatsapp}
             className="text-sicaru-purple-700 underline"
           >
-            +52 828 111 1023
+            {STORE.phone}
           </a>
         </p>
 
