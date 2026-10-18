@@ -1,55 +1,30 @@
-type CartLineVariantOption = {
-  value?: string | null;
-  option?: {
-    title?: string | null;
-  } | null;
-};
-
+type CartLineVariantOption = { value?: string | null; option?: {title?: string | null} | null };
 export type CartLineVariantDetails = {
-  title?: string | null;
-  product_title?: string | null;
-  variant_title?: string | null;
+  title?: string | null; product_title?: string | null; variant_title?: string | null;
   variant_option_values?: Record<string, unknown> | null;
-  variant?: {
-    title?: string | null;
-    options?: CartLineVariantOption[] | null;
-  } | null;
+  variant?: {title?: string | null; options?: CartLineVariantOption[] | null} | null;
 };
-
-function normalize(value?: string | null) {
-  return value?.trim().toLocaleLowerCase("es-MX") ?? "";
-}
-
-function clean(value: unknown) {
-  return typeof value === "string" ? value.trim() : "";
-}
-
-function isToneTitle(title: string) {
-  return /^\d{1,2}(?:[./-]\d+)?\s+\S+/.test(title.trim());
-}
-
+const clean = (value: unknown) => typeof value === "string" ? value.trim() : "";
+const normalize = (value: string) => value.toLocaleLowerCase("es-MX");
 export function getCartLineVariantLabel(item: CartLineVariantDetails) {
-  const optionValues = item.variant_option_values ?? {};
-
-  for (const [name, rawValue] of Object.entries(optionValues)) {
-    const value = clean(rawValue);
-    if (normalize(name) === "tono" && value) {
-      return "Tono: " + value;
-    }
+  const options = new Map<string, string>();
+  for (const [name, raw] of Object.entries(item.variant_option_values ?? {})) {
+    if (clean(raw)) options.set(normalize(name), clean(raw));
   }
-
-  const toneOption = item.variant?.options?.find(
-    (option) => normalize(option.option?.title) === "tono" && clean(option.value)
-  );
-
-  if (toneOption) {
-    return "Tono: " + clean(toneOption.value);
+  for (const option of item.variant?.options ?? []) {
+    const name = clean(option.option?.title), value = clean(option.value);
+    if (name && value && !options.has(normalize(name))) options.set(normalize(name), value);
   }
-
-  const variantTitle = clean(item.variant_title ?? item.variant?.title);
-  if (variantTitle && isToneTitle(variantTitle)) {
-    return "Tono: " + variantTitle;
-  }
-
-  return null;
+  const labels = [...options].map(([name, value]) => {
+    const label = ["tono", "color"].includes(name) ? "Tono" :
+      ["presentación", "presentacion", "tamaño", "tamano", "capacidad"].includes(name) ? "Presentación" : name;
+    return label + ": " + value;
+  });
+  if (labels.length) return labels.join(" · ");
+  const title = [item.variant_title, item.variant?.title].map(clean)
+    .find(value => value && !["default variant", "default", "variante predeterminada"].includes(normalize(value)));
+  if (!title) return null;
+  if (/^\d+(?:[.,]\d+)?\s*(?:ml|l|g|kg|oz|pzas?|piezas?)\.?$/i.test(title)) return "Presentación: " + title;
+  if (/^\d{1,2}[./-]\d+(?:\s+\S.*)?$/.test(title) || /^\d{1,2}\s+\S+/.test(title)) return "Tono: " + title;
+  return "Variante: " + title;
 }
