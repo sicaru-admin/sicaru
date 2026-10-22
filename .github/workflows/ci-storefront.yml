@@ -34,11 +34,12 @@ jobs:
         if: ${{ !cancelled() }}
         run: node --experimental-vm-modules --test tests/catalog-resilience.test.mjs
 
-      - name: Install browser test tools
+      - name: Install isolated browser test tools
         if: ${{ !cancelled() }}
+        timeout-minutes: 2
         run: |
-          npm install --no-save --package-lock=false playwright@1.56.1
-          npx playwright install --with-deps chromium
+          npm install --prefix /tmp/sicaru-playwright --no-save --package-lock=false playwright@1.56.1
+          google-chrome --version
 
       - name: Verify mobile storefront and backend fallbacks
         if: ${{ !cancelled() }}
@@ -46,6 +47,8 @@ jobs:
           NEXT_PUBLIC_MEDUSA_BACKEND_URL: http://127.0.0.1:9000
           NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: pk_storefront_test
           NEXT_PUBLIC_CATALOG_MODE: "true"
+          PLAYWRIGHT_MODULE: file:///tmp/sicaru-playwright/node_modules/playwright/index.mjs
+          PLAYWRIGHT_CHANNEL: chrome
         run: |
           npm run dev -- --hostname 127.0.0.1 > /tmp/sicaru-next.log 2>&1 &
           trap 'cat /tmp/sicaru-next.log' EXIT

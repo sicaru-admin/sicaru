@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
 import { mkdir } from "node:fs/promises";
-import { chromium, devices } from "playwright";
+const { chromium, devices } = await import(process.env.PLAYWRIGHT_MODULE || "playwright");
 
 const baseUrl = process.env.TEST_BASE_URL || "http://127.0.0.1:3000";
 let offline = false;
@@ -40,7 +40,7 @@ const backend = createServer(async (req, res) => {
 });
 await new Promise((resolve) => backend.listen(9000, "127.0.0.1", resolve));
 await mkdir("artifacts", { recursive: true });
-const browser = await chromium.launch();
+const browser = await chromium.launch({ channel: process.env.PLAYWRIGHT_CHANNEL || undefined });
 const context = await browser.newContext({ ...devices["iPhone 13"] });
 const page = await context.newPage();
 const pageErrors = [];
