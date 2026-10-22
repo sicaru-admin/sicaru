@@ -1,3 +1,4 @@
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 import type { Metadata } from "next"
 import Image from "next/image"
 
@@ -8,6 +9,15 @@ export const metadata: Metadata = {
 }
 
 export default function DevolucionesPage() {
+  if (CATALOG_MODE) {
+    return (
+      <main className="mx-auto max-w-3xl px-5 py-16 text-center">
+        <h1 className="font-heading text-3xl text-[#2e2b2b]">Compras online próximamente</h1>
+        <p className="mt-5 text-[#2e2b2b]/70">Las políticas de devolución de pedidos online se publicarán antes de habilitar las compras en el sitio.</p>
+        <a href="https://wa.me/528281136652" target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex min-h-11 items-center bg-[#7f6d8a] px-6 py-3 text-white">Consultar a SICARÚ</a>
+      </main>
+    );
+  }
   return (
     <>
       {/* Hero */}
@@ -68,7 +78,7 @@ export default function DevolucionesPage() {
             <span className="font-bold text-gray-900">
               Contacta a nuestro equipo
             </span>{" "}
-            — Escríbenos por WhatsApp al +52 828 111 1023 indicando tu número de
+            — Escríbenos por WhatsApp al +52 828 113 6652 indicando tu número de
             pedido y el motivo de la devolución.
           </li>
           <li>
@@ -125,7 +135,7 @@ export default function DevolucionesPage() {
           Contáctanos por WhatsApp y te guiaremos en el proceso.
         </p>
         <a
-          href="https://wa.me/528281111023"
+          href="https://wa.me/528281136652"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 rounded-full bg-green-600 px-6 py-3 text-sm font-semibold text-white hover:bg-green-700 transition-colors"

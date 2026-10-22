@@ -133,10 +133,10 @@ export function ProductosContent({
         {filteredProducts.length === 0 ? (
           <div className="border border-[#efe7dd] bg-[#f5f1eb] px-5 py-14 text-center md:px-8 md:py-16">
             <h2 className="font-heading text-2xl font-medium text-[#2e2b2b] md:text-3xl">
-              No encontramos productos con esa búsqueda
+              {products.length === 0 && !hasQuery ? "Estamos preparando nuestras fichas y fotografías" : "No encontramos productos con esa búsqueda"}
             </h2>
             <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[#2e2b2b]/65">
-              Prueba con otra palabra o explora una de nuestras categorías.
+              {products.length === 0 && !hasQuery ? "Pronto encontrarás aquí más productos de SICARÚ. Mientras tanto, explora nuestras categorías o consulta información por WhatsApp." : "Prueba con otra palabra o explora una de nuestras categorías."}
             </p>
             <button
               type="button"

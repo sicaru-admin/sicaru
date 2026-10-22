@@ -1,3 +1,4 @@
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 import type { Metadata } from "next"
 import Link from "next/link"
 
@@ -8,6 +9,16 @@ export const metadata: Metadata = {
 }
 
 export default function TerminosPage() {
+  if (CATALOG_MODE) {
+    return (
+      <main className="mx-auto max-w-3xl px-5 py-16">
+        <h1 className="font-heading text-3xl text-[#2e2b2b]">Uso del catálogo SICARÚ</h1>
+        <p className="mt-5 leading-7 text-[#2e2b2b]/75">Este sitio muestra información sobre productos de belleza. Temporalmente no acepta compras, pagos ni solicitudes de envío online. Los precios, existencias y características se confirman directamente en tienda.</p>
+        <p className="mt-4 leading-7 text-[#2e2b2b]/75">La información sobre productos no sustituye las instrucciones oficiales del fabricante ni la técnica de profesionales capacitados.</p>
+        <Link href="/envios" className="mt-6 inline-block text-[#7f6d8a] underline">Estado de los envíos</Link>
+      </main>
+    );
+  }
   return (
     <>
       {/* Hero */}
@@ -179,7 +190,7 @@ export default function TerminosPage() {
           </a>{" "}
           o por WhatsApp al{" "}
           <a
-            href="https://wa.me/528281111023"
+            href="https://wa.me/528281136652"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sicaru-purple-700 underline"
