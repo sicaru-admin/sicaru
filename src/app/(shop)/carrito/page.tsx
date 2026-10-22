@@ -1,4 +1,5 @@
 "use client";
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +12,16 @@ export default function CarritoPage() {
   const { cart, isLoading, updateQuantity, removeFromCart, totalItems } =
     useCart();
   const totals = normalizeOrderTotals(cart);
+
+  if (CATALOG_MODE) {
+    return (
+      <main className="mx-auto max-w-3xl px-5 py-20 text-center">
+        <h1 className="font-heading text-3xl text-[#2e2b2b]">Compras online próximamente</h1>
+        <p className="mt-4 text-[#2e2b2b]/70">SICARÚ está disponible como catálogo informativo. Aún no aceptamos pedidos ni pagos por esta página.</p>
+        <Link href="/productos" className="mt-7 inline-flex min-h-11 items-center bg-[#7f6d8a] px-6 py-3 text-white">Explorar catálogo</Link>
+      </main>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12">

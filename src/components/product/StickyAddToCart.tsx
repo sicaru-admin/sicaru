@@ -1,4 +1,5 @@
 "use client";
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 
 import { useState, useEffect } from "react";
 import { HttpTypes } from "@medusajs/types";
@@ -28,7 +29,7 @@ export function StickyAddToCart({ product }: StickyAddToCartProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  if (!firstVariant || !visible) return null;
+  if (!firstVariant || !visible || CATALOG_MODE) return null;
   if (requiresVariantSelection) return null;
 
   const handleAdd = async () => {

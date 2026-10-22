@@ -107,7 +107,7 @@ export default function ContactoPage() {
             Escríbenos directamente para atención inmediata
           </p>
           <a
-            href="https://wa.me/528281111023"
+            href="https://wa.me/528281136652"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-6 inline-block rounded-full bg-white px-8 py-3 font-semibold text-[#25D366] transition-colors hover:bg-white/90"

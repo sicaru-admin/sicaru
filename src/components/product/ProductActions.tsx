@@ -1,5 +1,5 @@
-import { CATALOG_MODE } from "@/lib/catalog-mode";
 "use client";
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 
 import { useMemo, useState } from "react";
 import { HttpTypes } from "@medusajs/types";

@@ -1,4 +1,5 @@
 "use client";
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -93,7 +94,7 @@ export function MobileNav() {
                   );
                 })}
 
-                <li className="mt-4 border-t border-[#efe7dd] pt-4">
+                {!CATALOG_MODE && <li className="mt-4 border-t border-[#efe7dd] pt-4">
                   {isAuthenticated ? (
                     <>
                       <Link
@@ -126,7 +127,7 @@ export function MobileNav() {
                       Iniciar sesión
                     </Link>
                   )}
-                </li>
+                </li>}
               </ul>
             </nav>
           </div>

@@ -1,6 +1,6 @@
 import { MessageCircle } from "lucide-react";
 
-const WHATSAPP_NUMBER = "528281111023";
+const WHATSAPP_NUMBER = "528281136652";
 const WHATSAPP_MSG =
   "¡Hola! Tengo una duda sobre los productos de Sicarú.";
 
@@ -13,7 +13,7 @@ export function WhatsAppBanner() {
             Atención cercana
           </p>
           <p className="mt-2 text-lg font-semibold text-[#faf8f5] md:text-xl">
-            Si no sabes qué elegir, te orientamos por WhatsApp.
+            ¿Buscas algún producto? Consulta información y disponibilidad por WhatsApp.
           </p>
         </div>
         <a

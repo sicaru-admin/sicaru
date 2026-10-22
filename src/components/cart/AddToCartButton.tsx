@@ -1,4 +1,5 @@
 "use client";
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 
 import { useState } from "react";
 import { useCart } from "./CartProvider";
@@ -21,6 +22,8 @@ export function AddToCartButton({ variantId }: { variantId: string }) {
       );
     }
   };
+
+  if (CATALOG_MODE) return null;
 
   return (
     <div>

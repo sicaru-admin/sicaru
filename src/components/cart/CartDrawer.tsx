@@ -1,4 +1,5 @@
 "use client";
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 
 import Image from "next/image";
 import { useCart } from "./CartProvider";
@@ -16,7 +17,7 @@ export function CartDrawer() {
     totalItems,
   } = useCart();
 
-  if (!isOpen) return null;
+  if (!isOpen || CATALOG_MODE) return null;
 
   return (
     <>

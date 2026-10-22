@@ -1,5 +1,5 @@
-import { CATALOG_MODE } from "@/lib/catalog-mode";
 "use client";
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
