@@ -1,5 +1,4 @@
 "use client";
-import { CATALOG_MODE } from "@/lib/catalog-mode";
 
 import {
   createContext,
@@ -163,12 +162,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [cart]);
 
   useEffect(() => {
-    if (CATALOG_MODE) {
-      setIsInitializingCart(false);
-      return;
-    }
     const timer = window.setTimeout(() => {
-      ensureCart().catch(() => {});
+      // Restore an existing cart; create a new one only when a product is added.
+      try {
+        if (localStorage.getItem(CART_ID_KEY)) {
+          void ensureCart().catch(() => {});
+        } else {
+          setIsInitializingCart(false);
+        }
+      } catch {
+        setIsInitializingCart(false);
+        setCartError(CART_INITIALIZATION_ERROR);
+      }
     }, 0);
 
     return () => window.clearTimeout(timer);
@@ -176,7 +181,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addToCart = useCallback(
     async (variantId: string, quantity = 1) => {
-      if (CATALOG_MODE) throw new Error("Compras online próximamente.");
       if (addToCartPromiseRef.current) {
         return addToCartPromiseRef.current;
       }
@@ -191,7 +195,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
           openCart();
         } catch (error) {
           console.error("Error adding to cart:", error);
-          throw error;
+          throw new Error("No pudimos agregar el producto. Inténtalo de nuevo.");
         } finally {
           setIsLoading(false);
           addToCartPromiseRef.current = null;
@@ -214,6 +218,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         storeCart(nextCart);
       } catch (error) {
         console.error("Error updating cart:", error);
+        setCartError("No pudimos actualizar la cantidad. Inténtalo de nuevo.");
       } finally {
         setIsLoading(false);
       }
@@ -231,6 +236,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         storeCart(nextCart);
       } catch (error) {
         console.error("Error removing from cart:", error);
+        setCartError("No pudimos quitar el producto. Inténtalo de nuevo.");
       } finally {
         setIsLoading(false);
       }

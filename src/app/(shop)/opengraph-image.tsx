@@ -43,7 +43,7 @@ export default function OGImage() {
             lineHeight: 1.4,
           }}
         >
-          Productos de Belleza Profesional — Envío a Todo México
+          Belleza profesional, cercana y real.
         </div>
 
         <div

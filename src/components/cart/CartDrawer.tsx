@@ -1,5 +1,4 @@
 "use client";
-import { CATALOG_MODE } from "@/lib/catalog-mode";
 
 import Image from "next/image";
 import { useCart } from "./CartProvider";
@@ -15,9 +14,11 @@ export function CartDrawer() {
     removeFromCart,
     isLoading,
     totalItems,
+    cartError,
+    retryInitializeCart,
   } = useCart();
 
-  if (!isOpen || CATALOG_MODE) return null;
+  if (!isOpen) return null;
 
   return (
     <>
@@ -60,10 +61,15 @@ export function CartDrawer() {
 
           {/* Items */}
           <div className="flex-1 overflow-y-auto px-4 py-4">
+            {cartError && <div role="alert" className="mb-4 rounded-[6px] bg-[#f5f1eb] p-4 text-sm text-[#2e2b2b]">
+              <p>{cartError}</p>
+              {!cart && <button type="button" onClick={() => void retryInitializeCart().catch(() => {})} disabled={isLoading} className="mt-2 min-h-11 text-[#7f6d8a] underline">Intentar de nuevo</button>}
+            </div>}
             {!cart?.items?.length ? (
-              <p className="py-8 text-center text-gray-500">
-                Tu carrito est&aacute; vac&iacute;o
-              </p>
+              <div className="py-8 text-center text-gray-500">
+                <p>Tu carrito está vacío.</p>
+                <a href="/productos" className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-[#7f6d8a] underline underline-offset-4">Explorar productos</a>
+              </div>
             ) : (
               <ul className="space-y-4">
                 {cart.items.map((item) => {
@@ -147,7 +153,7 @@ export function CartDrawer() {
                 href="/checkout"
                 className="block w-full rounded-full bg-sicaru-pink py-3 text-center font-semibold text-white transition-colors hover:bg-sicaru-pink/90"
               >
-                Proceder al Pago
+                Continuar al envío
               </a>
             </div>
           ) : null}

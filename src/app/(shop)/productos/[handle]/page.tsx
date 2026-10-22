@@ -1,3 +1,4 @@
+import { CatalogUnavailable } from "@/components/products/CatalogUnavailable";
 import { CATALOG_MODE } from "@/lib/catalog-mode";
 import { Suspense } from "react";
 import { Metadata } from "next";
@@ -106,7 +107,12 @@ export default async function ProductDetailPage({
   params: Promise<{ handle: string }>;
 }) {
   const { handle } = await params;
-  const product = await getProductByHandle(handle);
+  let product;
+  try {
+    product = await getProductByHandle(handle);
+  } catch {
+    return <CatalogUnavailable title="No pudimos cargar este producto." />;
+  }
 
   if (!product) {
     notFound();

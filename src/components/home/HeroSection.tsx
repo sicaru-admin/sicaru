@@ -1,49 +1,30 @@
-import { CATALOG_MODE } from "@/lib/catalog-mode";
 import Link from "next/link";
-import { ArrowRight, MessageCircle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { HomeHeroVisual } from "./HomeHeroVisual";
-
-const whatsappHref =
-  "https://wa.me/528281136652?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20productos%20Sicar%C3%BA.";
 
 export function HeroSection() {
   return (
-    <section className="relative isolate overflow-hidden bg-[#f5f1eb]">
-      <div className="mx-auto grid max-w-[1480px] gap-7 px-5 py-7 sm:px-8 lg:px-10 md:grid-cols-[minmax(0,0.9fr)_minmax(360px,1.1fr)] md:items-center md:gap-8 md:py-9 lg:gap-10 lg:py-10">
-        <div className="relative z-10 max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#7f6d8a]">
+    <section className="overflow-hidden bg-[#f5f1eb]">
+      <div className="mx-auto grid max-w-[1480px] gap-8 px-5 py-8 sm:px-8 md:grid-cols-2 md:items-center md:gap-10 md:py-12 lg:px-10 lg:py-16">
+        <div className="max-w-xl">
+          <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[#7f6d8a] sm:text-xs">
             SICARÚ · BELLEZA PROFESIONAL
           </p>
-
-          <h1 className="mt-3 max-w-[15ch] font-heading text-[2.2rem] font-medium leading-[1.02] text-[#2e2b2b] sm:text-[3.15rem] md:max-w-[15.5ch] lg:text-[3.65rem]">
-            Belleza profesional para transformar y cuidar tu cabello
+          <h1 className="mt-4 max-w-[13ch] font-heading text-[2.75rem] font-medium leading-[1.05] text-[#2e2b2b] sm:text-6xl lg:text-7xl">
+            Belleza profesional, cercana y real.
           </h1>
-
-          <p className="mt-4 max-w-xl text-[0.95rem] leading-7 text-[#2e2b2b] sm:text-base">
-            Coloración, tratamientos y herramientas para estilistas y quienes buscan cuidar su cabello. Explora nuestro catálogo y conoce las marcas.
+          <p className="mt-5 max-w-lg text-sm leading-7 text-[#2e2b2b]/75 sm:text-base">
+            Coloración, tratamientos y herramientas para estilistas y para quienes quieren cuidar su cabello con productos confiables.
           </p>
-
-          {CATALOG_MODE && <p className="mt-4 rounded-[6px] border border-[#9b89a8]/40 bg-[#faf8f5] px-4 py-3 text-sm font-medium text-[#7f6d8a]">Catálogo informativo · Envíos y compras online próximamente.</p>}
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Link
-              href="/productos"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[6px] bg-[#7f6d8a] px-5 py-3 text-sm font-semibold text-[#faf8f5] transition-colors duration-[250ms] hover:bg-[#8e7a9e] focus:outline-none focus-visible:shadow-[0_0_0_3px_rgba(127,109,138,0.22)]"
-            >
-              Explorar productos
-              <ArrowRight className="h-4 w-4" />
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <Link href="/productos" className="inline-flex min-h-12 items-center justify-center gap-3 rounded-[6px] bg-[#7f6d8a] px-5 py-3 text-sm font-semibold text-[#faf8f5] transition-colors hover:bg-[#6d5b79] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7f6d8a]">
+              Explorar productos <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
-            <a
-              href={whatsappHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[6px] border border-[#7f6d8a]/55 bg-[#faf8f5] px-4 py-3 text-sm font-semibold text-[#7f6d8a] transition-colors duration-[250ms] hover:bg-[#efe7dd] focus:outline-none focus-visible:shadow-[0_0_0_3px_rgba(127,109,138,0.18)]"
-            >
-              <MessageCircle className="h-3.5 w-3.5" strokeWidth={1.8} />
-              Consultar productos
-            </a>
+            <Link href="/nosotros" className="inline-flex min-h-12 items-center justify-center rounded-[6px] border border-[#7f6d8a]/45 px-5 py-3 text-sm font-semibold text-[#7f6d8a] transition-colors hover:bg-[#efe7dd] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7f6d8a]">
+              Conocer SICARÚ
+            </Link>
           </div>
         </div>
-
         <HomeHeroVisual />
       </div>
     </section>

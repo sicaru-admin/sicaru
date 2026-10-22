@@ -1,4 +1,3 @@
-import { CATALOG_MODE } from "@/lib/catalog-mode";
 import type { Metadata } from "next";
 import { ProductosContent } from "./ProductosContent";
 import { InternalPageHeader } from "@/components/internal/InternalPageHeader";
@@ -25,8 +24,8 @@ export default async function ProductosPage() {
     <>
       <InternalPageHeader
         eyebrow="CATÁLOGO SICARÚ"
-        title="Productos profesionales para cada necesidad"
-        description={CATALOG_MODE ? "Descubre coloración, tratamientos y herramientas en nuestro catálogo digital. Compras y envíos online próximamente." : "Explora coloración, tratamientos, cuidado diario y herramientas seleccionadas para uso en casa o salón."}
+        title="Encuentra tu próximo favorito"
+        description="Coloración, tratamientos y herramientas para ti y tu salón."
       />
       <ProductosContent products={products} />
     </>

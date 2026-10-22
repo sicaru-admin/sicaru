@@ -1,5 +1,4 @@
 "use client";
-import { CATALOG_MODE } from "@/lib/catalog-mode";
 
 export const dynamic = "force-dynamic";
 
@@ -9,19 +8,10 @@ import { getCartLineVariantLabel } from "@/components/cart/cart-line-variant";
 import { formatCurrency, normalizeOrderTotals } from "@/lib/order-totals";
 
 export default function CarritoPage() {
-  const { cart, isLoading, updateQuantity, removeFromCart, totalItems } =
+  const { cart, isLoading, updateQuantity, removeFromCart, totalItems, cartError, retryInitializeCart } =
     useCart();
   const totals = normalizeOrderTotals(cart);
 
-  if (CATALOG_MODE) {
-    return (
-      <main className="mx-auto max-w-3xl px-5 py-20 text-center">
-        <h1 className="font-heading text-3xl text-[#2e2b2b]">Compras online próximamente</h1>
-        <p className="mt-4 text-[#2e2b2b]/70">SICARÚ está disponible como catálogo informativo. Aún no aceptamos pedidos ni pagos por esta página.</p>
-        <Link href="/productos" className="mt-7 inline-flex min-h-11 items-center bg-[#7f6d8a] px-6 py-3 text-white">Explorar catálogo</Link>
-      </main>
-    );
-  }
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12">
@@ -29,11 +19,15 @@ export default function CarritoPage() {
         Tu Carrito
       </h1>
 
+      {cartError && <div role="alert" className="mb-6 rounded-[6px] border border-[#efe7dd] bg-[#f5f1eb] p-4 text-sm text-[#2e2b2b]">
+        <p>{cartError}</p>
+        {!cart && <button type="button" onClick={() => void retryInitializeCart().catch(() => {})} disabled={isLoading} className="mt-2 min-h-11 text-[#7f6d8a] underline">Intentar de nuevo</button>}
+      </div>}
       {isLoading && !cart ? (
         <p className="text-center text-gray-500">Cargando carrito...</p>
       ) : !cart?.items?.length ? (
         <div className="text-center py-16">
-          <p className="text-lg text-gray-500 mb-6">Tu carrito esta vacio.</p>
+          <p className="text-lg text-gray-500 mb-6">Tu carrito está vacío.</p>
           <Link
             href="/productos"
             className="inline-block rounded-full bg-sicaru-pink px-8 py-3 font-semibold text-white transition-colors hover:bg-sicaru-pink/90"
@@ -152,7 +146,7 @@ export default function CarritoPage() {
                 {!cart.shipping_methods?.length ? (
                   <div className="flex justify-between text-sm text-gray-600">
                     <dt>Envío</dt>
-                    <dd>Por calcular</dd>
+                    <dd>Consultar al continuar</dd>
                   </div>
                 ) : null}
                 <div className="border-t border-gray-200 pt-3 flex justify-between">
@@ -168,7 +162,7 @@ export default function CarritoPage() {
                 href="/checkout"
                 className="mt-6 block w-full rounded-full bg-sicaru-pink py-3 text-center text-lg font-semibold text-white transition-colors hover:bg-sicaru-pink/90"
               >
-                Proceder al Pago
+                Continuar al envío
               </Link>
             </div>
           </div>

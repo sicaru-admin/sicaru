@@ -1,83 +1,22 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 
-const BRANDS = [
-  {
-    name: "Küül",
-    description: "Coloración profesional y cuidado técnico para salón.",
-    handle: "kuul",
-  },
-  {
-    name: "Voglia",
-    description: "Tratamientos, protectores y acabado profesional.",
-    handle: "voglia",
-  },
-  {
-    name: "Nekane Capilar",
-    description: "Hidratación profunda y reparación para cabello seco.",
-    handle: "nekane-capilar",
-  },
-  {
-    name: "Hidra Color",
-    description: "Color cremoso y cobertura para resultados pulidos.",
-    handle: "hidra-color",
-  },
-  {
-    name: "Xiomara",
-    description: "Styling, fijación y control para el acabado diario.",
-    handle: "xiomara",
-  },
-  {
-    name: "Vitale",
-    description: "Keratina y reconstrucción para cabello procesado.",
-    handle: "vitale",
-  },
-  {
-    name: "Montis",
-    description: "Cuidado botánico con una sensación más natural.",
-    handle: "montis",
-  },
+const brands = [
+  { name: "Küül", handle: "kuul" },
+  { name: "Voglia", handle: "voglia" },
+  { name: "Nekane Capilar", handle: "nekane-capilar" },
+  { name: "Hidra Color", handle: "hidra-color" },
+  { name: "Xiomara", handle: "xiomara" },
+  { name: "Vitale", handle: "vitale" },
+  { name: "Montis", handle: "montis" },
 ];
 
 export function BrandsShowcase() {
   return (
-    <section className="bg-[#faf8f5] py-12 md:py-14">
+    <section className="border-y border-[#efe7dd] bg-[#faf8f5] py-8 md:py-10" aria-labelledby="home-brands">
       <div className="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10">
-        <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="text-xs font-semibold uppercase text-[#8e7a9e]">
-              Curaduría Sicarú
-            </p>
-            <h2 className="mt-3 font-heading text-3xl font-medium text-[#2e2b2b] md:text-4xl">
-              Marcas profesionales, seleccionadas con intención
-            </h2>
-          </div>
-          <p className="max-w-md text-sm leading-7 text-[#2e2b2b]/70">
-            No todo entra al catálogo: buscamos productos útiles, vendibles y
-            fáciles de recomendar para casa o salón.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 border-y border-[#efe7dd] md:grid-cols-2 xl:grid-cols-7">
-          {BRANDS.map((brand) => (
-            <Link
-              key={brand.handle}
-              href={`/marcas/${brand.handle}`}
-              className="group border-b border-[#efe7dd] bg-[#faf8f5] p-5 transition-colors hover:bg-[#f5f1eb] md:border-r xl:border-b-0"
-            >
-              <div className="mb-6 h-px w-10 bg-[#9b89a8]" />
-              <h3 className="font-heading text-xl font-medium text-[#2e2b2b]">
-                {brand.name}
-              </h3>
-              <p className="mt-3 min-h-14 text-sm leading-6 text-[#2e2b2b]/60">
-                {brand.description}
-              </p>
-              <span className="mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase text-[#7f6d8a]">
-                Ver marca
-                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-              </span>
-            </Link>
-          ))}
+        <h2 id="home-brands" className="text-center text-xs font-semibold uppercase tracking-[0.16em] text-[#7f6d8a]">Marcas que nos acompañan</h2>
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 md:gap-x-10">
+          {brands.map((brand) => <Link key={brand.handle} href={`/marcas/${brand.handle}`} className="inline-flex min-h-12 items-center font-heading text-xl text-[#2e2b2b] transition-colors hover:text-[#7f6d8a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7f6d8a]">{brand.name}</Link>)}
         </div>
       </div>
     </section>

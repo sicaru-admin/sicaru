@@ -1,5 +1,4 @@
 "use client";
-import { CATALOG_MODE } from "@/lib/catalog-mode";
 
 import { useState, useEffect } from "react";
 import { HttpTypes } from "@medusajs/types";
@@ -29,7 +28,7 @@ export function StickyAddToCart({ product }: StickyAddToCartProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  if (!firstVariant || !visible || CATALOG_MODE) return null;
+  if (!firstVariant || !visible) return null;
   if (requiresVariantSelection) return null;
 
   const handleAdd = async () => {
@@ -40,9 +39,7 @@ export function StickyAddToCart({ product }: StickyAddToCartProps) {
     } catch (error) {
       console.error("Error adding sticky variant to cart:", error);
       setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : "No pudimos agregar el producto al carrito. Intenta de nuevo."
+        "No pudimos agregar el producto al carrito. Intenta de nuevo."
       );
     }
   };

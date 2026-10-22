@@ -11,7 +11,7 @@ import { BrandWordmark } from "./BrandWordmark";
 const navLinks = [
   { href: "/productos", label: "Productos" },
   { href: "/marcas", label: "Marcas" },
-  { href: "/categorias", label: "Categorías" },
+  { href: "/productos#categorias", label: "Categorías" },
   { href: "/salon-pro", label: "Salón Pro" },
   { href: "/blog", label: "Blog" },
   { href: "/nosotros", label: "Nosotros" },

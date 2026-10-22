@@ -1,5 +1,4 @@
 "use client";
-import { CATALOG_MODE } from "@/lib/catalog-mode";
 
 import { useState } from "react";
 import { useCart } from "./CartProvider";
@@ -16,14 +15,11 @@ export function AddToCartButton({ variantId }: { variantId: string }) {
     } catch (error) {
       console.error("Error adding product to cart:", error);
       setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : "No pudimos agregar el producto al carrito. Intenta de nuevo."
+        "No pudimos agregar el producto al carrito. Intenta de nuevo."
       );
     }
   };
 
-  if (CATALOG_MODE) return null;
 
   return (
     <div>

@@ -17,7 +17,7 @@ import { BRANDS } from "@/lib/constants/brands";
 export const metadata: Metadata = {
   title: "Nosotros — Distribuidora Sicarú",
   description:
-    "Distribuidora Sicarú es distribuidora autorizada de productos de belleza profesional en Cadereyta Jiménez, Nuevo León, con envío a todo México.",
+    "Distribuidora Sicarú es distribuidora autorizada de productos de belleza profesional en Cadereyta Jiménez, Nuevo León,.",
 };
 
 export default function NosotrosPage() {

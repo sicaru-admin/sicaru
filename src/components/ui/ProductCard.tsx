@@ -1,4 +1,3 @@
-import { CATALOG_MODE } from "@/lib/catalog-mode";
 import Link from "next/link";
 import Image from "next/image";
 import { HttpTypes } from "@medusajs/types";
@@ -57,7 +56,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
 
-        {!CATALOG_MODE && hasDiscount && (
+        {hasDiscount && (
           <div className="absolute right-2 top-2 rounded-[6px] bg-[#7f6d8a] px-2 py-1 text-xs font-semibold text-[#faf8f5]">
             Oferta
           </div>
@@ -69,7 +68,7 @@ export function ProductCard({ product }: ProductCardProps) {
           {product.title}
         </h3>
         <div className="mt-3 flex items-center gap-2">
-          {CATALOG_MODE ? <span className="text-xs font-medium text-[#7f6d8a]">Consultar información</span> : (<>
+          
           <PriceDisplay
             variant={firstVariant}
             className="text-sm font-semibold text-[#7f6d8a]"
@@ -81,7 +80,6 @@ export function ProductCard({ product }: ProductCardProps) {
                 className="text-xs text-[#2e2b2b]/40 line-through"
               />
             )}
-          </>)}
         </div>
       </div>
     </Link>

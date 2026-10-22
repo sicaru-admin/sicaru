@@ -39,7 +39,7 @@ export async function FeaturedProducts() {
               Selección de tienda
             </p>
             <h2 className="mt-3 font-heading text-3xl font-semibold text-[#2e2b2b] md:text-4xl">
-              Productos que vale la pena tener a la mano
+              Favoritos de SICARÚ
             </h2>
           </div>
           <Link
