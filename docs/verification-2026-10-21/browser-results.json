@@ -1,0 +1,472 @@
+{
+  "story": "Carrito → dirección → cotización de paquetería → bloqueo de pago sin aprobación; UI real y API Medusa local sintética, sin proveedores externos.",
+  "checks": [
+    {
+      "name": "Carrito antiguo no anuncia envío local ni importe $49",
+      "passed": true,
+      "evidence": "Subtotal\n\n$97.00\n\nIVA incluido. Envío por cotizar.\n\nFinalizar compra\n\nEnvío por cotizar\n\nConfirmaremos cobertura y costo de paquetería ant"
+    },
+    {
+      "name": "Subtotal de productos con IVA incluido sin sumar envío retirado",
+      "passed": true,
+      "evidence": "1 ×97 y método local49 conservado por backend fixture; UI muestra productos97 y envío por cotizar."
+    },
+    {
+      "name": "Aumento cantidad preserva variante y subtotal",
+      "passed": true,
+      "evidence": "2 ×97 =194 MXN; misma variante."
+    },
+    {
+      "name": "Recarga conserva carrito y cantidades",
+      "passed": true,
+      "evidence": "cart_qa y cantidad2 tras recarga."
+    },
+    {
+      "name": "Disminución restaura subtotal correcto",
+      "passed": true,
+      "evidence": "1 ×97 =97 MXN."
+    },
+    {
+      "name": "Dirección enviada y carrito conservado",
+      "passed": true,
+      "evidence": "Dirección QA CP67480 guardada; producto y cantidad1 conservados."
+    },
+    {
+      "name": "Sin cotización aprobada muestra Envío por cotizar",
+      "passed": true,
+      "evidence": "Envío por cotizar\n\nConfirmaremos cobertura y costo antes de iniciar el pago. Tus productos y datos siguen guardados.\n\nConsultar envío por WhatsApp\nReintentar consulta\n3\nPago\nResumen de productos (1)\nProductos\n$97.00\nEnvío\nEnvío por cotiz"
+    },
+    {
+      "name": "WhatsApp disponible para consultar paquetería",
+      "passed": true,
+      "evidence": "Enlace wa.me, sin abrirlo ni enviar mensajes."
+    },
+    {
+      "name": "Pago no habilitado y sin formulario tarjeta",
+      "passed": true,
+      "evidence": "Sin iframe/inputs tarjeta y sin requests de pago."
+    },
+    {
+      "name": "Mobile sin desbordamiento horizontal 375",
+      "passed": true,
+      "evidence": "{\"viewport\":375,\"document\":375,\"body\":375}"
+    },
+    {
+      "name": "Mobile sin desbordamiento horizontal 320",
+      "passed": true,
+      "evidence": "{\"viewport\":320,\"document\":320,\"body\":320}"
+    },
+    {
+      "name": "Recarga checkout conserva dirección y productos",
+      "passed": true,
+      "evidence": "CP67480 prellenado; producto retenido."
+    },
+    {
+      "name": "Sin cobertura conserva carrito",
+      "passed": true,
+      "evidence": "Producto97, cantidad1 retenida."
+    },
+    {
+      "name": "Sin cobertura no habilita pago",
+      "passed": true,
+      "evidence": "Sin radio de envío aprobado ni formulario tarjeta."
+    },
+    {
+      "name": "Sin cobertura ofrece consulta paquetería",
+      "passed": true,
+      "evidence": "Envío por cotizar\n\nNo hay cobertura de paquetería verificada para esta dirección. Puedes consultar otra opción.\n\nConsultar envío por WhatsApp\nReintentar consulta\n3\nPago\nResumen de productos (1)\nProductos\n$97.00\nEnvío\n"
+    },
+    {
+      "name": "Tarifa review214 no aprobada conserva carrito",
+      "passed": true,
+      "evidence": "Producto97, cantidad1 retenida."
+    },
+    {
+      "name": "Tarifa review214 no aprobada no habilita pago",
+      "passed": true,
+      "evidence": "Sin radio de envío aprobado ni formulario tarjeta."
+    },
+    {
+      "name": "Tarifa review214 no aprobada ofrece consulta paquetería",
+      "passed": true,
+      "evidence": "Envío por cotizar\n\nConfirmaremos cobertura y costo antes de iniciar el pago. Tus productos y datos siguen guardados.\n\nConsultar envío por WhatsApp\nReintentar consulta\n3\nPago\nResumen de productos (1)\nProductos\n$97.00\nE"
+    },
+    {
+      "name": "Servicio cotización503 conserva carrito",
+      "passed": true,
+      "evidence": "Producto97, cantidad1 retenida."
+    },
+    {
+      "name": "Servicio cotización503 no habilita pago",
+      "passed": true,
+      "evidence": "Sin radio de envío aprobado ni formulario tarjeta."
+    },
+    {
+      "name": "Servicio cotización503 ofrece consulta paquetería",
+      "passed": true,
+      "evidence": "Envío por cotizar\n\nConfirmaremos cobertura y costo antes de iniciar el pago. Tus productos y datos siguen guardados.\n\nConsultar envío por WhatsApp\nReintentar consulta\n\nNo pudimos continuar. Tus datos siguen guardados;"
+    },
+    {
+      "name": "Subtotal carrito sintético 1",
+      "passed": true,
+      "evidence": "1 ×97 =97; envío retirado49 excluido."
+    },
+    {
+      "name": "Cotización sintética exacta IVA incluido 1",
+      "passed": true,
+      "evidence": "Cotización de contrato local sintético187.65; no tarifa comercial real."
+    },
+    {
+      "name": "Método guardado coincide con cotización 1",
+      "passed": true,
+      "evidence": "Un método187.65 con quote_id y fingerprint, reemplaza local49."
+    },
+    {
+      "name": "Total carrito y checkout coherente 1",
+      "passed": true,
+      "evidence": "Productos97 + envío187.65 =284.65, IVA incluido una vez."
+    },
+    {
+      "name": "Editar dirección invalida cotización antes de pago 1",
+      "passed": true,
+      "evidence": "Se exige nueva cotización tras editar destino, sin peticiones de pago."
+    },
+    {
+      "name": "Subtotal carrito sintético 3",
+      "passed": true,
+      "evidence": "3 ×97 =291; envío retirado49 excluido."
+    },
+    {
+      "name": "Cotización sintética exacta IVA incluido 3",
+      "passed": true,
+      "evidence": "Cotización de contrato local sintético187.65; no tarifa comercial real."
+    },
+    {
+      "name": "Método guardado coincide con cotización 3",
+      "passed": true,
+      "evidence": "Un método187.65 con quote_id y fingerprint, reemplaza local49."
+    },
+    {
+      "name": "Total carrito y checkout coherente 3",
+      "passed": true,
+      "evidence": "Productos291 + envío187.65 =478.65, IVA incluido una vez."
+    },
+    {
+      "name": "Editar dirección invalida cotización antes de pago 3",
+      "passed": true,
+      "evidence": "Se exige nueva cotización tras editar destino, sin peticiones de pago."
+    },
+    {
+      "name": "Eliminar limpia únicamente artículo",
+      "passed": true,
+      "evidence": "Carrito vacío conserva mismo id."
+    },
+    {
+      "name": "Agregar producto conserva variante y cantidad",
+      "passed": true,
+      "evidence": "Producto sintético añadido mediante UI real."
+    },
+    {
+      "name": "Cero inicio de pagos o creación de pedidos",
+      "passed": true,
+      "evidence": "[]"
+    },
+    {
+      "name": "Cero peticiones a proveedores externos MP",
+      "passed": true,
+      "evidence": "[]"
+    },
+    {
+      "name": "Cero errores JavaScript",
+      "passed": true,
+      "evidence": "[]"
+    }
+  ],
+  "externalRequests": [],
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+    "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+  ],
+  "pageErrors": [],
+  "screenshots": [
+    "qa-carrito-mobile-375.png",
+    "qa-checkout-pending-mobile-375.png",
+    "qa-checkout-pending-mobile-320.png",
+    "qa-checkout-sin-cobertura-mobile.png",
+    "qa-checkout-cotizacion-sintetica-mobile.png"
+  ],
+  "requests_summary": [
+    {
+      "method": "DELETE",
+      "path": "/store/carts/cart_qa/line-items/item_qa",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/",
+      "count": 35
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/chunks/3794-cd98b5cd5fb65b19.js",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/chunks/4bd1b696-bf5e0dbacfa5baef.js",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/chunks/7527-8c762d2577d30b57.js",
+      "count": 10
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/chunks/8437-1595797761bfca7e.js",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/chunks/8500-41fa79ac743d83f1.js",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/chunks/8541-db0930c95ed3d716.js",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/chunks/981-251c1a385ebb21e6.js",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/chunks/app/(checkout)/checkout/layout-64f5ec7885ebe5a4.js",
+      "count": 10
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/chunks/app/(checkout)/checkout/page-4eace27f85a5240c.js",
+      "count": 10
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/chunks/app/(shop)/carrito/page-9af04e02cecd319e.js",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/chunks/app/(shop)/cuenta/layout-1ce4d54d39140384.js",
+      "count": 6
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/chunks/app/(shop)/cuenta/page-0816ae0f9b191105.js",
+      "count": 6
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/chunks/app/(shop)/layout-427fffe525b7a232.js",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/chunks/app/(shop)/marcas/page-c838aa4ddbf2c19b.js",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/chunks/app/(shop)/page-53aeb231710e99de.js",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/chunks/app/(shop)/productos/%5Bhandle%5D/page-58aee32af4849c5e.js",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/chunks/app/layout-1fe55021dee549dc.js",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/chunks/main-app-6a975eb1fd519d8d.js",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/chunks/webpack-bf45faa47ce0e109.js",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/css/19a1f7c1917c8779.css",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/media/0484562807a97172-s.p.woff2",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/media/4c285fdca692ea22-s.p.woff2",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/media/8888a3826f4a3af4-s.p.woff2",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/media/b25ebd069a276812-s.p.woff2",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/media/b957ea75a84b6ea7-s.p.woff2",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/_next/static/media/eafabf029ad39a43-s.p.woff2",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/blog",
+      "count": 4
+    },
+    {
+      "method": "GET",
+      "path": "/carrito",
+      "count": 59
+    },
+    {
+      "method": "GET",
+      "path": "/checkout",
+      "count": 30
+    },
+    {
+      "method": "GET",
+      "path": "/cuenta",
+      "count": 34
+    },
+    {
+      "method": "GET",
+      "path": "/favicon.ico",
+      "count": 13
+    },
+    {
+      "method": "GET",
+      "path": "/images/hero-productos-tienda.jpg",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/images/mujer-rizos-salon-espejo.jpg",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/images/producto-tratamiento-capilar.jpg",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/images/salon-colorista-muestrario.jpg",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/images/salon-estilista-secando-cabello.jpg",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/marcas",
+      "count": 4
+    },
+    {
+      "method": "GET",
+      "path": "/productos",
+      "count": 12
+    },
+    {
+      "method": "GET",
+      "path": "/productos/kit-sintetico-qa",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/salon-pro",
+      "count": 4
+    },
+    {
+      "method": "GET",
+      "path": "/store/carts/cart_qa",
+      "count": 18
+    },
+    {
+      "method": "GET",
+      "path": "/store/carts/cart_qa/dhl-quote",
+      "count": 10
+    },
+    {
+      "method": "GET",
+      "path": "/store/customers/me",
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/store/payment-providers",
+      "count": 2
+    },
+    {
+      "method": "GET",
+      "path": "/store/review-readiness",
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/api/vitals",
+      "count": 32
+    },
+    {
+      "method": "POST",
+      "path": "/store/carts/cart_qa",
+      "count": 6
+    },
+    {
+      "method": "POST",
+      "path": "/store/carts/cart_qa/line-items",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/store/carts/cart_qa/line-items/item_qa",
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/store/carts/cart_qa/shipping-methods",
+      "count": 2
+    }
+  ],
+  "payment_requests": [],
+  "note": "Full request trace is retained only in local QA scratch; this report records every distinct route and confirms no payment/order requests."
+}

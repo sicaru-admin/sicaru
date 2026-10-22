@@ -1,3 +1,5 @@
+import { STORE } from "@/lib/constants/store";
+import { getSalesWhatsAppUrl } from "@/lib/contact";
 import type { HttpTypes } from "@medusajs/types";
 import { BRANDS } from "@/lib/constants/brands";
 
@@ -37,7 +39,7 @@ export function generateOrganizationSchema(): Record<string, unknown> {
     description:
       "Sicarú es una tienda de productos profesionales de belleza en Cadereyta Jiménez, Nuevo León. Encuentra coloración, tratamientos capilares, herramientas, depilación y atención personalizada.",
     url: BASE_URL,
-    telephone: "+528281111023",
+    telephone: STORE.phone,
     address: {
       "@type": "PostalAddress",
       addressLocality: "Cadereyta Jiménez",
@@ -67,7 +69,7 @@ export function generateOrganizationSchema(): Record<string, unknown> {
     ],
     currenciesAccepted: "MXN",
     priceRange: "$",
-    sameAs: ["https://wa.me/528281111023"],
+    sameAs: [getSalesWhatsAppUrl("")].filter(Boolean),
   };
 }
 
@@ -245,7 +247,7 @@ export function generateBrandFAQs(
     },
     {
       question: `¿Puedo recibir asesoría sobre productos ${brandName}?`,
-      answer: `Sí, puedes consultar disponibilidad y recomendaciones por WhatsApp al +52 828 111 1023.`,
+      answer: `Sí, puedes consultar disponibilidad y recomendaciones por WhatsApp al ${STORE.phone}.`,
     },
   ];
 }

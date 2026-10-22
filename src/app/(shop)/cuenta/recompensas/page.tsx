@@ -94,8 +94,8 @@ export default function RecompensasPage() {
       });
       setRedeemAmount("");
       await fetchLoyalty();
-    } catch (err: any) {
-      setRedeemError(err.message || "Error al canjear puntos");
+    } catch (err: unknown) {
+      setRedeemError(err instanceof Error && err.message ? err.message : "Error al canjear puntos");
     } finally {
       setIsRedeeming(false);
     }

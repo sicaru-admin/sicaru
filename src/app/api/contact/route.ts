@@ -1,3 +1,4 @@
+import { getSalesWhatsAppUrl } from "@/lib/contact";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -13,20 +14,11 @@ export async function POST(request: Request) {
       );
     }
 
-    // Log the contact submission
-    console.log("[Contact Form Submission]", {
-      name,
-      email,
-      phone: body.phone || "N/A",
-      subject,
-      message,
-      timestamp: new Date().toISOString(),
-    });
-
     // Build the WhatsApp URL with a pre-filled message
     const whatsappMessage = `Hola, soy ${name}. ${subject}: ${message}`;
-    const whatsappUrl = `https://wa.me/528281111023?text=${encodeURIComponent(whatsappMessage)}`;
+    const whatsappUrl = getSalesWhatsAppUrl(whatsappMessage);
 
+    if (!whatsappUrl) return NextResponse.json({ error: "El número de WhatsApp está pendiente de confirmar. Tu mensaje no se ha enviado." }, { status: 503 });
     return NextResponse.json({ ok: true, whatsappUrl }, { status: 200 });
   } catch {
     return NextResponse.json(

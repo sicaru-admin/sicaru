@@ -5,6 +5,7 @@ import { HttpTypes } from "@medusajs/types";
 import { useCart } from "@/components/cart/CartProvider";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import { getSelectableOptions } from "./VariantSelector";
+import { getProductAvailability } from "@/lib/product-availability";
 
 type StickyAddToCartProps = {
   product: HttpTypes.StoreProduct;
@@ -31,7 +32,11 @@ export function StickyAddToCart({ product }: StickyAddToCartProps) {
   if (!firstVariant || !visible) return null;
   if (requiresVariantSelection) return null;
 
+  const availability = getProductAvailability(firstVariant);
+  const soldOut = availability === "out_of_stock";
+  const hasPrice = firstVariant.calculated_price?.calculated_amount != null;
   const handleAdd = async () => {
+    if (soldOut || !hasPrice || isLoading) return;
     setErrorMessage(null);
 
     try {
@@ -39,9 +44,7 @@ export function StickyAddToCart({ product }: StickyAddToCartProps) {
     } catch (error) {
       console.error("Error adding sticky variant to cart:", error);
       setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : "No pudimos agregar el producto al carrito. Intenta de nuevo."
+        "No pudimos agregar el producto. Revisa la disponibilidad e inténtalo nuevamente."
       );
     }
   };
@@ -60,10 +63,10 @@ export function StickyAddToCart({ product }: StickyAddToCartProps) {
         </div>
         <button
           onClick={handleAdd}
-          disabled={isLoading}
+          disabled={isLoading || soldOut || !hasPrice}
           className="btn-ripple tap-feedback shrink-0 rounded-full bg-sicaru-pink px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-sicaru-pink/90 disabled:opacity-50"
         >
-          {isLoading ? "..." : "Agregar"}
+          {isLoading ? "Agregando..." : soldOut ? "Agotado" : "Agregar al carrito"}
         </button>
       </div>
       {errorMessage && (

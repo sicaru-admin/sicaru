@@ -1,3 +1,4 @@
+import { getSalesWhatsAppUrl } from "@/lib/contact";
 import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
@@ -166,7 +167,7 @@ export default function SalonProPage() {
               Solicitar Acceso PRO
             </Link>
             <a
-              href="https://wa.me/528281111023?text=Hola%2C%20me%20interesa%20Sicaru%20PRO"
+              href={getSalesWhatsAppUrl("Hola, me interesa Sicaru PRO")} aria-disabled={!getSalesWhatsAppUrl()}
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-full border border-white/30 px-8 py-3.5 text-base font-semibold text-white transition-colors hover:bg-white/10"

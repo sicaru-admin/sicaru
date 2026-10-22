@@ -1,159 +1,63 @@
 "use client";
-
-import { useMemo, useState } from "react";
-import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import type { HttpTypes } from "@medusajs/types";
-import { Search } from "lucide-react";
 import { ProductCatalogCard } from "@/components/products/ProductCatalogCard";
-
-const CATEGORY_LINKS = [
-  {
-    href: "/categorias/tratamientos-y-mascarillas",
-    label: "Tratamientos y mascarillas",
-  },
-  {
-    href: "/categorias/color-y-tintes",
-    label: "Color y tintes",
-  },
-  {
-    href: "/categorias/styling-y-acabado",
-    label: "Styling y acabado",
-  },
-  {
-    href: "/categorias/herramientas-pro",
-    label: "Herramientas profesionales",
-  },
-  {
-    href: "/categorias/shampoo-y-acondicionador",
-    label: "Shampoo y acondicionador",
-  },
-];
-
-export function ProductosContent({
-  products,
-}: {
-  products: HttpTypes.StoreProduct[];
-}) {
-  const [query, setQuery] = useState("");
-  const filteredProducts = useMemo(() => {
-    const normalizedQuery = query.trim().toLocaleLowerCase("es-MX");
-
-    if (!normalizedQuery) return products;
-
-    return products.filter((product) =>
-      [product.title, product.description, product.handle]
-        .filter(Boolean)
-        .some((value) =>
-          value!.toLocaleLowerCase("es-MX").includes(normalizedQuery)
-        )
-    );
-  }, [products, query]);
-
-  const hasQuery = query.trim().length > 0;
-
-  return (
-    <section className="bg-[#faf8f5] py-10 md:py-12 lg:py-14">
-      <div className="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10">
-        <nav aria-label="Categorías de productos" className="mb-10 md:mb-12">
-          <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8e7a9e]">
-                Explora por categoría
-              </p>
-              <h2 className="mt-2 font-heading text-2xl font-medium text-[#2e2b2b] md:text-3xl">
-                Encuentra el tipo de producto que necesitas
-              </h2>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 border-y border-[#efe7dd] min-[360px]:grid-cols-2 lg:grid-cols-5">
-            {CATEGORY_LINKS.map((category, index) => (
-              <Link
-                key={category.href}
-                href={category.href}
-                className="group flex min-h-[76px] flex-col justify-between border-b border-[#efe7dd] px-4 py-4 text-left transition-colors duration-[200ms] hover:bg-[#f5f1eb] focus:outline-none focus-visible:bg-[#f5f1eb] focus-visible:shadow-[inset_0_-3px_0_#7f6d8a] min-[360px]:border-r lg:border-b-0"
-              >
-                <span className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[#9b89a8]">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <span className="mt-2 text-sm font-semibold leading-5 text-[#2e2b2b] transition-colors group-hover:text-[#7f6d8a]">
-                  {category.label}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </nav>
-
-        <div className="mb-8 border-y border-[#efe7dd] py-6 md:mb-10 md:py-7">
-          <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_minmax(320px,0.48fr)] md:items-end">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8e7a9e]">
-                Catálogo completo
-              </p>
-              <h2 className="mt-2 font-heading text-2xl font-medium text-[#2e2b2b] md:text-3xl">
-                Busca por producto, marca o necesidad
-              </h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-[#2e2b2b]/65">
-                Conserva una búsqueda simple para encontrar tratamientos,
-                coloración, keratina, frizz o herramientas profesionales.
-              </p>
-            </div>
-
-            <div className="w-full">
-              <label
-                htmlFor="productos-search"
-                className="mb-2 block text-sm font-semibold text-[#2e2b2b]"
-              >
-                Buscar en productos
-              </label>
-              <div className="relative">
-                <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#8e7a9e]" />
-                <input
-                  id="productos-search"
-                  type="search"
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder="Buscar por producto, marca o necesidad"
-                  className="sicaru-input h-12 w-full pl-12 pr-4 text-sm outline-none transition-colors placeholder:text-[#2e2b2b]/40 focus:border-[#7f6d8a] focus-visible:shadow-[0_0_0_3px_rgba(127,109,138,0.16)]"
-                />
-              </div>
-            </div>
-          </div>
-
-          <p
-            className="mt-5 text-sm font-medium text-[#2e2b2b]/65"
-            aria-live="polite"
-          >
-            {filteredProducts.length} producto
-            {filteredProducts.length !== 1 ? "s" : ""}
-            {hasQuery ? " encontrado" : " disponible"}
-            {filteredProducts.length !== 1 ? "s" : ""}
-          </p>
-        </div>
-
-        {filteredProducts.length === 0 ? (
-          <div className="border border-[#efe7dd] bg-[#f5f1eb] px-5 py-14 text-center md:px-8 md:py-16">
-            <h2 className="font-heading text-2xl font-medium text-[#2e2b2b] md:text-3xl">
-              No encontramos productos con esa búsqueda
-            </h2>
-            <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[#2e2b2b]/65">
-              Prueba con otra palabra o explora una de nuestras categorías.
-            </p>
-            <button
-              type="button"
-              onClick={() => setQuery("")}
-              className="mt-6 inline-flex min-h-11 items-center justify-center bg-[#7f6d8a] px-6 py-3 text-sm font-semibold text-[#faf8f5] transition-colors hover:bg-[#8e7a9e] focus:outline-none focus-visible:shadow-[0_0_0_3px_rgba(127,109,138,0.22)]"
-            >
-              Limpiar búsqueda
-            </button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3 xl:grid-cols-4 xl:gap-6">
-            {filteredProducts.map((product) => (
-              <ProductCatalogCard key={product.id} product={product} />
-            ))}
-          </div>
-        )}
+import { categoryLabel, getProductPriceRange, matchesCatalogQuery } from "@/lib/catalog";
+import { BRANDS } from "@/lib/constants/brands";
+const knownBrands=Object.values(BRANDS).map(brand=>brand.name);
+function catalogBrand(product:HttpTypes.StoreProduct) {
+  const normalized=(value:string)=>value.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+  const title=normalized(product.title??"");
+  return knownBrands.find(name=>{const brand=normalized(name);return normalized(product.collection?.title??"")===brand||title===brand||title.startsWith(brand+" ")||title.startsWith(brand+" ·");});
+}
+type Filters={q:string;categoria:string;marca:string;min:string;max:string};
+export function ProductosContent({products,initialFilters}:{products:HttpTypes.StoreProduct[];initialFilters?:Partial<Filters>}) {
+  const [filters,setFilters]=useState<Filters>({q:"",categoria:"",marca:"",min:"",max:"",...initialFilters});
+  const [hydrated,setHydrated]=useState(false);
+  useEffect(()=>{const params=new URLSearchParams(location.search);queueMicrotask(()=>{setFilters({q:params.get("q")??"",categoria:params.get("categoria")??"",marca:params.get("marca")??"",min:params.get("min")??"",max:params.get("max")??""});setHydrated(true);});},[]);
+  const categories=useMemo(()=>Array.from(new Map(products.flatMap(p=>(p.categories??[]).map(c=>[c.id,c] as const))).values()),[products]);
+  const brands=useMemo(()=>Array.from(new Set(products.map(catalogBrand).filter((v):v is string=>!!v))).sort(),[products]);
+  function update(key:keyof Filters,value:string){setFilters(current=>({...current,[key]:value}));}
+  useEffect(()=>{
+    if(!hydrated)return;
+    const params=new URLSearchParams(location.search);
+    for(const [key,value]of Object.entries(filters)){if(value)params.set(key,value);else params.delete(key);}
+    const url=location.pathname+(params.size?"?"+params.toString():"");
+    history.replaceState(history.state,"",url);
+  },[filters,hydrated]);
+  useEffect(()=>{
+    if(!hydrated)return;
+    const key="sicaru_catalog_scroll:"+location.pathname+location.search;
+    let frame=0;const save=()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>{try{sessionStorage.setItem(key,String(scrollY));}catch{}});};
+    let saved=0;try{saved=Number(sessionStorage.getItem(key)||0);}catch{}
+    const restore=requestAnimationFrame(()=>requestAnimationFrame(()=>scrollTo(0,saved)));
+    addEventListener("scroll",save,{passive:true});
+    return()=>{cancelAnimationFrame(frame);cancelAnimationFrame(restore);removeEventListener("scroll",save);};
+  },[filters,hydrated]);
+  useEffect(()=>{const pop=()=>{const p=new URLSearchParams(location.search);setFilters({q:p.get("q")??"",categoria:p.get("categoria")??"",marca:p.get("marca")??"",min:p.get("min")??"",max:p.get("max")??""});};addEventListener("popstate",pop);return()=>removeEventListener("popstate",pop);},[]);
+  const shown=useMemo(()=>products.filter(product=>{
+    if(!matchesCatalogQuery(product,filters.q))return false;
+    if(filters.categoria&&!(product.categories??[]).some(c=>c.id===filters.categoria||c.handle===filters.categoria))return false;
+    if(filters.marca&&catalogBrand(product)!==filters.marca)return false;
+    const price=getProductPriceRange(product);
+    if(filters.min&&(!price||price.minimum<Number(filters.min)))return false;
+    if(filters.max&&(!price||price.minimum>Number(filters.max)))return false;
+    return true;
+  }),[products,filters]);
+  const active=Object.values(filters).some(Boolean);
+  return <section className="mx-auto max-w-7xl px-4 pb-8">
+    <label htmlFor="catalog-search" className="sr-only">Buscar por producto, marca o tono</label>
+    <input id="catalog-search" type="search" value={filters.q} onChange={e=>update("q",e.target.value)} placeholder="Producto, marca o número de tono" className="sicaru-input min-h-12 w-full bg-white px-4 text-sm"/>
+    <details className="my-3 rounded-md border border-sicaru-purple-200 bg-white px-3">
+      <summary className="min-h-11 cursor-pointer py-3 text-sm font-medium">Filtros{active?" · activos":""}</summary>
+      <div className="grid grid-cols-2 gap-3 pb-3 text-sm">
+        <label>Categoría<select className="mt-1 min-h-11 w-full rounded border bg-white px-2" value={filters.categoria} onChange={e=>update("categoria",e.target.value)}><option value="">Todas</option>{categories.map(c=><option key={c.id} value={c.id}>{categoryLabel(c)}</option>)}</select></label>
+        <label>Marca<select className="mt-1 min-h-11 w-full rounded border bg-white px-2" value={filters.marca} onChange={e=>update("marca",e.target.value)}><option value="">Todas</option>{brands.map(b=><option key={b}>{b}</option>)}</select></label>
+        <label>Precio mínimo<input type="number" min="0" inputMode="decimal" className="mt-1 min-h-11 w-full rounded border px-2" value={filters.min} onChange={e=>update("min",e.target.value)}/></label>
+        <label>Precio máximo<input type="number" min="0" inputMode="decimal" className="mt-1 min-h-11 w-full rounded border px-2" value={filters.max} onChange={e=>update("max",e.target.value)}/></label>
       </div>
-    </section>
-  );
+    </details>
+    <div className="mb-4 flex items-center justify-between text-xs text-gray-600"><p role="status">{shown.length} productos</p>{active&&<button onClick={()=>setFilters({q:"",categoria:"",marca:"",min:"",max:""})} className="min-h-11 underline">Limpiar filtros</button>}</div>
+    {shown.length?<div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">{shown.map(p=><ProductCatalogCard key={p.id} product={p}/>)}</div>:<p className="py-8 text-center text-sm text-gray-600">No encontramos productos. Ajusta la búsqueda o los filtros.</p>}
+  </section>;
 }

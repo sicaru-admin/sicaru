@@ -1,15 +1,16 @@
 "use client";
 
 import { CreditCard, Store } from "lucide-react";
-import {
-  MercadoPagoCardForm,
-  type CardTokenData,
-} from "@/components/checkout/MercadoPagoCardForm";
+import dynamic from "next/dynamic";
+import type { CardTokenData } from "@/components/checkout/MercadoPagoCardForm";
+
+const MercadoPagoCardForm = dynamic(() => import("@/components/checkout/MercadoPagoCardForm").then(module => module.MercadoPagoCardForm), {ssr: false});
 
 export type PaymentMethod = "card" | "oxxo";
 
 type PaymentSelectorProps = {
   selectedMethod: PaymentMethod | null;
+  enabledMethods?: PaymentMethod[];
   onMethodChange: (method: PaymentMethod) => void;
   onCardTokenized: (data: CardTokenData) => void | Promise<void>;
   onOxxoSubmit: () => void | Promise<void>;
@@ -42,6 +43,7 @@ const METHODS: {
 
 export function PaymentSelector({
   selectedMethod,
+  enabledMethods = [],
   onMethodChange,
   onCardTokenized,
   onOxxoSubmit,
@@ -52,8 +54,9 @@ export function PaymentSelector({
 }: PaymentSelectorProps) {
   return (
     <div className="space-y-4">
+      {!enabledMethods.length&&<p className="text-sm text-gray-600">No hay métodos de pago disponibles para esta compra. No se realizará ningún cobro.</p>}
       <div className="space-y-3">
-        {METHODS.map((method) => {
+        {METHODS.filter(method=>enabledMethods.includes(method.id)).map((method) => {
           const isSelected = selectedMethod === method.id;
 
           return (
@@ -70,6 +73,7 @@ export function PaymentSelector({
                   name="payment-method"
                   value={method.id}
                   checked={isSelected}
+                  disabled={isLoading}
                   onChange={() => onMethodChange(method.id)}
                   className="mt-0.5 h-4 w-4 text-sicaru-purple-600 focus:ring-sicaru-purple-500"
                 />
@@ -87,7 +91,7 @@ export function PaymentSelector({
               </label>
 
               {/* Card: MP CardPayment brick renders inside selected option */}
-              {isSelected && method.id === "card" && (
+              {isSelected && method.id === "card" && !isLoading && (
                 <MercadoPagoCardForm
                   amount={cartTotal}
                   onTokenized={onCardTokenized}
@@ -111,9 +115,10 @@ export function PaymentSelector({
           disabled={isLoading}
           className="w-full rounded-full bg-sicaru-pink px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-sicaru-pink/90 disabled:opacity-50"
         >
-          {isLoading ? "Procesando..." : "Continuar"}
+          {isLoading ? "Procesando..." : "Continuar compra"}
         </button>
       )}
     </div>
   );
 }
+

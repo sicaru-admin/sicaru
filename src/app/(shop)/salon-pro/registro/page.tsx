@@ -1,4 +1,6 @@
-"use client"
+"use client";
+
+import { getSalesWhatsAppUrl } from "@/lib/contact";
 
 import { useState } from "react"
 import Link from "next/link"
@@ -77,7 +79,7 @@ export default function SalonProRegistroPage() {
   const [submitError, setSubmitError] = useState("")
   const [submitted, setSubmitted] = useState(false)
 
-  const update = (field: keyof FormData, value: any) => {
+  const update = <K extends keyof FormData,>(field: K, value: FormData[K]) => {
     setForm((prev) => ({ ...prev, [field]: value }))
     if (errors[field]) {
       setErrors((prev) => {
@@ -177,8 +179,8 @@ export default function SalonProRegistroPage() {
         comments: form.comments.trim() || undefined,
       })
       setSubmitted(true)
-    } catch (err: any) {
-      setSubmitError(err.message || "Error al enviar solicitud")
+    } catch (err: unknown) {
+      setSubmitError(err instanceof Error && err.message ? err.message : "Error al enviar solicitud")
     } finally {
       setIsSubmitting(false)
     }
@@ -206,7 +208,7 @@ export default function SalonProRegistroPage() {
             Volver a Sicaru PRO
           </Link>
           <a
-            href="https://wa.me/528281111023?text=Hola%2C%20acabo%20de%20enviar%20mi%20solicitud%20PRO"
+            href={getSalesWhatsAppUrl("Hola, acabo de enviar mi solicitud PRO")} aria-disabled={!getSalesWhatsAppUrl()}
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm font-medium text-sicaru-purple-600 hover:text-sicaru-purple-700"

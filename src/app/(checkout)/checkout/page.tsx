@@ -3,22 +3,21 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import type { HttpTypes } from "@medusajs/types";
-import { ensureMercadoPagoInit } from "@/lib/mercadopago";
 import { useCart } from "@/components/cart/CartProvider";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { listAddresses } from "@/lib/data/customer";
 import {
   getFullCart,
   updateCart,
-  listShippingOptions,
+  getDhlShippingState,
   addShippingMethod,
   listPaymentProviders,
+  listVerifiedPaymentMethods,
   initiatePaymentSession,
   completeCart,
+  requireParcelShipping,
 } from "@/lib/data/checkout";
 import { CheckoutStepSection } from "@/components/checkout/CheckoutStepSection";
-import { CheckoutProgress } from "@/components/checkout/CheckoutProgress";
-import { ContactForm } from "@/components/checkout/ContactForm";
 import { ShippingAddressForm } from "@/components/checkout/ShippingAddressForm";
 import { ShippingMethodSelector } from "@/components/checkout/ShippingMethodSelector";
 import {
@@ -28,6 +27,9 @@ import {
 import { OrderReview } from "@/components/checkout/OrderReview";
 import { OrderSummary } from "@/components/checkout/OrderSummary";
 import { MEXICAN_STATES } from "@/lib/constants/mexican-states";
+import { hasParcelShippingMethod, isCurrentParcelQuote, type DhlQuote } from "@/lib/shipping";
+import { readRememberedCheckout, rememberCheckout, forgetRememberedCheckout, clearCheckoutDraft } from "@/lib/checkout-draft";
+import { useCheckoutMemory } from "@/components/checkout/CheckoutMemoryProvider";
 import type { CardTokenData } from "@/components/checkout/MercadoPagoCardForm";
 
 export const dynamic = "force-dynamic";
@@ -57,6 +59,8 @@ type Address = {
   province: string;
   postal_code: string;
   country_code: string;
+  interior?: string;
+  references?: string;
 };
 
 type PaymentSessionStatus =
@@ -93,6 +97,8 @@ const EMPTY_ADDRESS: Address = {
   province: "",
   postal_code: "",
   country_code: "mx",
+  interior: "",
+  references: "",
 };
 
 const PAYMENT_RETRY_MESSAGE =
@@ -114,14 +120,14 @@ const USABLE_PAYMENT_SESSION_STATUSES = new Set<PaymentSessionStatus>([
 // ─── Main Checkout Page ──────────────────────────────────────────
 
 function getCheckoutErrorMessage(error: unknown, fallback: string) {
-  if (error instanceof Error && error.message) return error.message;
+  if (error instanceof Error && /^(No pudimos|No se pudo|La tarifa DHL|Selecciona|Ingresa|Tu carrito|Envío por cotizar|El envío)/.test(error.message)) return error.message;
   if (
     error &&
     typeof error === "object" &&
     "message" in error &&
     typeof error.message === "string"
   ) {
-    return error.message;
+    return fallback;
   }
   return fallback;
 }
@@ -171,10 +177,14 @@ export default function CheckoutPage() {
     clearCart,
     totalItems,
     isInitializingCart,
+    isLoading: isCartMutating,
     cartError,
     retryInitializeCart,
   } = useCart();
   const { customer, isAuthenticated } = useAuth();
+  const memory=useCheckoutMemory();
+  const [remember,setRemember]=useState(false);
+  const rememberRef=useRef(false);
 
   // Full Medusa cart
   const [fullCart, setFullCart] = useState<HttpTypes.StoreCart | null>(null);
@@ -195,12 +205,15 @@ export default function CheckoutPage() {
   const [shippingOptions, setShippingOptions] = useState<
     HttpTypes.StoreCartShippingOption[]
   >([]);
+  const [shippingQuote, setShippingQuote] = useState<DhlQuote | undefined>();
   const [selectedShippingId, setSelectedShippingId] = useState<string | null>(
     null
   );
   const [paymentProviders, setPaymentProviders] = useState<
     HttpTypes.StorePaymentProvider[]
   >([]);
+
+  const [enabledMethods,setEnabledMethods]=useState<PaymentMethod[]>([]);
 
   // MercadoPago payment state
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod | null>(
@@ -216,11 +229,62 @@ export default function CheckoutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isValidatingPayment, setIsValidatingPayment] = useState(false);
   const orderSubmissionLockRef = useRef(false);
-
-  // Initialize MercadoPago SDK
-  useEffect(() => {
-    ensureMercadoPagoInit();
+  const paymentPreparationRef = useRef(false);
+  const observedCartVersionRef = useRef("");
+  const shippingRequestRef = useRef(0);
+  const draftRef = useRef({email: "", address: EMPTY_ADDRESS});
+  const invalidateShipping = useCallback(() => {
+    shippingRequestRef.current++;
+    setShippingOptions([]);
+    setShippingQuote(undefined);
+    setSelectedShippingId(null);
+    setPaymentProviders([]);
+    setEnabledMethods([]);
+    setSelectedMethod(null);
+    setCardTokenData(null);
+    setCompletedSteps(prev => new Set([...prev].filter(step => step === "contact")));
   }, []);
+  const handleEmailChange = (value: string) => {
+    invalidateShipping();
+    setEmail(value); draftRef.current = {...draftRef.current, email: value};
+    if (cartId) memory.write(cartId, draftRef.current);
+    if (rememberRef.current) rememberCheckout(localStorage,draftRef.current);
+  };
+  const handleAddressChange = (value: Address) => {
+    invalidateShipping();
+    setShippingAddress(value); draftRef.current = {...draftRef.current, address: value};
+    if (cartId) memory.write(cartId, draftRef.current);
+    if (rememberRef.current) rememberCheckout(localStorage,draftRef.current);
+  };
+  const selectedOption = shippingOptions.find(option => option.id === selectedShippingId);
+  const selectedMetadata = (selectedOption as (HttpTypes.StoreCartShippingOption & {metadata?: Record<string, unknown>}) | undefined)?.metadata;
+  const deliveryEstimate = shippingQuote?.status === "available" && shippingQuote.delivery_estimate
+    ? shippingQuote.delivery_estimate
+    : typeof selectedMetadata?.delivery_estimate === "string" ? selectedMetadata.delivery_estimate : "";
+  const cartVersion = cart ? JSON.stringify(cart.items.map(item => [item.id, item.variant_id, item.quantity, item.unit_price])) + ":" + cart.item_total : "";
+  const currentCartVersionRef = useRef(cartVersion);
+  currentCartVersionRef.current = cartVersion;
+
+  useEffect(() => {
+    if (shippingQuote?.status !== "available") return;
+    const expiresAt = Date.parse(shippingQuote.expires_at);
+    const expire = () => {
+      invalidateShipping();
+      setShippingQuote({status: "quote_required", reason: "expired_quote", message: "Envío por cotizar"});
+      setCompletedSteps(new Set<CheckoutStep>(["contact", "shipping"]));
+      setActiveStep("delivery");
+      setSubmitError("Envío por cotizar. La cotización venció; consulta nuevamente antes de pagar.");
+    };
+    const timer = window.setTimeout(expire, Math.max(0, Math.min(expiresAt - Date.now(), 2_147_483_647)));
+    const checkExpiry = () => { if (!isCurrentParcelQuote(shippingQuote)) expire(); };
+    window.addEventListener("focus", checkExpiry);
+    document.addEventListener("visibilitychange", checkExpiry);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("focus", checkExpiry);
+      document.removeEventListener("visibilitychange", checkExpiry);
+    };
+  }, [shippingQuote, invalidateShipping]);
 
   // Initialize: fetch full cart
   useEffect(() => {
@@ -245,23 +309,24 @@ export default function CheckoutPage() {
         const cart = await getFullCart(cartId!);
         if (cancelled) return;
         setFullCart(cart);
-
-        // Pre-fill from existing cart data
-        if (cart.email) setEmail(cart.email);
-        if (cart.shipping_address) {
-          const addr = cart.shipping_address;
-          setShippingAddress({
-            first_name: addr.first_name ?? "",
-            last_name: addr.last_name ?? "",
-            phone: addr.phone ?? "",
-            address_1: addr.address_1 ?? "",
-            address_2: addr.address_2 ?? "",
-            city: addr.city ?? "",
-            province: addr.province ?? "",
-            postal_code: addr.postal_code ?? "",
-            country_code: addr.country_code ?? "mx",
-          });
+        if (observedCartVersionRef.current && observedCartVersionRef.current !== cartVersion) {
+          invalidateShipping();
+          setCompletedSteps(new Set(cart.email ? ["contact"] : []));
+          setActiveStep(cart.email ? "shipping" : "contact");
+          setSubmitError("Tu carrito cambió. Revisa nuevamente el envío y el total antes de pagar.");
         }
+        observedCartVersionRef.current = cartVersion;
+
+        clearCheckoutDraft(sessionStorage, cart.id);
+        const remembered=readRememberedCheckout(localStorage);
+        rememberRef.current=!!remembered;setRemember(!!remembered);
+        const draft=memory.read(cart.id)??remembered;
+        const nextEmail = draft?.email ?? cart.email ?? "";
+        const nextAddress = Object.fromEntries(Object.keys(EMPTY_ADDRESS).map(key => [
+          key, draft?.address[key] ?? (cart.shipping_address?.metadata?.["sicaru_"+key] as string|undefined) ?? (cart.shipping_address as unknown as Record<string, string> | null)?.[key] ?? EMPTY_ADDRESS[key as keyof Address] ?? ""
+        ])) as Address;
+        setEmail(nextEmail); setShippingAddress(nextAddress);
+        draftRef.current = {email: nextEmail, address: nextAddress};
       } catch (error) {
         console.error("Error loading cart:", error);
         if (!cancelled) {
@@ -276,7 +341,7 @@ export default function CheckoutPage() {
     return () => {
       cancelled = true;
     };
-  }, [cartId, fullCartRetryCount, isInitializingCart]);
+  }, [cartId, cartVersion, fullCartRetryCount, isInitializingCart, memory, invalidateShipping]);
 
   // Pre-fill from customer profile when logged in
   useEffect(() => {
@@ -366,6 +431,7 @@ export default function CheckoutPage() {
   }, []);
 
   const editStep = (step: CheckoutStep) => {
+    shippingRequestRef.current++;
     setActiveStep(step);
     // Invalidate subsequent steps
     const stepIdx = STEPS.indexOf(step);
@@ -378,11 +444,7 @@ export default function CheckoutPage() {
     });
     // Reset downstream state
     if (step === "shipping" || step === "contact") {
-      setShippingOptions([]);
-      setSelectedShippingId(null);
-      setPaymentProviders([]);
-      setSelectedMethod(null);
-      setCardTokenData(null);
+      invalidateShipping();
     }
     if (step === "delivery") {
       setPaymentProviders([]);
@@ -395,49 +457,57 @@ export default function CheckoutPage() {
     }
   };
 
-  const handlePaymentMethodChange = (method: PaymentMethod) => {
-    setSelectedMethod(method);
+  const handlePaymentMethodChange = async (method: PaymentMethod) => {
+    if (!cartId || stepLoading || isCartMutating || !enabledMethods.includes(method)) return;
+    setStepLoading(true);
+    setSelectedMethod(null);
     setCardTokenData(null);
     setSubmitError(null);
+    const requestId = shippingRequestRef.current;
+    const requestedCartVersion = cartVersion;
     setCompletedSteps((prev) => {
       const next = new Set(prev);
       next.delete("payment");
       next.delete("review");
       return next;
     });
-  };
-
-  const handleContactSubmit = async () => {
-    if (!cartId) return;
-    setStepLoading(true);
     try {
-      const cart = await updateCart(cartId, { email });
-      setFullCart(cart);
-      completeStep("contact");
+      // Verify before mounting the card brick: it must not tokenize a card
+      // while shipping evidence has expired or the server cart has changed.
+      const refreshed = await requireParcelShipping(cartId);
+      if (requestId !== shippingRequestRef.current || requestedCartVersion !== currentCartVersionRef.current) return;
+      setFullCart(refreshed);
+      setSelectedMethod(method);
     } catch (error) {
-      setSubmitError(
-        getCheckoutErrorMessage(
-          error,
-          "Error al guardar el correo. Intenta de nuevo."
-        )
-      );
-    } finally {
-      setStepLoading(false);
-    }
+      invalidateShipping();
+      setActiveStep("delivery");
+      setSubmitError(getCheckoutErrorMessage(error, "Envío por cotizar. Revisa el envío antes de pagar."));
+    } finally { setStepLoading(false); }
   };
 
   const handleShippingSubmit = async () => {
     if (!cartId) return;
     setStepLoading(true);
+    setSubmitError(null);
+    invalidateShipping();
+    const requestId = ++shippingRequestRef.current;
+    const requestedCartVersion = cartVersion;
+    setShippingOptions([]);
+    setSelectedShippingId(null);
     try {
-      const cart = await updateCart(cartId, {
-        shipping_address: shippingAddress,
-        billing_address: shippingAddress,
-      });
+      const {interior,references,...baseAddress}=shippingAddress;
+      const deliveryAddress={...baseAddress,first_name:baseAddress.first_name.trim(),last_name:baseAddress.last_name.trim(),address_2:[baseAddress.address_2,interior?"Interior: "+interior:"",references?"Referencias: "+references:""].filter(Boolean).join(" · "),metadata:{sicaru_address_2:baseAddress.address_2,sicaru_interior:interior??"",sicaru_references:references??""}};
+      const cart = await updateCart(cartId,{email:email.trim(),shipping_address:deliveryAddress,billing_address:deliveryAddress});
+      if (requestId !== shippingRequestRef.current || requestedCartVersion !== currentCartVersionRef.current) return;
       setFullCart(cart);
 
+      setCompletedSteps(new Set<CheckoutStep>(["contact", "shipping"]));
+      setActiveStep("delivery");
       // Fetch shipping options
-      const options = await listShippingOptions(cartId);
+      const state = await getDhlShippingState(cartId);
+      if (requestId !== shippingRequestRef.current || requestedCartVersion !== currentCartVersionRef.current) return;
+      const options = state.options;
+      setShippingQuote(state.quote);
       setShippingOptions(options as HttpTypes.StoreCartShippingOption[]);
 
       // Auto-select if only one option
@@ -445,12 +515,12 @@ export default function CheckoutPage() {
         setSelectedShippingId(options[0].id);
       }
 
-      completeStep("shipping");
+
     } catch (error) {
       setSubmitError(
         getCheckoutErrorMessage(
           error,
-          "Error al guardar la dirección. Intenta de nuevo."
+          "No pudimos continuar. Tus datos siguen guardados; inténtalo nuevamente."
         )
       );
     } finally {
@@ -459,18 +529,28 @@ export default function CheckoutPage() {
   };
 
   const handleDeliverySubmit = async () => {
-    if (!cartId || !selectedShippingId) return;
+    if (!cartId || !selectedShippingId || !isCurrentParcelQuote(shippingQuote) || stepLoading || isCartMutating) return;
     setStepLoading(true);
+    setSubmitError(null);
+    const requestId = shippingRequestRef.current;
+    const requestedCartVersion = cartVersion;
     try {
       const cart = await addShippingMethod(cartId, selectedShippingId);
+      if (requestId !== shippingRequestRef.current || requestedCartVersion !== currentCartVersionRef.current) return;
       setFullCart(cart);
 
       // Fetch payment providers (to verify mercadopago is available)
       if (cart.region_id) {
-        const providers = await listPaymentProviders(cart.region_id);
+        const [providers,methods] = await Promise.all([listPaymentProviders(cart.region_id),listVerifiedPaymentMethods()]);
+        setEnabledMethods(methods);
         setPaymentProviders(providers);
       }
 
+      const state = await getDhlShippingState(cartId);
+      if (requestId !== shippingRequestRef.current || requestedCartVersion !== currentCartVersionRef.current) return;
+      setShippingQuote(state.quote);
+      setShippingOptions(state.options);
+      if (!hasParcelShippingMethod(cart, state.options, state.quote)) throw new Error("Envío por cotizar. Revisa la cotización y el total antes de pagar.");
       completeStep("delivery");
     } catch (error) {
       setSubmitError(
@@ -486,12 +566,18 @@ export default function CheckoutPage() {
 
   const preparePaymentSession = useCallback(
     async (method: PaymentMethod, tokenData?: CardTokenData) => {
+      if (paymentPreparationRef.current) throw new Error("No pudimos iniciar otro pago mientras el anterior se está preparando.");
+      paymentPreparationRef.current = true;
+      try {
       if (!fullCart) {
         throw new Error("No se pudo cargar el carrito para preparar el pago.");
       }
 
       if (!cartId) {
         throw new Error("No se pudo identificar el carrito para preparar el pago.");
+      }
+      if (isCartMutating || !isCurrentParcelQuote(shippingQuote) || !hasParcelShippingMethod(fullCart, shippingOptions, shippingQuote)) {
+        throw new Error("Envío por cotizar. Confirma el envío antes de iniciar el pago.");
       }
 
       const mpProvider = findMercadoPagoProvider(paymentProviders);
@@ -529,8 +615,9 @@ export default function CheckoutPage() {
       if (!hasUsablePaymentSession(refreshedCart)) {
         throw new Error(PAYMENT_PROCESSING_MESSAGE);
       }
+      } finally { paymentPreparationRef.current = false; }
     },
-    [cartId, email, fullCart, paymentProviders]
+    [cartId, email, fullCart, paymentProviders, isCartMutating, shippingQuote, shippingOptions]
   );
 
   // Card: MP brick tokenized the card → create Medusa payment session
@@ -614,6 +701,8 @@ export default function CheckoutPage() {
           "sicaru_last_order",
           JSON.stringify(result.order)
         );
+        clearCheckoutDraft(sessionStorage, cartId);
+        memory.clear(cartId);
         clearCart();
         router.push("/checkout/confirmacion");
       } else {
@@ -654,7 +743,7 @@ export default function CheckoutPage() {
 
   // ─── Summaries for completed steps ─────────────────────────────
 
-  const contactSummary = email;
+
 
   const addressSummary = shippingAddress.first_name
     ? `${shippingAddress.first_name} ${shippingAddress.last_name}, ${shippingAddress.address_1}, ${shippingAddress.city}, ${MEXICAN_STATES.find((s) => s.value === shippingAddress.province)?.label ?? shippingAddress.province} ${shippingAddress.postal_code}`
@@ -670,7 +759,8 @@ export default function CheckoutPage() {
       : selectedMethod === "oxxo"
         ? "OXXO Pay"
         : "Método de pago";
-  const isPaymentReady = hasUsablePaymentSession(fullCart);
+  const shippingConfirmed = !isCartMutating && !!fullCart && hasParcelShippingMethod(fullCart, shippingOptions, shippingQuote);
+  const isPaymentReady = shippingConfirmed && hasUsablePaymentSession(fullCart);
   const visibleCartError = cartError || fullCartError;
   const isCheckoutLoading = isInitializingCart || isInitializing;
 
@@ -741,126 +831,56 @@ export default function CheckoutPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 lg:py-10">
-      <h1 className="mb-6 text-2xl font-bold text-sicaru-purple-900 lg:mb-8 lg:text-3xl">
-        Checkout
-      </h1>
-
-      <CheckoutProgress activeStep={activeStep} completedSteps={completedSteps} />
-
+      <h1 className="mb-3 text-2xl font-bold text-sicaru-purple-900 lg:text-3xl">Finaliza tu compra</h1>
+      <p className="mb-6 text-sm text-gray-600">Compra como invitada. No necesitas crear una cuenta.</p>
       <div className="lg:grid lg:grid-cols-12 lg:gap-8">
-        {/* Left: Steps */}
         <div className="space-y-4 lg:col-span-7">
-          {/* Step 1: Contact */}
-          <CheckoutStepSection
-            stepNumber={1}
-            title="Contacto"
-            isActive={activeStep === "contact"}
-            isCompleted={completedSteps.has("contact")}
-            isDisabled={false}
-            summary={contactSummary}
-            onEdit={() => editStep("contact")}
-          >
-            <ContactForm
-              email={email}
-              onEmailChange={setEmail}
-              onSubmit={handleContactSubmit}
-              isLoading={stepLoading}
-            />
+          <CheckoutStepSection stepNumber={1} title="Contacto y dirección"
+            isActive={activeStep === "contact" || activeStep === "shipping"}
+            isCompleted={completedSteps.has("shipping")} isDisabled={false}
+            summary={[email, addressSummary].filter(Boolean).join(" · ")} onEdit={() => editStep("contact")}>
+            <ShippingAddressForm email={email} onEmailChange={handleEmailChange}
+              address={shippingAddress} onAddressChange={handleAddressChange}
+              onSubmit={handleShippingSubmit} isLoading={stepLoading} remember={remember}
+              onRememberChange={value=>{setRemember(value);rememberRef.current=value;if(value)rememberCheckout(localStorage,draftRef.current);else forgetRememberedCheckout(localStorage);}}
+              onForget={()=>{setRemember(false);rememberRef.current=false;forgetRememberedCheckout(localStorage);}} />
+            {submitError && ["contact", "shipping"].includes(activeStep) && <p role="alert" className="mt-3 text-sm text-red-700">{submitError}</p>}
           </CheckoutStepSection>
 
-          {/* Step 2: Shipping Address */}
-          <CheckoutStepSection
-            stepNumber={2}
-            title="Dirección de envío"
-            isActive={activeStep === "shipping"}
-            isCompleted={completedSteps.has("shipping")}
-            isDisabled={!completedSteps.has("contact")}
-            summary={addressSummary}
-            onEdit={() => editStep("shipping")}
-          >
-            <ShippingAddressForm
-              address={shippingAddress}
-              onAddressChange={setShippingAddress}
-              onSubmit={handleShippingSubmit}
-              isLoading={stepLoading}
-            />
+          <CheckoutStepSection stepNumber={2} title="Envío"
+            isActive={activeStep==="delivery"} isCompleted={completedSteps.has("delivery")} isDisabled={!completedSteps.has("shipping")}
+            summary={selectedOption?shippingMethodName+(deliveryEstimate?" · "+deliveryEstimate:""):undefined} onEdit={()=>editStep("delivery")}>
+            <ShippingMethodSelector options={shippingOptions} quote={shippingQuote} items={(fullCart?.items??[]).map(item=>({title:item.product_title,variant_title:item.variant_title,quantity:item.quantity}))}
+              selectedId={selectedShippingId} onSelect={setSelectedShippingId} onSubmit={handleDeliverySubmit} isLoading={stepLoading}/>
+            {!shippingOptions.length&&!stepLoading&&<button type="button" onClick={()=>void handleShippingSubmit()} className="min-h-11 text-sm underline">Reintentar consulta</button>}
+            {submitError&&activeStep==="delivery"&&<p role="alert" className="mt-3 text-sm text-red-700">{submitError}</p>}
           </CheckoutStepSection>
-
-          {/* Step 3: Shipping Method */}
-          <CheckoutStepSection
-            stepNumber={3}
-            title="Método de envío"
-            isActive={activeStep === "delivery"}
-            isCompleted={completedSteps.has("delivery")}
-            isDisabled={!completedSteps.has("shipping")}
-            summary={shippingMethodName}
-            onEdit={() => editStep("delivery")}
-          >
-            <ShippingMethodSelector
-              options={shippingOptions}
-              selectedId={selectedShippingId}
-              onSelect={setSelectedShippingId}
-              onSubmit={handleDeliverySubmit}
-              isLoading={stepLoading}
-            />
-          </CheckoutStepSection>
-
-          {/* Step 4: Payment Method */}
-          <CheckoutStepSection
-            stepNumber={4}
-            title="Pago"
-            isActive={activeStep === "payment"}
-            isCompleted={completedSteps.has("payment")}
-            isDisabled={!completedSteps.has("delivery")}
-            summary={paymentMethodName}
-            onEdit={() => editStep("payment")}
-          >
-            <PaymentSelector
-              selectedMethod={selectedMethod}
-              onMethodChange={handlePaymentMethodChange}
-              onCardTokenized={handleCardTokenized}
-              onOxxoSubmit={handleOxxoSubmit}
-              cartTotal={fullCart?.total ?? 0}
-              isLoading={stepLoading}
-              error={submitError}
-              onError={setSubmitError}
-            />
-          </CheckoutStepSection>
-
-          {/* Step 5: Review & Confirm */}
-          <CheckoutStepSection
-            stepNumber={5}
-            title="Confirmar pedido"
-            isActive={activeStep === "review"}
-            isCompleted={false}
-            isDisabled={!completedSteps.has("payment")}
-            onEdit={() => {}}
-          >
-            {fullCart && (
-              <OrderReview
-                cart={fullCart}
-                email={email}
-                shippingAddress={shippingAddress}
-                shippingMethodName={shippingMethodName}
-                paymentMethodName={paymentMethodName}
-                onConfirm={handleOrderConfirm}
-                isSubmitting={isSubmitting}
-                isPaymentReady={isPaymentReady}
-                isValidatingPayment={isValidatingPayment}
-                error={submitError}
-              />
-            )}
+          <CheckoutStepSection stepNumber={3} title="Pago" isActive={["payment","review"].includes(activeStep)&&shippingConfirmed}
+            isCompleted={false} isDisabled={!shippingConfirmed} onEdit={()=>editStep("payment")}>
+            {activeStep==="payment"&&<PaymentSelector enabledMethods={enabledMethods} selectedMethod={selectedMethod} onMethodChange={handlePaymentMethodChange} onCardTokenized={handleCardTokenized}
+              onOxxoSubmit={handleOxxoSubmit} cartTotal={fullCart?.total??0} isLoading={stepLoading} error={submitError} onError={setSubmitError}/>} 
+            {activeStep==="review"&&fullCart&&<OrderReview cart={fullCart} email={email} shippingAddress={shippingAddress} shippingMethodName={shippingMethodName}
+              paymentMethodName={paymentMethodName} onConfirm={handleOrderConfirm} isSubmitting={isSubmitting} isPaymentReady={isPaymentReady}
+              isValidatingPayment={isValidatingPayment} error={submitError}/>}
           </CheckoutStepSection>
         </div>
 
         {/* Right: Order Summary */}
         <div className="mt-6 lg:col-span-5 lg:mt-0">
-          <div className="lg:sticky lg:top-24">
+          <div>
             <OrderSummary
               cart={fullCart}
+              shippingConfirmed={shippingConfirmed}
               isAuthenticated={isAuthenticated}
               onCartRefresh={async () => {
                 if (cartId) {
+                  editStep("delivery");
+                  setShippingOptions([]);
+                  setSelectedShippingId(null);
+                  setShippingQuote(undefined);
+                  const state = await getDhlShippingState(cartId);
+                  setShippingOptions(state.options as HttpTypes.StoreCartShippingOption[]);
+                  setShippingQuote(state.quote);
                   const updated = await getFullCart(cartId);
                   setFullCart(updated);
                 }
@@ -872,3 +892,5 @@ export default function CheckoutPage() {
     </div>
   );
 }
+
+

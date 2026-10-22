@@ -12,10 +12,15 @@ type ImageGalleryProps = {
 export function ImageGallery({ images, title }: ImageGalleryProps) {
   const [selected, setSelected] = useState(0);
 
+  const [failedUrls, setFailedUrls] = useState<Set<string>>(new Set());
+  const visibleImages = images.filter(image => !failedUrls.has(image.url));
+  const activeIndex = Math.min(selected, visibleImages.length - 1);
+  const markFailed = (url: string) => setFailedUrls(previous => new Set([...previous, url]));
+
   // If no images, show a restrained editorial placeholder.
-  if (images.length === 0) {
+  if (visibleImages.length === 0) {
     return (
-      <div className="aspect-[16/10] w-full overflow-hidden border border-[#efe7dd] bg-[#faf8f5] md:aspect-square lg:aspect-auto lg:h-[460px] xl:h-[500px]">
+      <div className="aspect-square w-full overflow-hidden border border-[#efe7dd] bg-[#faf8f5] md:aspect-square lg:aspect-auto lg:h-[460px] xl:h-[500px]">
         <div className="flex h-full flex-col items-center justify-center gap-2 px-6 text-center">
           <ImageIcon
             aria-hidden="true"
@@ -27,7 +32,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
               Imagen no disponible
             </span>
             <span className="mt-1 block text-xs font-medium text-[#9B89A8] md:text-sm">
-              Fotografía en actualización
+              
             </span>
           </div>
         </div>
@@ -38,9 +43,10 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
   return (
     <div>
       {/* Main image */}
-      <div className="relative aspect-[16/10] w-full overflow-hidden border border-[#efe7dd] bg-[#faf8f5] md:aspect-square lg:aspect-auto lg:h-[600px] xl:h-[620px]">
+      <div className="relative aspect-square w-full overflow-hidden border border-[#efe7dd] bg-[#faf8f5] md:aspect-square lg:aspect-auto lg:h-[500px] xl:h-[520px]">
         <Image
-          src={images[selected].url}
+          src={visibleImages[activeIndex].url}
+          onError={() => markFailed(visibleImages[activeIndex].url)}
           alt={`${title} - imagen ${selected + 1}`}
           fill
           sizes="(max-width: 767px) 100vw, (max-width: 1023px) 60vw, 56vw"
@@ -50,22 +56,23 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
       </div>
 
       {/* Thumbnails */}
-      {images.length > 1 && (
+      {visibleImages.length > 1 && (
         <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
-          {images.map((img, i) => (
+          {visibleImages.map((img, i) => (
             <button
               key={img.id}
               type="button"
               onClick={() => setSelected(i)}
               aria-label={`Ver imagen ${i + 1}`}
               className={`relative h-16 w-16 shrink-0 overflow-hidden border transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8] ${
-                i === selected
+                i === activeIndex
                   ? "border-[#7f6d8a] bg-[#faf8f5]"
                   : "border-[#efe7dd] bg-[#f5f1eb] opacity-75 hover:opacity-100"
               }`}
             >
               <Image
                 src={img.url}
+                onError={() => markFailed(img.url)}
                 alt={`${title} - miniatura ${i + 1}`}
                 fill
                 sizes="64px"
@@ -78,3 +85,4 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
     </div>
   );
 }
+

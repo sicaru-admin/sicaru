@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { CheckCircle, Clock, ShoppingBag, MessageCircle } from "lucide-react";
+import { sdk } from "@/lib/medusa";
+import { getOrderPaymentState } from "@/lib/payment-status";
+import { getSalesWhatsAppUrl } from "@/lib/contact";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { ConfettiCelebration } from "@/components/ui/ConfettiCelebration";
 import { formatCurrency, normalizeOrderTotals } from "@/lib/order-totals";
@@ -24,6 +27,7 @@ type PaymentSessionData = {
 
 type OrderData = {
   id: string;
+  payment_status?: string | null;
   display_id?: number;
   email?: string;
   items?: Array<{
@@ -34,6 +38,7 @@ type OrderData = {
     unit_price: number;
     thumbnail?: string | null;
   }>;
+  shipping_methods?: Array<{ name?: string; data?: { delivery_estimate?: string } }>;
   shipping_address?: {
     first_name?: string;
     last_name?: string;
@@ -57,6 +62,7 @@ type OrderData = {
   original_total?: number;
   currency_code?: string;
   payment_collections?: Array<{
+    status?: string | null;
     payment_sessions?: Array<{
       provider_id?: string;
       data?: PaymentSessionData;
@@ -67,6 +73,7 @@ type OrderData = {
 export default function ConfirmacionPage() {
   const router = useRouter();
   const { isAuthenticated, register } = useAuth();
+  const [orderError, setOrderError] = useState<string | null>(null);
   const [order, setOrder] = useState<OrderData | null>(null);
   const [createAccountPassword, setCreateAccountPassword] = useState("");
   const [accountCreating, setAccountCreating] = useState(false);
@@ -77,7 +84,13 @@ export default function ConfirmacionPage() {
     const stored = sessionStorage.getItem("sicaru_last_order");
     if (stored) {
       try {
-        setOrder(JSON.parse(stored));
+        const saved = JSON.parse(stored);
+        if (typeof saved.id !== "string" || !saved.id.startsWith("order_")) throw new Error("Invalid order");
+        sdk.store.order.retrieve(saved.id, {fields: "+payment_collections,+payment_collections.payment_sessions,+shipping_methods,+shipping_address"}).then(({order}) => {
+          if (order.id !== saved.id) throw new Error("Order mismatch");
+          setOrder(order as unknown as OrderData);
+          sessionStorage.setItem("sicaru_last_order", JSON.stringify(order));
+        }).catch(() => setOrderError("No pudimos consultar el estado de tu pedido. Conserva tu número y vuelve a intentarlo."));
       } catch {
         router.replace("/");
       }
@@ -89,7 +102,7 @@ export default function ConfirmacionPage() {
   if (!order) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-sicaru-purple-600" />
+        {orderError ? <p role="alert" className="max-w-md px-4 text-center text-sm text-red-700">{orderError}</p> : <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-sicaru-purple-600" />}
       </div>
     );
   }
@@ -113,14 +126,9 @@ export default function ConfirmacionPage() {
   );
   const isOxxoPayment = !!oxxoSession;
   const oxxoData = oxxoSession?.data;
-  const cardSession = paymentSessions.find((s) =>
-    ["credit_card", "debit_card"].includes(s.data?.payment_type_id ?? "")
-  );
-  const cardData = cardSession?.data;
-  const isCardPendingCapture =
-    cardData?.mp_status === "authorized" &&
-    cardData?.status_detail === "pending_capture";
-  const isPendingPayment = isOxxoPayment || isCardPendingCapture;
+
+  const paymentState = getOrderPaymentState(order);
+  const isPendingPayment = paymentState !== "paid";
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 lg:py-16">
@@ -133,21 +141,21 @@ export default function ConfirmacionPage() {
           <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
         )}
         <h1 className="mt-4 text-2xl font-bold text-sicaru-purple-900 lg:text-3xl">
-          {isPendingPayment ? "Pedido recibido" : "¡Pedido Confirmado!"}
+          {paymentState === "rejected" ? "Pago no aprobado" : isPendingPayment ? "Pedido recibido · pago pendiente" : "¡Pedido Confirmado!"}
         </h1>
         <p className="mt-2 text-gray-600">
           Pedido #{order.display_id ?? order.id.slice(-8).toUpperCase()}
         </p>
         {order.email && (
           <p className="mt-1 text-sm text-gray-500">
-            Hemos enviado la confirmación a{" "}
+            Correo del pedido:{" "}
             <span className="font-medium">{order.email}</span>
           </p>
         )}
       </div>
 
       {/* OXXO payment: show voucher instructions */}
-      {isOxxoPayment && (
+      {isOxxoPayment && paymentState === "pending" && (
         <div className="mb-8 rounded-lg border-2 border-amber-300 bg-amber-50 p-6">
           <h2 className="text-lg font-bold text-amber-800">
             Tu pedido está pendiente de pago
@@ -225,13 +233,13 @@ export default function ConfirmacionPage() {
       {!isOxxoPayment && (
         <div
           className={
-            isCardPendingCapture
+            isPendingPayment
               ? "mb-8 rounded-lg border border-amber-200 bg-amber-50 p-4 text-center text-sm text-amber-800"
               : "mb-8 rounded-lg border border-green-200 bg-green-50 p-4 text-center text-sm text-green-700"
           }
         >
-          {isCardPendingCapture
-            ? "Tu pago con tarjeta fue autorizado y está pendiente de confirmación final."
+          {paymentState === "rejected" ? "Tu pago no fue aprobado. Este pedido no está pagado." : isPendingPayment
+            ? "El pago está pendiente de confirmación. Todavía no se muestra como pagado."
             : "Tu pago ha sido confirmado exitosamente."}
         </div>
       )}
@@ -243,7 +251,7 @@ export default function ConfirmacionPage() {
         </h2>
         <div className="space-y-3">
           {items.map((item) => (
-            <div key={item.id} className="flex gap-3">
+            <div key={item.id} className="flex flex-col gap-3 sm:flex-row">
               <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-md border bg-gray-50">
                 {item.thumbnail ? (
                   <Image
@@ -291,7 +299,7 @@ export default function ConfirmacionPage() {
             <span className="text-gray-600">Envío</span>
             <span>
               {totals.shipping === 0
-                ? "Gratis"
+                ? "No disponible"
                 : formatCurrency(totals.shipping, currency)}
             </span>
           </div>
@@ -316,6 +324,10 @@ export default function ConfirmacionPage() {
         </div>
       </div>
 
+      {order.shipping_methods?.length ? <section className="mt-6 rounded-lg border bg-white p-6" aria-label="Entrega">
+        <h2 className="text-sm font-semibold text-sicaru-purple-900">Entrega</h2>
+        {order.shipping_methods.map((method, index) => <p key={index} className="mt-2 text-sm text-gray-700">{method.name}{method.data?.delivery_estimate ? " · " + method.data.delivery_estimate : ""}</p>)}
+      </section> : null}
       {/* Shipping address */}
       {order.shipping_address && (
         <div className="mt-6 rounded-lg border bg-white p-6">
@@ -386,7 +398,7 @@ export default function ConfirmacionPage() {
               value={createAccountPassword}
               onChange={(e) => setCreateAccountPassword(e.target.value)}
               placeholder="Elige una contraseña (min. 8 caracteres)"
-              className="flex-1 rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-sicaru-purple-500 focus:outline-none focus:ring-1 focus:ring-sicaru-purple-500"
+              className="min-w-0 flex-1 rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-sicaru-purple-500 focus:outline-none focus:ring-1 focus:ring-sicaru-purple-500"
             />
             <button
               type="submit"
@@ -421,7 +433,7 @@ export default function ConfirmacionPage() {
           Seguir Comprando
         </Link>
         <a
-          href="https://wa.me/528281111023"
+          href={getSalesWhatsAppUrl()}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-2 rounded-full border border-gray-300 px-8 py-3 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50"

@@ -1,5 +1,6 @@
 "use client";
 
+
 import { useState, type FormEvent } from "react";
 
 interface FormData {
@@ -27,6 +28,7 @@ export default function ContactFormClient() {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [draftUrl, setDraftUrl] = useState<string | undefined>();
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
 
@@ -55,6 +57,9 @@ export default function ContactFormClient() {
         throw new Error(data.error || "Error al enviar el mensaje");
       }
 
+      const data = await res.json();
+      if (!data.whatsappUrl) throw new Error("No pudimos preparar el borrador. Tu mensaje no se ha enviado.");
+      setDraftUrl(data.whatsappUrl);
       setSubmitted(true);
     } catch (err: unknown) {
       setError(
@@ -86,20 +91,19 @@ export default function ContactFormClient() {
         </div>
 
         <h2 className="text-2xl font-bold text-gray-900">
-          ¡Mensaje Enviado!
+          Borrador listo para WhatsApp
         </h2>
         <p className="mt-2 text-gray-600">
-          Te contactaremos a la brevedad. También puedes escribirnos
-          directamente por WhatsApp.
+          Todavía no se ha enviado ningún mensaje. Abre el borrador en WhatsApp y confirma el envío.
         </p>
 
         <a
-          href="https://wa.me/528281111023"
+          href={draftUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-3 font-semibold text-white transition-colors hover:bg-[#25D366]/90"
         >
-          Escribir por WhatsApp
+          Abrir borrador
         </a>
       </div>
     );

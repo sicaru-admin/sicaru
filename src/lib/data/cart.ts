@@ -1,4 +1,5 @@
 import { sdk } from "@/lib/medusa";
+import { alignCartSalesChannel } from "@/lib/cart-channel";
 
 export async function createCart(regionId: string) {
   const salesChannelId = process.env.NEXT_PUBLIC_SALES_CHANNEL_ID;
@@ -16,6 +17,32 @@ export async function createCart(regionId: string) {
 export async function getCart(cartId: string) {
   const { cart } = await sdk.store.cart.retrieve(cartId);
   return cart;
+}
+
+// A persisted cart can predate the branch's sales-channel configuration.
+// Update the same cart through Medusa, preserving its items and server validation.
+export async function restoreCart(cartId: string) {
+  const aligned = await alignCartSalesChannel(
+    await getCart(cartId),
+    process.env.NEXT_PUBLIC_SALES_CHANNEL_ID,
+    async (id, salesChannelId) => {
+      try {
+        const { cart } = await sdk.store.cart.update(id, { sales_channel_id: salesChannelId });
+        return cart;
+      } catch (error) {
+        // Only a missing cart from retrieve may clear its saved ID.
+        // A failed channel update must leave that cart available for retry.
+        throw new Error("No pudimos recuperar tu carrito. Inténtalo nuevamente.", { cause: error });
+      }
+    }
+  );
+  // Region submission forces Medusa to refresh price/tax context in the same cart.
+  // Preserve all items and let the server validate any changed price or stock.
+  if (aligned.region_id && aligned.items?.some(item => item.is_tax_inclusive === false)) {
+    try { const {cart}=await sdk.store.cart.update(aligned.id,{region_id:aligned.region_id}); return cart; }
+    catch(error) { throw new Error("No pudimos actualizar los importes del carrito. Tus productos siguen guardados.",{cause:error}); }
+  }
+  return aligned;
 }
 
 export async function addItem(

@@ -1,8 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { HttpTypes } from "@medusajs/types";
-import { MessageCircle, Search, ShieldCheck, BadgeCheck } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useProductContact } from "@/components/contact/ContactContext";
+import { getCartLineVariantLabel } from "@/components/cart/cart-line-variant";
+import { getProductPriceRange } from "@/lib/catalog";
 import { useCart } from "@/components/cart/CartProvider";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import {
@@ -12,9 +15,11 @@ import {
   type ProductOptionSelection,
 } from "./VariantSelector";
 import { QuantitySelector } from "./QuantitySelector";
+import { getProductAvailability } from "@/lib/product-availability";
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct;
+  onVariantChange?: (variant: HttpTypes.StoreProductVariant | null) => void;
 };
 
 type VariantOption = {
@@ -60,15 +65,9 @@ function optionMatches(
   );
 }
 
-const WHATSAPP_NUMBER = "528281111023";
 
-const TRUST_ITEMS = [
-  { icon: Search, text: "Consulta disponibilidad" },
-  { icon: ShieldCheck, text: "Pago seguro" },
-  { icon: BadgeCheck, text: "Productos profesionales" },
-];
 
-export function ProductActions({ product }: ProductActionsProps) {
+export function ProductActions({ product, onVariantChange }: ProductActionsProps) {
   const variants = useMemo(() => product.variants ?? [], [product.variants]);
   const selectableOptions = useMemo(
     () => getSelectableOptions(product),
@@ -80,7 +79,11 @@ export function ProductActions({ product }: ProductActionsProps) {
     useState<ProductOptionSelection>({});
   const [quantity, setQuantity] = useState(1);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { addToCart, isLoading } = useCart();
+  const { addToCart, buyNow, isLoading } = useCart();
+  const router = useRouter();
+  const actionLock = useRef(false);
+  const [added, setAdded] = useState(false);
+  const {setProduct}=useProductContact();
 
   const selectedVariant = useMemo(() => {
     if (variants.length === 1 && !requiresVariantSelection) {
@@ -139,25 +142,29 @@ export function ProductActions({ product }: ProductActionsProps) {
     selectedVariant ??
     (requiresVariantSelection ? lowestPricedVariant : variants[0] ?? null);
 
-  if (!displayVariant) return null;
-
+  useEffect(() => {
+    onVariantChange?.(selectedVariant);
+    setProduct({title:product.title??"Producto",variant:getCartLineVariantLabel({variant_title:selectedVariant?.title,variant:selectedVariant}),quantity,
+      subtotal:selectedVariant?.calculated_price?.is_calculated_price_tax_inclusive ? (selectedVariant.calculated_price.calculated_amount??0)*quantity : undefined});
+    return ()=>setProduct(null);
+  },[selectedVariant,quantity,product.title,onVariantChange,setProduct]);
+  useEffect(()=>{if(!added)return;const timer=setTimeout(()=>setAdded(false),2500);return()=>clearTimeout(timer);},[added]);
+  if (!displayVariant) return <p>Producto no disponible.</p>;
   const price = displayVariant.calculated_price;
-  const formattedPrice = price?.calculated_amount != null
-    ? new Intl.NumberFormat("es-MX", {
-        style: "currency",
-        currency: price.currency_code || "MXN",
-      }).format(price.calculated_amount)
-    : "";
-
-  const whatsappMsg = `Hola! Me interesa el ${product.title} (${formattedPrice}). ¿Tienen disponible?`;
+  const range=getProductPriceRange(product);
   const selectionMessage = selectableOptions.some((option) =>
     option.title.toLocaleLowerCase("es-MX").includes("tono")
   )
     ? "Selecciona un tono"
     : "Selecciona una opción";
-  const canAddToCart = !!selectedVariant && !isLoading;
+  const hasPrice = selectedVariant?.calculated_price?.calculated_amount != null;
+  const availability = getProductAvailability(selectedVariant, quantity);
+  const isSoldOut = availability === "out_of_stock";
+  const exceedsStock = availability === "insufficient";
+  const canAddToCart = !!selectedVariant && hasPrice && !isSoldOut && !exceedsStock && !isLoading;
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = async (checkout = false) => {
+    if(actionLock.current)return;
     setErrorMessage(null);
 
     if (!selectedVariant?.id) {
@@ -165,8 +172,11 @@ export function ProductActions({ product }: ProductActionsProps) {
       return;
     }
 
+    if (!canAddToCart) return;
+    actionLock.current=true;
     try {
-      await addToCart(selectedVariant.id, quantity);
+      if(checkout){await buyNow(selectedVariant.id, quantity);router.push("/checkout");}
+      else {await addToCart(selectedVariant.id, quantity);setAdded(true);}
     } catch (error) {
       console.error("Error adding selected variant to cart:", error);
       setErrorMessage(
@@ -174,7 +184,7 @@ export function ProductActions({ product }: ProductActionsProps) {
           ? error.message
           : "No pudimos agregar el producto al carrito. Intenta de nuevo."
       );
-    }
+    } finally { actionLock.current=false; }
   };
 
   const handleSelectOption = (optionId: string, value: string) => {
@@ -195,6 +205,7 @@ export function ProductActions({ product }: ProductActionsProps) {
       {/* Price */}
       <div>
         <div className="flex items-baseline gap-3">
+          {!selectedVariant && range?.varies && <span className="text-sm text-gray-600">Desde</span>}
           <PriceDisplay
             variant={displayVariant}
             className="text-2xl font-semibold text-[#7f6d8a] md:text-3xl"
@@ -206,7 +217,7 @@ export function ProductActions({ product }: ProductActionsProps) {
             />
           )}
         </div>
-        <p className="mt-1 text-xs text-[#9b89a8]">IVA incluido</p>
+        <p className="mt-1 text-xs text-[#9b89a8]">{price?.is_calculated_price_tax_inclusive ? "IVA incluido" : "IVA se calcula en el carrito"}</p>
       </div>
 
       {/* Variant selector */}
@@ -226,6 +237,8 @@ export function ProductActions({ product }: ProductActionsProps) {
         </p>
       )}
 
+      {isSoldOut && <p role="status" className="text-sm text-red-700">Agotado</p>}
+      {exceedsStock && <p role="status" className="text-sm text-red-700">Reduce la cantidad: solo hay {selectedVariant?.inventory_quantity} disponibles.</p>}
       {/* Quantity */}
       <QuantitySelector quantity={quantity} onChange={setQuantity} />
 
@@ -233,36 +246,18 @@ export function ProductActions({ product }: ProductActionsProps) {
       <div className="space-y-2.5 md:space-y-3">
         <button
           type="button"
-          onClick={handleAddToCart}
+          onClick={() => void handleAddToCart()}
           disabled={!canAddToCart}
           className="btn-ripple tap-feedback w-full bg-[#7f6d8a] px-8 py-3.5 text-base font-semibold text-[#faf8f5] transition-colors duration-200 hover:bg-[#8e7a9e] disabled:cursor-not-allowed disabled:opacity-50 md:text-lg"
         >
-          {isLoading ? "Agregando..." : "Agregar al Carrito"}
+          {isLoading ? "Agregando..." : isSoldOut ? "Agotado" : "Agregar al carrito"}
         </button>
 
-        <a
-          href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMsg)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex min-h-11 w-full items-center justify-center gap-2 border border-[#7f6d8a] px-8 py-3 text-base font-semibold text-[#7f6d8a] transition-colors duration-200 hover:bg-[#f5f1eb] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8]"
-        >
-          <MessageCircle className="h-5 w-5" />
-          Preguntar por WhatsApp
-        </a>
+        <button type="button" onClick={()=>void handleAddToCart(true)} disabled={!canAddToCart}
+          className="w-full min-h-11 rounded-md border border-sicaru-purple-700 px-5 py-3 text-sm font-medium text-sicaru-purple-700 disabled:opacity-50">Comprar ahora</button>
+        <p role="status" aria-live="polite" className="text-sm text-green-800">{added ? "Añadido al carrito" : ""}</p>
       </div>
 
-      {/* Trust row */}
-      <div className="flex flex-wrap items-center justify-center gap-3 border-t border-[#efe7dd] pt-3 md:justify-start md:gap-4 md:pt-4">
-        {TRUST_ITEMS.map((item) => (
-          <div
-            key={item.text}
-            className="flex items-center gap-1.5 text-xs text-[#9b89a8]"
-          >
-            <item.icon className="h-4 w-4 text-[#8e7a9e]" />
-            <span>{item.text}</span>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }

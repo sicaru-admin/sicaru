@@ -1,19 +1,27 @@
 "use client";
 
+import { STORE } from "@/lib/constants/store";
+import { getDhlWhatsAppUrl } from "@/lib/shipping";
 import { Truck } from "lucide-react";
+import { getShippingOptionPrice, getParcelShippingOptions } from "@/lib/shipping";
+import type { DhlQuote, ParcelItem } from "@/lib/shipping";
 
 type ShippingOption = {
   id: string;
   name: string;
-  amount: number;
+  amount?: number | null;
+  metadata?: Record<string, unknown> | null;
+  is_tax_inclusive?: boolean;
   calculated_price?: {
     calculated_amount?: number | null;
     currency_code?: string | null;
-  };
+  } | null;
 };
 
 type ShippingMethodSelectorProps = {
+  items?: ParcelItem[];
   options: ShippingOption[];
+  quote?: DhlQuote;
   selectedId: string | null;
   onSelect: (optionId: string) => void;
   onSubmit: () => Promise<void>;
@@ -21,7 +29,6 @@ type ShippingMethodSelectorProps = {
 };
 
 function formatPrice(amount: number, currency = "MXN") {
-  if (amount === 0) return "Gratis";
   return new Intl.NumberFormat("es-MX", {
     style: "currency",
     currency,
@@ -30,21 +37,28 @@ function formatPrice(amount: number, currency = "MXN") {
 
 export function ShippingMethodSelector({
   options,
+  quote,
+  items,
   selectedId,
   onSelect,
   onSubmit,
   isLoading,
 }: ShippingMethodSelectorProps) {
+  const verifiedOptions = getParcelShippingOptions(options, quote);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedId) return;
+    const selected = verifiedOptions.find((option) => option.id === selectedId);
+    if (!selected || getShippingOptionPrice(selected) === null) return;
     await onSubmit();
   };
 
-  if (options.length === 0) {
+  if (verifiedOptions.length === 0) {
     return (
-      <div className="py-4 text-center text-sm text-gray-500">
-        No hay opciones de envío disponibles para esta dirección.
+      <div className="space-y-3 py-4 text-sm text-gray-600" role="status">
+        <p className="font-medium text-gray-900">{isLoading ? "Consultando opciones de envío…" : "Envío por cotizar"}</p>
+        <p>{quote?.status === "quote_required" && quote.reason === "no_coverage" ? "No hay cobertura de paquetería verificada para esta dirección. Puedes consultar otra opción." : "Confirmaremos cobertura y costo antes de iniciar el pago. Tus productos y datos siguen guardados."}</p>
+        <a href={getDhlWhatsAppUrl(STORE.whatsapp,items)??undefined} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-medium text-sicaru-purple-700 underline">Consultar envío por WhatsApp</a>
+
       </div>
     );
   }
@@ -52,9 +66,9 @@ export function ShippingMethodSelector({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-3">
-        {options.map((option) => {
-          const price =
-            option.calculated_price?.calculated_amount ?? option.amount ?? 0;
+        {verifiedOptions.map((option) => {
+          const price = getShippingOptionPrice(option);
+          if (price === null) return null;
           const currency =
             option.calculated_price?.currency_code?.toUpperCase() || "MXN";
           const isSelected = selectedId === option.id;
@@ -81,6 +95,7 @@ export function ShippingMethodSelector({
                 <p className="text-sm font-medium text-gray-900">
                   {option.name}
                 </p>
+                {typeof option.metadata?.delivery_estimate === "string" && <p className="mt-1 text-xs text-gray-600">Entrega estimada: {option.metadata.delivery_estimate}</p>}
               </div>
               <span className="text-sm font-semibold text-gray-900">
                 {formatPrice(price, currency)}
@@ -92,11 +107,18 @@ export function ShippingMethodSelector({
 
       <button
         type="submit"
-        disabled={isLoading || !selectedId}
+        disabled={
+          isLoading ||
+          !verifiedOptions.some(
+            (option) => option.id === selectedId && getShippingOptionPrice(option) !== null
+          )
+        }
         className="w-full rounded-full bg-sicaru-pink px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-sicaru-pink/90 disabled:opacity-50"
       >
-        {isLoading ? "Guardando..." : "Continuar"}
+        {isLoading ? "Guardando..." : "Continuar compra"}
       </button>
     </form>
   );
 }
+
+

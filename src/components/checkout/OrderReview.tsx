@@ -1,8 +1,7 @@
 "use client";
 
 import type { HttpTypes } from "@medusajs/types";
-import { MEXICAN_STATES } from "@/lib/constants/mexican-states";
-import { formatCurrency, normalizeOrderTotals } from "@/lib/order-totals";
+import { formatCurrency } from "@/lib/order-totals";
 
 type OrderReviewProps = {
   cart: HttpTypes.StoreCart;
@@ -28,9 +27,6 @@ type OrderReviewProps = {
 
 export function OrderReview({
   cart,
-  email,
-  shippingAddress,
-  shippingMethodName,
   paymentMethodName,
   onConfirm,
   isSubmitting,
@@ -38,89 +34,10 @@ export function OrderReview({
   isValidatingPayment,
   error,
 }: OrderReviewProps) {
-  const stateName =
-    MEXICAN_STATES.find((s) => s.value === shippingAddress.province)?.label ??
-    shippingAddress.province;
-
-  const currency = cart.currency_code?.toUpperCase() || "MXN";
-  const totals = normalizeOrderTotals(cart);
-
+  const currency=cart.currency_code?.toUpperCase()||"MXN";
   return (
     <div className="space-y-5">
-      {/* Contact */}
-      <div className="rounded-lg bg-gray-50 p-4">
-        <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-          Contacto
-        </p>
-        <p className="mt-1 text-sm text-gray-900">{email}</p>
-      </div>
-
-      {/* Address */}
-      <div className="rounded-lg bg-gray-50 p-4">
-        <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-          Dirección de envío
-        </p>
-        <p className="mt-1 text-sm text-gray-900">
-          {shippingAddress.first_name} {shippingAddress.last_name}
-        </p>
-        <p className="text-sm text-gray-600">
-          {shippingAddress.address_1}
-          {shippingAddress.address_2 && `, ${shippingAddress.address_2}`}
-        </p>
-        <p className="text-sm text-gray-600">
-          {shippingAddress.city}, {stateName} {shippingAddress.postal_code}
-        </p>
-        <p className="text-sm text-gray-600">
-          Tel: +52 {shippingAddress.phone}
-        </p>
-      </div>
-
-      {/* Shipping + Payment */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="rounded-lg bg-gray-50 p-4">
-          <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-            Envío
-          </p>
-          <p className="mt-1 text-sm text-gray-900">{shippingMethodName}</p>
-        </div>
-        <div className="rounded-lg bg-gray-50 p-4">
-          <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-            Pago
-          </p>
-          <p className="mt-1 text-sm text-gray-900">{paymentMethodName}</p>
-        </div>
-      </div>
-
-      {/* Totals */}
-      <div className="space-y-2 border-t pt-4 text-sm">
-        <div className="flex justify-between">
-          <span className="text-gray-600">Productos</span>
-          <span>{formatCurrency(totals.products, currency)}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-gray-600">Envío</span>
-          <span>{formatCurrency(totals.shipping, currency)}</span>
-        </div>
-        {totals.taxes > 0 && (
-          <div className="flex justify-between">
-            <span className="text-gray-600">Impuestos</span>
-            <span>{formatCurrency(totals.taxes, currency)}</span>
-          </div>
-        )}
-        {totals.discount > 0 && (
-          <div className="flex justify-between text-green-600">
-            <span>Descuento</span>
-            <span>-{formatCurrency(totals.discount, currency)}</span>
-          </div>
-        )}
-        <div className="flex justify-between border-t pt-2 text-base font-bold">
-          <span>Total</span>
-          <span className="text-sicaru-purple-900">
-            {formatCurrency(totals.total, currency)}
-          </span>
-        </div>
-      </div>
-
+      <p className="text-sm text-gray-600">{paymentMethodName}. Revisa el resumen antes de pagar.</p>
       {error && (
         <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
           {error}
@@ -139,7 +56,7 @@ export function OrderReview({
             {isValidatingPayment ? "Validando pago..." : "Procesando..."}
           </span>
         ) : (
-          "Confirmar y Pagar"
+          "Pagar " + formatCurrency(cart.total, currency)
         )}
       </button>
 
@@ -149,3 +66,4 @@ export function OrderReview({
     </div>
   );
 }
+
