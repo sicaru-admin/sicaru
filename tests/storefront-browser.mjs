@@ -13,7 +13,7 @@ const backend = createServer(async (req, res) => {
   const url = new URL(req.url, "http://127.0.0.1:9000");
   res.setHeader("Access-Control-Allow-Origin", baseUrl);
   res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader("Access-Control-Allow-Headers", "content-type,x-publishable-api-key,authorization");
+  res.setHeader("Access-Control-Allow-Headers", "content-type,x-publishable-api-key,authorization,x-medusa-locale");
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,OPTIONS");
   res.setHeader("Content-Type", "application/json");
   if (req.method === "OPTIONS") { res.end(); return; }
@@ -62,7 +62,7 @@ try {
   }
   await page.screenshot({ path: "artifacts/home-mobile.png", fullPage: true });
   await page.getByRole("button", { name: "Abrir menú" }).click();
-  await page.getByRole("link", { name: "Productos", exact: true }).last().click();
+  await page.locator("header .sicaru-mobile-nav-link").getByText("Productos", { exact: true }).click();
   await page.waitForURL("**/productos");
   await page.getByRole("heading", { name: "Encuentra tu próximo favorito" }).waitFor();
   assert.equal(await page.getByText(/Catálogo informativo|Estamos preparando/).count(), 0);
