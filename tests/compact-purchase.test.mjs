@@ -1,11 +1,13 @@
 import assert from "node:assert/strict";
 import {test} from "node:test";
-import {getLocalDeliveryMessage} from "../src/lib/shipping.ts";
+import {getParcelQuoteMessage} from "../src/lib/shipping.ts";
 import {rememberCheckout,readRememberedCheckout,forgetRememberedCheckout} from "../src/lib/checkout-draft.ts";
 import {getProductPriceRange,matchesCatalogQuery} from "../src/lib/catalog.ts";
-test("only confirmed standard coverage gets a local total; outskirts and absent coverage stay unquoted",()=>{
-  for(const zone of [undefined,"Otra zona","Santa Anita","Palma Nova","Valle del Roble"]){const text=getLocalDeliveryMessage([{title:"Tinte",quantity:2,variant_title:"1 Negro"}],194,zone);assert(text.includes("Total con entrega local: por confirmar"));assert(!text.includes("$234.00"));assert(text.includes("2 × Tinte (1 Negro)"));}
-  for(const zone of ["Centro","Alberos","Bella Vista","Candelario"])assert(getLocalDeliveryMessage([],194,zone).includes("Total con entrega local: $234.00 MXN"));
+test("a parcel inquiry never invents delivery coverage, a fee or a final order total",()=>{
+ const text = getParcelQuoteMessage([{title:"Tinte",quantity:2,variant_title:"1 Negro"}],194);
+ assert(text.includes("2 × Tinte (1 Negro)"));assert(text.includes("Subtotal de productos: $194.00 MXN"));
+ assert(text.includes("Envío por cotizar"));assert(text.includes("confirmar costo, IVA y cobertura"));
+ assert(!text.includes("Total con"));assert(!text.includes("$234.00"));assert(!text.includes("entrega local"));
 });
 test("remembered checkout contains only address/contact fields and can be removed",()=>{
   const values=new Map(),storage={getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,value),removeItem:key=>values.delete(key)};

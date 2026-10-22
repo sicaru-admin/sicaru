@@ -1,10 +1,10 @@
 "use client";
 
 import { CreditCard, Store } from "lucide-react";
-import {
-  MercadoPagoCardForm,
-  type CardTokenData,
-} from "@/components/checkout/MercadoPagoCardForm";
+import dynamic from "next/dynamic";
+import type { CardTokenData } from "@/components/checkout/MercadoPagoCardForm";
+
+const MercadoPagoCardForm = dynamic(() => import("@/components/checkout/MercadoPagoCardForm").then(module => module.MercadoPagoCardForm), {ssr: false});
 
 export type PaymentMethod = "card" | "oxxo";
 
@@ -73,6 +73,7 @@ export function PaymentSelector({
                   name="payment-method"
                   value={method.id}
                   checked={isSelected}
+                  disabled={isLoading}
                   onChange={() => onMethodChange(method.id)}
                   className="mt-0.5 h-4 w-4 text-sicaru-purple-600 focus:ring-sicaru-purple-500"
                 />
@@ -90,7 +91,7 @@ export function PaymentSelector({
               </label>
 
               {/* Card: MP CardPayment brick renders inside selected option */}
-              {isSelected && method.id === "card" && (
+              {isSelected && method.id === "card" && !isLoading && (
                 <MercadoPagoCardForm
                   amount={cartTotal}
                   onTokenized={onCardTokenized}

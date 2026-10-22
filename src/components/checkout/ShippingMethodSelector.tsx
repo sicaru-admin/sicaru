@@ -3,14 +3,15 @@
 import { STORE } from "@/lib/constants/store";
 import { getDhlWhatsAppUrl } from "@/lib/shipping";
 import { Truck } from "lucide-react";
-import { getShippingOptionPrice } from "@/lib/shipping";
-import type { DhlQuote, LocalDeliveryItem } from "@/lib/shipping";
+import { getShippingOptionPrice, getParcelShippingOptions } from "@/lib/shipping";
+import type { DhlQuote, ParcelItem } from "@/lib/shipping";
 
 type ShippingOption = {
   id: string;
   name: string;
   amount?: number | null;
   metadata?: Record<string, unknown> | null;
+  is_tax_inclusive?: boolean;
   calculated_price?: {
     calculated_amount?: number | null;
     currency_code?: string | null;
@@ -18,7 +19,7 @@ type ShippingOption = {
 };
 
 type ShippingMethodSelectorProps = {
-  items?: LocalDeliveryItem[];
+  items?: ParcelItem[];
   options: ShippingOption[];
   quote?: DhlQuote;
   selectedId: string | null;
@@ -43,18 +44,20 @@ export function ShippingMethodSelector({
   onSubmit,
   isLoading,
 }: ShippingMethodSelectorProps) {
+  const verifiedOptions = getParcelShippingOptions(options, quote);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const selected = options.find((option) => option.id === selectedId);
+    const selected = verifiedOptions.find((option) => option.id === selectedId);
     if (!selected || getShippingOptionPrice(selected) === null) return;
     await onSubmit();
   };
 
-  if (options.length === 0) {
+  if (verifiedOptions.length === 0) {
     return (
       <div className="space-y-3 py-4 text-sm text-gray-600" role="status">
-        <p>{isLoading ? "Consultando opciones de envío…" : !quote ? "No pudimos consultar el envío. Tus productos y datos siguen guardados." : quote.status==="quote_required"&&quote.reason==="no_coverage" ? "El servicio de paquetería no tiene cobertura para esta dirección." : "Necesitamos cotizar el envío a esta dirección"}</p>
-        {quote&&<a href={getDhlWhatsAppUrl(STORE.whatsapp,items)??undefined} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-medium text-sicaru-purple-700 underline">Consultar envío</a>}
+        <p className="font-medium text-gray-900">{isLoading ? "Consultando opciones de envío…" : "Envío por cotizar"}</p>
+        <p>{quote?.status === "quote_required" && quote.reason === "no_coverage" ? "No hay cobertura de paquetería verificada para esta dirección. Puedes consultar otra opción." : "Confirmaremos cobertura y costo antes de iniciar el pago. Tus productos y datos siguen guardados."}</p>
+        <a href={getDhlWhatsAppUrl(STORE.whatsapp,items)??undefined} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-medium text-sicaru-purple-700 underline">Consultar envío por WhatsApp</a>
 
       </div>
     );
@@ -63,7 +66,7 @@ export function ShippingMethodSelector({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-3">
-        {options.map((option) => {
+        {verifiedOptions.map((option) => {
           const price = getShippingOptionPrice(option);
           if (price === null) return null;
           const currency =
@@ -106,7 +109,7 @@ export function ShippingMethodSelector({
         type="submit"
         disabled={
           isLoading ||
-          !options.some(
+          !verifiedOptions.some(
             (option) => option.id === selectedId && getShippingOptionPrice(option) !== null
           )
         }

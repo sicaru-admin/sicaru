@@ -1,12 +1,12 @@
 import { sdk } from "@/lib/medusa";
 import type { HttpTypes } from "@medusajs/types";
-import { getParcelShippingOptions, hasParcelShippingMethod } from "@/lib/shipping";
+import { getParcelShippingOptions, hasParcelShippingMethod, isCurrentParcelQuote } from "@/lib/shipping";
 import type { DhlQuote } from "@/lib/shipping";
 
 export async function getFullCart(cartId: string) {
   const { cart } = await sdk.store.cart.retrieve(cartId, {
     fields:
-      "+shipping_address,+billing_address,+shipping_methods,+payment_collection,+payment_collection.payment_sessions,+region,+promotions",
+      "+shipping_address,+billing_address,+shipping_methods,+shipping_methods.data,+payment_collection,+payment_collection.payment_sessions,+region,+promotions",
   });
   return cart;
 }
@@ -23,7 +23,10 @@ export async function getDhlShippingState(cartId: string) {
   const response = await sdk.client.fetch<{
     quote: DhlQuote; shipping_options: HttpTypes.StoreCartShippingOption[];
   }>(`/store/carts/${cartId}/dhl-quote`, { method: "GET", cache: "no-store" });
-  return { quote: response.quote, options: getParcelShippingOptions(response.shipping_options, response.quote) };
+  const quote: DhlQuote = isCurrentParcelQuote(response.quote) || response.quote?.status === "quote_required"
+    ? response.quote
+    : {status: "quote_required", reason: "unverified_quote", message: "Envío por cotizar"};
+  return { quote, options: getParcelShippingOptions(response.shipping_options ?? [], quote) };
 }
 export async function listShippingOptions(cartId: string) {
   try { return (await getDhlShippingState(cartId)).options; }
@@ -31,7 +34,7 @@ export async function listShippingOptions(cartId: string) {
 }
 
 export async function addShippingMethod(cartId: string, optionId: string) {
-  const options = await listShippingOptions(cartId);
+  const {options, quote} = await getDhlShippingState(cartId);
   if (!options.some((option) => option.id === optionId)) {
     throw new Error(
       "El envío cambió o ya no está disponible. Vuelve al paso de envío antes de pagar."
@@ -40,16 +43,25 @@ export async function addShippingMethod(cartId: string, optionId: string) {
 
   const { cart } = await sdk.store.cart.addShippingMethod(cartId, {
     option_id: optionId,
+    data: quote.status === "available" ? {
+      sicaru_quote_id: quote.quote_id,
+      sicaru_quote_fingerprint: quote.fingerprint,
+    } : {},
   });
+  if (!hasParcelShippingMethod(cart, options, quote)) {
+    throw new Error("El envío o los importes cambiaron. Revisa la cotización antes de pagar.");
+  }
   return cart;
 }
 
-async function requireParcelShipping(cartId: string) {
+export async function requireParcelShipping(cartId: string) {
   const cart = await getFullCart(cartId);
-  const options = await listShippingOptions(cartId);
-  if (!hasParcelShippingMethod(cart, options)) {
+  let state;
+  try { state = await getDhlShippingState(cartId); }
+  catch { throw new Error("Envío por cotizar. No pudimos verificar el costo y la cobertura antes del pago."); }
+  if (!hasParcelShippingMethod(cart, state.options, state.quote)) {
     throw new Error(
-      "Selecciona un servicio de envío disponible antes de pagar."
+      "Envío por cotizar. Confirma una cotización vigente de paquetería antes de pagar."
     );
   }
   return cart;

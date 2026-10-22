@@ -1,17 +1,18 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { getLocalDeliveryMessage, getLocalDeliveryWhatsAppUrl } from "../src/lib/shipping.ts";
+import { getParcelQuoteMessage, getDhlWhatsAppUrl } from "../src/lib/shipping.ts";
 import { getProductAvailability } from "../src/lib/product-availability.ts";
 import { readCheckoutDraft, saveCheckoutDraft, clearCheckoutDraft } from "../src/lib/checkout-draft.ts";
-test("the local draft includes distinct tones, quantities, server merchandise subtotal and the separate delivery sum", () => {
+test("the parcel inquiry keeps product choices and quantities without promising a rate", () => {
   const items = [{title:"Tinte",variant_title:"6/1",quantity:2},{title:"Tinte",variant_title:"7/0",quantity:1}];
-  const url = new URL(getLocalDeliveryWhatsAppUrl("528281136652",items,255,"Centro"));
+  const url = new URL(getDhlWhatsAppUrl("528281136652",items));
   assert.equal(url.pathname,"/528281136652");
   const text=url.searchParams.get("text");
-  for (const expected of ["2 × Tinte (6/1)","1 × Tinte (7/0)","Subtotal de productos: $255.00 MXN","Entrega local: $40 MXN","Total con entrega local: $295.00 MXN","confirmar cobertura","zona urbana de Cadereyta Jiménez","Santa Anita, Palma Nova, Valle del Roble"]) assert(text.includes(expected),expected);
+  for (const expected of ["2 × Tinte (6/1)","1 × Tinte (7/0)","Envío por cotizar","confirmar costo, IVA y cobertura"]) assert(text.includes(expected),expected);
+  assert.doesNotMatch(text,/\$40|\$49|entrega local|Total con/);
 });
-test("missing or invalid merchandise amounts do not invent a local total", () => {
-  for (const amount of [undefined,null,NaN,-1]) assert(getLocalDeliveryMessage([],amount).includes("Total con entrega local: por confirmar"));
+test("missing or invalid merchandise amounts do not invent a product subtotal", () => {
+  for (const amount of [undefined,null,NaN,-1]) assert(!getParcelQuoteMessage([],amount).includes("Subtotal de productos:"));
 });
 test("out-of-stock differs from a requested quantity above stock and from unknown inventory", () => {
   const variant={manage_inventory:true,allow_backorder:false,inventory_quantity:0};

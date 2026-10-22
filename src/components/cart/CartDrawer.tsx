@@ -133,7 +133,7 @@ export function CartDrawer() {
           {/* Footer */}
           {cart?.items?.length ? (
             <div className="border-t px-4 py-4">
-              <p className="mb-2 text-sm text-gray-600">IVA: <PriceDisplay amount={cart.tax_total ?? 0} /> · Envío por calcular</p>
+              <p className="mb-2 text-sm text-gray-600">IVA: <PriceDisplay amount={cart.tax_total ?? 0} /> · Envío por cotizar</p>
               <div className="mb-4 flex items-center justify-between">
                 <span className="text-lg font-semibold">Subtotal</span>
                 <PriceDisplay

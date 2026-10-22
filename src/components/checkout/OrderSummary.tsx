@@ -12,9 +12,9 @@ export function OrderSummary({cart,shippingConfirmed=false}:Props){
     </details>
     <dl className="mt-3 space-y-2 border-t pt-3 text-sm"><div className="flex justify-between"><dt>Productos</dt><dd>{formatCurrency((cart.item_total??0)+(cart.discount_total??0))}</dd></div>
       {(cart.discount_total??0)>0&&<div className="flex justify-between text-green-800"><dt>Descuentos</dt><dd>−{formatCurrency(cart.discount_total)}</dd></div>}
-      <div className="flex justify-between"><dt>Envío</dt><dd>{shippingConfirmed&&cart.shipping_total>0?formatCurrency(cart.shipping_total):"Por cotizar"}</dd></div>
+      <div className="flex justify-between"><dt>Envío</dt><dd>{shippingConfirmed&&cart.shipping_total>0?formatCurrency(cart.shipping_total):"Envío por cotizar"}</dd></div>
       <div className="flex justify-between border-t pt-3 text-base font-semibold"><dt>{shippingConfirmed?"Total":"Subtotal"}</dt><dd>{formatCurrency(shippingConfirmed?cart.total:cart.item_total)}</dd></div>
     </dl>
-    <p className="mt-2 text-xs text-gray-500">{(cart.items??[]).every(item=>item.is_tax_inclusive)?"IVA incluido.":"IVA calculado en el subtotal."}</p>
+    <p className="mt-2 text-xs text-gray-500">{(cart.items??[]).every(item=>item.is_tax_inclusive)?"IVA incluido.":"IVA calculado por Medusa e incluido en los importes mostrados."}</p>
   </section>;
 }

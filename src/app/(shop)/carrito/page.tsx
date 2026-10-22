@@ -6,7 +6,7 @@ import Image from "next/image";
 import {useCart} from "@/components/cart/CartProvider";
 import {getCartLineVariantLabel} from "@/components/cart/cart-line-variant";
 import {formatCurrency} from "@/lib/order-totals";
-import {LocalDeliveryNotice} from "@/components/checkout/LocalDeliveryNotice";
+import {ParcelQuoteNotice} from "@/components/checkout/ParcelQuoteNotice";
 export default function CarritoPage(){
   const {cart,isLoading,isInitializingCart,cartError,retryInitializeCart,updateQuantity,removeFromCart}=useCart();
   const [rowError,setRowError]=useState<{id:string;message:string}|null>(null);
@@ -29,9 +29,9 @@ export default function CarritoPage(){
         </div>
       </li>)}</ul>
       <section className="rounded-lg border border-sicaru-purple-200 bg-white p-4"><div className="flex justify-between text-lg font-semibold"><h2 className="font-body text-base">Subtotal</h2><p>{formatCurrency(cart.item_total)}</p></div>
-        <p className="mt-2 text-xs text-gray-600">{inclusive?"IVA incluido. Envío al continuar.":"IVA calculado en el subtotal. Envío al continuar."}</p>
+        <p className="mt-2 text-xs text-gray-600">{inclusive?"IVA incluido. Envío por cotizar.":"IVA calculado en el subtotal. Envío por cotizar."}</p>
         <Link href="/checkout" className="sicaru-button-primary mt-4 w-full">Finalizar compra</Link>
-        <LocalDeliveryNotice items={cart.items.map(item=>({...item,variant_title:getCartLineVariantLabel(item)}))} subtotal={cart.item_total}/>
+        <ParcelQuoteNotice items={cart.items.map(item=>({...item,variant_title:getCartLineVariantLabel(item)}))} subtotal={cart.item_total}/>
       </section>
     </div>}
   </div>;
