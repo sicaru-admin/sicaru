@@ -93,6 +93,9 @@ try {
   assert.deepEqual(pageErrors, []);
   assert.equal(paymentRequests, 0);
   console.log("PASS: mobile home, images, menu, products, add to cart, shipping guard, WhatsApp and backend outage fallbacks; no payments or browser errors.");
+} catch (error) {
+  await page.screenshot({ path: "artifacts/failure-mobile.png", fullPage: true }).catch(() => {});
+  throw error;
 } finally {
   await browser.close();
   await new Promise((resolve) => backend.close(resolve));

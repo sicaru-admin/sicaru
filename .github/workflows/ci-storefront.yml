@@ -27,23 +27,28 @@ jobs:
         run: npm run lint
 
       - name: Type check
+        if: ${{ !cancelled() }}
         run: npx tsc --noEmit
 
       - name: Backend resilience and payment guards
+        if: ${{ !cancelled() }}
         run: node --experimental-vm-modules --test tests/catalog-resilience.test.mjs
 
       - name: Install browser test tools
+        if: ${{ !cancelled() }}
         run: |
           npm install --no-save --package-lock=false playwright@1.56.1
           npx playwright install --with-deps chromium
 
       - name: Verify mobile storefront and backend fallbacks
+        if: ${{ !cancelled() }}
         env:
           NEXT_PUBLIC_MEDUSA_BACKEND_URL: http://127.0.0.1:9000
           NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: pk_storefront_test
           NEXT_PUBLIC_CATALOG_MODE: "true"
         run: |
           npm run dev -- --hostname 127.0.0.1 > /tmp/sicaru-next.log 2>&1 &
+          trap 'cat /tmp/sicaru-next.log' EXIT
           node tests/storefront-browser.mjs
 
       - name: Upload mobile review screenshots

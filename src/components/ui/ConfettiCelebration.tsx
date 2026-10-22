@@ -20,6 +20,7 @@ export function ConfettiCelebration() {
   const [particles, setParticles] = useState<Particle[]>([]);
 
   useEffect(() => {
+    const start = setTimeout(() => {
     const p: Particle[] = Array.from({ length: PARTICLE_COUNT }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
@@ -31,9 +32,10 @@ export function ConfettiCelebration() {
       borderRadius: Math.random() > 0.5 ? "50%" : "2px",
     }));
     setParticles(p);
+    }, 0);
 
     const timer = setTimeout(() => setParticles([]), 4000);
-    return () => clearTimeout(timer);
+    return () => { clearTimeout(start); clearTimeout(timer); };
   }, []);
 
   if (particles.length === 0) return null;
