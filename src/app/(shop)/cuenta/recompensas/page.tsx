@@ -94,8 +94,8 @@ export default function RecompensasPage() {
       });
       setRedeemAmount("");
       await fetchLoyalty();
-    } catch (err: any) {
-      setRedeemError(err.message || "Error al canjear puntos");
+    } catch {
+      setRedeemError("No pudimos canjear los puntos. Inténtalo de nuevo.");
     } finally {
       setIsRedeeming(false);
     }

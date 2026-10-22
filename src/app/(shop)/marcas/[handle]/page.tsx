@@ -6,7 +6,7 @@ import { ChevronRight } from "lucide-react"
 
 import { getCollectionByHandle } from "@/lib/data/collections"
 import { getProductsByCollection } from "@/lib/data/products"
-import { getBrandData, BRANDS } from "@/lib/constants/brands"
+import { getBrandData } from "@/lib/constants/brands"
 import {
   generateCollectionPageSchema,
   generateBreadcrumbSchema,

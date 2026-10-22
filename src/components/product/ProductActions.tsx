@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { HttpTypes } from "@medusajs/types";
-import { MessageCircle, Search, ShieldCheck, BadgeCheck } from "lucide-react";
+import { MessageCircle, Search, Heart, BadgeCheck } from "lucide-react";
 import { useCart } from "@/components/cart/CartProvider";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import {
@@ -64,7 +64,7 @@ const WHATSAPP_NUMBER = "528281136652";
 
 const TRUST_ITEMS = [
   { icon: Search, text: "Consulta disponibilidad" },
-  { icon: ShieldCheck, text: "Pago seguro" },
+  { icon: Heart, text: "Atención cercana" },
   { icon: BadgeCheck, text: "Productos profesionales" },
 ];
 

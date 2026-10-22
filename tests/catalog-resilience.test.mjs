@@ -18,19 +18,19 @@ async function loadDataModule(path, sdk, catalogMode = true) {
   async function load(file) {
     if (cache.has(file)) return cache.get(file);
     const source = await readFile(new URL(`../src/${file}.ts`, import.meta.url), "utf8");
-    const module = new SourceTextModule(stripTypeScriptTypes(source), { context });
-    cache.set(file, module);
-    await module.link(async (specifier) => {
+    const sourceModule = new SourceTextModule(stripTypeScriptTypes(source), { context });
+    cache.set(file, sourceModule);
+    await sourceModule.link(async (specifier) => {
       if (specifier === "@/lib/medusa") return medusa;
       if (specifier === "@medusajs/types") return types;
       if (specifier === "@/lib/catalog-mode") return flag;
       return load(specifier.replace("@/", ""));
     });
-    return module;
+    return sourceModule;
   }
-  const module = await load(path);
-  await module.evaluate();
-  return module.namespace;
+  const sourceModule = await load(path);
+  await sourceModule.evaluate();
+  return sourceModule.namespace;
 }
 
 test("catalog requests return successful data", async () => {

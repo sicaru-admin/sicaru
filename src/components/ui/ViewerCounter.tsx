@@ -7,14 +7,14 @@ export function ViewerCounter() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    setCount(Math.floor(Math.random() * 13) + 3);
+    const initial = setTimeout(() => setCount(Math.floor(Math.random() * 13) + 3), 0);
     const interval = setInterval(() => {
       setCount((prev) => {
         const delta = Math.random() > 0.5 ? 1 : -1;
         return Math.max(3, Math.min(15, prev + delta));
       });
     }, 8000);
-    return () => clearInterval(interval);
+    return () => { clearTimeout(initial); clearInterval(interval); };
   }, []);
 
   if (count === 0) return null;

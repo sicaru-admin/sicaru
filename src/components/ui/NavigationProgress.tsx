@@ -9,20 +9,24 @@ export function NavigationProgress() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    setIsNavigating(true);
-    setProgress(30);
+    const start = setTimeout(() => {
+      setIsNavigating(true);
+      setProgress(30);
+    }, 0);
 
     const t1 = setTimeout(() => setProgress(60), 100);
     const t2 = setTimeout(() => setProgress(80), 300);
     const t3 = setTimeout(() => {
       setProgress(100);
-      setTimeout(() => {
-        setIsNavigating(false);
-        setProgress(0);
-      }, 200);
     }, 500);
+    const finish = setTimeout(() => {
+      setIsNavigating(false);
+      setProgress(0);
+    }, 700);
 
     return () => {
+      clearTimeout(start);
+      clearTimeout(finish);
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useCart } from "./CartProvider";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import { getCartLineVariantLabel } from "./cart-line-variant";
@@ -68,7 +69,7 @@ export function CartDrawer() {
             {!cart?.items?.length ? (
               <div className="py-8 text-center text-gray-500">
                 <p>Tu carrito está vacío.</p>
-                <a href="/productos" className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-[#7f6d8a] underline underline-offset-4">Explorar productos</a>
+                <Link href="/productos" className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-[#7f6d8a] underline underline-offset-4">Explorar productos</Link>
               </div>
             ) : (
               <ul className="space-y-4">
