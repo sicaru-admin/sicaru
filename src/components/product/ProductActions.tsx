@@ -1,3 +1,4 @@
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 "use client";
 
 import { useMemo, useState } from "react";
@@ -60,7 +61,7 @@ function optionMatches(
   );
 }
 
-const WHATSAPP_NUMBER = "528281111023";
+const WHATSAPP_NUMBER = "528281136652";
 
 const TRUST_ITEMS = [
   { icon: Search, text: "Consulta disponibilidad" },
@@ -189,6 +190,30 @@ export function ProductActions({ product }: ProductActionsProps) {
     price?.original_amount != null &&
     price?.calculated_amount != null &&
     price.original_amount > price.calculated_amount;
+
+  if (CATALOG_MODE) {
+    const option = selectedVariant?.title && selectedVariant.title !== "Default Variant" ? ` (${selectedVariant.title})` : "";
+    const message = `Hola, quisiera consultar información y disponibilidad de ${product.title}${option}.`;
+    return (
+      <div className="space-y-4">
+        <p className="rounded-[6px] border border-[#efe7dd] bg-[#f5f1eb] px-4 py-3 text-sm text-[#7f6d8a]">
+          Catálogo informativo · Compras y envíos online próximamente.
+        </p>
+        {requiresVariantSelection && (
+          <VariantSelector options={selectableOptions} selectedOptions={selectedOptions} onSelect={handleSelectOption} />
+        )}
+        <a
+          href={`https://wa.me/528281136652?text=${encodeURIComponent(message)}`}
+          target="_blank" rel="noopener noreferrer"
+          className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-[6px] bg-[#7f6d8a] px-6 py-3 text-center text-sm font-semibold text-[#faf8f5] hover:bg-[#8e7a9e]"
+        >
+          <MessageCircle className="h-4 w-4" />
+          Consultar este producto
+        </a>
+        <p className="text-xs text-[#2e2b2b]/65">Precio y disponibilidad sujetos a confirmación en tienda.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4 md:space-y-5 [&_button]:min-h-11 [&_button]:min-w-11 [&_button]:focus-visible:outline [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-[#9b89a8]">

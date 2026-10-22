@@ -1,3 +1,4 @@
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 import type { HttpTypes } from "@medusajs/types";
 import { BRANDS } from "@/lib/constants/brands";
 
@@ -37,7 +38,7 @@ export function generateOrganizationSchema(): Record<string, unknown> {
     description:
       "Sicarú es una tienda de productos profesionales de belleza en Cadereyta Jiménez, Nuevo León. Encuentra coloración, tratamientos capilares, herramientas, depilación y atención personalizada.",
     url: BASE_URL,
-    telephone: "+528281111023",
+    telephone: "+528281136652",
     address: {
       "@type": "PostalAddress",
       addressLocality: "Cadereyta Jiménez",
@@ -67,7 +68,7 @@ export function generateOrganizationSchema(): Record<string, unknown> {
     ],
     currenciesAccepted: "MXN",
     priceRange: "$",
-    sameAs: ["https://wa.me/528281111023"],
+    sameAs: ["https://wa.me/528281136652"],
   };
 }
 
@@ -122,7 +123,7 @@ export function generateProductSchema(
       : { "@type": "Brand", name: "Distribuidora Sicarú" },
   };
 
-  if (price?.calculated_amount != null) {
+  if (!CATALOG_MODE && price?.calculated_amount != null) {
     schema.offers = {
       "@type": "Offer",
       url: `${BASE_URL}/productos/${product.handle}`,
@@ -186,7 +187,7 @@ export function generateProductFAQs(
   const brandName = product.collection?.title ?? "Distribuidora Sicarú";
   const price = product.variants?.[0]?.calculated_price;
   const priceStr =
-    price?.calculated_amount != null
+    !CATALOG_MODE && price?.calculated_amount != null
       ? new Intl.NumberFormat("es-MX", {
           style: "currency",
           currency: price.currency_code || "MXN",
@@ -245,7 +246,7 @@ export function generateBrandFAQs(
     },
     {
       question: `¿Puedo recibir asesoría sobre productos ${brandName}?`,
-      answer: `Sí, puedes consultar disponibilidad y recomendaciones por WhatsApp al +52 828 111 1023.`,
+      answer: `Sí, puedes consultar disponibilidad y recomendaciones por WhatsApp al +52 828 113 6652.`,
     },
   ];
 }

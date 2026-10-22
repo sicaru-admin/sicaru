@@ -1,3 +1,4 @@
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 "use client";
 
 import Link from "next/link";
@@ -27,7 +28,7 @@ export function Navbar() {
     <header className="sicaru-navbar sticky top-0 z-30">
       <div className="bg-[#7f6d8a] text-[#faf8f5]">
         <div className="mx-auto flex max-w-[1400px] items-center justify-center gap-3 px-5 py-2 text-center text-[0.68rem] font-medium uppercase tracking-[0.1em] sm:px-8 lg:px-10 md:justify-between md:text-xs">
-          <span>Tienda de productos profesionales de belleza</span>
+          <span>{CATALOG_MODE ? "Catálogo digital · Envíos próximamente" : "Tienda de productos profesionales de belleza"}</span>
           <span className="hidden md:inline">Cadereyta Jiménez, Nuevo León</span>
         </div>
       </div>
@@ -54,8 +55,8 @@ export function Navbar() {
 
         <div className="flex items-center gap-1.5 text-[#2e2b2b] sm:gap-2">
           <SearchButton />
-          <AccountButton />
-          <CartButton />
+          {!CATALOG_MODE && <AccountButton />}
+          {!CATALOG_MODE && <CartButton />}
           <MobileNav />
         </div>
       </nav>

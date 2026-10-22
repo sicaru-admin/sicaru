@@ -1,3 +1,4 @@
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 import Image from "next/image";
 import Link from "next/link";
 import type { HttpTypes } from "@medusajs/types";
@@ -55,7 +56,7 @@ export function ProductCatalogCard({ product }: ProductCatalogCardProps) {
           {product.title}
         </h2>
         <p className="mt-2 text-sm font-semibold text-[#7f6d8a] md:mt-3">
-          {formatPrice(product)}
+          {CATALOG_MODE ? "Consultar información" : formatPrice(product)}
         </p>
         <span className="mt-2.5 inline-flex min-h-9 items-center gap-1.5 self-start text-xs font-semibold uppercase text-[#7f6d8a] transition-colors group-hover:text-[#8e7a9e] md:mt-4 md:min-h-10">
           Ver detalle

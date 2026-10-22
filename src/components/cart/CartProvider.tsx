@@ -1,3 +1,4 @@
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 "use client";
 
 import {
@@ -162,6 +163,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [cart]);
 
   useEffect(() => {
+    if (CATALOG_MODE) {
+      setIsInitializingCart(false);
+      return;
+    }
     const timer = window.setTimeout(() => {
       ensureCart().catch(() => {});
     }, 0);
@@ -171,6 +176,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addToCart = useCallback(
     async (variantId: string, quantity = 1) => {
+      if (CATALOG_MODE) throw new Error("Compras online próximamente.");
       if (addToCartPromiseRef.current) {
         return addToCartPromiseRef.current;
       }

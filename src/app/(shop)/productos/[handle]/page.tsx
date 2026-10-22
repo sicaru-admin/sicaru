@@ -1,3 +1,4 @@
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 import { Suspense } from "react";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -60,11 +61,11 @@ export async function generateMetadata({
       title: product.title,
       description,
       openGraph: {
-        title: `${product.title}${priceStr ? ` — ${priceStr}` : ""}`,
+        title: `${product.title}${!CATALOG_MODE && priceStr ? ` — ${priceStr}` : ""}`,
         description,
         images: product.thumbnail ? [{ url: product.thumbnail }] : undefined,
       },
-      other: {
+      other: CATALOG_MODE ? undefined : {
         "product:price:amount":
           price?.calculated_amount?.toString() ?? "",
         "product:price:currency": price?.currency_code || "MXN",

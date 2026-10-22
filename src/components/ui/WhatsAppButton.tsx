@@ -2,7 +2,7 @@
 
 import { MessageCircle } from "lucide-react";
 
-const WHATSAPP_NUMBER = "528281111023";
+const WHATSAPP_NUMBER = "528281136652";
 const MESSAGE =
   "\u00a1Hola! Me interesa saber m\u00e1s sobre los productos de Sicar\u00fa.";
 

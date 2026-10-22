@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
@@ -6,6 +8,8 @@ export default function CheckoutLayout({
 }: {
   children: React.ReactNode;
 }) {
+  if (CATALOG_MODE) redirect("/envios");
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="border-b bg-white">

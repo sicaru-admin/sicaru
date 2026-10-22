@@ -1,133 +1,39 @@
-import type { Metadata } from "next"
-import Image from "next/image"
+import type { Metadata } from "next";
+import Link from "next/link";
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 
 export const metadata: Metadata = {
-  title: "Política de Envíos",
-  description:
-    "Conoce nuestra cobertura de envíos a todo México, tiempos de entrega y costos. Envíos desde Cadereyta Jiménez, Nuevo León.",
-}
+  title: "Envíos — Próximamente",
+  description: "Envíos y compras online de SICARÚ próximamente. Consulta productos de belleza y coloración en nuestro catálogo digital.",
+};
 
 export default function EnviosPage() {
+  if (!CATALOG_MODE) {
+    return (
+      <main className="mx-auto max-w-3xl px-5 py-16 text-center">
+        <h1 className="font-heading text-3xl text-[#2e2b2b]">Información de envíos</h1>
+        <p className="mt-5 text-[#2e2b2b]/75">Consulta nuestros servicios y cobertura antes de completar un pedido.</p>
+        <Link href="/contacto" className="mt-8 inline-flex min-h-11 items-center bg-[#7f6d8a] px-6 py-3 text-white">Contactar a SICARÚ</Link>
+      </main>
+    );
+  }
+
   return (
-    <>
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-sicaru-purple-700 to-sicaru-purple-500 py-14 text-white text-center">
-        <h1 className="font-heading text-3xl md:text-4xl font-bold">
-          Política de Envíos
-        </h1>
-        <p className="mt-3 text-white/80 max-w-xl mx-auto text-sm md:text-base">
-          Realizamos envíos a todo México desde Cadereyta Jiménez, Nuevo León.
+    <main className="min-h-[55vh] bg-[#faf8f5] px-5 py-16 sm:py-24">
+      <div className="mx-auto max-w-3xl rounded-[8px] border border-[#efe7dd] bg-white p-7 text-center sm:p-12">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#8e7a9e]">SICARÚ · Catálogo digital</p>
+        <h1 className="mt-5 font-heading text-4xl font-medium text-[#2e2b2b] sm:text-5xl">Envíos online próximamente</h1>
+        <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-[#2e2b2b]/75">
+          Estamos preparando las opciones de paquetería y compra en línea. Por ahora puedes explorar nuestro catálogo; este sitio no acepta pagos ni pedidos con envío.
         </p>
-      </section>
-
-      {/* Content */}
-      <section className="mx-auto max-w-4xl px-4 py-12">
-        {/* Cobertura */}
-        <h2 className="text-xl font-bold text-sicaru-purple-900 mb-4">
-          Cobertura de Envío
-        </h2>
-        <p className="text-gray-600 leading-relaxed">
-          Realizamos envíos a todo México. Nuestros productos salen desde
-          Cadereyta Jiménez, Nuevo León.
+        <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-[#2e2b2b]/65">
+          Si buscas un producto en nuestra tienda física de Cadereyta Jiménez, consulta información y disponibilidad por WhatsApp.
         </p>
-
-        {/* Tiempos de Entrega */}
-        <h2 className="text-xl font-bold text-sicaru-purple-900 mb-4 mt-8">
-          Tiempos de Entrega
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="rounded-xl border bg-white p-5">
-            <p className="font-bold text-gray-900">Cadereyta Jiménez</p>
-            <p className="text-sm text-gray-600 mt-1">
-              Mismo día (pedidos antes de 2pm)
-            </p>
-            <p className="text-sm text-sicaru-purple-700 font-medium mt-2">
-              Gratis en pedidos mayores a $300 MXN
-            </p>
-          </div>
-
-          <div className="rounded-xl border bg-white p-5">
-            <p className="font-bold text-gray-900">
-              Zona Metropolitana de Monterrey
-            </p>
-            <p className="text-sm text-gray-600 mt-1">1 día hábil</p>
-          </div>
-
-          <div className="rounded-xl border bg-white p-5">
-            <p className="font-bold text-gray-900">Resto de Nuevo León</p>
-            <p className="text-sm text-gray-600 mt-1">1-2 días hábiles</p>
-          </div>
-
-          <div className="rounded-xl border bg-white p-5">
-            <p className="font-bold text-gray-900">Nacional</p>
-            <p className="text-sm text-gray-600 mt-1">2-5 días hábiles</p>
-          </div>
+        <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+          <Link href="/productos" className="inline-flex min-h-11 items-center justify-center bg-[#7f6d8a] px-6 py-3 text-sm font-semibold text-white">Explorar productos</Link>
+          <a href="https://wa.me/528281136652?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20un%20producto%20de%20SICAR%C3%9A." target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center border border-[#7f6d8a] px-6 py-3 text-sm font-semibold text-[#7f6d8a]">Consultar por WhatsApp</a>
         </div>
-
-        {/* Costos */}
-        <h2 className="text-xl font-bold text-sicaru-purple-900 mb-4 mt-8">
-          Costos de Envío
-        </h2>
-        <p className="text-gray-600 leading-relaxed">
-          Los costos de envío se calculan automáticamente al momento del checkout
-          según tu ubicación y el peso del pedido.
-        </p>
-        <p className="text-gray-600 leading-relaxed mt-3">
-          Envío gratis en pedidos locales (Cadereyta) mayores a $300 MXN.
-        </p>
-
-        {/* Métodos de pago */}
-        <h2 className="text-xl font-bold text-sicaru-purple-900 mb-4 mt-8">
-          Métodos de Pago
-        </h2>
-        <div className="mb-6 flex justify-center">
-          <div className="relative w-full max-w-md aspect-square overflow-hidden rounded-xl">
-            <Image
-              src="/images/metodos-pago-mercadopago.jpg"
-              alt="Métodos de pago aceptados — Visa, Mastercard, OXXO Pay y Mercado Pago con confirmación de pago exitoso"
-              fill
-              className="object-contain"
-              sizes="400px"
-            />
-          </div>
-        </div>
-
-        {/* OXXO */}
-        <h2 className="text-xl font-bold text-sicaru-purple-900 mb-4 mt-8">
-          Pagos en OXXO
-        </h2>
-        <p className="text-gray-600 leading-relaxed">
-          Si pagas con OXXO Pay, tu pedido se procesará una vez confirmado el
-          pago. Los pagos en OXXO se confirman en un máximo de 72 horas hábiles.
-          Tu pedido se enviará al día siguiente de la confirmación del pago.
-        </p>
-
-        {/* Rastreo */}
-        <h2 className="text-xl font-bold text-sicaru-purple-900 mb-4 mt-8">
-          Rastreo de Pedido
-        </h2>
-        <p className="text-gray-600 leading-relaxed">
-          Una vez enviado tu pedido, recibirás una notificación por WhatsApp con
-          la información de seguimiento. También puedes consultar el estado de tu
-          pedido en la sección Mi Cuenta &gt; Mis Pedidos.
-        </p>
-
-        {/* Dudas */}
-        <h2 className="text-xl font-bold text-sicaru-purple-900 mb-4 mt-8">
-          ¿Tienes dudas?
-        </h2>
-        <p className="text-gray-600 leading-relaxed mb-4">
-          Contáctanos por WhatsApp y con gusto te ayudamos.
-        </p>
-        <a
-          href="https://wa.me/528281111023"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 rounded-full bg-green-600 px-6 py-3 text-sm font-semibold text-white hover:bg-green-700 transition-colors"
-        >
-          Escríbenos por WhatsApp
-        </a>
-      </section>
-    </>
-  )
+      </div>
+    </main>
+  );
 }

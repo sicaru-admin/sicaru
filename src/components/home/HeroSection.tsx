@@ -1,9 +1,10 @@
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 import Link from "next/link";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { HomeHeroVisual } from "./HomeHeroVisual";
 
 const whatsappHref =
-  "https://wa.me/528281111023?text=Hola%2C%20quiero%20asesor%C3%ADa%20para%20elegir%20productos%20Sicar%C3%BA.";
+  "https://wa.me/528281136652?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20productos%20Sicar%C3%BA.";
 
 export function HeroSection() {
   return (
@@ -19,9 +20,10 @@ export function HeroSection() {
           </h1>
 
           <p className="mt-4 max-w-xl text-[0.95rem] leading-7 text-[#2e2b2b] sm:text-base">
-            Coloración, tratamientos, herramientas y asesoría personalizada para estilistas y para quienes buscan mejores resultados en casa.
+            Coloración, tratamientos y herramientas para estilistas y quienes buscan cuidar su cabello. Explora nuestro catálogo y conoce las marcas.
           </p>
 
+          {CATALOG_MODE && <p className="mt-4 rounded-[6px] border border-[#9b89a8]/40 bg-[#faf8f5] px-4 py-3 text-sm font-medium text-[#7f6d8a]">Catálogo informativo · Envíos y compras online próximamente.</p>}
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Link
               href="/productos"
@@ -37,7 +39,7 @@ export function HeroSection() {
               className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[6px] border border-[#7f6d8a]/55 bg-[#faf8f5] px-4 py-3 text-sm font-semibold text-[#7f6d8a] transition-colors duration-[250ms] hover:bg-[#efe7dd] focus:outline-none focus-visible:shadow-[0_0_0_3px_rgba(127,109,138,0.18)]"
             >
               <MessageCircle className="h-3.5 w-3.5" strokeWidth={1.8} />
-              Recibir asesoría
+              Consultar productos
             </a>
           </div>
         </div>
