@@ -87,7 +87,7 @@ try {
     assert.equal(await unapproved.getByTestId("retail-price").innerText(), "Consultar precio");
     assert.ok(await unapproved.getByRole("button", { name: "Agregar Producto sin precio aprobado", exact: true }).isDisabled());
     await cards.filter({ has: page.getByRole("heading", { name: "Producto sin fotografía", exact: true }) }).getByText("Imagen no disponible").waitFor();
-    for (const image of await page.locator("main img").all()) { await image.scrollIntoViewIfNeeded(); await image.evaluate((element) => element.decode()); }
+    for (const image of await page.locator("main img").all()) { if (!(await image.isVisible())) continue; await image.scrollIntoViewIfNeeded(); await image.evaluate((element) => element.decode()); }
     await page.screenshot({ path: `artifacts/home-${width}.png`, fullPage: true });
 
     await search.fill("Voglia 500");
