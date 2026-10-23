@@ -25,7 +25,7 @@ Se conservan los archivos de fotografía existentes sin modificar sus bytes, eti
 
 Las tarjetas usan exclusivamente productos y variantes devueltos por Medusa. No existen datos de muestra en la interfaz desplegada. Ante un fallo se muestra un estado de recuperación sin tarjetas ficticias. Las imágenes rotas tienen un sustituto neutro sin simular un producto.
 
-Precios: `metadata.storefront_price_approved: true` en la variante habilita su precio calculado. La aprobación a nivel de producto se admite únicamente para productos de un solo SKU. Los importes sin aprobación se sustituyen por «Consultar precio». No se aprobaron precios ni se modificaron datos del backend en esta revisión. La selección de variantes no hereda aprobaciones de otros SKU. Las existencias desconocidas no se presentan como disponibles.
+Precios: `metadata.storefront_price_approved: true` en la variante habilita su precio calculado. La aprobación a nivel de producto se admite únicamente para productos de un solo SKU. Los importes sin aprobación se sustituyen por «Consultar precio». La revisión visual no aprobó precios ni modificó datos del backend. La aprobación posterior de $97 exclusivamente para los tres combos Voglia se documenta en [Voglia lote 1](catalogo/voglia-lote1-2026-10-23.md); no se aplica al tubo suelto. La selección de variantes no hereda aprobaciones de otros SKU. Las existencias desconocidas no se presentan como disponibles.
 
 El carrito conserva cantidades y resumen. No se muestran tarifas anteriores ni «Gratis», aunque un carrito guardado contenga un método de envío antiguo. Checkout conserva el bloqueo de pagos/pedidos y muestra «Envíos online próximamente», con WhatsApp +52 828 113 6652. No se activan cotizaciones DHL.
 
@@ -35,7 +35,7 @@ El retiro del service worker anterior y la limpieza de cachés están versionado
 
 La documentación previa no acredita la procedencia de todos los recortes existentes. Se conservan como material temporal sin afirmar que se recibieron nuevas fotografías originales. Queda pendiente confirmar los originales de Voglia Total Repair 250 ml, Vitale Bifase Pro-Keratin e Hidra Color Mask 150 g usados en el hero y categorías, además de Voglia Color Fun y la navaja profesional reutilizados en categorías, o reemplazarlos por sus originales aprobados. La inspección de los recortes existentes no sustituye la confirmación de su procedencia.
 
-Primer lote pendiente de archivos originales y vinculación exacta a SKU:
+Primer lote: los tres originales de combos Voglia se recibieron el 23/10/2026 y están en `public/productos/voglia/`; véase [recepción y vinculación pendiente](catalogo/voglia-lote1-2026-10-23.md). Los originales de Pomania continúan pendientes. Referencias históricas:
 
 - PRD-77EF10219E85: Brocha para Tinte con Peine 2 en 1 Pomania Graphite; referencia `1000705663.png`.
 - PRD-FE443FA48D89: Lija para Pies Pomania con Separador de Dedos; fotografía proporcionada el 08/10.
