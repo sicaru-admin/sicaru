@@ -2,8 +2,9 @@
 
 import { useMemo, useState } from "react";
 import { HttpTypes } from "@medusajs/types";
-import { MessageCircle, Search, ShieldCheck, BadgeCheck } from "lucide-react";
+import { MessageCircle, Search, Heart, BadgeCheck } from "lucide-react";
 import { useCart } from "@/components/cart/CartProvider";
+import { getApprovedPrice, hasKnownAvailability } from "@/lib/product-retail";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import {
   getSelectableOptions,
@@ -60,11 +61,11 @@ function optionMatches(
   );
 }
 
-const WHATSAPP_NUMBER = "528281111023";
+const WHATSAPP_NUMBER = "528281136652";
 
 const TRUST_ITEMS = [
   { icon: Search, text: "Consulta disponibilidad" },
-  { icon: ShieldCheck, text: "Pago seguro" },
+  { icon: Heart, text: "Atención cercana" },
   { icon: BadgeCheck, text: "Productos profesionales" },
 ];
 
@@ -141,7 +142,7 @@ export function ProductActions({ product }: ProductActionsProps) {
 
   if (!displayVariant) return null;
 
-  const price = displayVariant.calculated_price;
+  const price = getApprovedPrice(product, displayVariant);
   const formattedPrice = price?.calculated_amount != null
     ? new Intl.NumberFormat("es-MX", {
         style: "currency",
@@ -149,13 +150,13 @@ export function ProductActions({ product }: ProductActionsProps) {
       }).format(price.calculated_amount)
     : "";
 
-  const whatsappMsg = `Hola! Me interesa el ${product.title} (${formattedPrice}). ¿Tienen disponible?`;
+  const whatsappMsg = `Hola! Me interesa ${product.title}${formattedPrice ? ` (${formattedPrice})` : ""}. ¿Tienen disponible?`;
   const selectionMessage = selectableOptions.some((option) =>
     option.title.toLocaleLowerCase("es-MX").includes("tono")
   )
     ? "Selecciona un tono"
     : "Selecciona una opción";
-  const canAddToCart = !!selectedVariant && !isLoading;
+  const canAddToCart = hasKnownAvailability(selectedVariant) && !isLoading;
 
   const handleAddToCart = async () => {
     setErrorMessage(null);
@@ -170,9 +171,7 @@ export function ProductActions({ product }: ProductActionsProps) {
     } catch (error) {
       console.error("Error adding selected variant to cart:", error);
       setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : "No pudimos agregar el producto al carrito. Intenta de nuevo."
+        "No pudimos agregar el producto al carrito. Intenta de nuevo."
       );
     }
   };
@@ -190,15 +189,13 @@ export function ProductActions({ product }: ProductActionsProps) {
     price?.calculated_amount != null &&
     price.original_amount > price.calculated_amount;
 
+
   return (
     <div className="space-y-4 md:space-y-5 [&_button]:min-h-11 [&_button]:min-w-11 [&_button]:focus-visible:outline [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-[#9b89a8]">
       {/* Price */}
       <div>
         <div className="flex items-baseline gap-3">
-          <PriceDisplay
-            variant={displayVariant}
-            className="text-2xl font-semibold text-[#7f6d8a] md:text-3xl"
-          />
+          {price ? <PriceDisplay variant={displayVariant} className="text-2xl font-semibold text-[#7f6d8a] md:text-3xl" /> : <p className="text-base font-semibold text-[#7f6d8a]">Consultar precio</p>}
           {hasDiscount && price?.original_amount != null && (
             <PriceDisplay
               amount={price.original_amount}
@@ -206,7 +203,7 @@ export function ProductActions({ product }: ProductActionsProps) {
             />
           )}
         </div>
-        <p className="mt-1 text-xs text-[#9b89a8]">IVA incluido</p>
+        {price && <p className="mt-1 text-xs text-[#7f6d8a]">IVA incluido</p>}
       </div>
 
       {/* Variant selector */}
@@ -237,7 +234,7 @@ export function ProductActions({ product }: ProductActionsProps) {
           disabled={!canAddToCart}
           className="btn-ripple tap-feedback w-full bg-[#7f6d8a] px-8 py-3.5 text-base font-semibold text-[#faf8f5] transition-colors duration-200 hover:bg-[#8e7a9e] disabled:cursor-not-allowed disabled:opacity-50 md:text-lg"
         >
-          {isLoading ? "Agregando..." : "Agregar al Carrito"}
+          {isLoading ? "Agregando..." : selectedVariant && !hasKnownAvailability(selectedVariant) ? "Consultar disponibilidad" : "Agregar al Carrito"}
         </button>
 
         <a

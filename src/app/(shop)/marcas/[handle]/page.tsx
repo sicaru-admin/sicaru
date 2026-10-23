@@ -1,3 +1,4 @@
+import { CatalogUnavailable } from "@/components/products/CatalogUnavailable";
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -5,7 +6,7 @@ import { ChevronRight } from "lucide-react"
 
 import { getCollectionByHandle } from "@/lib/data/collections"
 import { getProductsByCollection } from "@/lib/data/products"
-import { getBrandData, BRANDS } from "@/lib/constants/brands"
+import { getBrandData } from "@/lib/constants/brands"
 import {
   generateCollectionPageSchema,
   generateBreadcrumbSchema,
@@ -38,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const title = `Productos ${brand?.name || collection.title} — Distribuidora Sicarú`
     const description =
       brand?.description ||
-      `Compra productos ${collection.title} originales en Distribuidora Sicarú. Envío a todo México. Precios de mayoreo disponibles para profesionales.`
+      `Compra productos ${collection.title} originales en Distribuidora Sicarú. Asesoría cercana en tienda. Precios de mayoreo disponibles para profesionales.`
 
     return {
       title,
@@ -55,13 +56,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BrandDetailPage({ params }: Props) {
   const { handle } = await params
-  const collection = await getCollectionByHandle(handle)
+  let collection
+  try {
+    collection = await getCollectionByHandle(handle)
+  } catch {
+    return <CatalogUnavailable />
+  }
 
   if (!collection) {
     notFound()
   }
 
-  const { products } = await getProductsByCollection(collection.id)
+  let result
+  try {
+    result = await getProductsByCollection(collection.id)
+  } catch {
+    return <CatalogUnavailable />
+  }
+  const { products } = result
   const brand = getBrandData(handle)
 
   const collectionSchema = generateCollectionPageSchema({

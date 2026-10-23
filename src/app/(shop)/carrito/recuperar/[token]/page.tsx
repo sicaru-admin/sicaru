@@ -1,5 +1,7 @@
 "use client"
 
+import Link from "next/link"
+
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { createCart } from "@/lib/data/cart"
@@ -116,12 +118,12 @@ export default function CartRecoveryPage() {
             Este enlace de recuperacion ya no esta disponible. Pero no te
             preocupes, puedes armar tu carrito de nuevo.
           </p>
-          <a
+          <Link
             href="/productos"
             className="inline-block bg-sicaru-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-sicaru-purple-700 transition-colors"
           >
             Ver productos
-          </a>
+          </Link>
         </div>
       </div>
     )
@@ -136,12 +138,12 @@ export default function CartRecoveryPage() {
             Algo salio mal
           </h1>
           <p className="text-gray-600">{error}</p>
-          <a
+          <Link
             href="/productos"
             className="inline-block bg-sicaru-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-sicaru-purple-700 transition-colors"
           >
             Ir a la tienda
-          </a>
+          </Link>
         </div>
       </div>
     )

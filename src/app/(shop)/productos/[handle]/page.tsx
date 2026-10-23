@@ -1,3 +1,5 @@
+import { CatalogUnavailable } from "@/components/products/CatalogUnavailable";
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 import { Suspense } from "react";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -60,11 +62,11 @@ export async function generateMetadata({
       title: product.title,
       description,
       openGraph: {
-        title: `${product.title}${priceStr ? ` — ${priceStr}` : ""}`,
+        title: `${product.title}${!CATALOG_MODE && priceStr ? ` — ${priceStr}` : ""}`,
         description,
         images: product.thumbnail ? [{ url: product.thumbnail }] : undefined,
       },
-      other: {
+      other: CATALOG_MODE ? undefined : {
         "product:price:amount":
           price?.calculated_amount?.toString() ?? "",
         "product:price:currency": price?.currency_code || "MXN",
@@ -105,7 +107,12 @@ export default async function ProductDetailPage({
   params: Promise<{ handle: string }>;
 }) {
   const { handle } = await params;
-  const product = await getProductByHandle(handle);
+  let product;
+  try {
+    product = await getProductByHandle(handle);
+  } catch {
+    return <CatalogUnavailable title="No pudimos cargar este producto." />;
+  }
 
   if (!product) {
     notFound();

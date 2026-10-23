@@ -13,12 +13,14 @@ type Particle = {
   duration: number;
   rotation: number;
   size: number;
+  borderRadius: string;
 };
 
 export function ConfettiCelebration() {
   const [particles, setParticles] = useState<Particle[]>([]);
 
   useEffect(() => {
+    const start = setTimeout(() => {
     const p: Particle[] = Array.from({ length: PARTICLE_COUNT }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
@@ -27,11 +29,13 @@ export function ConfettiCelebration() {
       duration: 1.5 + Math.random() * 2,
       rotation: Math.random() * 720 - 360,
       size: 6 + Math.random() * 6,
+      borderRadius: Math.random() > 0.5 ? "50%" : "2px",
     }));
     setParticles(p);
+    }, 0);
 
     const timer = setTimeout(() => setParticles([]), 4000);
-    return () => clearTimeout(timer);
+    return () => { clearTimeout(start); clearTimeout(timer); };
   }, []);
 
   if (particles.length === 0) return null;
@@ -49,7 +53,7 @@ export function ConfettiCelebration() {
             backgroundColor: p.color,
             animationDelay: `${p.delay}s`,
             animationDuration: `${p.duration}s`,
-            borderRadius: Math.random() > 0.5 ? "50%" : "2px",
+            borderRadius: p.borderRadius,
             ["--rotation" as string]: `${p.rotation}deg`,
           }}
         />

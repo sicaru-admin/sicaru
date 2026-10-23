@@ -1,49 +1,20 @@
 import Image from "next/image";
+import Link from "next/link";
 
-const products = [
-  {
-    src: "/images/products-hero/voglia-total-repair.webp",
-    alt: "Voglia Total Repair para reparación profesional del cabello",
-    className:
-      "left-[7%] top-[15%] z-[2] w-[34%] md:left-[11%] md:top-[14%] md:w-[33%]",
-  },
-  {
-    src: "/images/products-hero/vitale-bifase-pro-keratin.webp",
-    alt: "Vitale Bifase Pro Keratin para protección capilar",
-    className:
-      "left-[31%] top-[2%] z-[4] w-[31%] md:left-[33%] md:top-[0%] md:w-[30%]",
-    priority: true,
-  },
-  {
-    src: "/images/products-hero/hidra-color-mask.webp",
-    alt: "Hidra Color Mask para coloración capilar",
-    className:
-      "right-[8%] top-[20%] z-[3] w-[34%] md:right-[10%] md:top-[18%] md:w-[33%]",
-  },
-];
-
+// Existing product photographs are reused byte-for-byte; no packaging is recreated.
 export function HomeHeroVisual() {
   return (
-    <div className="relative mx-auto h-[292px] w-full max-w-[520px] overflow-hidden sm:h-[340px] md:h-[420px] md:max-w-none lg:h-[462px]">
-      <div className="absolute bottom-[10%] left-[8%] right-[9%] top-[18%] rounded-[8px] bg-[#efe7dd]" />
-      <div className="absolute bottom-[17%] right-[10%] top-[7%] w-[34%] rounded-[8px] bg-[#7f6d8a]" />
-      <div className="absolute bottom-[8%] left-[14%] right-[14%] h-px bg-[#9b89a8]/45" />
-
-      {products.map((product) => (
-        <div
-          key={product.src}
-          className={`absolute aspect-[6/7] drop-shadow-[0_14px_20px_rgba(127,109,138,0.16)] ${product.className}`}
-        >
-          <Image
-            src={product.src}
-            alt={product.alt}
-            fill
-            priority={product.priority}
-            sizes="(max-width: 768px) 34vw, 190px"
-            className="object-contain object-center"
-          />
-        </div>
-      ))}
-    </div>
+    <Link href="/productos" aria-label="Explorar productos SICARÚ" className="relative mx-auto block h-[230px] w-full min-w-0 max-w-[400px] rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7f6d8a] sm:h-[310px] lg:h-[350px]">
+      {/* Narrow frames crop transparent margins only, keeping each package intact. */}
+      <div className="absolute -left-2 bottom-0 h-[92%] w-1/2 sm:left-0 sm:h-[88%] sm:w-[40%]">
+        <Image src="/images/products-hero/voglia-total-repair.webp" alt="Voglia Total Repair, tratamiento para cabello maltratado, 250 ml" fill priority sizes="(max-width: 639px) 200px, 320px" className="object-cover drop-shadow-[0_6px_5px_rgba(46,43,43,0.10)]" />
+      </div>
+      <div className="absolute bottom-0 left-[30%] hidden h-full w-[35%] sm:block">
+        <Image src="/images/products-hero/vitale-bifase-pro-keratin.webp" alt="Vitale Bifase Pro-Keratin, tratamiento acondicionador en dos fases" fill sizes="320px" className="object-cover drop-shadow-[0_6px_5px_rgba(46,43,43,0.10)]" />
+      </div>
+      <div className="absolute -right-1 bottom-0 h-[68%] w-[58%] sm:right-0 sm:h-[72%] sm:w-[45%]">
+        <Image src="/images/products-hero/hidra-color-mask.webp" alt="Hidra Color Mask, tratamiento matizante violeta, 150 g" fill priority sizes="(max-width: 639px) 200px, 320px" className="object-cover drop-shadow-[0_6px_5px_rgba(46,43,43,0.10)]" />
+      </div>
+    </Link>
   );
 }

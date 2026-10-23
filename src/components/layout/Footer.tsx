@@ -1,3 +1,4 @@
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 import Link from "next/link";
 import { BrandWordmark } from "./BrandWordmark";
 
@@ -16,7 +17,7 @@ const footerLinks = {
     { href: "/devoluciones", label: "Devoluciones" },
   ],
   contacto: [
-    { href: "https://wa.me/528281111023", label: "WhatsApp" },
+    { href: "https://wa.me/528281136652", label: "WhatsApp" },
     { href: "mailto:hola@sicaru.com", label: "hola@sicaru.com" },
   ],
   legales: [
@@ -54,7 +55,7 @@ export function Footer() {
             <div>
               <h3 className="sicaru-footer-heading">Ayuda</h3>
               <ul className="mt-4 space-y-2.5">
-                {footerLinks.ayuda.map((link) => (
+                 {footerLinks.ayuda.filter((link) => !CATALOG_MODE || !["/cuenta", "/cuenta/pedidos", "/devoluciones"].includes(link.href)).map((link) => (
                   <li key={link.href}>
                     <Link href={link.href} className="sicaru-footer-link">
                       {link.label}

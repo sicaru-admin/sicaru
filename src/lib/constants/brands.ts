@@ -24,7 +24,7 @@ export const BRANDS: Record<string, BrandData> = {
       {
         question: "¿Dónde comprar Küül en Nuevo León?",
         answer:
-          "Puedes comprar productos Küül originales en Distribuidora Sicarú, ubicada en La Plaza, Local 204, Cadereyta Jiménez, Nuevo León. También puedes comprar en línea en nuestra tienda con envío a todo México.",
+          "Puedes comprar productos Küül originales en Distribuidora Sicarú, ubicada en La Plaza, Local 204, Cadereyta Jiménez, Nuevo León. Consulta productos y disponibilidad por WhatsApp.",
       },
       {
         question: "¿Qué productos tiene la línea Küül?",
@@ -69,7 +69,7 @@ export const BRANDS: Record<string, BrandData> = {
       {
         question: "¿Dónde comprar Voglia original?",
         answer:
-          "Puedes comprar productos Voglia 100% originales en Distribuidora Sicarú, tanto en nuestra tienda física en Cadereyta Jiménez, Nuevo León, como en nuestra tienda en línea con envío a todo México.",
+          "Puedes comprar productos Voglia 100% originales en Distribuidora Sicarú, tanto en nuestra tienda física en Cadereyta Jiménez, Nuevo León, por WhatsApp.",
       },
       {
         question: "¿Voglia tiene precios de mayoreo?",
@@ -104,7 +104,7 @@ export const BRANDS: Record<string, BrandData> = {
       {
         question: "¿Dónde comprar Nekane Capilar?",
         answer:
-          "Compra productos Nekane Capilar originales en Distribuidora Sicarú con envío a todo México. Somos distribuidores autorizados.",
+          "Compra productos Nekane Capilar originales en Distribuidora Sicarú. Somos distribuidores autorizados.",
       },
       {
         question: "¿Nekane Capilar tiene precios de mayoreo?",
@@ -139,7 +139,7 @@ export const BRANDS: Record<string, BrandData> = {
       {
         question: "¿Dónde comprar Hidra Color?",
         answer:
-          "Puedes comprar Hidra Color original en Distribuidora Sicarú, en nuestra tienda física o en línea con envío a todo México.",
+          "Puedes comprar Hidra Color original en Distribuidora Sicarú, en nuestra tienda física o por WhatsApp.",
       },
       {
         question: "¿Hidra Color tiene precios de mayoreo?",
@@ -174,7 +174,7 @@ export const BRANDS: Record<string, BrandData> = {
       {
         question: "¿Dónde comprar Xiomara?",
         answer:
-          "Compra productos Xiomara originales en Distribuidora Sicarú con envío a todo México. Somos distribuidores autorizados.",
+          "Compra productos Xiomara originales en Distribuidora Sicarú. Somos distribuidores autorizados.",
       },
       {
         question: "¿Xiomara tiene precios de mayoreo?",
@@ -209,7 +209,7 @@ export const BRANDS: Record<string, BrandData> = {
       {
         question: "¿Dónde comprar Vitale?",
         answer:
-          "Compra productos Vitale originales en Distribuidora Sicarú con envío a todo México. Somos distribuidores autorizados.",
+          "Compra productos Vitale originales en Distribuidora Sicarú. Somos distribuidores autorizados.",
       },
       {
         question: "¿Vitale tiene precios de mayoreo?",
@@ -245,7 +245,7 @@ export const BRANDS: Record<string, BrandData> = {
       {
         question: "¿Dónde comprar Montis?",
         answer:
-          "Compra productos Montis originales en Distribuidora Sicarú. Somos distribuidores autorizados con envío a todo México.",
+          "Compra productos Montis originales en Distribuidora Sicarú. Somos distribuidores autorizados.",
       },
       {
         question: "¿Montis tiene precios de mayoreo?",

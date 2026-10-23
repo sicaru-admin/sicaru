@@ -46,8 +46,16 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-bodoni), serif;
+  font-family: var(--font-poppins), system-ui, sans-serif;
   letter-spacing: 0;
+}
+
+.font-heading {
+  font-family: var(--font-bodoni), serif;
+}
+
+.sicaru-navbar .sicaru-wordmark {
+  font-size: 1.85rem;
 }
 
 ::selection {

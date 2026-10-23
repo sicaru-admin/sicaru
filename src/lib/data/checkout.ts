@@ -1,3 +1,4 @@
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 import { sdk } from "@/lib/medusa";
 import type { HttpTypes } from "@medusajs/types";
 
@@ -43,6 +44,7 @@ export async function initiatePaymentSession(
   providerId: string,
   data?: Record<string, unknown>
 ) {
+  if (CATALOG_MODE) throw new Error("Los pagos online aún no están habilitados.");
   const { payment_collection } =
     await sdk.store.payment.initiatePaymentSession(
       cart,
@@ -58,6 +60,7 @@ export async function initiatePaymentSession(
 }
 
 export async function completeCart(cartId: string) {
+  if (CATALOG_MODE) throw new Error("Los pedidos online aún no están habilitados.");
   return await sdk.store.cart.complete(cartId);
 }
 

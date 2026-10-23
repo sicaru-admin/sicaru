@@ -1,3 +1,5 @@
+import { CATALOG_MODE } from "@/lib/catalog-mode";
+import { ShippingNotice } from "@/components/checkout/ShippingNotice";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
@@ -6,6 +8,7 @@ export default function CheckoutLayout({
 }: {
   children: React.ReactNode;
 }) {
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="border-b bg-white">
@@ -25,7 +28,15 @@ export default function CheckoutLayout({
           </Link>
         </div>
       </header>
-      {children}
+      {CATALOG_MODE ? (
+        <main className="mx-auto max-w-2xl px-5 py-10 sm:py-16">
+          <nav aria-label="Pasos de compra" className="mb-6 flex items-center justify-center gap-3 text-sm text-[#7f6d8a]">
+            <Link href="/carrito" className="inline-flex min-h-11 items-center underline underline-offset-4">Carrito</Link>
+            <span aria-hidden="true">/</span><span aria-current="step">Envío</span>
+          </nav>
+          <ShippingNotice />
+        </main>
+      ) : children}
     </div>
   );
 }

@@ -15,9 +15,9 @@ import { STORE } from "@/lib/constants/store";
 import { BRANDS } from "@/lib/constants/brands";
 
 export const metadata: Metadata = {
-  title: "Nosotros — Distribuidora Sicarú",
+  title: "Conócenos — SICARÚ",
   description:
-    "Distribuidora Sicarú es distribuidora autorizada de productos de belleza profesional en Cadereyta Jiménez, Nuevo León, con envío a todo México.",
+    "Distribuidora Sicarú es distribuidora autorizada de productos de belleza profesional en Cadereyta Jiménez, Nuevo León.",
 };
 
 export default function NosotrosPage() {
@@ -41,6 +41,15 @@ export default function NosotrosPage() {
             Distribuidores autorizados de las mejores marcas mexicanas de
             belleza profesional en Cadereyta Jiménez, Nuevo León
           </p>
+        </div>
+      </section>
+
+      <section id="filosofia" className="bg-[#f5f1eb] px-5 py-10 sm:px-8 md:py-14" aria-labelledby="sicaru-heart">
+        <div className="mx-auto max-w-4xl">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#7f6d8a]">El corazón de SICARÚ</p>
+          <h2 id="sicaru-heart" className="mt-3 font-heading text-3xl font-medium leading-tight text-[#2e2b2b] md:text-4xl">Raíces mexicanas. Belleza sin moldes.</h2>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-[#2e2b2b]/75">Desde Cadereyta Jiménez, te acompañamos a cuidar tu cabello y a crear en el salón. Con atención de cerca y espacio para cada textura, estilo y forma de ser.</p>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-[#2e2b2b]/75">Creemos en una belleza diversa y cotidiana: para consumidoras, estilistas y profesionales. Nuestra identidad mexicana vive en el trato cercano, el respeto por cada persona y el apoyo a quienes hacen de la belleza su oficio.</p>
         </div>
       </section>
 

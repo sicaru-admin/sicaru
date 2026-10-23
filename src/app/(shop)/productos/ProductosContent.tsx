@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { HttpTypes } from "@medusajs/types";
 import { Search } from "lucide-react";
+import { matchesProductQuery } from "@/lib/product-retail";
 import { ProductCatalogCard } from "@/components/products/ProductCatalogCard";
 
 const CATEGORY_LINKS = [
@@ -31,22 +32,18 @@ const CATEGORY_LINKS = [
 
 export function ProductosContent({
   products,
+  initialQuery = "",
 }: {
   products: HttpTypes.StoreProduct[];
+  initialQuery?: string;
 }) {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialQuery);
   const filteredProducts = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase("es-MX");
 
     if (!normalizedQuery) return products;
 
-    return products.filter((product) =>
-      [product.title, product.description, product.handle]
-        .filter(Boolean)
-        .some((value) =>
-          value!.toLocaleLowerCase("es-MX").includes(normalizedQuery)
-        )
-    );
+    return products.filter((product) => matchesProductQuery(product, normalizedQuery));
   }, [products, query]);
 
   const hasQuery = query.trim().length > 0;
@@ -54,14 +51,14 @@ export function ProductosContent({
   return (
     <section className="bg-[#faf8f5] py-10 md:py-12 lg:py-14">
       <div className="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-10">
-        <nav aria-label="Categorías de productos" className="mb-10 md:mb-12">
+        <nav id="categorias" aria-label="Categorías de productos" className="mb-10 md:mb-12">
           <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8e7a9e]">
                 Explora por categoría
               </p>
               <h2 className="mt-2 font-heading text-2xl font-medium text-[#2e2b2b] md:text-3xl">
-                Encuentra el tipo de producto que necesitas
+                Explora por categoría
               </h2>
             </div>
           </div>
@@ -90,12 +87,8 @@ export function ProductosContent({
                 Catálogo completo
               </p>
               <h2 className="mt-2 font-heading text-2xl font-medium text-[#2e2b2b] md:text-3xl">
-                Busca por producto, marca o necesidad
+                Todos los productos
               </h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-[#2e2b2b]/65">
-                Conserva una búsqueda simple para encontrar tratamientos,
-                coloración, keratina, frizz o herramientas profesionales.
-              </p>
             </div>
 
             <div className="w-full">
@@ -133,21 +126,19 @@ export function ProductosContent({
         {filteredProducts.length === 0 ? (
           <div className="border border-[#efe7dd] bg-[#f5f1eb] px-5 py-14 text-center md:px-8 md:py-16">
             <h2 className="font-heading text-2xl font-medium text-[#2e2b2b] md:text-3xl">
-              No encontramos productos con esa búsqueda
+              {products.length === 0 && !hasQuery ? "No hay productos para mostrar por ahora" : "No encontramos productos con esa búsqueda"}
             </h2>
             <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[#2e2b2b]/65">
-              Prueba con otra palabra o explora una de nuestras categorías.
+              {products.length === 0 && !hasQuery ? "¿Buscas algo en particular? Te ayudamos a encontrarlo." : "Prueba con otra palabra o explora una de nuestras categorías."}
             </p>
-            <button
-              type="button"
-              onClick={() => setQuery("")}
-              className="mt-6 inline-flex min-h-11 items-center justify-center bg-[#7f6d8a] px-6 py-3 text-sm font-semibold text-[#faf8f5] transition-colors hover:bg-[#8e7a9e] focus:outline-none focus-visible:shadow-[0_0_0_3px_rgba(127,109,138,0.22)]"
-            >
-              Limpiar búsqueda
-            </button>
+            {hasQuery ? (
+              <button type="button" onClick={() => setQuery("")} className="mt-5 inline-flex min-h-11 items-center text-sm font-semibold text-[#7f6d8a] underline underline-offset-4">Limpiar búsqueda</button>
+            ) : (
+              <a href="https://wa.me/528281136652" target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex min-h-11 items-center text-sm font-semibold text-[#7f6d8a] underline underline-offset-4">Escríbenos por WhatsApp</a>
+            )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3 xl:grid-cols-4 xl:gap-6">
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4">
             {filteredProducts.map((product) => (
               <ProductCatalogCard key={product.id} product={product} />
             ))}

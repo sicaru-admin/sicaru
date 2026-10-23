@@ -1,84 +1,35 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { HeroSection } from "@/components/home/HeroSection";
-import { TrustBar } from "@/components/home/TrustBar";
-import { BrandsShowcase } from "@/components/home/BrandsShowcase";
+import { CategoriesGrid } from "@/components/home/CategoriesGrid";
 import { FeaturedProducts } from "@/components/home/FeaturedProducts";
-import { SectionDivider } from "@/components/ui/SectionDivider";
-import { EyebrowText } from "@/components/ui/EyebrowText";
+import { BrandsShowcase } from "@/components/home/BrandsShowcase";
+import { WhatsAppBanner } from "@/components/home/WhatsAppBanner";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { generateWebSiteSchema } from "@/lib/schema";
 
-const CategoriesGrid = dynamic(() =>
-  import("@/components/home/CategoriesGrid").then((mod) => mod.CategoriesGrid)
-);
-const MontisFeature = dynamic(() =>
-  import("@/components/home/MontisFeature").then((mod) => mod.MontisFeature)
-);
-const BlogPreview = dynamic(() =>
-  import("@/components/home/BlogPreview").then((mod) => mod.BlogPreview)
-);
-const SalonCTA = dynamic(() =>
-  import("@/components/home/SalonCTA").then((mod) => mod.SalonCTA)
-);
-const WhatsAppBanner = dynamic(() =>
-  import("@/components/home/WhatsAppBanner").then((mod) => mod.WhatsAppBanner)
-);
-
 export const metadata: Metadata = {
-  title: "Distribuidora Sicarú — Productos de Belleza Profesional",
-  description:
-    "Sicarú es una tienda de productos profesionales de belleza en Cadereyta Jiménez, Nuevo León. Encuentra coloración, tratamientos capilares, herramientas, depilación y atención personalizada.",
+  title: "SICARÚ — Belleza profesional para ti y tu salón",
+  description: "Explora coloración, tratamientos, herramientas y marcas profesionales en SICARÚ. Encuentra productos para ti y tu salón con atención cercana.",
 };
-
 export const revalidate = 900;
 
-function FeaturedProductsFallback() {
-  return (
-    <section className="bg-gray-50 py-12 md:py-16">
-      <div className="mx-auto max-w-7xl px-4">
-        <div className="mb-10 flex justify-center">
-          <div className="h-9 w-64 rounded premium-shimmer" />
-        </div>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div
-              key={i}
-              className="overflow-hidden rounded-xl bg-white shadow-sm"
-            >
-              <div className="aspect-square premium-shimmer" />
-              <div className="p-3">
-                <div className="h-4 w-3/4 rounded premium-shimmer" />
-                <div className="mt-2 h-4 w-1/2 rounded premium-shimmer" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+function ProductLoading() {
+  return <div className="mx-auto grid max-w-[1400px] grid-cols-2 gap-3 px-4 py-5 sm:px-8 lg:grid-cols-4 lg:px-10" aria-label="Cargando productos destacados" aria-busy="true">{[0, 1, 2, 3].map((index) => <div key={index} className="h-56 animate-pulse rounded-xl bg-[#f5f1eb] motion-reduce:animate-none" />)}</div>;
 }
 
 export default function HomePage() {
-  return (
-    <>
-      <JsonLd schema={generateWebSiteSchema()} />
-      <HeroSection />
-      <TrustBar />
-      <BrandsShowcase />
-      <SectionDivider />
-      <Suspense fallback={<FeaturedProductsFallback />}>
-        <FeaturedProducts />
-      </Suspense>
-      <SectionDivider />
-      <CategoriesGrid />
-      <SectionDivider />
-      <MontisFeature />
-      <SectionDivider />
-      <BlogPreview />
-      <SalonCTA />
-      <WhatsAppBanner />
-    </>
-  );
+  return <>
+    <JsonLd schema={generateWebSiteSchema()} />
+    <HeroSection />
+    <CategoriesGrid />
+    <BrandsShowcase />
+    <Suspense fallback={<ProductLoading />}><FeaturedProducts /></Suspense>
+    <WhatsAppBanner />
+    <div className="mx-auto max-w-[1400px] px-4 pb-6 sm:px-8 lg:px-10">
+      <Link href="/nosotros#filosofia" className="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-[#7f6d8a] underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7f6d8a]">Conoce SICARÚ <ArrowUpRight className="h-4 w-4" aria-hidden="true" /></Link>
+    </div>
+  </>;
 }

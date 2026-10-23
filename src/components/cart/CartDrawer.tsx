@@ -1,7 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useCart } from "./CartProvider";
+import { CATALOG_MODE } from "@/lib/catalog-mode";
+import { normalizeOrderTotals } from "@/lib/order-totals";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import { getCartLineVariantLabel } from "./cart-line-variant";
 
@@ -14,8 +17,11 @@ export function CartDrawer() {
     removeFromCart,
     isLoading,
     totalItems,
+    cartError,
+    retryInitializeCart,
   } = useCart();
 
+  const totals = normalizeOrderTotals(cart);
   if (!isOpen) return null;
 
   return (
@@ -59,10 +65,15 @@ export function CartDrawer() {
 
           {/* Items */}
           <div className="flex-1 overflow-y-auto px-4 py-4">
+            {cartError && <div role="alert" className="mb-4 rounded-[6px] bg-[#f5f1eb] p-4 text-sm text-[#2e2b2b]">
+              <p>{cartError}</p>
+              {!cart && <button type="button" onClick={() => void retryInitializeCart().catch(() => {})} disabled={isLoading} className="mt-2 min-h-11 text-[#7f6d8a] underline">Intentar de nuevo</button>}
+            </div>}
             {!cart?.items?.length ? (
-              <p className="py-8 text-center text-gray-500">
-                Tu carrito est&aacute; vac&iacute;o
-              </p>
+              <div className="py-8 text-center text-gray-500">
+                <p>Tu carrito está vacío.</p>
+                <Link href="/productos" className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-[#7f6d8a] underline underline-offset-4">Explorar productos</Link>
+              </div>
             ) : (
               <ul className="space-y-4">
                 {cart.items.map((item) => {
@@ -79,7 +90,7 @@ export function CartDrawer() {
                           className="h-20 w-20 rounded-lg object-cover"
                         />
                       )}
-                      <div className="flex flex-1 flex-col">
+                      <div className="flex min-w-0 flex-1 flex-col">
                         <h3 className="text-sm font-medium">{item.title}</h3>
                         {variantLabel && (
                           <p className="text-xs text-gray-500">
@@ -90,23 +101,25 @@ export function CartDrawer() {
                           amount={item.unit_price}
                           className="text-sm text-gray-600"
                         />
-                        <div className="mt-2 flex items-center gap-2">
+                        <div className="mt-2 flex flex-wrap items-center gap-2">
                           <button
+                            aria-label={`Reducir cantidad de ${item.title}`}
                             onClick={() =>
                               updateQuantity(item.id, item.quantity - 1)
                             }
                             disabled={isLoading || item.quantity <= 1}
-                            className="flex h-8 w-8 items-center justify-center rounded-full border text-sm hover:bg-gray-100 disabled:opacity-50"
+                            className="flex h-11 w-11 items-center justify-center rounded-full border text-sm hover:bg-gray-100 disabled:opacity-50"
                           >
                             &minus;
                           </button>
                           <span className="text-sm">{item.quantity}</span>
                           <button
+                            aria-label={`Aumentar cantidad de ${item.title}`}
                             onClick={() =>
                               updateQuantity(item.id, item.quantity + 1)
                             }
                             disabled={isLoading}
-                            className="flex h-8 w-8 items-center justify-center rounded-full border text-sm hover:bg-gray-100 disabled:opacity-50"
+                            className="flex h-11 w-11 items-center justify-center rounded-full border text-sm hover:bg-gray-100 disabled:opacity-50"
                           >
                             +
                           </button>
@@ -130,9 +143,9 @@ export function CartDrawer() {
           {cart?.items?.length ? (
             <div className="border-t px-4 py-4">
               <div className="mb-4 flex items-center justify-between">
-                <span className="text-lg font-semibold">Total</span>
+                <span className="text-base font-semibold">{CATALOG_MODE ? "Subtotal de productos" : "Total"}</span>
                 <PriceDisplay
-                  amount={cart.total}
+                  amount={CATALOG_MODE ? Math.max(0, totals.products + totals.itemTaxes - totals.discount) : cart.total}
                   className="text-lg font-bold text-sicaru-purple-900"
                 />
               </div>
@@ -146,7 +159,7 @@ export function CartDrawer() {
                 href="/checkout"
                 className="block w-full rounded-full bg-sicaru-pink py-3 text-center font-semibold text-white transition-colors hover:bg-sicaru-pink/90"
               >
-                Proceder al Pago
+                Continuar al envío
               </a>
             </div>
           ) : null}

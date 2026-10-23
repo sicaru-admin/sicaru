@@ -1,3 +1,4 @@
+import { CatalogUnavailable } from "@/components/products/CatalogUnavailable";
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -43,13 +44,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CategoryPage({ params }: Props) {
   const { handle } = await params
-  const category = await getCategoryByHandle(handle)
+  let category
+  try {
+    category = await getCategoryByHandle(handle)
+  } catch {
+    return <CatalogUnavailable />
+  }
 
   if (!category) {
     notFound()
   }
 
-  const { products } = await getProducts({ category_id: [category.id] })
+  let result
+  try {
+    result = await getProducts({ category_id: [category.id] })
+  } catch {
+    return <CatalogUnavailable />
+  }
+  const { products } = result
   const categoryData = getCategoryData(handle)
 
   const collectionSchema = generateCollectionPageSchema({

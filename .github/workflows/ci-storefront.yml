@@ -4,17 +4,20 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   quality:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Setup Node.js 20
-        uses: actions/setup-node@v4
+      - name: Setup Node.js 24
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
@@ -24,4 +27,43 @@ jobs:
         run: npm run lint
 
       - name: Type check
+        if: ${{ !cancelled() }}
         run: npx tsc --noEmit
+
+      - name: Backend resilience and payment guards
+        if: ${{ !cancelled() }}
+        run: node --experimental-vm-modules --test tests/catalog-resilience.test.mjs tests/product-retail.test.mjs
+
+      - name: Build with unavailable backend
+        if: ${{ !cancelled() }}
+        env:
+          NEXT_PUBLIC_MEDUSA_BACKEND_URL: http://127.0.0.1:9999
+          NEXT_PUBLIC_CATALOG_MODE: "true"
+        run: npm run build
+
+      - name: Install isolated browser test tools
+        if: ${{ !cancelled() }}
+        timeout-minutes: 2
+        run: |
+          npm install --prefix /tmp/sicaru-playwright --no-save --package-lock=false playwright@1.56.1
+          google-chrome --version
+
+      - name: Verify retail at 320, 375 and 390px, cart, checkout and installed app
+        if: ${{ !cancelled() }}
+        env:
+          NEXT_PUBLIC_MEDUSA_BACKEND_URL: http://127.0.0.1:9000
+          NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: pk_storefront_test
+          NEXT_PUBLIC_CATALOG_MODE: "true"
+          PLAYWRIGHT_MODULE: file:///tmp/sicaru-playwright/node_modules/playwright/index.mjs
+          PLAYWRIGHT_CHANNEL: chrome
+        run: |
+          npm run dev -- --hostname 127.0.0.1 > /tmp/sicaru-next.log 2>&1 &
+          trap 'cat /tmp/sicaru-next.log' EXIT
+          node tests/storefront-browser.mjs
+
+      - name: Upload mobile review screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: storefront-mobile-review
+          path: artifacts/

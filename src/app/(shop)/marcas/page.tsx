@@ -6,7 +6,7 @@ import { BRANDS } from "@/lib/constants/brands"
 export const metadata: Metadata = {
   title: "Nuestras Marcas — Distribuidora Sicarú",
   description:
-    "Distribuidores autorizados de 7 marcas mexicanas de belleza profesional: Küül, Voglia, Nekane Capilar, Hidra Color, Xiomara, Vitale y Montis. Productos originales con envío a todo México.",
+    "Distribuidores autorizados de 7 marcas mexicanas de belleza profesional: Küül, Voglia, Nekane Capilar, Hidra Color, Xiomara, Vitale y Montis. Productos originales.",
 }
 
 export default function MarcasPage() {
