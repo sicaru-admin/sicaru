@@ -267,7 +267,9 @@ try {
       await image.scrollIntoViewIfNeeded();
       await image.evaluate((element) => element.decode());
       assert.equal(await image.evaluate((element) => getComputedStyle(element).objectFit), "contain");
-      assert.equal(await image.evaluate((element) => element.naturalWidth / element.naturalHeight), 4 / 3);
+      // Responsive srcset density correction can round natural dimensions by 1px.
+      const dimensions = await image.evaluate((element) => [element.naturalWidth, element.naturalHeight]);
+      assert.ok(Math.abs(dimensions[1] - dimensions[0] * 3 / 4) <= 1);
     }
     assert.equal(await page.locator('meta[name="robots"]').getAttribute("content"), "noindex, nofollow");
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
