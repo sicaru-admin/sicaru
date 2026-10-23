@@ -7,7 +7,7 @@ export function getApprovedPrice(product: HttpTypes.StoreProduct, variant?: Http
     ((product.variants?.length ?? 0) === 1 && product.metadata?.storefront_price_approved === true);
   const price = variant.calculated_price;
   if (!approved || typeof price?.calculated_amount !== "number" || !Number.isFinite(price.calculated_amount) || price.calculated_amount < 0) return null;
-  return price;
+  return { ...price, calculated_amount: price.calculated_amount };
 }
 
 export function hasKnownAvailability(variant?: HttpTypes.StoreProductVariant | null) {
