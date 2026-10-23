@@ -1,5 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { HeroSection } from "@/components/home/HeroSection";
 import { CategoriesGrid } from "@/components/home/CategoriesGrid";
 import { FeaturedProducts } from "@/components/home/FeaturedProducts";
@@ -23,8 +25,11 @@ export default function HomePage() {
     <JsonLd schema={generateWebSiteSchema()} />
     <HeroSection />
     <CategoriesGrid />
-    <Suspense fallback={<ProductLoading />}><FeaturedProducts /></Suspense>
     <BrandsShowcase />
+    <Suspense fallback={<ProductLoading />}><FeaturedProducts /></Suspense>
     <WhatsAppBanner />
+    <div className="mx-auto max-w-[1400px] px-4 pb-6 sm:px-8 lg:px-10">
+      <Link href="/nosotros#filosofia" className="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-[#7f6d8a] underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7f6d8a]">Conoce SICARÚ <ArrowUpRight className="h-4 w-4" aria-hidden="true" /></Link>
+    </div>
   </>;
 }

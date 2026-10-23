@@ -2,11 +2,26 @@
 
 Rama: `feat/catalogo-proximamente-2026-10-22`; PR #10. Revisión visual previa a cualquier publicación.
 
+## Referencia de identidad y corrección visual
+
+Fuente de verdad consultada en modo de solo lectura: [SICARU OPERACION MAESTRA 2026 · IDENTIDAD_MARCA · MARCA-008](https://docs.google.com/spreadsheets/d/1yYs9IW2t5RCGfr5NNsYU_C6is9OT3t6nQobfUEqR2fI/edit#gid=20261018&range=A9:G9), vigente desde 2026-10-18. El registro establece Soft Professional Beauty + Retail, diversidad real, fidelidad al empaque/numeración/tono y la paleta aprobada. No contiene originales fotográficos adjuntos.
+
+Corrección: se retiran el círculo y la elipse decorativa del hero. Se conservan sus tres fotografías existentes con composición más contenida y sombras suaves; el título pasa a Poppins, con un CTA comercial de esquinas suaves. El acceso secundario a categorías aparece en pantallas amplias para mantener compacto el primer scroll móvil. Las marcas preceden al catálogo y tienen áreas de toque claras. No se modifican precios, datos, navegación, carrito ni restricciones de envío/pago.
+
+Sustituciones de referencias en las cuatro tarjetas (archivos originales intactos):
+
+- Coloración: `marcas-colorista-aplicando-tinte.jpg` → `products-hero/voglia-color-fun.webp`.
+- Tratamientos: `salon-aplicacion-tratamiento.jpg` → `products-hero/voglia-total-repair.webp`.
+- Herramientas: `salon-alisado-plancha-profesional.jpg` → `products-hero/navaja-profesional.webp`.
+- Para profesionales: `barberia-corte-masculino.jpg` → composición de `products-hero/vitale-bifase-pro-keratin.webp` e `hidra-color-mask.webp`.
+
+Motivo: favorecer el reconocimiento inmediato de producto y una presentación coherente de retail, con menos ruido visual. Las escenas anteriores se conservan en el repositorio; no se modifican sus bytes ni el contenido de Conócenos.
+
 ## Diseño y comportamiento
 
-Inicio: encabezado compacto y búsqueda visible → hero de producto → cuatro categorías → productos destacados → siete marcas reales → banner breve de WhatsApp. El contenido institucional se conserva en `/nosotros#filosofia`, enlazado como «Conócenos».
+Inicio: encabezado compacto y búsqueda visible → hero comercial de producto → cuatro categorías → siete marcas reales → productos destacados → banner breve de WhatsApp → acceso discreto «Conoce SICARÚ». El contenido institucional y la diversidad de personas se conservan en `/nosotros#filosofia`, también accesible desde «Conócenos» en la navegación.
 
-Se conservan los archivos de fotografía existentes sin modificar sus bytes, etiquetas, proporciones ni tonalidades. La composición del hero se realiza con CSS sobre los recortes existentes; no se generan fotografías ni empaques. Las imágenes de categorías siguen siendo las representativas que ya estaban en el repositorio.
+Se conservan los archivos de fotografía existentes sin modificar sus bytes, etiquetas, proporciones ni tonalidades. La composición del hero se realiza con CSS sobre los recortes existentes; no se generan fotografías ni empaques. Las categorías reutilizan recortes de producto que ya estaban en el repositorio sobre un fondo cálido uniforme, en lugar de escenas de salón con fondos recargados. No se descargaron ni generaron nuevas fotografías para sustituirlas.
 
 Las tarjetas usan exclusivamente productos y variantes devueltos por Medusa. No existen datos de muestra en la interfaz desplegada. Ante un fallo se muestra un estado de recuperación sin tarjetas ficticias. Las imágenes rotas tienen un sustituto neutro sin simular un producto.
 
@@ -18,7 +33,7 @@ El retiro del service worker anterior y la limpieza de cachés están versionado
 
 ## Fotografías originales pendientes
 
-La documentación previa no acredita la procedencia de todos los recortes existentes. Se conservan como material temporal sin afirmar que se recibieron nuevas fotografías originales. Queda pendiente confirmar los originales de Voglia Total Repair 250 ml, Vitale Bifase Pro-Keratin y Hidra Color Mask 150 g usados en el hero, o reemplazarlos por sus originales aprobados.
+La documentación previa no acredita la procedencia de todos los recortes existentes. Se conservan como material temporal sin afirmar que se recibieron nuevas fotografías originales. Queda pendiente confirmar los originales de Voglia Total Repair 250 ml, Vitale Bifase Pro-Keratin e Hidra Color Mask 150 g usados en el hero y categorías, además de Voglia Color Fun y la navaja profesional reutilizados en categorías, o reemplazarlos por sus originales aprobados. La inspección de los recortes existentes no sustituye la confirmación de su procedencia.
 
 Primer lote pendiente de archivos originales y vinculación exacta a SKU:
 
@@ -32,6 +47,6 @@ Una fotografía grupal original de producto SICARÚ permitiría sustituir la com
 
 ## Verificación
 
-CI ejecuta lint, TypeScript, pruebas de recuperación/aprobación de precios/inventario/búsqueda, build sin backend y recorrido completo a 320, 375 y 390 px con un backend aislado de prueba. Verifica selección exacta de SKU, modificación de cantidades, ausencia de tarifas previas y cobros, fallos de Medusa, imágenes rotas y actualización de una app controlada por un worker antiguo. Las capturas se guardan como artefacto `storefront-mobile-review`.
+CI ejecuta lint, TypeScript, pruebas de recuperación/aprobación de precios/inventario/búsqueda, build sin backend y recorrido completo a 320, 375 y 390 px con un backend aislado de prueba. Verifica selección exacta de SKU, modificación de cantidades, ausencia de tarifas previas y cobros, fallos de Medusa, imágenes rotas y actualización de una app controlada por un worker antiguo. Además se verifica el orden comercial de secciones y que los marcos de imagen no recorten los empaques usando los límites alfa originales, a 320/375/390 y 1440 px. Las capturas móviles y de escritorio se guardan como artefacto `storefront-mobile-review`.
 
 No se modifican producción, credenciales, Railway ni los PR #8 y #5.

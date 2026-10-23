@@ -1,4 +1,4 @@
-// SICARÚ Modern Beauty Retail 2026-10-23: retire legacy cached storefronts.
+// SICARÚ retail refinement 2026-10-23: retire legacy cached storefronts.
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", (event) => {
   event.waitUntil((async () => {

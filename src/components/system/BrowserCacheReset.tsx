@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-const RESET_KEY = "sicaru-retail-cache-2026-10-23";
+const RESET_KEY = "sicaru-retail-refinement-2026-10-23";
 
 export function BrowserCacheReset() {
   useEffect(() => {

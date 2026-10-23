@@ -60,6 +60,36 @@ const browser = await chromium.launch({ channel: process.env.PLAYWRIGHT_CHANNEL 
 let activePage;
 const swFile = new URL("../public/sw.js", import.meta.url);
 const realWorker = await readFile(swFile, "utf8");
+// Original alpha bounds let us detect accidental clipping of a package or label.
+async function verifyRetailPresentation(page) {
+  assert.deepEqual(await page.locator("main section[aria-labelledby]").evaluateAll((sections) => sections.map((section) => section.getAttribute("aria-labelledby"))), ["retail-hero", "home-categories", "home-brands", "home-featured"]);
+  const about = page.getByRole("link", { name: "Conoce SICARÚ", exact: true });
+  assert.equal(await about.getAttribute("href"), "/nosotros#filosofia");
+  const photoBounds = {
+    "voglia-total-repair.webp": [438, 114, 754, 1286],
+    "vitale-bifase-pro-keratin.webp": [461, 69, 728, 1328],
+    "hidra-color-mask.webp": [339, 158, 867, 1315],
+    "voglia-color-fun.webp": [443, 135, 751, 1285],
+    "navaja-profesional.webp": [504, 111, 731, 1286],
+  };
+  for (const img of await page.locator('[aria-labelledby="retail-hero"] img, [aria-labelledby="home-categories"] img').all()) {
+    if (!(await img.isVisible())) continue;
+    const result = await img.evaluate((element, bounds) => {
+      const src = new URL(element.currentSrc, location.href);
+      const name = (src.searchParams.get("url") || src.pathname).split("/").pop();
+      const box = element.getBoundingClientRect();
+      const [left, top, right, bottom] = bounds[name];
+      const scale = Math.max(box.width / 1200, box.height / 1400);
+      const offsetX = (box.width - 1200 * scale) / 2;
+      const offsetY = (box.height - 1400 * scale) / 2;
+      return { name, intact: offsetX + left * scale >= -1 && offsetY + top * scale >= -1 && offsetX + right * scale <= box.width + 1 && offsetY + bottom * scale <= box.height + 1 };
+    }, photoBounds);
+    assert.ok(result.intact, `Package cropped: ${result.name}`);
+  }
+  const hero = page.locator('[aria-labelledby="retail-hero"]');
+  assert.ok(await hero.getByRole("link", { name: "Explorar productos", exact: true }).isVisible());
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
+}
 try {
   for (let attempt = 0; attempt < 60; attempt++) {
     try { if ((await fetch(baseUrl)).ok) break; } catch {}
@@ -88,6 +118,7 @@ try {
     assert.ok(await unapproved.getByRole("button", { name: "Agregar Producto sin precio aprobado", exact: true }).isDisabled());
     await cards.filter({ has: page.getByRole("heading", { name: "Producto sin fotografía", exact: true }) }).getByText("Imagen no disponible").waitFor();
     for (const image of await page.locator("main img").all()) { if (!(await image.isVisible())) continue; await image.scrollIntoViewIfNeeded(); await image.evaluate((element) => element.decode()); }
+    await verifyRetailPresentation(page);
     await page.screenshot({ path: `artifacts/home-${width}.png`, fullPage: true });
 
     await search.fill("Voglia 500");
@@ -144,7 +175,8 @@ try {
         const cache = await caches.open("legacy-storefront");
         await cache.put("/old-page", new Response("OLD SICARU"));
         sessionStorage.setItem("sicaru-cache-reset-2026-06-29", "done");
-        sessionStorage.removeItem("sicaru-retail-cache-2026-10-23");
+        sessionStorage.setItem("sicaru-retail-cache-2026-10-23", "done");
+        sessionStorage.removeItem("sicaru-retail-refinement-2026-10-23");
       });
       await page.reload({ waitUntil: "networkidle" });
       assert.equal(await page.evaluate(async () => (await caches.keys()).includes("legacy-storefront")), false);
@@ -183,6 +215,15 @@ try {
     await context.close();
     console.log(`PASS: ${width}px search, categories, brand links, images, approved prices, variants, cart quantities, shipping guard, recovery and no horizontal overflow.`);
   }
+  offline = false;
+  const desktop = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+  const desktopPage = activePage = await desktop.newPage();
+  await desktopPage.goto(baseUrl, { waitUntil: "networkidle" });
+  for (const image of await desktopPage.locator("main img").all()) { await image.scrollIntoViewIfNeeded(); await image.evaluate((element) => element.decode()); }
+  await verifyRetailPresentation(desktopPage);
+  await desktopPage.screenshot({ path: "artifacts/home-desktop-1440.png", fullPage: true });
+  await desktop.close();
+  console.log("PASS: retail section order, original packages intact and desktop presentation at 1440px.");
   assert.equal(paymentRequests, 0);
   assert.equal(shippingRequests, 0);
 } catch (error) {
