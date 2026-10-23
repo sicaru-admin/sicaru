@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ImageIcon } from "lucide-react";
 
 type ImageGalleryProps = {
-  images: { id: string; url: string }[];
+  images: { id: string; url: string; alt?: string }[];
   title: string;
 };
 
@@ -41,7 +41,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
       <div className="relative aspect-[16/10] w-full overflow-hidden border border-[#efe7dd] bg-[#faf8f5] md:aspect-square lg:aspect-auto lg:h-[600px] xl:h-[620px]">
         <Image
           src={images[selected].url}
-          alt={`${title} - imagen ${selected + 1}`}
+          alt={images[selected].alt || `${title} - imagen ${selected + 1}`}
           fill
           sizes="(max-width: 767px) 100vw, (max-width: 1023px) 60vw, 56vw"
           className="object-contain"
@@ -66,7 +66,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
             >
               <Image
                 src={img.url}
-                alt={`${title} - miniatura ${i + 1}`}
+                alt={img.alt || `${title} - miniatura ${i + 1}`}
                 fill
                 sizes="64px"
                 className="object-contain p-1.5"
@@ -78,3 +78,4 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
     </div>
   );
 }
+

@@ -1,0 +1,11 @@
+SICARÚ ONLINE · Lote 1 fotos Google (2026-10-22)
+Fotografías originales recuperadas de Biblioteca SICARÚ. Conversión técnica a WebP: no se cambia el empaque ni se recorta contenido.
+
+KIT-VOGLIA-8601-1036.webp: combo Voglia tono 1 Negro + oxidante 20V.
+KIT-VOGLIA-8603-1036.webp: combo Voglia tono 3 Castaño Oscuro + oxidante 20V.
+KIT-VOGLIA-8604-1036.webp: combo Voglia tono 4 Castaño Medio + oxidante 20V.
+
+PRECIO $97 SOLO PARA COMBO, NO EL TUBO SUELTO. No inventar existencia.
+Vincular imagen como imagen principal a producto correcto mediante SKU kit virtual, sin sobrescribir otros productos.
+No activar pagos ni envíos. Mantener modo catálogo.
+Si no existe en backend, NO crear producto ficticio: guardar asset y dejar integración pendiente.

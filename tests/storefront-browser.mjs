@@ -8,12 +8,21 @@ let offline = false;
 let paymentRequests = 0;
 let shippingRequests = 0;
 let lastVariantId;
+let comboFixtureMode = false;
 const variant = { id: "variant_250", title: "250 ml", options: [], manage_inventory: true, inventory_quantity: 5, metadata: { storefront_price_approved: true }, calculated_price: { calculated_amount: 199, original_amount: 199, currency_code: "mxn" } };
 const product = { id: "prod_test", title: "Tratamiento de prueba", handle: "tratamiento-prueba", subtitle: "Cuidado capilar", description: "Producto aislado para las pruebas del storefront.", thumbnail: "/images/products-hero/voglia-total-repair.webp", images: [], options: [], variants: [variant, { ...variant, id: "variant_500", title: "500 ml", metadata: {}, calculated_price: { calculated_amount: 299, currency_code: "mxn" } }], collection: { id: "col_voglia", title: "Voglia", handle: "voglia" } };
 const products = [product,
   { ...product, id: "prod_unapproved", title: "Producto sin precio aprobado", handle: "sin-aprobacion", variants: [{ ...variant, id: "variant_unapproved", inventory_quantity: 0, metadata: {}, calculated_price: { calculated_amount: 987.65, currency_code: "mxn" } }] },
   { ...product, id: "prod_missing", title: "Producto sin fotografía", handle: "sin-foto", thumbnail: "/images/foto-que-no-existe.jpg", variants: [{ id: "variant_unknown", title: "Default Variant", metadata: {} }] },
 ];
+// Isolated API fixtures only; never imported by the deployed storefront.
+const suppliedCombos = [
+  { identifier: "KIT-VOGLIA-8601-1036", tone: "1 Negro" },
+  { identifier: "KIT-VOGLIA-8603-1036", tone: "3 Castaño Oscuro" },
+  { identifier: "KIT-VOGLIA-8604-1036", tone: "4 Castaño Medio" },
+];
+const comboFixtures = suppliedCombos.map((asset, index) => ({ ...product, id: `test_combo_${index}`, title: `Combo Voglia ${asset.tone}`, handle: `test-combo-${index}`, thumbnail: null, variants: [{ id: `test_variant_${index}`, title: asset.tone, sku: asset.identifier, metadata: {}, manage_inventory: true, calculated_price: { calculated_amount: 97, currency_code: "mxn" } }] }));
+comboFixtures.push({ ...product, id: "test_tube", title: "Tubo Voglia de prueba", handle: "test-tube", thumbnail: null, variants: [{ id: "test_tube_variant", title: "1 Negro", sku: "VOGLIA-TINTE-1-90ML", metadata: {}, calculated_price: { calculated_amount: 97, currency_code: "mxn" } }] });
 // Include a legacy shipping method to prove it is never shown as an active rate.
 const cart = { id: "cart_test", items: [], total: 0, subtotal: 0, item_subtotal: 0, item_total: 0, shipping_total: 149, shipping_subtotal: 149, shipping_methods: [{ id: "old_dhl", name: "DHL provisional" }] };
 function recalculate() {
@@ -35,7 +44,8 @@ const backend = createServer(async (req, res) => {
   if (url.pathname === "/store/regions") result = { regions: [{ id: "reg_mx", name: "México", currency_code: "mxn" }] };
   else if (url.pathname === "/store/products") {
     const handle = url.searchParams.get("handle");
-    const selection = handle ? products.filter((item) => item.handle === handle) : products;
+    const source = comboFixtureMode ? comboFixtures : products;
+    const selection = handle ? source.filter((item) => item.handle === handle) : source;
     result = { products: selection, count: selection.length, offset: 0, limit: 20 };
   } else if (url.pathname === "/store/product-categories") result = { product_categories: [{ id: "cat_color", name: "Coloración", handle: "color-y-tintes" }], count: 1 };
   else if (url.pathname === "/store/collections") result = { collections: [{ id: "col_voglia", title: "Voglia", handle: "voglia" }], count: 1 };
@@ -224,6 +234,49 @@ try {
   await desktopPage.screenshot({ path: "artifacts/home-desktop-1440.png", fullPage: true });
   await desktop.close();
   console.log("PASS: retail section order, original packages intact and desktop presentation at 1440px.");
+  comboFixtureMode = true;
+  for (const width of [320, 375, 390]) {
+    const context = await browser.newContext({ viewport: { width, height: 844 }, deviceScaleFactor: 1 });
+    const page = activePage = await context.newPage();
+    await page.goto(`${baseUrl}/productos?lote1=${width}`, { waitUntil: "networkidle" });
+    for (const [index, asset] of suppliedCombos.entries()) {
+      const card = page.getByTestId("retail-product-card").filter({ has: page.getByRole("heading", { name: `Combo Voglia ${asset.tone}`, exact: true }) });
+      assert.match(await card.getByTestId("retail-price").innerText(), /97/);
+      assert.ok(await card.getByRole("button", { name: `Agregar Combo Voglia ${asset.tone}`, exact: true }).isDisabled());
+      const image = card.locator("img");
+      await image.scrollIntoViewIfNeeded();
+      await image.evaluate((element) => element.decode());
+      assert.ok((await image.getAttribute("src")).includes(asset.identifier));
+      assert.equal(await image.evaluate((element) => getComputedStyle(element).objectFit), "contain");
+      await page.goto(`${baseUrl}/productos/test-combo-${index}`, { waitUntil: "networkidle" });
+      const galleryImage = page.getByRole("img", { name: `Combo Voglia tono ${asset.tone}: tinte 90 ml y peróxido 20V 140 ml`, exact: true }).first();
+      await galleryImage.evaluate((element) => element.decode());
+      assert.ok((await galleryImage.getAttribute("src")).includes(asset.identifier));
+      assert.equal(await galleryImage.evaluate((element) => getComputedStyle(element).objectFit), "contain");
+      assert.ok(await page.getByRole("button", { name: "Consultar disponibilidad", exact: true }).isDisabled());
+      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
+      await page.screenshot({ path: `artifacts/voglia-${asset.identifier}-${width}.png`, fullPage: true });
+      await page.goto(`${baseUrl}/productos?lote1=${width}`, { waitUntil: "networkidle" });
+    }
+    const tube = page.getByTestId("retail-product-card").filter({ has: page.getByRole("heading", { name: "Tubo Voglia de prueba", exact: true }) });
+    assert.equal(await tube.getByTestId("retail-price").innerText(), "Consultar precio");
+    assert.equal(await tube.locator('img[src*="KIT-VOGLIA"]').count(), 0);
+    await page.goto(`${baseUrl}/revision/voglia-lote1`, { waitUntil: "networkidle" });
+    assert.equal(await page.getByTestId("photo-review-card").count(), 3);
+    for (const image of await page.locator("main img").all()) {
+      await image.scrollIntoViewIfNeeded();
+      await image.evaluate((element) => element.decode());
+      assert.equal(await image.evaluate((element) => getComputedStyle(element).objectFit), "contain");
+      // Responsive srcset density correction can round natural dimensions by 1px.
+      const dimensions = await image.evaluate((element) => [element.naturalWidth, element.naturalHeight]);
+      assert.ok(Math.abs(dimensions[1] - dimensions[0] * 3 / 4) <= 1);
+    }
+    assert.equal(await page.locator('meta[name="robots"]').getAttribute("content"), "noindex, nofollow");
+    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
+    await page.screenshot({ path: `artifacts/voglia-photo-review-${width}.png`, fullPage: true });
+    await context.close();
+    console.log(`PASS: Voglia ${width}px exact combo images, complete photos in cards/details, 97 MXN only for combos, no invented stock and preview review.`);
+  }
   assert.equal(paymentRequests, 0);
   assert.equal(shippingRequests, 0);
 } catch (error) {

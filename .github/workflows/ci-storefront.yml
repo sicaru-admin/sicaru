@@ -61,6 +61,28 @@ jobs:
           trap 'cat /tmp/sicaru-next.log' EXIT
           node tests/storefront-browser.mjs
 
+      - name: Confirm photo review is unavailable in production
+        if: ${{ !cancelled() }}
+        env:
+          NODE_ENV: production
+          VERCEL_ENV: production
+          NEXT_PUBLIC_CATALOG_MODE: "true"
+        run: |
+          npm run start -- --hostname 127.0.0.1 --port 3001 > /tmp/sicaru-production-check.log 2>&1 &
+          review_check_pid=$!
+          trap 'kill "$review_check_pid"; cat /tmp/sicaru-production-check.log' EXIT
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          let response;
+          for (let attempt = 0; attempt < 30; attempt++) {
+            try { response = await fetch('http://127.0.0.1:3001/revision/voglia-lote1'); break; } catch {}
+            await new Promise((resolve) => setTimeout(resolve, 500));
+          }
+          assert.equal(response?.status, 404);
+          assert.ok(!(await response.text()).includes('Revisión de fotografías · Voglia'));
+          console.log('PASS: photographic review returns 404 in production.');
+          JS
+
       - name: Upload mobile review screenshots
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
