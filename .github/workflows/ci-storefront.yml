@@ -32,7 +32,14 @@ jobs:
 
       - name: Backend resilience and payment guards
         if: ${{ !cancelled() }}
-        run: node --experimental-vm-modules --test tests/catalog-resilience.test.mjs
+        run: node --experimental-vm-modules --test tests/catalog-resilience.test.mjs tests/product-retail.test.mjs
+
+      - name: Build with unavailable backend
+        if: ${{ !cancelled() }}
+        env:
+          NEXT_PUBLIC_MEDUSA_BACKEND_URL: http://127.0.0.1:9999
+          NEXT_PUBLIC_CATALOG_MODE: "true"
+        run: npm run build
 
       - name: Install isolated browser test tools
         if: ${{ !cancelled() }}
@@ -41,7 +48,7 @@ jobs:
           npm install --prefix /tmp/sicaru-playwright --no-save --package-lock=false playwright@1.56.1
           google-chrome --version
 
-      - name: Verify mobile storefront and backend fallbacks
+      - name: Verify retail at 320, 375 and 390px, cart, checkout and installed app
         if: ${{ !cancelled() }}
         env:
           NEXT_PUBLIC_MEDUSA_BACKEND_URL: http://127.0.0.1:9000

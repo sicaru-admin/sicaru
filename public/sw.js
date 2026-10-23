@@ -1,19 +1,10 @@
-self.addEventListener("install", (event) => {
-  self.skipWaiting();
-});
-
+// SICARÚ Modern Beauty Retail 2026-10-23: retire legacy cached storefronts.
+self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    Promise.all([
-      caches
-        .keys()
-        .then((keys) => Promise.all(keys.map((key) => caches.delete(key)))),
-      self.registration.unregister(),
-      self.clients
-        .matchAll({ includeUncontrolled: true, type: "window" })
-        .then((clients) =>
-          Promise.all(clients.map((client) => client.navigate(client.url)))
-        ),
-    ])
-  );
+  event.waitUntil((async () => {
+    await Promise.all((await caches.keys()).map((key) => caches.delete(key)));
+    await self.registration.unregister();
+    const windows = await self.clients.matchAll({ includeUncontrolled: true, type: "window" });
+    await Promise.all(windows.map((client) => client.navigate(client.url)));
+  })());
 });

@@ -14,7 +14,7 @@ const navLinks = [
   { href: "/productos#categorias", label: "Categorías" },
   { href: "/salon-pro", label: "Salón Pro" },
   { href: "/blog", label: "Blog" },
-  { href: "/nosotros", label: "Nosotros" },
+  { href: "/nosotros", label: "Conócenos" },
   { href: "/contacto", label: "Contacto" },
 ];
 

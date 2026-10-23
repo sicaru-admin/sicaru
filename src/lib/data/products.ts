@@ -9,6 +9,7 @@ export async function getProducts(
   const region = await getMexicoRegion();
   const { products, count, offset, limit } = await catalogRequest(() => sdk.store.product.list({
     limit: 20,
+    fields: "*variants.calculated_price,+variants.inventory_quantity,+variants.metadata,+metadata",
     region_id: region?.id,
     ...queryParams,
   }));
@@ -22,6 +23,7 @@ export async function getProductByHandle(handle: string) {
   const { products } = await catalogRequest(() => sdk.store.product.list({
     handle,
     limit: 1,
+    fields: "*variants.calculated_price,+variants.inventory_quantity,+variants.metadata,+metadata",
     region_id: region?.id,
   }));
 
@@ -34,6 +36,7 @@ export async function getProductsByCollection(collectionId: string) {
   const { products, count, offset, limit } = await catalogRequest(() => sdk.store.product.list({
     collection_id: [collectionId],
     limit: 50,
+    fields: "*variants.calculated_price,+variants.inventory_quantity,+variants.metadata,+metadata",
     region_id: region?.id,
   }));
 

@@ -4,26 +4,15 @@ import { HomeHeroVisual } from "./HomeHeroVisual";
 
 export function HeroSection() {
   return (
-    <section className="overflow-hidden bg-[#f5f1eb]">
-      <div className="mx-auto grid max-w-[1480px] gap-8 px-5 py-8 sm:px-8 md:grid-cols-2 md:items-center md:gap-10 md:py-12 lg:px-10 lg:py-16">
-        <div className="max-w-xl">
-          <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[#7f6d8a] sm:text-xs">
-            SICARÚ · BELLEZA PROFESIONAL
-          </p>
-          <h1 className="mt-4 max-w-[13ch] font-heading text-[2.75rem] font-medium leading-[1.05] text-[#2e2b2b] sm:text-6xl lg:text-7xl">
-            Belleza profesional, cercana y real.
-          </h1>
-          <p className="mt-5 max-w-lg text-sm leading-7 text-[#2e2b2b]/75 sm:text-base">
-            Coloración, tratamientos y herramientas para estilistas y para quienes quieren cuidar su cabello con productos confiables.
-          </p>
-          <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <Link href="/productos" className="inline-flex min-h-12 items-center justify-center gap-3 rounded-[6px] bg-[#7f6d8a] px-5 py-3 text-sm font-semibold text-[#faf8f5] transition-colors hover:bg-[#6d5b79] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7f6d8a]">
-              Explorar productos <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
-            <Link href="/nosotros" className="inline-flex min-h-12 items-center justify-center rounded-[6px] border border-[#7f6d8a]/45 px-5 py-3 text-sm font-semibold text-[#7f6d8a] transition-colors hover:bg-[#efe7dd] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7f6d8a]">
-              Conocer SICARÚ
-            </Link>
-          </div>
+    <section className="overflow-hidden bg-[#f5f1eb]" aria-labelledby="retail-hero">
+      <div className="mx-auto grid max-w-[1400px] grid-cols-[1.12fr_1fr] items-center gap-0 px-4 py-5 sm:gap-5 sm:px-8 sm:py-7 lg:grid-cols-2 lg:px-10 lg:py-8">
+        <div className="relative z-10 min-w-0 max-w-lg py-2">
+          <p className="text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-[#7f6d8a] sm:text-xs">SICARÚ BEAUTY</p>
+          <h1 id="retail-hero" className="mt-2 max-w-[15ch] font-heading text-[1.75rem] font-medium leading-[1.08] text-[#2e2b2b] sm:text-[2.75rem] lg:text-[3.5rem]">Belleza profesional para ti y tu salón</h1>
+          <p className="mt-3 max-w-sm text-xs leading-5 text-[#2e2b2b]/75 sm:text-base sm:leading-6">Coloración, tratamientos, herramientas y más</p>
+          <Link href="/productos" className="mt-4 inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full bg-[#7f6d8a] px-3 py-2.5 text-[0.68rem] font-semibold text-[#faf8f5] transition-colors hover:bg-[#6c5c76] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7f6d8a] sm:gap-2 sm:px-6 sm:text-sm">
+            Explorar productos <ArrowRight className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" aria-hidden="true" />
+          </Link>
         </div>
         <HomeHeroVisual />
       </div>

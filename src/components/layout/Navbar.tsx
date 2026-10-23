@@ -8,12 +8,13 @@ import { AccountButton } from "./AccountButton";
 import { SearchButton } from "@/components/search/SearchButton";
 import { MobileNav } from "./MobileNav";
 import { BrandWordmark } from "./BrandWordmark";
+import { HeaderSearch } from "@/components/search/HeaderSearch";
 
 const navLinks = [
   { href: "/productos", label: "Productos" },
   { href: "/marcas", label: "Marcas" },
   { href: "/salon-pro", label: "Salón Pro" },
-  { href: "/nosotros", label: "SICARÚ" },
+  { href: "/nosotros", label: "Conócenos" },
   { href: "/contacto", label: "Contacto" },
 ];
 
@@ -26,10 +27,10 @@ export function Navbar() {
 
   return (
     <header className="sicaru-navbar sticky top-0 z-30">
-      <nav className="mx-auto flex max-w-[1400px] items-center justify-between px-5 py-3 sm:px-8 lg:px-10 md:py-4">
+      <nav className="mx-auto flex max-w-[1400px] items-center justify-between px-4 py-2 sm:px-8 lg:px-10 md:py-3">
         <BrandWordmark className="shrink-0" />
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-5 lg:gap-8 md:flex">
           {navLinks.map((link) => {
             const active = isActivePath(pathname, link.href);
 
@@ -53,6 +54,7 @@ export function Navbar() {
           <MobileNav />
         </div>
       </nav>
+      <HeaderSearch />
     </header>
   );
 }

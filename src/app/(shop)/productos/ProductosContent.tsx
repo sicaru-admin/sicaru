@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { HttpTypes } from "@medusajs/types";
 import { Search } from "lucide-react";
+import { matchesProductQuery } from "@/lib/product-retail";
 import { ProductCatalogCard } from "@/components/products/ProductCatalogCard";
 
 const CATEGORY_LINKS = [
@@ -31,22 +32,18 @@ const CATEGORY_LINKS = [
 
 export function ProductosContent({
   products,
+  initialQuery = "",
 }: {
   products: HttpTypes.StoreProduct[];
+  initialQuery?: string;
 }) {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialQuery);
   const filteredProducts = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase("es-MX");
 
     if (!normalizedQuery) return products;
 
-    return products.filter((product) =>
-      [product.title, product.description, product.handle]
-        .filter(Boolean)
-        .some((value) =>
-          value!.toLocaleLowerCase("es-MX").includes(normalizedQuery)
-        )
-    );
+    return products.filter((product) => matchesProductQuery(product, normalizedQuery));
   }, [products, query]);
 
   const hasQuery = query.trim().length > 0;
@@ -141,7 +138,7 @@ export function ProductosContent({
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3 xl:grid-cols-4 xl:gap-6">
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4">
             {filteredProducts.map((product) => (
               <ProductCatalogCard key={product.id} product={product} />
             ))}
