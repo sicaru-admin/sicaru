@@ -62,9 +62,9 @@ const swFile = new URL("../public/sw.js", import.meta.url);
 const realWorker = await readFile(swFile, "utf8");
 // Original alpha bounds let us detect accidental clipping of a package or label.
 async function verifyRetailPresentation(page) {
-  assert.deepEqual(await page.locator("main section[aria-labelledby]").evaluateAll((sections) => sections.map((section) => section.getAttribute("aria-labelledby"))), ["retail-hero", "home-categories", "home-brands", "home-featured"]);
+  assert.deepEqual(await page.locator("main section[aria-labelledby]").evaluateAll((sections) => sections.map((section) => section.getAttribute("aria-labelledby"))), ["retail-hero", "home-categories", "home-brands", "home-featured", "belleza-identidad"]);
   const about = page.getByRole("link", { name: "Conoce SICARÚ", exact: true });
-  assert.equal(await about.getAttribute("href"), "/nosotros#filosofia");
+  assert.equal(await about.getAttribute("href"), "/nosotros");
   const photoBounds = {
     "voglia-total-repair.webp": [438, 114, 754, 1286],
     "vitale-bifase-pro-keratin.webp": [461, 69, 728, 1328],
@@ -134,7 +134,7 @@ try {
     assert.equal(await page.locator('[aria-labelledby="home-brands"] a').count(), 7);
     await page.getByRole("button", { name: "Abrir menú" }).click();
     await page.locator("header").getByRole("link", { name: "Conócenos", exact: true }).click();
-    await page.getByRole("heading", { name: "Raíces mexicanas. Belleza sin moldes." }).waitFor();
+    await page.getByRole("heading", { name: "Conoce SICARÚ", exact: true }).waitFor();
     await page.goto(baseUrl, { waitUntil: "networkidle" });
 
     const current = page.getByTestId("retail-product-card").filter({ has: page.getByRole("heading", { name: "Tratamiento de prueba", exact: true }) });
