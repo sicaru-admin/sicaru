@@ -47,3 +47,18 @@ La estructura de ProductosContent, fotos y tarjetas permanece byte por byte igua
 No se tocan checkout, pagos/pedidos, carrito, impuestos, inventario, envíos, backend Medusa/Railway, imágenes, hero, Conócenos o las etapas 2–3. Los hashes congelados desde main prueban estas restricciones. La antigua prueba de publicación excluye solo el helper de aprobación, BrandsShowcase y llms.txt autorizados ahora; están cubiertos por pruebas semánticas nuevas. CI ejecuta todos los tests .test.mjs además del navegador con fixtures.
 
 Preview requiere la clave publicable existente, limitada a la rama nueva. No se cambian variables de Production ni se genera una nueva credencial. El build/QA local y la Preview deben distinguirse de datos reales de Medusa. Riesgo React #418 permanece abierto en #13; esta rama no pretende corregirlo ni ocultarlo.
+
+## Cierre autorizado de enlaces editoriales (adenda de publicación)
+
+La propietaria autorizó corregir los seis destinos inexistentes dentro de esta misma PR. Se conserva el resto del trabajo. Las rutas antiguas se comprobaron renderizando su pantalla: HTTP 200 por streaming no impide un encabezado 404. No se crean redirecciones.
+
+- Voglia Tinte Permanente: el artículo describe un kit de 60 ml; el catálogo publica 90 ml con 23 variantes. No acredita el mismo SKU/presentación.
+- Küül Color System: el texto describe 90 ml, la ficha es Color System Cream 3oz; sin SKU editorial no se acredita equivalencia exacta.
+- Küül Cure Me Shampoo: no existe ficha publicada del shampoo.
+- Vitale Keratina Brasileña: el nombre no acredita equivalencia con Vitale Keratina Profesional 500ml.
+- Nekane Mascarilla Hidratante: no acredita equivalencia con Tratamiento Hidra Intenso 300ml.
+- Küül Cure Me Tratamiento: no identifica SKU/presentación; no se equipara con Reconstructor 1L.
+
+Se retiran las fichas enlazadas incorrectamente y los diez ProductEmbed con importes editoriales no aprobados. En su lugar se ofrecen los productos publicados de cada marca mediante las rutas verificadas. Las demás menciones pierden el enlace específico; solo se ajustan las frases inmediatas que prometían catálogo/línea completa y el cierre que prometía esas referencias. El resto de tablas, afirmaciones técnicas y contenido legal sigue pendiente de revisión, sin ampliación editorial en esta PR.
+
+Las pruebas recorren todos los artículos públicos y sus destinos de producto renderizados, además de los accesos principales. Se añade una comprobación explícita de pantallas 404 con HTTP 200 y un inventario de handles publicado obtenido por lectura pública, sin precios ni existencias; ese snapshot debe actualizarse solo con datos verificados cuando cambie el catálogo. La validación remota repite el recorrido contra el catálogo real antes y después de publicar.

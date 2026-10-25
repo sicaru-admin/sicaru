@@ -1,0 +1,51 @@
+{
+  "source": "Public Store API read-only; verified against production before this change",
+  "observedAt": "2026-10-25T04:14:07.902Z",
+  "products": [
+    {
+      "id": "prod_01KVV3GD5Z3VZCKH48G0MDZAP0",
+      "handle": "nekane-tratamiento-hidra-intenso",
+      "title": "Nekane Capilar Tratamiento Hidra Intenso"
+    },
+    {
+      "id": "prod_01KVV3GD5Z4E86TFJNTJ806QZX",
+      "handle": "vitale-keratina-profesional",
+      "title": "Vitale Keratina Profesional"
+    },
+    {
+      "id": "prod_01KVV3GD5Z8Q1ND1PXMBD6PZ47",
+      "handle": "hidra-color-tinte-cremoso",
+      "title": "Hidra Color Tinte Cremoso"
+    },
+    {
+      "id": "prod_01KVV3GD5Z9RXF3QAZWM7TJCDS",
+      "handle": "xiomara-gel-fijacion-fuerte",
+      "title": "Xiomara Gel Fijación Fuerte"
+    },
+    {
+      "id": "prod_01KVV3GD5ZD8R40HF48DRBF37A",
+      "handle": "voglia-tinte-permanente-90ml",
+      "title": "Voglia Tinte Permanente 90ml"
+    },
+    {
+      "id": "prod_01KVV3GD5ZFG0NT90YWFXRPZFK",
+      "handle": "kuul-cure-me-reconstructor-1l",
+      "title": "Küül Cure Me Reconstructor 1L"
+    },
+    {
+      "id": "prod_01KVV3GD5ZR40Q6YWBS7QHJ48Z",
+      "handle": "montis-shampoo-extracto-natural",
+      "title": "Montis Shampoo Extracto Natural"
+    },
+    {
+      "id": "prod_01KVV3GD5ZX5DSYNJGNVC74FF6",
+      "handle": "kuul-color-system-cream-3oz",
+      "title": "Küül Color System Cream 3oz"
+    },
+    {
+      "id": "prod_01KVXJG9PX1NN0MAYZ283R9H7N",
+      "handle": "voglia-all-in-one-keratin-250ml",
+      "title": "Voglia All in One Keratin 250ml"
+    }
+  ]
+}
