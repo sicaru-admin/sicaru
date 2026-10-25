@@ -8,13 +8,11 @@
   "src/lib/data/checkout.ts": "4aa4f3ef07a7a7bb94eeeb6c409f5b01ac7cf63ad8487e3312e24af0be702e5f",
   "src/lib/data/cart.ts": "80f53491350cfdda4b2bf682fe79e71074836495ae073663193be5eb9e39893a",
   "src/lib/data/products.ts": "45dcd235f7b397f47603a9ebce8192e4952901a956ae9569a192e49c898bc3bb",
-  "src/lib/product-retail.ts": "9f1f13bac0948cd49fb9d721df12c99af4ed721ce9389e144e91550858644eb5",
   "src/lib/order-totals.ts": "f58bda0bd0ee2b2c850b6084d1e92679fdab77d8053bcc04efed3a45a1ba0fbc",
   "src/components/cart/CartProvider.tsx": "1dd66c755b29a6cac437c019ab6adc283cea9ef9987f27cc93e8ce1a27efb0ea",
   "src/components/home/HeroSection.tsx": "9c5346ea9800c346cdc94e9c19150af93ca367b2087152bbefb6b2d5c8915bfe",
   "src/components/home/HomeHeroVisual.tsx": "8a08f65e08c06a07fe0d9c57228f95a92a34c4e5aef9eb811def92f1cf63c965",
   "src/components/home/CategoriesGrid.tsx": "d3980986fafa2a942310508757f4fdae0983d0e65bc04a1af6e530fd782c9dfb",
-  "src/components/home/BrandsShowcase.tsx": "dfc518e3405fb8594df13947759129e7b83379f0b3d476e25e11b3a88a976e3d",
   "src/components/home/FeaturedProducts.tsx": "a449880a107fe2b96d5aea0c324002df3eb4ce81eece244513100e4dd7d6936f",
   "vercel.json": "28763df6a4fd1e4d6e84789a577ef0f93d1b23ea37e6fc9aeeb6729e739fc211",
   "public/brand/logo-cream.png": "534a30f50449a3e67b49d89a380b32e55fcb05b1887d6e4c7a59918c1fcfa14a",
@@ -49,6 +47,5 @@
   "public/images/salon-estilista-secando-cabello.jpg": "2d11e24999fb134031dc1e579a03f114f175e014e460de19ef5d6de249309cd7",
   "public/images/salon-mezcla-tintes-profesional.jpg": "6fd7f1b13d1ff31d50de0b201287e2c0b53d8919e90475c7a708aa0cb9c4573a",
   "public/images/salon-tratamiento-cabello.jpg": "becf89893f40bcab88de03a55aedf054f46cff6c2ebe2b3b0c4a6f330f89e08d",
-  "public/llms.txt": "c7abe58c73acbd7490a3d13e46821a018c776a0e656f1221b9b082fd811a098f",
   "public/sw.js": "b16596fc038922007e782d107d16661bb58f28f4500c88ffe257ad514bcccf91"
 }

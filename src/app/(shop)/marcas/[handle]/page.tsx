@@ -1,7 +1,8 @@
 import { CatalogUnavailable } from "@/components/products/CatalogUnavailable";
 import type { Metadata } from "next"
 import Link from "next/link"
-import { notFound } from "next/navigation"
+import { notFound, redirect } from "next/navigation"
+import { getPublishedBrandOptions } from "@/lib/data/brand-navigation"
 import { ChevronRight } from "lucide-react"
 
 import { getCollectionByHandle } from "@/lib/data/collections"
@@ -27,8 +28,9 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const { handle } = await params
-    const collection = await getCollectionByHandle(handle)
     const brand = getBrandData(handle)
+    if (brand) return { title: `Productos ${brand.name}`, description: `Consulta productos publicados de ${brand.name} en SICARÚ.` };
+    const collection = await getCollectionByHandle(handle)
 
     if (!collection) {
       return {
@@ -36,10 +38,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       }
     }
 
-    const title = `Productos ${brand?.name || collection.title} — Distribuidora Sicarú`
-    const description =
-      brand?.description ||
-      `Compra productos ${collection.title} originales en Distribuidora Sicarú. Asesoría cercana en tienda. Precios de mayoreo disponibles para profesionales.`
+    const title = `Productos ${collection.title} — Distribuidora Sicarú`
+    const description = `Consulta los productos publicados de ${collection.title} en SICARÚ.`
 
     return {
       title,
@@ -56,6 +56,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BrandDetailPage({ params }: Props) {
   const { handle } = await params
+  const knownBrand = getBrandData(handle);
+  if (knownBrand) {
+    const { brands, unavailable } = await getPublishedBrandOptions();
+    if (unavailable) return <CatalogUnavailable />;
+    const published = brands.find(brand => brand.handle === knownBrand.handle);
+    if (published) redirect(published.href);
+    return <section className="mx-auto max-w-4xl px-5 py-12"><h1 className="font-heading text-3xl">{knownBrand.name}</h1><p className="mt-4">Actualmente no hay productos publicados de esta marca en esta selección.</p><Link href="/productos" className="mt-5 inline-flex min-h-11 items-center underline">Explorar el catálogo</Link></section>;
+  }
   let collection
   try {
     collection = await getCollectionByHandle(handle)

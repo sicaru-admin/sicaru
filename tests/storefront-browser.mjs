@@ -131,7 +131,8 @@ try {
     await page.getByRole("heading", { name: "Coloración", exact: true }).waitFor();
     await page.goto(baseUrl, { waitUntil: "networkidle" });
     assert.equal(await page.locator('[aria-labelledby="home-categories"] a').count(), 4);
-    assert.equal(await page.locator('[aria-labelledby="home-brands"] a').count(), 7);
+    assert.equal(await page.locator('[aria-labelledby="home-brands"] a').count(), 1);
+    assert.equal(await page.locator('[aria-labelledby="home-brands"] a').getAttribute("href"), "/productos?q=Voglia");
     await page.getByRole("button", { name: "Abrir menú" }).click();
     await page.locator("header").getByRole("link", { name: "Conócenos", exact: true }).click();
     await page.getByRole("heading", { name: "Conoce SICARÚ", exact: true }).waitFor();

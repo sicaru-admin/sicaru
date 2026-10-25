@@ -237,16 +237,16 @@ export function generateBrandFAQs(
   // Fallback to generic FAQs
   return [
     {
-      question: `¿Dónde puedo comprar productos ${brandName} originales?`,
+      question: `¿Cómo consulto productos ${brandName}?`,
       answer: `Consulta productos ${brandName} en Sicarú, tienda de productos profesionales de belleza en Cadereyta Jiménez, Nuevo León.`,
     },
     {
       question: `¿Los productos ${brandName} son para uso profesional?`,
-      answer: `Sicarú trabaja con productos profesionales para estilistas, salones de belleza y cuidado en casa. Consulta recomendaciones según tu necesidad.`,
+      answer: `Sicarú trabaja con productos profesionales para estilistas, salones de belleza y cuidado en casa. Consulta las características y disponibilidad de cada producto.`,
     },
     {
-      question: `¿Puedo recibir asesoría sobre productos ${brandName}?`,
-      answer: `Sí, puedes consultar disponibilidad y recomendaciones por WhatsApp al +52 828 113 6652.`,
+      question: `¿Cómo puedo consultar productos ${brandName}?`,
+      answer: `Puedes consultar productos y disponibilidad por WhatsApp al +52 828 113 6652.`,
     },
   ];
 }

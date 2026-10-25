@@ -1,3 +1,4 @@
+import { getBrandSearchHref } from "@/lib/brand-navigation";
 import { CatalogUnavailable } from "@/components/products/CatalogUnavailable";
 import { CATALOG_MODE } from "@/lib/catalog-mode";
 import { Suspense } from "react";
@@ -136,7 +137,7 @@ export default async function ProductDetailPage({
   const breadcrumbItems = [
     { name: "Inicio", url: "/" },
     ...(brandName && product.collection?.handle
-      ? [{ name: brandName, url: `/marcas/${product.collection.handle}` }]
+      ? [{ name: brandName, url: getBrandSearchHref(brandName) }]
       : []),
     { name: product.title ?? "", url: `/productos/${product.handle}` },
   ];
@@ -164,7 +165,7 @@ export default async function ProductDetailPage({
           {brandName && (
             <>
               <Link
-                href={`/marcas/${product.collection?.handle || ""}`}
+                href={getBrandSearchHref(brandName)}
                 className="truncate transition-colors hover:text-[#8e7a9e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8]"
               >
                 {brandName}
@@ -189,7 +190,7 @@ export default async function ProductDetailPage({
             {/* Brand badge */}
             {brandName && (
               <Link
-                href={`/marcas/${product.collection?.handle || ""}`}
+                href={getBrandSearchHref(brandName)}
                 className="mb-4 inline-flex min-h-9 items-center border border-[#efe7dd] bg-[#f5f1eb] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-[#7f6d8a] transition-colors hover:border-[#9b89a8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8]"
               >
                 {brandName}

@@ -1,16 +1,18 @@
 import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
-import { BRANDS } from "@/lib/constants/brands"
+import { getPublishedBrandOptions } from "@/lib/data/brand-navigation"
+
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Nuestras Marcas — Distribuidora Sicarú",
   description:
-    "Distribuidores autorizados de 7 marcas mexicanas de belleza profesional: Küül, Voglia, Nekane Capilar, Hidra Color, Xiomara, Vitale y Montis. Productos originales.",
+    "Explora las marcas con productos publicados en SICARÚ y consulta las opciones disponibles en el catálogo.",
 }
 
-export default function MarcasPage() {
-  const brands = Object.values(BRANDS)
+export default async function MarcasPage() {
+  const { brands, unavailable } = await getPublishedBrandOptions()
 
   return (
     <>
@@ -29,8 +31,7 @@ export default function MarcasPage() {
             Nuestras Marcas
           </h1>
           <p className="mt-4 text-lg text-white/80">
-            Distribuidores autorizados de las mejores marcas mexicanas de
-            belleza profesional
+            Explora las marcas con productos publicados en nuestro catálogo
           </p>
         </div>
       </section>
@@ -38,10 +39,11 @@ export default function MarcasPage() {
       {/* Brand Cards Section */}
       <section className="mx-auto max-w-7xl px-4 py-12">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {brands.length === 0 && <div><p>{unavailable ? "No pudimos consultar las marcas en este momento." : "Por ahora no hay marcas con productos publicados en esta selección."}</p><Link href="/productos" className="mt-4 inline-flex min-h-11 items-center underline">Explorar el catálogo</Link></div>}
           {brands.map((brand) => (
             <Link
               key={brand.handle}
-              href={`/marcas/${brand.handle}`}
+              href={brand.href}
               className="group flex flex-col overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-md"
             >
               <div
@@ -65,7 +67,7 @@ export default function MarcasPage() {
                 </p>
                 <div className="mt-4">
                   <span className="text-sm font-semibold text-sicaru-pink transition-colors group-hover:text-sicaru-purple-600">
-                    Ver Productos &rarr;
+                    Ver productos publicados &rarr;
                   </span>
                 </div>
               </div>

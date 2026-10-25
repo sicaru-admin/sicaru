@@ -52,6 +52,7 @@ export function StickyAddToCart({ product }: StickyAddToCartProps) {
             {product.title}
           </p>
           <PriceDisplay
+            product={product}
             variant={firstVariant}
             className="text-sm font-bold text-sicaru-purple-900"
           />

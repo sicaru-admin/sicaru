@@ -1,14 +1,17 @@
 import Link from "next/link"
-import { BRANDS } from "@/lib/constants/brands"
+import { getPublishedBrandOptions } from "@/lib/data/brand-navigation"
 
 interface RelatedBrandsProps {
   currentHandle: string
 }
 
-export function RelatedBrands({ currentHandle }: RelatedBrandsProps) {
-  const otherBrands = Object.values(BRANDS).filter(
+export async function RelatedBrands({ currentHandle }: RelatedBrandsProps) {
+  const { brands } = await getPublishedBrandOptions();
+  const otherBrands = brands.filter(
     (b) => b.handle !== currentHandle
   )
+
+  if (!otherBrands.length) return null;
 
   return (
     <section className="py-12">
@@ -19,7 +22,7 @@ export function RelatedBrands({ currentHandle }: RelatedBrandsProps) {
         {otherBrands.map((brand) => (
           <Link
             key={brand.handle}
-            href={`/marcas/${brand.handle}`}
+            href={brand.href}
             className="group flex flex-col overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-md"
           >
             <div className="h-1.5" style={{ backgroundColor: brand.color }} />

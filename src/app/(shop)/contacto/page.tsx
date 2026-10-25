@@ -104,7 +104,7 @@ export default function ContactoPage() {
             ¿Prefieres WhatsApp?
           </h2>
           <p className="mt-2 text-white/90">
-            Escríbenos directamente para atención inmediata
+            Escríbenos para consultar productos y disponibilidad
           </p>
           <a
             href="https://wa.me/528281136652"

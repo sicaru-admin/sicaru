@@ -195,7 +195,7 @@ export default function TerminosPage() {
             rel="noopener noreferrer"
             className="text-sicaru-purple-700 underline"
           >
-            +52 828 111 1023
+            +52 828 113 6652
           </a>
           .
         </p>

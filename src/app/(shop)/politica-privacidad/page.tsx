@@ -42,10 +42,10 @@ export default function PoliticaPrivacidadPage() {
           <br />
           Teléfono:{" "}
           <a
-            href="tel:+528281111023"
+            href="tel:+528281136652"
             className="text-sicaru-purple-700 underline"
           >
-            +52 828 111 1023
+            +52 828 113 6652
           </a>
         </p>
 
@@ -175,7 +175,7 @@ export default function PoliticaPrivacidadPage() {
           o contactarnos por WhatsApp.
         </p>
         <a
-          href="https://wa.me/528281111023"
+          href="https://wa.me/528281136652"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 rounded-full bg-green-600 px-6 py-3 text-sm font-semibold text-white hover:bg-green-700 transition-colors"
