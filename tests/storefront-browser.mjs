@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { readdir } from "node:fs/promises";
+import { assertPublicPage } from "./helpers/public-link-validation.mjs";
 import { createServer } from "node:http";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 const { chromium, devices } = await import(process.env.PLAYWRIGHT_MODULE || "playwright");
@@ -131,7 +133,8 @@ try {
     await page.getByRole("heading", { name: "Coloración", exact: true }).waitFor();
     await page.goto(baseUrl, { waitUntil: "networkidle" });
     assert.equal(await page.locator('[aria-labelledby="home-categories"] a').count(), 4);
-    assert.equal(await page.locator('[aria-labelledby="home-brands"] a').count(), 7);
+    assert.equal(await page.locator('[aria-labelledby="home-brands"] a').count(), 1);
+    assert.equal(await page.locator('[aria-labelledby="home-brands"] a').getAttribute("href"), "/productos?q=Voglia");
     await page.getByRole("button", { name: "Abrir menú" }).click();
     await page.locator("header").getByRole("link", { name: "Conócenos", exact: true }).click();
     await page.getByRole("heading", { name: "Conoce SICARÚ", exact: true }).waitFor();
@@ -222,6 +225,19 @@ try {
   for (const image of await desktopPage.locator("main img").all()) { await image.scrollIntoViewIfNeeded(); await image.evaluate((element) => element.decode()); }
   await verifyRetailPresentation(desktopPage);
   await desktopPage.screenshot({ path: "artifacts/home-desktop-1440.png", fullPage: true });
+  // Validate actual rendered article links, including HTTP-200 streaming not-found pages.
+  const publicPaths = ["/", "/productos", "/marcas", "/nosotros", "/salon-pro", "/blog", ...(await readdir("content/blog")).filter(f => f.endsWith(".mdx")).map(f => "/blog/" + f.slice(0, -4))];
+  const productLinks = new Set();
+  for (const path of publicPaths) {
+    const response = await desktopPage.goto(baseUrl + path, { waitUntil: "networkidle" });
+    assertPublicPage({ status: response.status(), headings: await desktopPage.locator("h1").allTextContents(), body: await desktopPage.locator("body").innerText() }, path);
+    for (const href of await desktopPage.locator('a[href^="/productos/"]').evaluateAll(es => es.map(e => e.getAttribute("href")))) if (new URL(href, baseUrl).pathname !== "/productos/") productLinks.add(href);
+  }
+  for (const href of productLinks) {
+    const response = await desktopPage.goto(baseUrl + href, { waitUntil: "networkidle" });
+    assertPublicPage({ status: response.status(), headings: await desktopPage.locator("h1").allTextContents(), body: await desktopPage.locator("body").innerText() }, href);
+  }
+  console.log("PASS: public blog/core pages and product links have valid rendered content, not streaming 404 pages.");
   await desktop.close();
   console.log("PASS: retail section order, original packages intact and desktop presentation at 1440px.");
   assert.equal(paymentRequests, 0);

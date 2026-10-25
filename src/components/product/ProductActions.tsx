@@ -142,7 +142,7 @@ export function ProductActions({ product }: ProductActionsProps) {
 
   if (!displayVariant) return null;
 
-  const price = getApprovedPrice(product, displayVariant);
+  const price = getApprovedPrice(product, selectedVariant);
   const formattedPrice = price?.calculated_amount != null
     ? new Intl.NumberFormat("es-MX", {
         style: "currency",
@@ -195,7 +195,7 @@ export function ProductActions({ product }: ProductActionsProps) {
       {/* Price */}
       <div>
         <div className="flex items-baseline gap-3">
-          {price ? <PriceDisplay variant={displayVariant} className="text-2xl font-semibold text-[#7f6d8a] md:text-3xl" /> : <p className="text-base font-semibold text-[#7f6d8a]">Consultar precio</p>}
+          {price ? <PriceDisplay product={product} variant={displayVariant} className="text-2xl font-semibold text-[#7f6d8a] md:text-3xl" /> : <p className="text-base font-semibold text-[#7f6d8a]">Consultar precio</p>}
           {hasDiscount && price?.original_amount != null && (
             <PriceDisplay
               amount={price.original_amount}

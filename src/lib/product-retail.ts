@@ -2,10 +2,10 @@ import type { HttpTypes } from "@medusajs/types";
 
 /** Approval is explicit and tied to a SKU; unreviewed calculated prices stay hidden. */
 export function getApprovedPrice(product: HttpTypes.StoreProduct, variant?: HttpTypes.StoreProductVariant | null) {
-  if (!variant) return null;
-  const approved = variant.metadata?.storefront_price_approved === true ||
-    ((product.variants?.length ?? 0) === 1 && product.metadata?.storefront_price_approved === true);
-  const price = variant.calculated_price;
+  if (!variant?.id) return null;
+  const exactVariant = product.variants?.find(item => item.id === variant.id);
+  const approved = exactVariant?.metadata?.storefront_price_approved === true;
+  const price = exactVariant?.calculated_price;
   if (!approved || typeof price?.calculated_amount !== "number" || !Number.isFinite(price.calculated_amount) || price.calculated_amount < 0) return null;
   return { ...price, calculated_amount: price.calculated_amount };
 }

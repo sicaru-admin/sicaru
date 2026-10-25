@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 
     // Build the WhatsApp URL with a pre-filled message
     const whatsappMessage = `Hola, soy ${name}. ${subject}: ${message}`;
-    const whatsappUrl = `https://wa.me/528281111023?text=${encodeURIComponent(whatsappMessage)}`;
+    const whatsappUrl = `https://wa.me/528281136652?text=${encodeURIComponent(whatsappMessage)}`;
 
     return NextResponse.json({ ok: true, whatsappUrl }, { status: 200 });
   } catch {

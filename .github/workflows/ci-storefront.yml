@@ -32,7 +32,7 @@ jobs:
 
       - name: Backend resilience and payment guards
         if: ${{ !cancelled() }}
-        run: node --experimental-vm-modules --test tests/catalog-resilience.test.mjs tests/product-retail.test.mjs
+        run: node --experimental-vm-modules --test tests/*.test.mjs
 
       - name: Build with unavailable backend
         if: ${{ !cancelled() }}

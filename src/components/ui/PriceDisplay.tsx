@@ -1,6 +1,8 @@
+import { getApprovedPrice } from "@/lib/product-retail";
 import { HttpTypes } from "@medusajs/types";
 
 type PriceDisplayProps = {
+  product?: HttpTypes.StoreProduct;
   variant?: HttpTypes.StoreProductVariant;
   amount?: number;
   currency?: string;
@@ -8,6 +10,7 @@ type PriceDisplayProps = {
 };
 
 export function PriceDisplay({
+  product,
   variant,
   amount: rawAmount,
   currency = "MXN",
@@ -16,8 +19,9 @@ export function PriceDisplay({
   let displayAmount: number | null = null;
   let displayCurrency = currency;
 
-  if (variant?.calculated_price) {
-    const price = variant.calculated_price;
+  if (variant) {
+    const price = product ? getApprovedPrice(product, variant) : null;
+    if (!price) return <span className={className}>Consultar precio</span>;
     displayAmount =
       price.calculated_amount != null ? price.calculated_amount : null;
     displayCurrency = price.currency_code || currency;

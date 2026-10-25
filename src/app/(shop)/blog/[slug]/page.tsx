@@ -117,7 +117,7 @@ export default async function BlogPostPage({
                 </div>
               </div>
               <a
-                href="https://wa.me/528281111023"
+                href="https://wa.me/528281136652"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4 inline-block rounded-full bg-white px-6 py-2 text-sm font-bold text-sicaru-purple-700 transition-colors hover:bg-sicaru-purple-50"

@@ -36,7 +36,7 @@ export default function OfflinePage() {
           Intentar de Nuevo
         </button>
         <a
-          href="https://wa.me/528281111023"
+          href="https://wa.me/528281136652"
           target="_blank"
           rel="noopener noreferrer"
           className="rounded-full border border-gray-300 px-8 py-3 font-semibold text-gray-700 transition-colors hover:bg-gray-50"

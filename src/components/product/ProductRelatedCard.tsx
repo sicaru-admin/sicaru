@@ -13,7 +13,7 @@ export function ProductRelatedCard({
   product,
   className = "",
 }: ProductRelatedCardProps) {
-  const firstVariant = product.variants?.[0];
+  const exactVariant = product.variants?.length === 1 ? product.variants[0] : undefined;
   const thumbnail =
     typeof product.thumbnail === "string" && product.thumbnail.trim().length > 0
       ? product.thumbnail
@@ -47,10 +47,11 @@ export function ProductRelatedCard({
         <h3 className="text-sm font-medium leading-5 text-[#2E2B2B]">
           {product.title}
         </h3>
-        <PriceDisplay
-          variant={firstVariant}
+        {exactVariant ? <PriceDisplay
+          product={product}
+          variant={exactVariant}
           className="mt-2 text-sm font-semibold text-[#7F6D8A] md:mt-1.5"
-        />
+        /> : <span className="mt-2 text-sm font-semibold text-[#7F6D8A] md:mt-1.5">Consultar precio</span>}
       </div>
     </Link>
   );

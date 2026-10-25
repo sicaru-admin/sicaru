@@ -10,13 +10,17 @@ test("an unapproved price is never exposed", () => {
 });
 test("approval applies to the exact variant", () => {
   const approved = { ...variant, metadata: { storefront_price_approved: true } };
-  assert.equal(getApprovedPrice({ ...product, variants: [approved, variant] }, approved).calculated_amount, 97);
-  assert.equal(getApprovedPrice({ ...product, metadata: { storefront_price_approved: true }, variants: [approved, variant] }, variant), null);
+  const other = { ...variant, id: "sku_b" };
+  assert.equal(getApprovedPrice({ ...product, variants: [approved, other] }, approved).calculated_amount, 97);
+  assert.equal(getApprovedPrice({ ...product, metadata: { storefront_price_approved: true }, variants: [approved, other] }, other), null);
 });
-test("a single SKU can inherit product approval but not an invalid price", () => {
-  const approved = { ...product, metadata: { storefront_price_approved: true } };
-  assert.equal(getApprovedPrice(approved, variant).calculated_amount, 97);
-  assert.equal(getApprovedPrice(approved, { ...variant, calculated_price: { calculated_amount: NaN } }), null);
+test("product approval never substitutes for approval of the exact variant", () => {
+  const productOnly = { ...product, metadata: { storefront_price_approved: true } };
+  assert.equal(getApprovedPrice(productOnly, variant), null);
+  const approved = { ...variant, metadata: { storefront_price_approved: true } };
+  assert.equal(getApprovedPrice({ ...product, variants: [approved] }, approved).calculated_amount, 97);
+  const invalid = { ...approved, calculated_price: { calculated_amount: NaN } };
+  assert.equal(getApprovedPrice({ ...product, variants: [invalid] }, invalid), null);
 });
 test("unknown inventory and zero stock cannot be presented as available", () => {
   assert.equal(hasKnownAvailability({ id: "unknown" }), false);
