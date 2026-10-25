@@ -1,4 +1,5 @@
 import { CATALOG_MODE } from "@/lib/catalog-mode";
+import { getProductGallery } from "@/lib/product-retail";
 import type { HttpTypes } from "@medusajs/types";
 import { BRANDS } from "@/lib/constants/brands";
 
@@ -102,9 +103,7 @@ export function generateProductSchema(
   const variant = product.variants?.[0];
   const price = variant?.calculated_price;
   const brandName = product.collection?.title;
-  const images = (product.images ?? [])
-    .filter((img) => !!img.url)
-    .map((img) => img.url);
+  const images = getProductGallery(product).map((img) => img.url);
   const imageUrl = images[0] ?? product.thumbnail;
 
   const schema: Record<string, unknown> = {
@@ -303,3 +302,4 @@ export function generateBlogPostSchema(
     inLanguage: "es-MX",
   };
 }
+

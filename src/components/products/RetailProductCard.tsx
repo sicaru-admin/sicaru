@@ -5,7 +5,7 @@ import Link from "next/link";
 import type { HttpTypes } from "@medusajs/types";
 import { ShoppingBag } from "lucide-react";
 import { useCart } from "@/components/cart/CartProvider";
-import { getApprovedPrice, hasKnownAvailability } from "@/lib/product-retail";
+import { getApprovedPrice, getProductPhoto, hasKnownAvailability } from "@/lib/product-retail";
 import { ProductPhoto } from "./ProductPhoto";
 
 export function RetailProductCard({ product }: { product: HttpTypes.StoreProduct }) {
@@ -19,7 +19,7 @@ export function RetailProductCard({ product }: { product: HttpTypes.StoreProduct
   const available = hasKnownAvailability(variant);
   const brand = product.collection?.title || (typeof product.metadata?.brand === "string" ? product.metadata.brand : null);
   const presentation = product.subtitle || (typeof product.metadata?.presentation === "string" ? product.metadata.presentation : null);
-  const image = product.thumbnail || product.images?.[0]?.url;
+  const image = getProductPhoto(product, variant);
 
   async function add() {
     if (!variant || !available) return;

@@ -1,5 +1,6 @@
 import { CatalogUnavailable } from "@/components/products/CatalogUnavailable";
 import { CATALOG_MODE } from "@/lib/catalog-mode";
+import { getProductGallery, getProductPhoto } from "@/lib/product-retail";
 import { Suspense } from "react";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -57,6 +58,7 @@ export async function generateMetadata({
     const description =
       product.description ||
       `Compra ${product.title} en Distribuidora Sicarú`;
+    const photo = getProductPhoto(product);
 
     return {
       title: product.title,
@@ -64,7 +66,7 @@ export async function generateMetadata({
       openGraph: {
         title: `${product.title}${!CATALOG_MODE && priceStr ? ` — ${priceStr}` : ""}`,
         description,
-        images: product.thumbnail ? [{ url: product.thumbnail }] : undefined,
+        images: photo ? [{ url: photo }] : undefined,
       },
       other: CATALOG_MODE ? undefined : {
         "product:price:amount":
@@ -118,15 +120,7 @@ export default async function ProductDetailPage({
     notFound();
   }
 
-  // Build image array from product images
-  const images = (product.images ?? [])
-    .filter((img) => !!img.url)
-    .map((img) => ({ id: img.id, url: img.url as string }));
-
-  // Fall back to thumbnail if no images
-  if (images.length === 0 && product.thumbnail) {
-    images.push({ id: "thumb", url: product.thumbnail });
-  }
+  const images = getProductGallery(product);
 
   const brandName = product.collection?.title;
   const collectionId = product.collection?.id;
