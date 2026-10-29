@@ -10,9 +10,9 @@ Los campos obligatorios ausentes/vacíos devolvían 400 antes del log. Errores d
 
 ## Corrección mínima
 
-Se elimina el log completo sin sustituirlo por otro registro. No se modifica la petición, validación existente, estado de la interfaz, respuesta ni construcción del enlace de WhatsApp. No se agregan dependencias ni servicios. La respuesta conserva `ok` y `whatsappUrl`; ese enlace contiene nombre, asunto y mensaje codificados como parte de su finalidad existente. Correo y teléfono no se incorporan al enlace.
+Se elimina el log completo sin sustituirlo por otro registro. Se conserva la petición, validación existente, respuesta y construcción del enlace de WhatsApp. La interfaz ahora consume el enlace devuelto y explica el paso voluntario de envío. No se agregan dependencias ni servicios. La respuesta conserva `ok` y `whatsappUrl`; ese enlace contiene nombre, asunto y mensaje codificados como parte de su finalidad existente. Correo y teléfono no se incorporan al enlace.
 
-Solo cambia código de aplicación en `src/app/api/contact/route.ts`. El catálogo, precios, carrito, checkout y el número/enlaces de contacto por WhatsApp conservan su código. Las pruebas existentes de hashes protegidos y bloqueos comerciales verifican ese alcance.
+El código de aplicación cambia únicamente en `src/app/api/contact/route.ts` y `src/components/contact/ContactFormClient.tsx`. El catálogo, precios, carrito, checkout y el número oficial de WhatsApp se conservan. Las pruebas existentes de hashes protegidos y bloqueos comerciales verifican ese alcance.
 
 ## Regresión sintética
 
@@ -20,20 +20,28 @@ Solo cambia código de aplicación en `src/app/api/contact/route.ts`. El catálo
 
 La prueba de envío válido falló contra el handler original al capturar todos los campos sintéticos en consola. Tras retirar el bloque pasa. CI ya ejecuta `tests/*.test.mjs`, por lo que incluye automáticamente esta regresión.
 
-## Límites y riesgo previo de operación
+## Continuación voluntaria por WhatsApp y límites
 
-El código vigente NO entrega el formulario a un buzón, backend o servicio de mensajes: solo devuelve un enlace de WhatsApp. El cliente ignora `whatsappUrl` y muestra «¡Mensaje Enviado!»; su enlace posterior de WhatsApp es genérico. El log eliminado no constituía un mecanismo de entrega. No puede acreditarse entrega de mensajes, ni antes ni después de este cambio. Hace falta una decisión explícita sobre el flujo de contacto; no se introduce una integración externa ni se altera WhatsApp dentro de esta corrección de privacidad.
+La implementación previa devolvía `whatsappUrl`, pero el cliente lo ignoraba y mostraba «¡Mensaje Enviado!» sin entregar nada. Por autorización explícita de la propietaria, el cliente ahora muestra «Preparar mensaje» y, tras una respuesta válida del endpoint, «Tu mensaje está listo», junto con «Aún no se ha enviado». El botón «Continuar a WhatsApp» lleva al número oficial +52 828 113 6652 con nombre, asunto y mensaje preparados; el cliente deberá revisar y pulsar enviar en WhatsApp. No hay apertura ni envío automático. El botón «Editar mensaje» regresa al formulario conservando sus valores. El foco pasa al encabezado del mensaje preparado; los errores se anuncian con role=alert.
+
+El cliente solo acepta respuestas exitosas con enlace del prefijo oficial HTTPS; conserva formulario y error ante fallos de red, API o respuesta inválida. El enlace usa noopener, noreferrer y no-referrer. No se agrega almacenamiento persistente ni analítica. El enlace incluye el texto preparado en su query por el mecanismo existente de WhatsApp; solo se navega si el cliente lo elige. Correo y teléfono no se agregan al texto. WhatsApp recibe el contenido al continuar; esta prueba no acredita recepción o entrega, que dependen de la acción posterior del cliente y del servicio externo.
+
+`tests/contact-client.test.mjs` ejecuta el componente real con hooks aislados y renderiza los estados resultantes: valida POST, destino oficial, texto sin confirmación falsa, regreso a edición, campos required/email, carga, errores, rechazo de enlaces externos y ausencia de logs. No envía mensajes ni navega a WhatsApp.
 
 La validación del servidor existente comprueba presencia, no formato ni tipos. Se conserva sin ampliar el alcance. Este cambio evita el registro desde la aplicación; no elimina logs históricos ni audita políticas del proveedor, proxies o capturas externas. No se modifica infraestructura, datos reales ni producción.
 
-Reversión: revertir el commit restaura el handler anterior, pero también su exposición de datos personales; evaluar ese riesgo antes de revertir.
+Reversión: revertir solo el commit de interfaz restaura el flujo previo sin entrega. Revertir también el commit de privacidad restaura el log sensible; evaluar ese riesgo antes de revertir.
 
 ## Resultados de validación
 
 - `npm run lint`: código de salida 0, sin errores; tres advertencias previas en carrito (dos usos de img) y blog (variable sin uso), fuera del diff.
 - `npx tsc --noEmit`: código de salida 0 antes y después del build.
-- `node --experimental-vm-modules --test tests/*.test.mjs`: 37/37 pruebas pasan, incluidas las tres regresiones nuevas, reglas de aprobación por variante, precios del carrito, hashes protegidos y bloqueo de pagos/pedidos.
+- `node --experimental-vm-modules --test tests/*.test.mjs`: 40/40 pruebas pasan, incluidas las seis regresiones nuevas, reglas de aprobación por variante, precios del carrito, hashes protegidos y bloqueo de pagos/pedidos.
 - `NEXT_PUBLIC_MEDUSA_BACKEND_URL=http://127.0.0.1:9999 NEXT_PUBLIC_CATALOG_MODE=true npm run build`: código de salida 0 con backend deliberadamente inaccesible. El primer intento falló por DNS de Google Fonts; se repitió con acceso de red y pasó sin cambiar código ni configuración.
 - `git diff --check`: sin errores. Sin cambios de dependencias, variables de entorno persistentes, archivos comerciales o infraestructura.
 
-No se ejecutaron pruebas de entrega externa ni operaciones reales, ni despliegues. Las comprobaciones de comportamiento ejecutan el handler real y las pruebas comerciales locales; no acreditan una auditoría de producción ni una revisión visual completa en navegador.
+No se ejecutaron pruebas de entrega externa ni operaciones reales, ni despliegues. Las comprobaciones de comportamiento ejecutan el handler real y las pruebas comerciales locales; no acreditan una auditoría de producción ni entrega en WhatsApp.
+
+### Navegador local con datos sintéticos
+
+Playwright + Chromium aislados en tmp: PASS a 320, 390 y 1440 px. Se probaron validaciones HTML de campos obligatorios y correo inválido sin POST, POST real a la API local, enlace con número/texto exactos, ausencia de apertura automática, foco del estado preparado, edición conservando datos, error HTTP recuperable y ausencia de desbordamiento horizontal. Se bloquearon solicitudes de navegador fuera de localhost y no se pulsó el enlace externo. Se revisaron capturas móvil y escritorio. Los marcadores sintéticos de nombre, correo y mensaje no aparecen en el log del servidor local.

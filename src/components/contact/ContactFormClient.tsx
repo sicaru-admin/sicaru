@@ -27,7 +27,7 @@ export default function ContactFormClient() {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [whatsappUrl, setWhatsappUrl] = useState("");
   const [error, setError] = useState("");
 
   const handleChange = (
@@ -55,7 +55,15 @@ export default function ContactFormClient() {
         throw new Error(data.error || "Error al enviar el mensaje");
       }
 
-      setSubmitted(true);
+      const data = await res.json();
+      if (
+        data.ok !== true ||
+        typeof data.whatsappUrl !== "string" ||
+        !data.whatsappUrl.startsWith("https://wa.me/528281136652?text=")
+      ) {
+        throw new Error("No pudimos preparar el mensaje. Inténtalo de nuevo.");
+      }
+      setWhatsappUrl(data.whatsappUrl);
     } catch (err: unknown) {
       setError(
         err instanceof Error ? err.message : "Ocurrió un error inesperado"
@@ -65,7 +73,7 @@ export default function ContactFormClient() {
     }
   };
 
-  if (submitted) {
+  if (whatsappUrl) {
     return (
       <div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-12 text-center">
         {/* Green checkmark */}
@@ -85,22 +93,37 @@ export default function ContactFormClient() {
           </svg>
         </div>
 
-        <h2 className="text-2xl font-bold text-gray-900">
-          ¡Mensaje Enviado!
+        <h2
+          tabIndex={-1}
+          ref={(heading) => {
+            heading?.focus({ preventScroll: true });
+            heading?.scrollIntoView({ block: "center" });
+          }}
+          className="text-2xl font-bold text-gray-900"
+        >
+          Tu mensaje está listo
         </h2>
         <p className="mt-2 text-gray-600">
-          Te contactaremos a la brevedad. También puedes escribirnos
-          directamente por WhatsApp.
+          Aún no se ha enviado. Continúa a nuestro WhatsApp oficial para
+          revisar el mensaje y enviarlo cuando tú decidas.
         </p>
 
         <a
-          href="https://wa.me/528281136652"
+          href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
+          referrerPolicy="no-referrer"
           className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-3 font-semibold text-white transition-colors hover:bg-[#25D366]/90"
         >
-          Escribir por WhatsApp
+          Continuar a WhatsApp
         </a>
+        <button
+          type="button"
+          onClick={() => setWhatsappUrl("")}
+          className="mt-4 rounded-lg px-4 py-3 text-sm font-medium text-sicaru-purple-500 underline focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          Editar mensaje
+        </button>
       </div>
     );
   }
@@ -115,6 +138,10 @@ export default function ContactFormClient() {
       className="rounded-xl border border-gray-200 bg-white p-8"
     >
       <div className="space-y-5">
+        <p className="text-sm text-gray-600">
+          Prepara tu mensaje para WhatsApp. Después podrás revisarlo y enviarlo
+          voluntariamente; este formulario no lo envía automáticamente.
+        </p>
         {/* Name */}
         <div>
           <label htmlFor="name" className={labelClassName}>
@@ -208,7 +235,7 @@ export default function ContactFormClient() {
 
         {/* Error */}
         {error && (
-          <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600">
+          <div role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-600">
             {error}
           </div>
         )}
@@ -219,7 +246,7 @@ export default function ContactFormClient() {
           disabled={isSubmitting}
           className="w-full rounded-full bg-sicaru-pink px-8 py-3 font-semibold text-white transition-colors hover:bg-sicaru-pink/90 disabled:opacity-50"
         >
-          {isSubmitting ? "Enviando..." : "Enviar mensaje"}
+          {isSubmitting ? "Preparando..." : "Preparar mensaje"}
         </button>
       </div>
     </form>
