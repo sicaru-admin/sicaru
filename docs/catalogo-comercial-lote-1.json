@@ -1,0 +1,314 @@
+{
+  "read_at": "2026-10-29T20:31:03.263Z",
+  "source": "Public Medusa Store API (read only)",
+  "base_commit": "6aad285c414e7f7a2a8fab2df8649aff83c2feb9",
+  "product_count": 9,
+  "variant_count": 31,
+  "featured_count_public_browser": 8,
+  "variant_ids_equal_previous_reconciliation": true,
+  "products": [
+    {
+      "id": "prod_01KVV3GD5Z3VZCKH48G0MDZAP0",
+      "handle": "nekane-tratamiento-hidra-intenso",
+      "title": "Nekane Capilar Tratamiento Hidra Intenso",
+      "thumbnail": null,
+      "images": [],
+      "variants": [
+        {
+          "id": "variant_01KVV3GD87DTVD8FX1HJGCRD37",
+          "title": "300ml",
+          "sku": "NEKANE-HIDRA-300ML",
+          "barcode": null,
+          "storefront_price_approved": false
+        }
+      ]
+    },
+    {
+      "id": "prod_01KVV3GD5Z4E86TFJNTJ806QZX",
+      "handle": "vitale-keratina-profesional",
+      "title": "Vitale Keratina Profesional",
+      "thumbnail": null,
+      "images": [],
+      "variants": [
+        {
+          "id": "variant_01KVV3GD87G57YGAJE93QXKKEG",
+          "title": "500ml",
+          "sku": "VITALE-KERAT-500ML",
+          "barcode": null,
+          "storefront_price_approved": false
+        }
+      ]
+    },
+    {
+      "id": "prod_01KVV3GD5Z8Q1ND1PXMBD6PZ47",
+      "handle": "hidra-color-tinte-cremoso",
+      "title": "Hidra Color Tinte Cremoso",
+      "thumbnail": null,
+      "images": [],
+      "variants": [
+        {
+          "id": "variant_01KVV3GD87P3WFSH6R73379RZD",
+          "title": "90ml",
+          "sku": "HIDRA-COLOR-90ML",
+          "barcode": null,
+          "storefront_price_approved": false
+        }
+      ]
+    },
+    {
+      "id": "prod_01KVV3GD5Z9RXF3QAZWM7TJCDS",
+      "handle": "xiomara-gel-fijacion-fuerte",
+      "title": "Xiomara Gel Fijación Fuerte",
+      "thumbnail": null,
+      "images": [],
+      "variants": [
+        {
+          "id": "variant_01KVV3GD87T6ZD7C1DZ0PVXRF5",
+          "title": "250ml",
+          "sku": "XIOMARA-GEL-250ML",
+          "barcode": null,
+          "storefront_price_approved": false
+        }
+      ]
+    },
+    {
+      "id": "prod_01KVV3GD5ZD8R40HF48DRBF37A",
+      "handle": "voglia-tinte-permanente-90ml",
+      "title": "Voglia Tinte Permanente 90ml",
+      "thumbnail": null,
+      "images": [],
+      "variants": [
+        {
+          "id": "variant_01KVV3GD87A2S476H48GGKQWK7",
+          "title": "1 Negro",
+          "sku": "VOGLIA-TINTE-1-90ML",
+          "barcode": "7501633786017",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1VKY9KRJEN331XEH65",
+          "title": "3 Castaño oscuro",
+          "sku": "VOGLIA-TINTE-3-90ML",
+          "barcode": "7501633786031",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1W2DCC4D1J1ADNV3S4",
+          "title": "5CC Castaño claro",
+          "sku": "VOGLIA-TINTE-5CC-90ML",
+          "barcode": "7501633786666",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1W3G1ZJBS3J9VFY9JM",
+          "title": "5.35 Castaño claro dorado caoba",
+          "sku": "VOGLIA-TINTE-5-35-90ML",
+          "barcode": "7501633786208",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1W5YMJYYPX4P1QKTTX",
+          "title": "7 Rubio medio",
+          "sku": "VOGLIA-TINTE-7-90ML",
+          "barcode": "7501633786079",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1W8F6GT311CAXEYYTS",
+          "title": "6 Rubio oscuro",
+          "sku": "VOGLIA-TINTE-6-90ML",
+          "barcode": "7501633786062",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1W9NBY6P0F9RKDNNFQ",
+          "title": "7.35 Rubio medio dorado caoba",
+          "sku": "VOGLIA-TINTE-7-35-90ML",
+          "barcode": "7501633786420",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1WBJA92WHY7MQ1TP0P",
+          "title": "6CC Rubio oscuro",
+          "sku": "VOGLIA-TINTE-6CC-90ML",
+          "barcode": "7501633786673",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1WCVF9XDJRKKZD0SSX",
+          "title": "6.66 Rubio oscuro rojo intenso",
+          "sku": "VOGLIA-TINTE-6-66-90ML",
+          "barcode": "7501633786376",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1WGE9D47269JJN0KCZ",
+          "title": "5.65 Castaño claro rojo caoba",
+          "sku": "VOGLIA-TINTE-5-65-90ML",
+          "barcode": "7501633786260",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1WP2AS0RYA8AD4YR9A",
+          "title": "11.11 Rubio aclarante cenizo intenso",
+          "sku": "VOGLIA-TINTE-11-11-90ML",
+          "barcode": "7501633786802",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1WRW4SCRBT6SBVDSCF",
+          "title": "8.31 Rubio claro dorado cenizo",
+          "sku": "VOGLIA-TINTE-8-31-90ML",
+          "barcode": "7501633786512",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1WSEPC7YRWDX3P80NS",
+          "title": "6.622 Rojo violeta · rojo cereza · borgoña",
+          "sku": "VOGLIA-TINTE-6-622-90ML",
+          "barcode": "7501633786116",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1WTN0R91YPYKWMSNS6",
+          "title": "7.32 Rubio medio dorado irisado",
+          "sku": "VOGLIA-TINTE-7-32-90ML",
+          "barcode": "7501633786413",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1WWVAYBT7X5WYFC958",
+          "title": "4CC Castaño medio",
+          "sku": "VOGLIA-TINTE-4CC-90ML",
+          "barcode": "7501633786659",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1WWXK7F91TE8NHKWBJ",
+          "title": "5 Castaño claro",
+          "sku": "VOGLIA-TINTE-5-90ML",
+          "barcode": "7501633786055",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1X0MQ0SPV245QNRRTQ",
+          "title": "7CI Cobre intenso",
+          "sku": "VOGLIA-TINTE-7CI-90ML",
+          "barcode": "7501633786932",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1X44C0A8TMH8F023M9",
+          "title": "7CC Rubio medio",
+          "sku": "VOGLIA-TINTE-7CC-90ML",
+          "barcode": "7501633786680",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1X6FMZJR48845039G2",
+          "title": "8CC Rubio claro",
+          "sku": "VOGLIA-TINTE-8CC-90ML",
+          "barcode": "7501633786697",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1XBE89RHVBV6Z1T4QE",
+          "title": "6RI Rojo intenso",
+          "sku": "VOGLIA-TINTE-6RI-90ML",
+          "barcode": "7501633786970",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1XH1WR46VB1C4RCK7A",
+          "title": "9.91 Plata",
+          "sku": "VOGLIA-TINTE-9-91-90ML",
+          "barcode": "7501633786895",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1XSDT5DR9G2JN1Y6PV",
+          "title": "9CC Rubio clarísimo",
+          "sku": "VOGLIA-TINTE-9CC-90ML",
+          "barcode": "7501633786703",
+          "storefront_price_approved": false
+        },
+        {
+          "id": "variant_01KY99EN1XYP47DCEC7RHRNEA9",
+          "title": "7.62 Rubio medio rojo irisado",
+          "sku": "VOGLIA-TINTE-7-62-90ML",
+          "barcode": "7501633786109",
+          "storefront_price_approved": false
+        }
+      ]
+    },
+    {
+      "id": "prod_01KVV3GD5ZFG0NT90YWFXRPZFK",
+      "handle": "kuul-cure-me-reconstructor-1l",
+      "title": "Küül Cure Me Reconstructor 1L",
+      "thumbnail": null,
+      "images": [],
+      "variants": [
+        {
+          "id": "variant_01KVV3GD877SSAGARCPETM9JT5",
+          "title": "1L",
+          "sku": "KUUL-CURE-1L",
+          "barcode": null,
+          "storefront_price_approved": false
+        }
+      ]
+    },
+    {
+      "id": "prod_01KVV3GD5ZR40Q6YWBS7QHJ48Z",
+      "handle": "montis-shampoo-extracto-natural",
+      "title": "Montis Shampoo Extracto Natural",
+      "thumbnail": null,
+      "images": [],
+      "variants": [
+        {
+          "id": "variant_01KVV3GD87JA7N4A9201QH2MEW",
+          "title": "500ml",
+          "sku": "MONTIS-SHAMPOO-NAT",
+          "barcode": null,
+          "storefront_price_approved": false
+        }
+      ]
+    },
+    {
+      "id": "prod_01KVV3GD5ZX5DSYNJGNVC74FF6",
+      "handle": "kuul-color-system-cream-3oz",
+      "title": "Küül Color System Cream 3oz",
+      "thumbnail": null,
+      "images": [],
+      "variants": [
+        {
+          "id": "variant_01KVV3GD87F00HE57W3879Z278",
+          "title": "3oz",
+          "sku": "KUUL-COLOR-3OZ",
+          "barcode": null,
+          "storefront_price_approved": false
+        }
+      ]
+    },
+    {
+      "id": "prod_01KVXJG9PX1NN0MAYZ283R9H7N",
+      "handle": "voglia-all-in-one-keratin-250ml",
+      "title": "Voglia All in One Keratin 250ml",
+      "thumbnail": "https://sicaru-six.vercel.app/images/products/voglia-all-in-one-keratin-250ml.png",
+      "images": [
+        {
+          "id": "img_01KVXJG9Q1YSR20CX8H9VZ1J16",
+          "url": "https://sicaru-six.vercel.app/images/products/voglia-all-in-one-keratin-250ml.png"
+        }
+      ],
+      "variants": [
+        {
+          "id": "variant_01KVXJG9SAT8J02A1HXGCBSCRT",
+          "title": "250ml",
+          "sku": "VOGLIA-ALL-IN-ONE-250ML",
+          "barcode": "7501633712023",
+          "storefront_price_approved": false
+        }
+      ]
+    }
+  ]
+}
