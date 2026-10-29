@@ -49,3 +49,11 @@ No se ejecutaron pruebas de entrega externa ni operaciones reales, ni despliegue
 ### Navegador local con datos sintéticos
 
 Playwright + Chromium aislados en tmp: PASS a 320, 390 y 1440 px. Se probaron validaciones HTML de los tres campos obligatorios sin POST, ausencia de campos correo/teléfono y petición con exactamente nombre/asunto/mensaje, POST real a la API local, enlace con número/texto exactos, ausencia de apertura automática, foco del estado preparado, edición conservando datos, error HTTP recuperable y ausencia de desbordamiento horizontal. Se bloquearon solicitudes de navegador fuera de localhost y no se pulsó el enlace externo. Se revisaron capturas móvil y escritorio. Los marcadores sintéticos de nombre y mensaje no aparecen en el log del servidor local.
+
+### Preview para revisión
+
+Vercel generó el Preview del commit de aplicación `ecb733b47db8b240946380e8ca51537b98eaa93a` (deployment `dpl_784zTKNY5BB5b5J4CcPNJGCzJ6qf`), estado READY y destino Preview, sin promoción a producción:
+
+https://sicaru-hhhawy1vz-sicaru-admins-projects.vercel.app/contacto
+
+El conector autenticado devuelve HTTP 200 y el HTML actualizado. La navegación automatizada sin autenticación llega a la protección de Vercel. La revisión automática rechazó navegar con la clave temporal en la query de la URL por riesgo de historial/logs/referers. No se desactiva protección ni se elude ese rechazo; la captura del Preview requiere aprobación de ese acceso o una sesión autenticada. El enlace temporal de la rama creado para esta comprobación fue revocado. La captura móvil disponible corresponde al build local del mismo commit, no a una sesión del Preview.
