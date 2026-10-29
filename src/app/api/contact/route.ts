@@ -3,25 +3,17 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, subject, message } = body;
+    const { name, subject, message } = body ?? {};
 
     // Validate required fields
-    if (!name || !email || !subject || !message) {
+    if ([name, subject, message].some((value) => typeof value !== "string" || !value.trim())) {
       return NextResponse.json(
         { error: "Todos los campos obligatorios deben ser completados." },
         { status: 400 }
       );
     }
 
-    // Log the contact submission
-    console.log("[Contact Form Submission]", {
-      name,
-      email,
-      phone: body.phone || "N/A",
-      subject,
-      message,
-      timestamp: new Date().toISOString(),
-    });
+    // Contact details must never be written to application logs.
 
     // Build the WhatsApp URL with a pre-filled message
     const whatsappMessage = `Hola, soy ${name}. ${subject}: ${message}`;

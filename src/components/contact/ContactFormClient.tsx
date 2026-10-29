@@ -4,8 +4,6 @@ import { useState, type FormEvent } from "react";
 
 interface FormData {
   name: string;
-  email: string;
-  phone: string;
   subject: string;
   message: string;
 }
@@ -21,13 +19,11 @@ const SUBJECT_OPTIONS = [
 export default function ContactFormClient() {
   const [formData, setFormData] = useState<FormData>({
     name: "",
-    email: "",
-    phone: "",
     subject: "",
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [whatsappUrl, setWhatsappUrl] = useState("");
   const [error, setError] = useState("");
 
   const handleChange = (
@@ -55,7 +51,15 @@ export default function ContactFormClient() {
         throw new Error(data.error || "Error al enviar el mensaje");
       }
 
-      setSubmitted(true);
+      const data = await res.json();
+      if (
+        data.ok !== true ||
+        typeof data.whatsappUrl !== "string" ||
+        !data.whatsappUrl.startsWith("https://wa.me/528281136652?text=")
+      ) {
+        throw new Error("No pudimos preparar el mensaje. Inténtalo de nuevo.");
+      }
+      setWhatsappUrl(data.whatsappUrl);
     } catch (err: unknown) {
       setError(
         err instanceof Error ? err.message : "Ocurrió un error inesperado"
@@ -65,42 +69,58 @@ export default function ContactFormClient() {
     }
   };
 
-  if (submitted) {
+  if (whatsappUrl) {
     return (
       <div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-12 text-center">
-        {/* Green checkmark */}
-        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+        {/* Neutral prepared-message icon */}
+        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-sicaru-purple-50">
           <svg
-            className="h-8 w-8 text-green-600"
+            aria-hidden="true"
+            className="h-8 w-8 text-sicaru-purple-500"
             fill="none"
             stroke="currentColor"
-            strokeWidth={2.5}
+            strokeWidth={1.75}
             viewBox="0 0 24 24"
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="M5 13l4 4L19 7"
+              d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6A8.4 8.4 0 0 1 12.5 3h.5a8.5 8.5 0 0 1 8 8v.5Z"
             />
           </svg>
         </div>
 
-        <h2 className="text-2xl font-bold text-gray-900">
-          ¡Mensaje Enviado!
+        <h2
+          tabIndex={-1}
+          ref={(heading) => {
+            heading?.focus({ preventScroll: true });
+            heading?.scrollIntoView({ block: "center" });
+          }}
+          className="text-2xl font-bold text-gray-900"
+        >
+          Tu mensaje está listo
         </h2>
         <p className="mt-2 text-gray-600">
-          Te contactaremos a la brevedad. También puedes escribirnos
-          directamente por WhatsApp.
+          Aún no se ha enviado. Continúa a nuestro WhatsApp oficial para
+          revisar el mensaje y pulsar enviar cuando tú decidas.
         </p>
 
         <a
-          href="https://wa.me/528281136652"
+          href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
+          referrerPolicy="no-referrer"
           className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-3 font-semibold text-white transition-colors hover:bg-[#25D366]/90"
         >
-          Escribir por WhatsApp
+          Continuar a WhatsApp
         </a>
+        <button
+          type="button"
+          onClick={() => setWhatsappUrl("")}
+          className="mt-4 rounded-lg px-4 py-3 text-sm font-medium text-sicaru-purple-500 underline focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          Editar mensaje
+        </button>
       </div>
     );
   }
@@ -115,10 +135,14 @@ export default function ContactFormClient() {
       className="rounded-xl border border-gray-200 bg-white p-8"
     >
       <div className="space-y-5">
+        <p className="text-sm text-gray-600">
+          Prepara tu mensaje para WhatsApp. Después podrás revisarlo y enviarlo
+          voluntariamente; este formulario no lo envía automáticamente.
+        </p>
         {/* Name */}
         <div>
           <label htmlFor="name" className={labelClassName}>
-            Nombre completo <span className="text-red-500">*</span>
+            Nombre <span className="text-red-500">*</span>
           </label>
           <input
             id="name"
@@ -129,39 +153,6 @@ export default function ContactFormClient() {
             onChange={handleChange}
             className={inputClassName}
             placeholder="Tu nombre"
-          />
-        </div>
-
-        {/* Email */}
-        <div>
-          <label htmlFor="email" className={labelClassName}>
-            Correo electrónico <span className="text-red-500">*</span>
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            value={formData.email}
-            onChange={handleChange}
-            className={inputClassName}
-            placeholder="tu@correo.com"
-          />
-        </div>
-
-        {/* Phone */}
-        <div>
-          <label htmlFor="phone" className={labelClassName}>
-            Teléfono
-          </label>
-          <input
-            id="phone"
-            name="phone"
-            type="tel"
-            value={formData.phone}
-            onChange={handleChange}
-            className={inputClassName}
-            placeholder="(opcional)"
           />
         </div>
 
@@ -208,7 +199,7 @@ export default function ContactFormClient() {
 
         {/* Error */}
         {error && (
-          <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600">
+          <div role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-600">
             {error}
           </div>
         )}
@@ -219,7 +210,7 @@ export default function ContactFormClient() {
           disabled={isSubmitting}
           className="w-full rounded-full bg-sicaru-pink px-8 py-3 font-semibold text-white transition-colors hover:bg-sicaru-pink/90 disabled:opacity-50"
         >
-          {isSubmitting ? "Enviando..." : "Enviar mensaje"}
+          {isSubmitting ? "Preparando..." : "Preparar mensaje"}
         </button>
       </div>
     </form>
