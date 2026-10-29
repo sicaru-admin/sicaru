@@ -4,8 +4,6 @@ import { useState, type FormEvent } from "react";
 
 interface FormData {
   name: string;
-  email: string;
-  phone: string;
   subject: string;
   message: string;
 }
@@ -21,8 +19,6 @@ const SUBJECT_OPTIONS = [
 export default function ContactFormClient() {
   const [formData, setFormData] = useState<FormData>({
     name: "",
-    email: "",
-    phone: "",
     subject: "",
     message: "",
   });
@@ -76,19 +72,20 @@ export default function ContactFormClient() {
   if (whatsappUrl) {
     return (
       <div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-12 text-center">
-        {/* Green checkmark */}
-        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+        {/* Neutral prepared-message icon */}
+        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-sicaru-purple-50">
           <svg
-            className="h-8 w-8 text-green-600"
+            aria-hidden="true"
+            className="h-8 w-8 text-sicaru-purple-500"
             fill="none"
             stroke="currentColor"
-            strokeWidth={2.5}
+            strokeWidth={1.75}
             viewBox="0 0 24 24"
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="M5 13l4 4L19 7"
+              d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6A8.4 8.4 0 0 1 12.5 3h.5a8.5 8.5 0 0 1 8 8v.5Z"
             />
           </svg>
         </div>
@@ -105,7 +102,7 @@ export default function ContactFormClient() {
         </h2>
         <p className="mt-2 text-gray-600">
           Aún no se ha enviado. Continúa a nuestro WhatsApp oficial para
-          revisar el mensaje y enviarlo cuando tú decidas.
+          revisar el mensaje y pulsar enviar cuando tú decidas.
         </p>
 
         <a
@@ -145,7 +142,7 @@ export default function ContactFormClient() {
         {/* Name */}
         <div>
           <label htmlFor="name" className={labelClassName}>
-            Nombre completo <span className="text-red-500">*</span>
+            Nombre <span className="text-red-500">*</span>
           </label>
           <input
             id="name"
@@ -156,39 +153,6 @@ export default function ContactFormClient() {
             onChange={handleChange}
             className={inputClassName}
             placeholder="Tu nombre"
-          />
-        </div>
-
-        {/* Email */}
-        <div>
-          <label htmlFor="email" className={labelClassName}>
-            Correo electrónico <span className="text-red-500">*</span>
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            value={formData.email}
-            onChange={handleChange}
-            className={inputClassName}
-            placeholder="tu@correo.com"
-          />
-        </div>
-
-        {/* Phone */}
-        <div>
-          <label htmlFor="phone" className={labelClassName}>
-            Teléfono
-          </label>
-          <input
-            id="phone"
-            name="phone"
-            type="tel"
-            value={formData.phone}
-            onChange={handleChange}
-            className={inputClassName}
-            placeholder="(opcional)"
           />
         </div>
 

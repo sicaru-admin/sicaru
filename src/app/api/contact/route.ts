@@ -3,10 +3,10 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, subject, message } = body;
+    const { name, subject, message } = body ?? {};
 
     // Validate required fields
-    if (!name || !email || !subject || !message) {
+    if ([name, subject, message].some((value) => typeof value !== "string" || !value.trim())) {
       return NextResponse.json(
         { error: "Todos los campos obligatorios deben ser completados." },
         { status: 400 }

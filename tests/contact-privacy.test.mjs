@@ -9,8 +9,6 @@ const ts = require("typescript");
 const { NextResponse } = require("next/server");
 const synthetic = {
   name: "Cliente Sintético PRIVACY_TEST",
-  email: "privacy-test@example.invalid",
-  phone: "+520000000000",
   subject: "Consulta sintética & prueba",
   message: "Mensaje sintético con acentos y símbolos ? & #",
 };
@@ -39,24 +37,24 @@ function request(body) {
 }
 
 test("valid contact submissions preserve the WhatsApp handoff without logging personal data", async () => {
-  for (const phone of [synthetic.phone, "", undefined]) {
+  for (const extra of [{}, { email: "ignored@example.invalid", phone: "0000000000" }]) {
     const { POST, logs } = loadHandler();
-    const response = await POST(request({ ...synthetic, phone }));
+    const response = await POST(request({ ...synthetic, ...extra }));
     assert.equal(response.status, 200);
     const result = await response.json();
     assert.equal(result.ok, true);
     const url = new URL(result.whatsappUrl);
     assert.equal(url.origin + url.pathname, "https://wa.me/528281136652");
     assert.equal(url.searchParams.get("text"), `Hola, soy ${synthetic.name}. ${synthetic.subject}: ${synthetic.message}`);
-    assert(!result.whatsappUrl.includes(synthetic.email));
-    assert(!result.whatsappUrl.includes(synthetic.phone));
+    assert(!result.whatsappUrl.includes("ignored@example.invalid"));
+    assert(!result.whatsappUrl.includes("0000000000"));
     assert.deepEqual(logs, []);
   }
 });
 
 test("required fields still reject missing or empty values without logging or echoing the body", async () => {
-  for (const field of ["name", "email", "subject", "message"]) {
-    for (const value of [undefined, ""]) {
+  for (const field of ["name", "subject", "message"]) {
+    for (const value of [undefined, "", "   ", null, 123, {}, []]) {
       const { POST, logs } = loadHandler();
       const response = await POST(request({ ...synthetic, [field]: value }));
       assert.equal(response.status, 400);
@@ -70,12 +68,22 @@ test("parse and unexpected failures return generic errors without logging sensit
   for (const request of [
     new Request("http://localhost/api/contact", { method: "POST", body: "{invalid" }),
     { json: async () => { throw new Error(JSON.stringify(synthetic)); } },
-    { json: async () => null },
   ]) {
     const { POST, logs } = loadHandler();
     const response = await POST(request);
     assert.equal(response.status, 500);
     assert.deepEqual(await response.json(), { error: "Error al procesar la solicitud." });
+    assert.deepEqual(logs, []);
+  }
+});
+
+
+test("null or non-object bodies fail validation without logging or disclosure", async () => {
+  for (const body of [null, [], "synthetic", 123]) {
+    const { POST, logs } = loadHandler();
+    const response = await POST(request(body));
+    assert.equal(response.status, 400);
+    assert.deepEqual(await response.json(), { error: "Todos los campos obligatorios deben ser completados." });
     assert.deepEqual(logs, []);
   }
 });

@@ -41,7 +41,7 @@ function find(tree, predicate) {
 }
 const field = (tree, name) => find(tree, (el) => el.props.name === name);
 const button = (tree, text) => find(tree, (el) => el.type === "button" && el.props.children === text);
-const synthetic = { name: "Cliente Sintético", email: "test@example.invalid", phone: "0000000000", subject: "Otro", message: "Consulta sintética & prueba" };
+const synthetic = { name: "Cliente Sintético", subject: "Otro", message: "Consulta sintética & prueba" };
 const url = `https://wa.me/528281136652?text=${encodeURIComponent(`Hola, soy ${synthetic.name}. ${synthetic.subject}: ${synthetic.message}`)}`;
 
 test("contact prepares the message without automatic navigation or false delivery and allows editing", async () => {
@@ -59,6 +59,9 @@ test("contact prepares the message without automatic navigation or false deliver
   const html = renderToStaticMarkup(tree);
   assert(html.includes("Aún no se ha enviado"));
   assert(!html.includes("Mensaje Enviado"));
+  assert(!html.includes("bg-green-100"));
+  assert(!html.includes("M5 13l4 4L19 7"));
+  assert.equal(find(tree, (el) => el.type === "svg").props["aria-hidden"], "true");
   const link = find(tree, (el) => el.type === "a");
   assert.equal(link.props.href, url);
   assert.equal(link.props.children, "Continuar a WhatsApp");
@@ -70,13 +73,13 @@ test("contact prepares the message without automatic navigation or false deliver
   assert.deepEqual(ui.logs, []);
 });
 
-test("contact preserves native required/email validation and pending state", async () => {
+test("contact preserves only the three required fields and pending state", async () => {
   let resolve;
   const ui = client(() => new Promise((done) => { resolve = done; }));
   const tree = ui.render();
-  for (const name of ["name", "email", "subject", "message"]) assert.equal(field(tree, name).props.required, true);
-  assert.equal(field(tree, "email").props.type, "email");
-  assert.equal(field(tree, "phone").props.required, undefined);
+  for (const name of ["name", "subject", "message"]) assert.equal(field(tree, name).props.required, true);
+  assert.equal(field(tree, "email"), undefined);
+  assert.equal(field(tree, "phone"), undefined);
   const pending = tree.props.onSubmit({ preventDefault() {} });
   assert.equal(button(ui.render(), "Preparando...").props.disabled, true);
   resolve({ ok: false, json: async () => ({ error: "Todos los campos obligatorios deben ser completados." }) });
