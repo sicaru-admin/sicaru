@@ -13,15 +13,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Log the contact submission
-    console.log("[Contact Form Submission]", {
-      name,
-      email,
-      phone: body.phone || "N/A",
-      subject,
-      message,
-      timestamp: new Date().toISOString(),
-    });
+    // Contact details must never be written to application logs.
 
     // Build the WhatsApp URL with a pre-filled message
     const whatsappMessage = `Hola, soy ${name}. ${subject}: ${message}`;
