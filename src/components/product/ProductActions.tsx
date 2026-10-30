@@ -5,6 +5,7 @@ import { HttpTypes } from "@medusajs/types";
 import { MessageCircle, Search, Heart, BadgeCheck } from "lucide-react";
 import { useCart } from "@/components/cart/CartProvider";
 import { getApprovedPrice, hasKnownAvailability } from "@/lib/product-retail";
+import { getProductWhatsAppHref } from "@/lib/product-inquiry";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import {
   getSelectableOptions,
@@ -60,8 +61,6 @@ function optionMatches(
       normalizeOptionValue(selectedValue)
   );
 }
-
-const WHATSAPP_NUMBER = "528281136652";
 
 const TRUST_ITEMS = [
   { icon: Search, text: "Consulta disponibilidad" },
@@ -143,14 +142,6 @@ export function ProductActions({ product }: ProductActionsProps) {
   if (!displayVariant) return null;
 
   const price = getApprovedPrice(product, selectedVariant);
-  const formattedPrice = price?.calculated_amount != null
-    ? new Intl.NumberFormat("es-MX", {
-        style: "currency",
-        currency: price.currency_code || "MXN",
-      }).format(price.calculated_amount)
-    : "";
-
-  const whatsappMsg = `Hola! Me interesa ${product.title}${formattedPrice ? ` (${formattedPrice})` : ""}. ¿Tienen disponible?`;
   const selectionMessage = selectableOptions.some((option) =>
     option.title.toLocaleLowerCase("es-MX").includes("tono")
   )
@@ -238,7 +229,7 @@ export function ProductActions({ product }: ProductActionsProps) {
         </button>
 
         <a
-          href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMsg)}`}
+          href={getProductWhatsAppHref(product, selectedVariant?.id)}
           target="_blank"
           rel="noopener noreferrer"
           className="flex min-h-11 w-full items-center justify-center gap-2 border border-[#7f6d8a] px-8 py-3 text-base font-semibold text-[#7f6d8a] transition-colors duration-200 hover:bg-[#f5f1eb] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8]"
