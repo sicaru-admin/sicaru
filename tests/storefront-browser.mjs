@@ -153,16 +153,29 @@ try {
     await page.getByRole("button", { name: "Cerrar carrito" }).click();
     await page.goto(`${baseUrl}/carrito`, { waitUntil: "networkidle" });
     await page.getByRole("button", { name: "Aumentar cantidad de Tratamiento de prueba", exact: true }).click();
-    await page.waitForFunction(() => document.body.innerText.includes("Productos (2)"));
+    await page.waitForFunction(() =>
+      [...document.querySelectorAll("span")].some((el) => el.textContent?.trim() === "2")
+    );
     assert.equal(cart.items[0].quantity, 2);
     await page.getByRole("button", { name: "Reducir cantidad de Tratamiento de prueba", exact: true }).click();
-    await page.waitForFunction(() => document.body.innerText.includes("Productos (1)"));
+    await page.waitForFunction(() =>
+      [...document.querySelectorAll("span")].some((el) => el.textContent?.trim() === "1")
+    );
     assert.equal(cart.items[0].quantity, 1);
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
     assert.equal(await page.getByText(/Gratis|DHL|149[.,]00/).count(), 0);
-    await page.getByRole("link", { name: "Continuar al envío" }).click();
+    assert.equal(await page.getByText(/Productos \(\d+\)/).count(), 0);
+    assert.equal(await page.getByRole("link", { name: "Continuar al envío" }).count(), 0);
+    const whatsappCart = page.getByRole("link", { name: "Consultar carrito por WhatsApp" });
+    await whatsappCart.waitFor();
+    const whatsappHref = await whatsappCart.getAttribute("href");
+    assert.match(whatsappHref ?? "", /^https:\/\/wa\.me\/528281136652\?text=/);
+    const whatsappMessage = decodeURIComponent((whatsappHref ?? "").split("?text=")[1] ?? "");
+    assert.match(whatsappMessage, /Tratamiento de prueba/);
+    assert.match(whatsappMessage, /Cantidad: 1/);
+    assert.doesNotMatch(whatsappMessage, /199|299|Mercado Pago|DHL|envío/i);
+    await page.goto(`${baseUrl}/checkout`, { waitUntil: "networkidle" });
     await page.getByRole("heading", { name: "Envíos online próximamente" }).waitFor();
-    assert.equal(await page.locator('a[href^="https://wa.me/528281136652"]').count(), 1);
     assert.equal(await page.locator('input[name="cardNumber"], iframe').count(), 0);
     assert.equal(paymentRequests, 0);
     assert.equal(shippingRequests, 0);
