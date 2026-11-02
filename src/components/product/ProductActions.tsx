@@ -14,6 +14,7 @@ import {
   type ProductOptionSelection,
 } from "./VariantSelector";
 import { QuantitySelector } from "./QuantitySelector";
+import { getCatalogCartAddInput } from "@/lib/catalog-cart";
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct;
@@ -158,7 +159,7 @@ export function ProductActions({ product }: ProductActionsProps) {
     }
 
     try {
-      await addToCart(selectedVariant.id, quantity);
+      await addToCart(getCatalogCartAddInput(product, selectedVariant), quantity);
     } catch (error) {
       console.error("Error adding selected variant to cart:", error);
       setErrorMessage(
