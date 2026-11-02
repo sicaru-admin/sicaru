@@ -7,6 +7,7 @@ import { CATALOG_MODE } from "@/lib/catalog-mode";
 import { useCart } from "@/components/cart/CartProvider";
 import { getCartLineVariantLabel } from "@/components/cart/cart-line-variant";
 import { formatCurrency, normalizeOrderTotals } from "@/lib/order-totals";
+import { getCartWhatsAppHref } from "@/lib/cart-inquiry";
 
 export default function CarritoPage() {
   const { cart, isLoading, updateQuantity, removeFromCart, totalItems, cartError, retryInitializeCart } =
@@ -62,9 +63,11 @@ export default function CarritoPage() {
                           {variantLabel}
                         </p>
                       )}
-                      <p className="mt-1 text-sm text-gray-600">
-                        {formatCurrency(item.unit_price)} c/u
-                      </p>
+                      {!CATALOG_MODE && (
+                        <p className="mt-1 text-sm text-gray-600">
+                          {formatCurrency(item.unit_price)} c/u
+                        </p>
+                      )}
 
                       <div className="mt-3 flex items-center gap-3">
                         <button
@@ -93,9 +96,11 @@ export default function CarritoPage() {
                       </div>
 
                       <div className="mt-3 flex items-center justify-between">
-                        <p className="text-sm font-semibold text-sicaru-purple-900">
-                          {formatCurrency(item.unit_price * item.quantity)}
-                        </p>
+                        {!CATALOG_MODE && (
+                          <p className="text-sm font-semibold text-sicaru-purple-900">
+                            {formatCurrency(item.unit_price * item.quantity)}
+                          </p>
+                        )}
                         <button
                           onClick={() => removeFromCart(item.id)}
                           disabled={isLoading}
@@ -117,41 +122,57 @@ export default function CarritoPage() {
               <h2 className="text-lg font-semibold text-sicaru-purple-900">
                 Resumen del Pedido
               </h2>
-              <dl className="mt-4 space-y-3">
-                <div className="flex justify-between text-sm text-gray-600">
-                  <dt>Productos ({totalItems})</dt>
-                  <dd>{formatCurrency(totals.products)}</dd>
-                </div>
-                {(CATALOG_MODE ? totals.itemTaxes : totals.taxes) > 0 && (
-                  <div className="flex justify-between text-sm text-gray-600">
-                    <dt>Impuestos</dt>
-                    <dd>{formatCurrency(CATALOG_MODE ? totals.itemTaxes : totals.taxes)}</dd>
-                  </div>
-                )}
-                {totals.discount > 0 && (
-                  <div className="flex justify-between text-sm text-green-600">
-                    <dt>Descuento</dt>
-                    <dd>-{formatCurrency(totals.discount)}</dd>
-                  </div>
-                )}
-                <div className="flex justify-between text-sm text-gray-600">
-                  <dt>Envío</dt><dd>Consultar al continuar</dd>
-                </div>
-                <div className="border-t border-gray-200 pt-3 flex justify-between">
-                  <dt className="text-base font-semibold text-sicaru-purple-900">
-                    {CATALOG_MODE ? "Subtotal de productos" : "Total"}
-                  </dt>
-                  <dd className="text-base font-bold text-sicaru-purple-900">
-                    {formatCurrency(CATALOG_MODE ? Math.max(0, totals.products + totals.itemTaxes - totals.discount) : totals.total)}
-                  </dd>
-                </div>
-              </dl>
-              <Link
-                href="/checkout"
-                className="mt-6 block w-full rounded-full bg-sicaru-pink py-3 text-center text-lg font-semibold text-white transition-colors hover:bg-sicaru-pink/90"
-              >
-                Continuar al envío
-              </Link>
+              {CATALOG_MODE ? (
+                <>
+                  <p className="mt-4 text-sm leading-6 text-gray-600">
+                    Enviaremos producto, presentación, tono, SKU y cantidad para confirmar disponibilidad y total directamente con SICARÚ.
+                  </p>
+                  <a
+                    href={getCartWhatsAppHref(cart.items)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-6 block w-full rounded-full bg-[#25D366] py-3 text-center text-lg font-semibold text-white transition-colors hover:bg-[#1fb558]"
+                  >
+                    Consultar carrito por WhatsApp
+                  </a>
+                </>
+              ) : (
+                <>
+                  <dl className="mt-4 space-y-3">
+                    <div className="flex justify-between text-sm text-gray-600">
+                      <dt>Productos ({totalItems})</dt>
+                      <dd>{formatCurrency(totals.products)}</dd>
+                    </div>
+                    {totals.taxes > 0 && (
+                      <div className="flex justify-between text-sm text-gray-600">
+                        <dt>Impuestos</dt>
+                        <dd>{formatCurrency(totals.taxes)}</dd>
+                      </div>
+                    )}
+                    {totals.discount > 0 && (
+                      <div className="flex justify-between text-sm text-green-600">
+                        <dt>Descuento</dt>
+                        <dd>-{formatCurrency(totals.discount)}</dd>
+                      </div>
+                    )}
+                    <div className="flex justify-between text-sm text-gray-600">
+                      <dt>Envío</dt><dd>Consultar al continuar</dd>
+                    </div>
+                    <div className="border-t border-gray-200 pt-3 flex justify-between">
+                      <dt className="text-base font-semibold text-sicaru-purple-900">Total</dt>
+                      <dd className="text-base font-bold text-sicaru-purple-900">
+                        {formatCurrency(totals.total)}
+                      </dd>
+                    </div>
+                  </dl>
+                  <Link
+                    href="/checkout"
+                    className="mt-6 block w-full rounded-full bg-sicaru-pink py-3 text-center text-lg font-semibold text-white transition-colors hover:bg-sicaru-pink/90"
+                  >
+                    Continuar al envío
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
