@@ -21,6 +21,7 @@ export type BlogPostMeta = {
   image: string;
   imageAlt: string;
   readTime: number;
+  published: boolean;
 };
 
 export type BlogPost = BlogPostMeta & { content: string };
@@ -61,6 +62,7 @@ function parseMdxFile(filePath: string): BlogPost | null {
       image: data.image || "",
       imageAlt: data.imageAlt || "",
       readTime,
+      published: data.published !== false,
       content,
     };
   } catch {
@@ -79,7 +81,7 @@ function getMdxFiles(): string[] {
 export function getAllPosts(): BlogPostMeta[] {
   return getMdxFiles()
     .map(parseMdxFile)
-    .filter((p): p is BlogPost => p !== null)
+    .filter((p): p is BlogPost => p !== null && p.published)
     .map(({ content: _, ...meta }) => meta)
     .sort(
       (a, b) =>
@@ -90,7 +92,8 @@ export function getAllPosts(): BlogPostMeta[] {
 export function getPostBySlug(slug: string): BlogPost | null {
   const filePath = path.join(BLOG_DIR, `${slug}.mdx`);
   if (!fs.existsSync(filePath)) return null;
-  return parseMdxFile(filePath);
+  const post = parseMdxFile(filePath);
+  return post?.published ? post : null;
 }
 
 export function getPostsByCategory(category: BlogCategory): BlogPostMeta[] {
