@@ -259,6 +259,105 @@ try {
     console.log(`PASS: ${width}px search, categories, brand links, images, approved prices, variants, cart quantities, shipping guard, recovery and no horizontal overflow.`);
   }
   offline = false;
+
+  // QA visual only: prove two real Voglia variants remain separate in the local catalog cart.
+  {
+    const visual = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const visualPage = activePage = await visual.newPage();
+    await visualPage.goto(baseUrl, { waitUntil: "networkidle" });
+    await visualPage.evaluate(() => {
+      localStorage.setItem("sicaru_catalog_cart_v1", JSON.stringify({
+        version: 1,
+        items: [
+          {
+            id: "local:variant_voglia_831",
+            title: "Voglia Tinte Permanente 90ml",
+            product_title: "Voglia Tinte Permanente 90ml",
+            variant_id: "variant_voglia_831",
+            variant_title: "8.31 Rubio claro dorado cenizo",
+            variant_sku: "VOGLIA-TINTE-8-31-90ML",
+            variant_option_values: { Tono: "8.31 Rubio claro dorado cenizo", "Presentación": "90 ml" },
+            quantity: 2,
+            unit_price: 0,
+            thumbnail: null
+          },
+          {
+            id: "local:variant_voglia_6622",
+            title: "Voglia Tinte Permanente 90ml",
+            product_title: "Voglia Tinte Permanente 90ml",
+            variant_id: "variant_voglia_6622",
+            variant_title: "6.622 Rojo violeta · rojo cereza · borgoña",
+            variant_sku: "VOGLIA-TINTE-6-622-90ML",
+            variant_option_values: { Tono: "6.622 Rojo violeta · rojo cereza · borgoña", "Presentación": "90 ml" },
+            quantity: 3,
+            unit_price: 0,
+            thumbnail: null
+          }
+        ]
+      }));
+    });
+    await visualPage.reload({ waitUntil: "networkidle" });
+
+    await visualPage.getByRole("button", { name: "Abrir carrito" }).click();
+    await visualPage.getByRole("heading", { name: "Tu Carrito (5)" }).waitFor();
+    const drawer = await visualPage.locator("body").innerText();
+    assert.match(drawer, /8\.31 Rubio claro dorado cenizo/);
+    assert.match(drawer, /6\.622 Rojo violeta · rojo cereza · borgoña/);
+    assert.match(drawer, /2/);
+    assert.match(drawer, /3/);
+    const drawerWhatsApp = visualPage.getByRole("link", { name: "Consultar por WhatsApp" });
+    const drawerHref = await drawerWhatsApp.getAttribute("href");
+    assert.match(drawerHref ?? "", /^https:\/\/wa\.me\/528281136652\?text=/);
+    const drawerMessage = decodeURIComponent((drawerHref ?? "").split("?text=")[1] ?? "");
+    assert.match(drawerMessage, /SKU: VOGLIA-TINTE-8-31-90ML/);
+    assert.match(drawerMessage, /Cantidad: 2/);
+    assert.match(drawerMessage, /SKU: VOGLIA-TINTE-6-622-90ML/);
+    assert.match(drawerMessage, /Cantidad: 3/);
+    assert.doesNotMatch(drawerMessage, /Mercado Pago|DHL|\$|199|299/i);
+    assert.equal(cartWriteRequests, 0);
+    await visualPage.screenshot({ path: "artifacts/drawer-voglia-390.png", fullPage: true });
+
+    await visualPage.evaluate((message) => {
+      const box = document.createElement("div");
+      box.setAttribute("data-qa-whatsapp-message", "true");
+      Object.assign(box.style, {
+        position: "fixed", left: "12px", right: "12px", bottom: "12px", zIndex: "999999",
+        maxHeight: "45vh", overflow: "auto", background: "#FAF8F5", color: "#2E2B2B",
+        border: "2px solid #8E7A9E", borderRadius: "12px", padding: "12px",
+        font: "12px/1.4 sans-serif", whiteSpace: "pre-wrap"
+      });
+      box.textContent = "Mensaje WhatsApp generado (QA, no enviado):\n\n" + message;
+      document.body.appendChild(box);
+    }, drawerMessage);
+    await visualPage.screenshot({ path: "artifacts/drawer-voglia-whatsapp-390.png", fullPage: true });
+
+    await visualPage.goto(`${baseUrl}/carrito`, { waitUntil: "networkidle" });
+    const cartBody = await visualPage.locator("body").innerText();
+    assert.match(cartBody, /8\.31 Rubio claro dorado cenizo/);
+    assert.match(cartBody, /6\.622 Rojo violeta · rojo cereza · borgoña/);
+    const cartWhatsApp = visualPage.getByRole("link", { name: "Consultar carrito por WhatsApp" });
+    const cartHref = await cartWhatsApp.getAttribute("href");
+    const cartMessage = decodeURIComponent((cartHref ?? "").split("?text=")[1] ?? "");
+    assert.equal(cartMessage, drawerMessage);
+    assert.equal(cartWriteRequests, 0);
+    await visualPage.screenshot({ path: "artifacts/carrito-voglia-390.png", fullPage: true });
+
+    await visualPage.evaluate((message) => {
+      const box = document.createElement("div");
+      box.setAttribute("data-qa-whatsapp-message", "true");
+      Object.assign(box.style, {
+        position: "fixed", left: "12px", right: "12px", bottom: "12px", zIndex: "999999",
+        maxHeight: "45vh", overflow: "auto", background: "#FAF8F5", color: "#2E2B2B",
+        border: "2px solid #8E7A9E", borderRadius: "12px", padding: "12px",
+        font: "12px/1.4 sans-serif", whiteSpace: "pre-wrap"
+      });
+      box.textContent = "Mensaje WhatsApp generado (QA, no enviado):\n\n" + message;
+      document.body.appendChild(box);
+    }, cartMessage);
+    await visualPage.screenshot({ path: "artifacts/carrito-voglia-whatsapp-390.png", fullPage: true });
+    await visual.close();
+  }
+
   const desktop = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
   const desktopPage = activePage = await desktop.newPage();
   await desktopPage.goto(baseUrl, { waitUntil: "networkidle" });
