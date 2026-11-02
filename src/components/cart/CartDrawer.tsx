@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "./CartProvider";
 import { CATALOG_MODE } from "@/lib/catalog-mode";
-import { normalizeOrderTotals } from "@/lib/order-totals";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import { getCartLineVariantLabel } from "./cart-line-variant";
 import { getCartWhatsAppHref } from "@/lib/cart-inquiry";
@@ -22,7 +21,6 @@ export function CartDrawer() {
     retryInitializeCart,
   } = useCart();
 
-  const totals = normalizeOrderTotals(cart);
   if (!isOpen) return null;
 
   return (
