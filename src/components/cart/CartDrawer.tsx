@@ -7,6 +7,7 @@ import { CATALOG_MODE } from "@/lib/catalog-mode";
 import { normalizeOrderTotals } from "@/lib/order-totals";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import { getCartLineVariantLabel } from "./cart-line-variant";
+import { getCartWhatsAppHref } from "@/lib/cart-inquiry";
 
 export function CartDrawer() {
   const {
@@ -97,10 +98,12 @@ export function CartDrawer() {
                             {variantLabel}
                           </p>
                         )}
-                        <PriceDisplay
-                          amount={item.unit_price}
-                          className="text-sm text-gray-600"
-                        />
+                        {!CATALOG_MODE && (
+                          <PriceDisplay
+                            amount={item.unit_price}
+                            className="text-sm text-gray-600"
+                          />
+                        )}
                         <div className="mt-2 flex flex-wrap items-center gap-2">
                           <button
                             aria-label={`Reducir cantidad de ${item.title}`}
@@ -142,25 +145,38 @@ export function CartDrawer() {
           {/* Footer */}
           {cart?.items?.length ? (
             <div className="border-t px-4 py-4">
-              <div className="mb-4 flex items-center justify-between">
-                <span className="text-base font-semibold">{CATALOG_MODE ? "Subtotal de productos" : "Total"}</span>
-                <PriceDisplay
-                  amount={CATALOG_MODE ? Math.max(0, totals.products + totals.itemTaxes - totals.discount) : cart.total}
-                  className="text-lg font-bold text-sicaru-purple-900"
-                />
-              </div>
+              {!CATALOG_MODE && (
+                <div className="mb-4 flex items-center justify-between">
+                  <span className="text-base font-semibold">Total</span>
+                  <PriceDisplay
+                    amount={cart.total}
+                    className="text-lg font-bold text-sicaru-purple-900"
+                  />
+                </div>
+              )}
               <a
                 href="/carrito"
                 className="mb-2 block w-full rounded-full border border-sicaru-purple-900 py-3 text-center font-semibold text-sicaru-purple-900 transition-colors hover:bg-sicaru-purple-50"
               >
                 Ver Carrito
               </a>
-              <a
-                href="/checkout"
-                className="block w-full rounded-full bg-sicaru-pink py-3 text-center font-semibold text-white transition-colors hover:bg-sicaru-pink/90"
-              >
-                Continuar al envío
-              </a>
+              {CATALOG_MODE ? (
+                <a
+                  href={getCartWhatsAppHref(cart.items)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full rounded-full bg-[#25D366] py-3 text-center font-semibold text-white transition-colors hover:bg-[#1fb558]"
+                >
+                  Consultar por WhatsApp
+                </a>
+              ) : (
+                <a
+                  href="/checkout"
+                  className="block w-full rounded-full bg-sicaru-pink py-3 text-center font-semibold text-white transition-colors hover:bg-sicaru-pink/90"
+                >
+                  Continuar al envío
+                </a>
+              )}
             </div>
           ) : null}
         </div>
