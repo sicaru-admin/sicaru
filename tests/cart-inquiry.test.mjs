@@ -33,29 +33,29 @@ const message = (href) => new URL(href).searchParams.get("text");
 test("carrito multiproducto conserva producto, presentación, tono, SKU y cantidad", () => {
   const href = getHref([
     {
-      product_title: "KÜÜL Funny Colors",
-      quantity: 3,
-      variant_sku: "3134302",
-      variant_option_values: { Tono: "Rojo", "Presentación": "90 ml" },
-    },
-    {
-      product_title: "Voglia Tinte Permanente",
+      product_title: "Voglia Tinte Permanente 90ml",
       quantity: 2,
       variant_sku: "VOGLIA-TINTE-8-31-90ML",
-      variant_title: "8.31 Rubio claro dorado cenizo",
+      variant_option_values: { Tono: "8.31 Rubio claro dorado cenizo", "Presentación": "90 ml" },
+    },
+    {
+      product_title: "Voglia Tinte Permanente 90ml",
+      quantity: 3,
+      variant_sku: "VOGLIA-TINTE-6-622-90ML",
+      variant_option_values: { Tono: "6.622 Rojo violeta · rojo cereza · borgoña", "Presentación": "90 ml" },
     },
   ]);
   const parsed = new URL(href);
   assert.equal(parsed.origin + parsed.pathname, "https://wa.me/528281136652");
   const text = message(href);
-  assert.match(text, /KÜÜL Funny Colors/);
-  assert.match(text, /Presentación: 90 ml/);
-  assert.match(text, /Tono: Rojo/);
-  assert.match(text, /SKU: 3134302/);
-  assert.match(text, /Cantidad: 3/);
-  assert.match(text, /Voglia Tinte Permanente/);
+  assert.match(text, /Voglia Tinte Permanente 90ml/);
+  assert.equal((text.match(/Presentación: 90 ml/g) ?? []).length, 2);
   assert.match(text, /Tono: 8\.31 Rubio claro dorado cenizo/);
+  assert.match(text, /SKU: VOGLIA-TINTE-8-31-90ML/);
   assert.match(text, /Cantidad: 2/);
+  assert.match(text, /Tono: 6\.622 Rojo violeta · rojo cereza · borgoña/);
+  assert.match(text, /SKU: VOGLIA-TINTE-6-622-90ML/);
+  assert.match(text, /Cantidad: 3/);
 });
 
 test("la consulta nunca expone unit_price, total, envío ni datos de pago", () => {
