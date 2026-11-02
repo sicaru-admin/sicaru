@@ -5,6 +5,7 @@ import { HttpTypes } from "@medusajs/types";
 import { useCart } from "@/components/cart/CartProvider";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import { getSelectableOptions } from "./VariantSelector";
+import { getCatalogCartAddInput } from "@/lib/catalog-cart";
 
 type StickyAddToCartProps = {
   product: HttpTypes.StoreProduct;
@@ -35,7 +36,7 @@ export function StickyAddToCart({ product }: StickyAddToCartProps) {
     setErrorMessage(null);
 
     try {
-      await addToCart(firstVariant.id, 1);
+      await addToCart(getCatalogCartAddInput(product, firstVariant), 1);
     } catch (error) {
       console.error("Error adding sticky variant to cart:", error);
       setErrorMessage(

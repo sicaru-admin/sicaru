@@ -16,12 +16,28 @@ import {
   updateItem,
   removeItem,
 } from "@/lib/data/cart";
+import { CATALOG_MODE } from "@/lib/catalog-mode";
+import {
+  addCatalogItem,
+  clearStoredCatalogCart,
+  createEmptyCatalogCart,
+  loadCatalogCart,
+  removeCatalogItem,
+  saveCatalogCart,
+  updateCatalogItem,
+  type CatalogCart,
+  type CatalogCartAddInput,
+} from "@/lib/catalog-cart";
 import { getMexicoRegion } from "@/lib/data/regions";
 
 type CartItem = {
   id: string;
   title: string;
+  product_title?: string | null;
   variant_id: string;
+  variant_title?: string | null;
+  variant_sku?: string | null;
+  variant_option_values?: Record<string, string> | null;
   quantity: number;
   unit_price: number;
   thumbnail?: string | null;
@@ -53,7 +69,7 @@ type CartContextType = {
   openCart: () => void;
   closeCart: () => void;
   retryInitializeCart: () => Promise<void>;
-  addToCart: (variantId: string, quantity?: number) => Promise<void>;
+  addToCart: (input: string | CatalogCartAddInput, quantity?: number) => Promise<void>;
   updateQuantity: (lineItemId: string, quantity: number) => Promise<void>;
   removeFromCart: (lineItemId: string) => Promise<void>;
   refreshCart: () => Promise<void>;
@@ -82,6 +98,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const closeCart = useCallback(() => setIsOpen(false), []);
 
   const storeCart = useCallback((nextCart: Cart) => {
+    if (CATALOG_MODE) {
+      saveCatalogCart(localStorage, nextCart as unknown as CatalogCart);
+      cartRef.current = nextCart;
+      setCartId(nextCart.id);
+      setCart(nextCart);
+      setCartError(null);
+      return;
+    }
+
     localStorage.setItem(CART_ID_KEY, nextCart.id);
     cartRef.current = nextCart;
     setCartId(nextCart.id);
@@ -96,6 +121,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const initCart = useCallback(async () => {
+    if (CATALOG_MODE) {
+      const localCart = loadCatalogCart(localStorage) as unknown as Cart;
+      storeCart(localCart);
+      return localCart;
+    }
+
     const storedCartId = localStorage.getItem(CART_ID_KEY);
 
     if (storedCartId) {
@@ -163,9 +194,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
-      // Restore an existing cart; create a new one only when a product is added.
+      // Restore a local catalog cart without backend writes, or an existing Medusa cart.
       try {
-        if (localStorage.getItem(CART_ID_KEY)) {
+        if (CATALOG_MODE) {
+          const localCart = loadCatalogCart(localStorage) as unknown as Cart;
+          cartRef.current = localCart;
+          setCartId(localCart.id);
+          setCart(localCart);
+          setCartError(null);
+          setIsInitializingCart(false);
+        } else if (localStorage.getItem(CART_ID_KEY)) {
           void ensureCart().catch(() => {});
         } else {
           setIsInitializingCart(false);
@@ -180,7 +218,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [ensureCart]);
 
   const addToCart = useCallback(
-    async (variantId: string, quantity = 1) => {
+    async (input: string | CatalogCartAddInput, quantity = 1) => {
       if (addToCartPromiseRef.current) {
         return addToCartPromiseRef.current;
       }
@@ -188,6 +226,20 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const addPromise = (async () => {
         setIsLoading(true);
         try {
+          if (CATALOG_MODE) {
+            if (typeof input === "string") {
+              throw new Error("Faltan datos del producto para el carrito local.");
+            }
+            const activeCart =
+              (cartRef.current as unknown as CatalogCart | null) ??
+              createEmptyCatalogCart();
+            const nextCart = addCatalogItem(activeCart, input, quantity);
+            storeCart(nextCart as unknown as Cart);
+            openCart();
+            return;
+          }
+
+          const variantId = typeof input === "string" ? input : input.variantId;
           const activeCart = await ensureCart();
           const updatedCart = await addItem(activeCart.id, variantId, quantity);
           const nextCart = updatedCart as unknown as Cart;
@@ -213,6 +265,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
       if (!cart) return;
       setIsLoading(true);
       try {
+        if (CATALOG_MODE) {
+          const nextCart = updateCatalogItem(
+            cart as unknown as CatalogCart,
+            lineItemId,
+            quantity
+          );
+          storeCart(nextCart as unknown as Cart);
+          return;
+        }
+
         const updatedCart = await updateItem(cart.id, lineItemId, quantity);
         const nextCart = updatedCart as unknown as Cart;
         storeCart(nextCart);
@@ -231,6 +293,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
       if (!cart) return;
       setIsLoading(true);
       try {
+        if (CATALOG_MODE) {
+          const nextCart = removeCatalogItem(
+            cart as unknown as CatalogCart,
+            lineItemId
+          );
+          storeCart(nextCart as unknown as Cart);
+          return;
+        }
+
         const updatedCart = await removeItem(cart.id, lineItemId);
         const nextCart = updatedCart as unknown as Cart;
         storeCart(nextCart);
@@ -245,6 +316,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
   );
 
   const refreshCart = useCallback(async () => {
+    if (CATALOG_MODE) {
+      const localCart = loadCatalogCart(localStorage) as unknown as Cart;
+      cartRef.current = localCart;
+      setCartId(localCart.id);
+      setCart(localCart);
+      setCartError(null);
+      return;
+    }
+
     const id = cartRef.current?.id || localStorage.getItem(CART_ID_KEY);
     if (!id) return;
     try {
@@ -259,6 +339,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [storeCart]);
 
   const clearCart = useCallback(() => {
+    if (CATALOG_MODE) {
+      clearStoredCatalogCart(localStorage);
+      const emptyCart = createEmptyCatalogCart() as unknown as Cart;
+      cartRef.current = emptyCart;
+      setCart(emptyCart);
+      setCartId(emptyCart.id);
+      return;
+    }
+
     localStorage.removeItem(CART_ID_KEY);
     cartRef.current = null;
     setCart(null);

@@ -9,6 +9,7 @@ const baseUrl = process.env.TEST_BASE_URL || "http://127.0.0.1:3000";
 let offline = false;
 let paymentRequests = 0;
 let shippingRequests = 0;
+let cartWriteRequests = 0;
 let lastVariantId;
 const variant = { id: "variant_250", title: "250 ml", options: [], manage_inventory: true, inventory_quantity: 5, metadata: { storefront_price_approved: true }, calculated_price: { calculated_amount: 199, original_amount: 199, currency_code: "mxn" } };
 const product = { id: "prod_test", title: "Tratamiento de prueba", handle: "tratamiento-prueba", subtitle: "Cuidado capilar", description: "Producto aislado para las pruebas del storefront.", thumbnail: "/images/products-hero/voglia-total-repair.webp", images: [], options: [], variants: [variant, { ...variant, id: "variant_500", title: "500 ml", metadata: {}, calculated_price: { calculated_amount: 299, currency_code: "mxn" } }], collection: { id: "col_voglia", title: "Voglia", handle: "voglia" } };
@@ -32,6 +33,12 @@ const backend = createServer(async (req, res) => {
   if (req.method === "OPTIONS") { res.end(); return; }
   if (/payment|complete/.test(url.pathname)) paymentRequests++;
   if (/shipping-options|fulfillment|dhl/i.test(url.pathname)) shippingRequests++;
+  if (
+    url.pathname.startsWith("/store/carts") &&
+    ["POST", "PATCH", "DELETE"].includes(req.method ?? "")
+  ) {
+    cartWriteRequests++;
+  }
   if (offline) { res.statusCode = 503; res.end(JSON.stringify({ message: "Backend offline for test" })); return; }
   let result;
   if (url.pathname === "/store/regions") result = { regions: [{ id: "reg_mx", name: "México", currency_code: "mxn" }] };
@@ -149,20 +156,53 @@ try {
     await select.selectOption("variant_250");
     await current.getByRole("button", { name: "Agregar Tratamiento de prueba", exact: true }).click();
     await page.getByRole("heading", { name: "Tu Carrito (1)" }).waitFor();
-    assert.equal(lastVariantId, "variant_250");
+    assert.equal(lastVariantId, undefined);
+    assert.equal(cartWriteRequests, 0);
+    const storedCatalogCart = await page.evaluate(() =>
+      localStorage.getItem("sicaru_catalog_cart_v1")
+    );
+    assert.match(storedCatalogCart ?? "", /"variant_id":"variant_250"/);
+    assert.match(storedCatalogCart ?? "", /"variant_title":"250 ml"/);
+    await page.getByRole("button", { name: "Cerrar carrito" }).click();
+    await page.reload({ waitUntil: "networkidle" });
+    await page.getByRole("button", { name: "Abrir carrito" }).click();
+    await page.getByRole("heading", { name: "Tu Carrito (1)" }).waitFor();
     await page.getByRole("button", { name: "Cerrar carrito" }).click();
     await page.goto(`${baseUrl}/carrito`, { waitUntil: "networkidle" });
     await page.getByRole("button", { name: "Aumentar cantidad de Tratamiento de prueba", exact: true }).click();
-    await page.waitForFunction(() => document.body.innerText.includes("Productos (2)"));
-    assert.equal(cart.items[0].quantity, 2);
+    await page.waitForFunction(() =>
+      [...document.querySelectorAll("span")].some((el) => el.textContent?.trim() === "2")
+    );
+    assert.equal(
+      JSON.parse(await page.evaluate(() => localStorage.getItem("sicaru_catalog_cart_v1"))).items[0].quantity,
+      2
+    );
+    assert.equal(cartWriteRequests, 0);
     await page.getByRole("button", { name: "Reducir cantidad de Tratamiento de prueba", exact: true }).click();
-    await page.waitForFunction(() => document.body.innerText.includes("Productos (1)"));
-    assert.equal(cart.items[0].quantity, 1);
+    await page.waitForFunction(() =>
+      [...document.querySelectorAll("span")].some((el) => el.textContent?.trim() === "1")
+    );
+    assert.equal(
+      JSON.parse(await page.evaluate(() => localStorage.getItem("sicaru_catalog_cart_v1"))).items[0].quantity,
+      1
+    );
+    assert.equal(cartWriteRequests, 0);
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
     assert.equal(await page.getByText(/Gratis|DHL|149[.,]00/).count(), 0);
-    await page.getByRole("link", { name: "Continuar al envío" }).click();
+    assert.equal(await page.getByText(/Productos \(\d+\)/).count(), 0);
+    assert.equal(await page.getByRole("link", { name: "Continuar al envío" }).count(), 0);
+    const whatsappCart = page.getByRole("link", { name: "Consultar carrito por WhatsApp" });
+    await whatsappCart.waitFor();
+    const whatsappHref = await whatsappCart.getAttribute("href");
+    assert.match(whatsappHref ?? "", /^https:\/\/wa\.me\/528281136652\?text=/);
+    const whatsappMessage = decodeURIComponent((whatsappHref ?? "").split("?text=")[1] ?? "");
+    assert.match(whatsappMessage, /Tratamiento de prueba/);
+    assert.match(whatsappMessage, /Presentación: 250 ml/);
+    assert.match(whatsappMessage, /Cantidad: 1/);
+    assert.doesNotMatch(whatsappMessage, /199|299|Mercado Pago|DHL|envío/i);
+    assert.equal(cartWriteRequests, 0);
+    await page.goto(`${baseUrl}/checkout`, { waitUntil: "networkidle" });
     await page.getByRole("heading", { name: "Envíos online próximamente" }).waitFor();
-    assert.equal(await page.locator('a[href^="https://wa.me/528281136652"]').count(), 1);
     assert.equal(await page.locator('input[name="cardNumber"], iframe').count(), 0);
     assert.equal(paymentRequests, 0);
     assert.equal(shippingRequests, 0);
@@ -255,6 +295,7 @@ try {
   console.log("PASS: retail section order, original packages intact and desktop presentation at 1440px.");
   assert.equal(paymentRequests, 0);
   assert.equal(shippingRequests, 0);
+  assert.equal(cartWriteRequests, 0);
 } catch (error) {
   await activePage?.screenshot({ path: "artifacts/failure-mobile.png", fullPage: true }).catch(() => {});
   throw error;

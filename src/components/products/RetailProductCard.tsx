@@ -7,6 +7,7 @@ import { ShoppingBag } from "lucide-react";
 import { useCart } from "@/components/cart/CartProvider";
 import { getApprovedPrice, hasKnownAvailability } from "@/lib/product-retail";
 import { ProductPhoto } from "./ProductPhoto";
+import { getCatalogCartAddInput } from "@/lib/catalog-cart";
 
 export function RetailProductCard({ product }: { product: HttpTypes.StoreProduct }) {
   const variants = product.variants ?? [];
@@ -24,7 +25,7 @@ export function RetailProductCard({ product }: { product: HttpTypes.StoreProduct
   async function add() {
     if (!variant || !available) return;
     setError(null);
-    try { await addToCart(variant.id); }
+    try { await addToCart(getCatalogCartAddInput(product, variant)); }
     catch { setError("No pudimos agregarlo. Intenta de nuevo."); }
   }
 
