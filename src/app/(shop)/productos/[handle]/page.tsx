@@ -1,6 +1,7 @@
 import { getBrandSearchHref } from "@/lib/brand-navigation";
 import { CatalogUnavailable } from "@/components/products/CatalogUnavailable";
 import { CATALOG_MODE } from "@/lib/catalog-mode";
+import { getApprovedPrice } from "@/lib/product-retail";
 import { Suspense } from "react";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -46,7 +47,9 @@ export async function generateMetadata({
       return { title: "Producto no encontrado" };
     }
 
-    const price = product.variants?.[0]?.calculated_price;
+    const price = CATALOG_MODE
+      ? null
+      : getApprovedPrice(product, product.variants?.[0]);
     const priceStr =
       price?.calculated_amount != null
         ? new Intl.NumberFormat("es-MX", {
@@ -67,7 +70,7 @@ export async function generateMetadata({
         description,
         images: product.thumbnail ? [{ url: product.thumbnail }] : undefined,
       },
-      other: CATALOG_MODE ? undefined : {
+      other: !price ? undefined : {
         "product:price:amount":
           price?.calculated_amount?.toString() ?? "",
         "product:price:currency": price?.currency_code || "MXN",
@@ -146,7 +149,9 @@ export default async function ProductDetailPage({
 
   return (
     <>
-      <JsonLd schema={[productSchema, breadcrumbSchema, faqSchema]} />
+      <JsonLd schema={productSchema
+        ? [productSchema, breadcrumbSchema, faqSchema]
+        : [breadcrumbSchema, faqSchema]} />
 
       <div className="bg-[#faf8f5]">
       <div className="mx-auto max-w-[1400px] px-5 py-5 sm:px-8 md:py-8 lg:px-10 lg:py-9">

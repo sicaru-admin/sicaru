@@ -1,6 +1,7 @@
 import { CATALOG_MODE } from "@/lib/catalog-mode";
 import type { HttpTypes } from "@medusajs/types";
 import { BRANDS } from "@/lib/constants/brands";
+import { getApprovedPrice } from "@/lib/product-retail";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://www.sicarubeauty.com";
@@ -98,9 +99,14 @@ export function generateWebSiteSchema(): Record<string, unknown> {
 
 export function generateProductSchema(
   product: HttpTypes.StoreProduct
-): Record<string, unknown> {
+): Record<string, unknown> | null {
+  // Catalog pages do not advertise a public offer or product rich result.
+  if (CATALOG_MODE) return null;
+
   const variant = product.variants?.[0];
-  const price = variant?.calculated_price;
+  const price = getApprovedPrice(product, variant);
+  // Without a valid approved offer, this page has no Product rich-result data.
+  if (!price) return null;
   const brandName = product.collection?.title;
   const images = (product.images ?? [])
     .filter((img) => !!img.url)
@@ -185,7 +191,9 @@ export function generateProductFAQs(
   product: HttpTypes.StoreProduct
 ): FAQItem[] {
   const brandName = product.collection?.title ?? "Distribuidora Sicarú";
-  const price = product.variants?.[0]?.calculated_price;
+  const price = CATALOG_MODE
+    ? null
+    : getApprovedPrice(product, product.variants?.[0]);
   const priceStr =
     !CATALOG_MODE && price?.calculated_amount != null
       ? new Intl.NumberFormat("es-MX", {
