@@ -23,7 +23,7 @@ export async function getProductByHandle(handle: string) {
   const { products } = await catalogRequest(() => sdk.store.product.list({
     handle,
     limit: 1,
-    fields: "*variants.calculated_price,+variants.inventory_quantity,+variants.metadata,+metadata",
+    fields: "*variants.calculated_price,*variants.images,+variants.inventory_quantity,+variants.metadata,+metadata",
     region_id: region?.id,
   }));
 
