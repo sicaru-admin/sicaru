@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { HttpTypes } from "@medusajs/types";
 import { MessageCircle, Search, Heart, BadgeCheck } from "lucide-react";
 import { useCart } from "@/components/cart/CartProvider";
@@ -15,9 +15,14 @@ import {
 } from "./VariantSelector";
 import { QuantitySelector } from "./QuantitySelector";
 import { getCatalogCartAddInput } from "@/lib/catalog-cart";
+import { getProductMedia } from "@/lib/product-media";
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct;
+  renderExperience?: (state: {
+    selectedVariant: HttpTypes.StoreProductVariant | null;
+    actions: ReactNode;
+  }) => ReactNode;
 };
 
 type VariantOption = {
@@ -69,7 +74,7 @@ const TRUST_ITEMS = [
   { icon: BadgeCheck, text: "Productos profesionales" },
 ];
 
-export function ProductActions({ product }: ProductActionsProps) {
+export function ProductActions({ product, renderExperience }: ProductActionsProps) {
   const variants = useMemo(() => product.variants ?? [], [product.variants]);
   const selectableOptions = useMemo(
     () => getSelectableOptions(product),
@@ -89,7 +94,8 @@ export function ProductActions({ product }: ProductActionsProps) {
     }
 
     if (!requiresVariantSelection) {
-      return variants[0] ?? null;
+      // Multiple indistinguishable variants do not identify an exact reference.
+      return null;
     }
 
     const allOptionsSelected = selectableOptions.every(
@@ -140,7 +146,9 @@ export function ProductActions({ product }: ProductActionsProps) {
     selectedVariant ??
     (requiresVariantSelection ? lowestPricedVariant : variants[0] ?? null);
 
-  if (!displayVariant) return null;
+  if (!displayVariant) {
+    return renderExperience ? renderExperience({ selectedVariant: null, actions: null }) : null;
+  }
 
   const price = getApprovedPrice(product, selectedVariant);
   const selectionMessage = selectableOptions.some((option) =>
@@ -159,7 +167,10 @@ export function ProductActions({ product }: ProductActionsProps) {
     }
 
     try {
-      await addToCart(getCatalogCartAddInput(product, selectedVariant), quantity);
+      const input = getCatalogCartAddInput(product, selectedVariant);
+      // Product-level thumbnails may belong to another tone in Medusa's image pool.
+      input.thumbnail = getProductMedia(product, selectedVariant.id).images[0]?.url ?? null;
+      await addToCart(input, quantity);
     } catch (error) {
       console.error("Error adding selected variant to cart:", error);
       setErrorMessage(
@@ -182,7 +193,7 @@ export function ProductActions({ product }: ProductActionsProps) {
     price.original_amount > price.calculated_amount;
 
 
-  return (
+  const actions = (
     <div className="space-y-4 md:space-y-5 [&_button]:min-h-11 [&_button]:min-w-11 [&_button]:focus-visible:outline [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-[#9b89a8]">
       {/* Price */}
       <div>
@@ -254,4 +265,8 @@ export function ProductActions({ product }: ProductActionsProps) {
       </div>
     </div>
   );
+
+  return renderExperience
+    ? renderExperience({ selectedVariant: selectedVariant ?? null, actions })
+    : actions;
 }

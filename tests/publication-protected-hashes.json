@@ -7,7 +7,7 @@
   "src/lib/catalog-mode.ts": "7deea7e4204d3de9abbc98e759140c3eae8572b2d49abb4501d21a471084042f",
   "src/lib/data/checkout.ts": "4aa4f3ef07a7a7bb94eeeb6c409f5b01ac7cf63ad8487e3312e24af0be702e5f",
   "src/lib/data/cart.ts": "80f53491350cfdda4b2bf682fe79e71074836495ae073663193be5eb9e39893a",
-  "src/lib/data/products.ts": "45dcd235f7b397f47603a9ebce8192e4952901a956ae9569a192e49c898bc3bb",
+  "src/lib/data/products.ts": "39eb12bac861b78d80bc3481b81a1acaefd7ee007512cbee52a3e23038e3b1a4",
   "src/lib/order-totals.ts": "f58bda0bd0ee2b2c850b6084d1e92679fdab77d8053bcc04efed3a45a1ba0fbc",
   "src/components/cart/CartProvider.tsx": "142b4d23d104d34dc0ccbe4b6d707ee7ccbc2a343732a4a46a9fafc282315cc2",
   "src/components/home/HeroSection.tsx": "9c5346ea9800c346cdc94e9c19150af93ca367b2087152bbefb6b2d5c8915bfe",
