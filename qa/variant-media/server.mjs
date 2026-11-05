@@ -3,18 +3,27 @@ import { createServer } from "node:http";
 
 const origin = "http://localhost:9000";
 const image = (name, rank = 0) => ({ id: `qa_image_${name}`, url: `${origin}/qa-media/${name}.svg`, rank });
-const imageNames = ["general", "general-two", "a-01", "a-02", "b-01"];
-function product(id, general, specific) {
-  const own = specific ? [[image("a-01"), image("a-02", 1)], [image("b-01")], []] : [[], [], []];
+const imageNames = ["general", "general-two", "a-01", "a-02", "b-01", "shared-ab", "shared-all"];
+function product(id, generalNames, specific, sharedAll = false) {
+  const variantId = (index) => `qa_variant_${id}_${index}`;
+  const linkedImage = (name, rank, indexes = []) => ({
+    ...image(name, rank), id: `qa_image_${id}_${name}`,
+    variants: indexes.map((index) => ({ id: variantId(index) })),
+  });
+  const general = generalNames.map((name, index) => linkedImage(name, index));
+  const own = specific ? [[linkedImage("a-01", 0, [0]), linkedImage("a-02", 1, [0])], [linkedImage("b-01", 0, [1])], []] : [[], [], []];
+  const shared = specific ? [linkedImage("shared-ab", 2, [0, 1])] : sharedAll ? [linkedImage("shared-all", 0, [0, 1, 2])] : [];
   return {
     id: `qa_product_${id}`, handle: `qa-galeria-${id}`, title: `Prueba QA de galería · ${id}`,
     description: "Datos y diagramas sintéticos para pruebas locales; no son productos o fotografías reales.",
-    images: [...general, ...own.flat()], thumbnail: specific ? image("a-01").url : general[0]?.url ?? null,
+    images: [...general, ...own.flat(), ...shared], thumbnail: specific ? image("a-01").url : general[0]?.url ?? shared[0]?.url ?? null,
     collection: null, collection_id: null, categories: [], metadata: { synthetic_variant_media_fixture: true },
     options: [{ id: `qa_option_${id}`, title: "Opción", values: ["A", "B", "C"].map((v) => ({ value: `Opción ${v}` })) }],
     variants: own.map((images, index) => ({
-      id: `qa_variant_${id}_${index}`, product_id: `qa_product_${id}`,
-      title: `Opción ${["A", "B", "C"][index]}`, sku: `QA-${id}-${index}`, images, thumbnail: null,
+      id: variantId(index), product_id: `qa_product_${id}`,
+      title: `Opción ${["A", "B", "C"][index]}`, sku: `QA-${id}-${index}`,
+      // Native 2.13.1 includes generals plus applicable specifics here.
+      images: [...general, ...images, ...shared.filter((img) => img.variants.some((v) => v.id === variantId(index)))], thumbnail: null,
       options: [{ option_id: `qa_option_${id}`, value: `Opción ${["A", "B", "C"][index]}`, option: { id: `qa_option_${id}`, title: "Opción" } }],
       // Synthetic availability for local cart tests; never a physical stock claim.
       manage_inventory: true, inventory_quantity: 1, allow_backorder: false,
@@ -22,7 +31,7 @@ function product(id, general, specific) {
     })),
   };
 }
-const products = [product("variantes", [image("general")], true), product("sin-general", [], true), product("sin-imagen", [], false), product("general", [image("general"), image("general-two", 1)], false)];
+const products = [product("variantes", ["general", "general-two"], true), product("sin-general", [], true), product("sin-imagen", [], false), product("general", ["general", "general-two"], false), product("compartida-todas", [], false, true)];
 const stats = { reads: 0, rejectedWrites: 0, externalBackendConnection: false };
 
 createServer((req, res) => {
@@ -49,7 +58,8 @@ createServer((req, res) => {
   if (url.pathname === "/store/products") {
     const handle = url.searchParams.get("handle");
     let chosen = structuredClone(handle ? products.filter((p) => p.handle === handle) : products);
-    // Only return the native relation when the real client requests its expansion.
+    // Expand each native relation only when requested, like the Store query.
+    if (!url.searchParams.get("fields")?.includes("images.variants.id")) chosen.forEach((p) => p.images.forEach((img) => { delete img.variants; }));
     if (!url.searchParams.get("fields")?.includes("*variants.images")) chosen.forEach((p) => p.variants.forEach((v) => { delete v.images; }));
     const count = chosen.length, offset = Number(url.searchParams.get("offset") || 0), limit = Number(url.searchParams.get("limit") || 20);
     chosen = chosen.slice(offset, offset + limit);

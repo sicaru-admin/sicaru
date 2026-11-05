@@ -2,66 +2,63 @@ import type { HttpTypes } from "@medusajs/types";
 
 export type ProductGalleryImage = { id: string; url: string };
 
-type ImageInput = { id?: string | null; url?: string | null; rank?: number | null };
+// Store's base image type omits this expandable native relation. Validate it
+// locally rather than treating an absent relation as an empty association list.
+type ImageInput = { id?: unknown; url?: unknown; rank?: unknown; variants?: unknown };
+type ClassifiedImage = ProductGalleryImage & { variantIds: string[]; rank: number; index: number };
 
-const hasUrl = (value: unknown): value is string =>
+const hasText = (value: unknown): value is string =>
   typeof value === "string" && value.trim().length > 0;
 
-function orderedImages(images?: ImageInput[] | null): ProductGalleryImage[] {
-  const seen = new Set<string>();
-  return (images ?? [])
-    .flatMap((image, index) => hasUrl(image.url) ? [{
-      id: image.id || image.url,
-      url: image.url,
+function isVariantLink(value: unknown): value is { id: string } {
+  return typeof value === "object" && value !== null && "id" in value && hasText(value.id);
+}
+
+function classifiedImages(images: ImageInput[]): ClassifiedImage[] {
+  const byId = new Map<string, ClassifiedImage | null>();
+  images.forEach((image, index) => {
+    if (!hasText(image.id)) return;
+    if (!hasText(image.url) || !Array.isArray(image.variants) || !image.variants.every(isVariantLink)) {
+      byId.set(image.id, null);
+      return;
+    }
+    const variantIds = [...new Set(image.variants.map((variant) => variant.id))].sort();
+    const candidate = {
+      id: image.id, url: image.url, variantIds, index,
       rank: typeof image.rank === "number" && Number.isFinite(image.rank)
         ? image.rank : Number.POSITIVE_INFINITY,
-      index,
-    }] : [])
-    .sort((a, b) => a.rank === b.rank ? a.index - b.index : a.rank < b.rank ? -1 : 1)
-    .filter((image) => {
-      if (seen.has(image.url)) return false;
-      seen.add(image.url);
-      return true;
-    })
-    .map(({ id, url }) => ({ id, url }));
+    };
+    if (!byId.has(image.id)) byId.set(image.id, candidate);
+    else {
+      const previous = byId.get(image.id);
+      if (!previous || previous.url !== candidate.url ||
+        JSON.stringify(previous.variantIds) !== JSON.stringify(variantIds)) {
+        byId.set(image.id, null);
+      }
+    }
+  });
+  return [...byId.values()]
+    .filter((image): image is ClassifiedImage => image !== null)
+    .sort((a, b) => a.rank === b.rank ? a.index - b.index : a.rank < b.rank ? -1 : 1);
 }
 
-function variantImages(variant: HttpTypes.StoreProductVariant): ProductGalleryImage[] {
-  const images = orderedImages(variant.images);
-  if (!hasUrl(variant.thumbnail)) return images;
-  const thumbnail = images.find((image) => image.url === variant.thumbnail) ?? {
-    id: `variant-thumbnail:${variant.id}`, url: variant.thumbnail,
-  };
-  return [thumbnail, ...images.filter((image) => image.url !== thumbnail.url)];
-}
-
-/** Native Medusa associations are specific; only unassociated images are general. */
+/** General images first, then native explicit links for the canonical variant. */
 export function getProductMedia(
   product: HttpTypes.StoreProduct,
   selectedVariantId?: string | null,
 ) {
   const variants = product.variants ?? [];
-  const media = variants.map((variant) => ({ variant, images: variantImages(variant) }));
-  const reservedIds = new Set(variants.flatMap((variant) =>
-    (variant.images ?? []).flatMap((image) => image.id ? [image.id] : []),
-  ));
-  const reservedUrls = new Set(media.flatMap((item) => item.images.map((image) => image.url)));
-  (product.images ?? []).forEach((image) => {
-    if (reservedIds.has(image.id) && hasUrl(image.url)) reservedUrls.add(image.url);
-  });
-  const general = orderedImages(product.images).filter((image) =>
-    !reservedIds.has(image.id) && !reservedUrls.has(image.url),
-  );
-  if (general.length === 0 && hasUrl(product.thumbnail) && !reservedUrls.has(product.thumbnail)) {
-    general.push({ id: "general-thumbnail", url: product.thumbnail });
-  }
-
-  const selected = media.find((item) => item.variant.id === selectedVariantId);
-  const hasOwnImages = !!selected?.images.length;
+  const candidates = classifiedImages(product.images ?? []);
+  const general = candidates.filter((image) => image.variantIds.length === 0);
+  const selected = variants.find((variant) => variant.id === selectedVariantId);
+  const specific = selected
+    ? candidates.filter((image) => image.variantIds.includes(selected.id)) : [];
   return {
-    images: hasOwnImages ? selected.images : general,
-    variantTitle: hasOwnImages ? selected.variant.title : null,
-    reserveImageSpace: media.some((item) => item.images.length > 0),
-    reserveThumbnails: general.length > 1 || media.some((item) => item.images.length > 1),
+    images: [...general, ...specific].map(({ id, url }) => ({ id, url })),
+    variantTitle: specific.length ? selected?.title ?? null : null,
+    reserveImageSpace: candidates.some((image) => image.variantIds.length > 0),
+    reserveThumbnails: general.length > 1 || variants.some((variant) =>
+      general.length + candidates.filter((image) => image.variantIds.includes(variant.id)).length > 1,
+    ),
   };
 }

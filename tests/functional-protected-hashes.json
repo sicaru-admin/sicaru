@@ -3,7 +3,7 @@
   "package-lock.json": "a09650f9cfc87ecc99d914d460ee5c2e566c397c69fba789ab324f59044c0390",
   "vercel.json": "28763df6a4fd1e4d6e84789a577ef0f93d1b23ea37e6fc9aeeb6729e739fc211",
   "src/lib/catalog-mode.ts": "7deea7e4204d3de9abbc98e759140c3eae8572b2d49abb4501d21a471084042f",
-  "src/lib/data/products.ts": "2bad4e7eca9ebfb1e91fe2713efc1ba9043333b937080034344cf870ce45e39d",
+  "src/lib/data/products.ts": "39eb12bac861b78d80bc3481b81a1acaefd7ee007512cbee52a3e23038e3b1a4",
   "src/lib/data/collections.ts": "430af0cd6890f78fa0e6496fa4a4fb465d72d93b8059d7369855b499e415f9e5",
   "src/lib/data/checkout.ts": "4aa4f3ef07a7a7bb94eeeb6c409f5b01ac7cf63ad8487e3312e24af0be702e5f",
   "src/lib/data/cart.ts": "80f53491350cfdda4b2bf682fe79e71074836495ae073663193be5eb9e39893a",

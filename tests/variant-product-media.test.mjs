@@ -9,7 +9,7 @@ const require = createRequire(import.meta.url);
 const React = require("react");
 const { renderToStaticMarkup } = require("react-dom/server");
 const ts = require("typescript");
-const image = (id, rank) => ({ id, url: `https://example.invalid/variant-media/${id}.png`, ...(rank == null ? {} : { rank }) });
+const image = (id, rank, variantIds = []) => ({ id, url: `https://example.invalid/variant-media/${id}.png`, variants: variantIds.map((id) => ({ id })), ...(rank == null ? {} : { rank }) });
 
 function loader(overrides = {}) {
   const cache = new Map();
@@ -70,34 +70,35 @@ function variant(id, images = []) {
   };
 }
 function product() {
-  const a1 = image("a-front", 0), a2 = image("a-detail", 1), b1 = image("b-front", 0);
+  const general = image("general", 0);
+  const a1 = image("a-front", 0, ["a"]), a2 = image("a-detail", 1, ["a"]), b1 = image("b-front", 0, ["b"]);
   return {
     id: "product_media_synthetic", title: "Producto sintético con variantes", handle: "producto-sintetico-media",
-    images: [image("general"), a1, a2, b1], thumbnail: image("general").url,
+    images: [general, a1, a2, b1], thumbnail: general.url,
     options: [{ id: "tone", title: "Tono", values: ["a", "b", "c"].map((id) => ({ value: `Opción sintética ${id}` })) }],
-    variants: [variant("a", [a1, a2]), variant("b", [b1]), variant("c")],
+    // Medusa 2.13.1 returns generals + applicable specifics in variant.images.
+    variants: [variant("a", [general, a1, a2]), variant("b", [general, b1]), variant("c", [general])],
   };
 }
 const media = (p, id) => loader()("@/lib/product-media").getProductMedia(p, id);
 const urls = (result) => result.images.map((item) => item.url);
 
-test("a product without any images stays empty for general, selected and invalid references", () => {
-  const p = product(); p.images = []; p.thumbnail = null; p.variants.forEach((v) => { v.images = []; });
+test("no product images means placeholder, even with standalone thumbnails or derived variant arrays", () => {
+  const p = product(); p.images = [];
   for (const id of [undefined, "a", "c", "foreign"]) {
     assert.deepEqual(media(p, id).images, []);
     assert.equal(media(p, id).variantTitle, null);
   }
 });
 
-test("general product images and a general thumbnail remain valid fallbacks", () => {
-  const p = product(); p.variants.forEach((v) => { v.images = []; });
-  p.images = [image("general-one"), image("general-two")];
-  assert.deepEqual(urls(media(p)), p.images.map((item) => item.url));
-  p.images = [];
-  assert.deepEqual(urls(media(p, "c")), [p.thumbnail]);
+test("explicitly unassociated general images remain visible before and after every selection", () => {
+  const p = product(); p.images = [image("general-one", 1), image("general-two", 2)];
+  for (const id of [undefined, "a", "b", "c"]) {
+    assert.deepEqual(urls(media(p, id)), p.images.map((item) => item.url));
+  }
 });
 
-test("no selection or foreign variant uses only general media, never an arbitrary tone", () => {
+test("no selection or foreign variant shows only proven generals despite merged variant.images", () => {
   const p = product();
   for (const id of [undefined, null, "", "foreign"]) {
     assert.deepEqual(urls(media(p, id)), [image("general").url]);
@@ -105,56 +106,89 @@ test("no selection or foreign variant uses only general media, never an arbitrar
   }
 });
 
-test("selecting A and then B returns exclusively the matching native variant images", () => {
+test("A and B show generals first plus their explicit specifics with no cross-contamination", () => {
   const p = product(); const before = JSON.stringify(p);
-  assert.deepEqual(urls(media(p, "a")), [image("a-front").url, image("a-detail").url]);
+  assert.deepEqual(urls(media(p, "a")), [image("general").url, image("a-front").url, image("a-detail").url]);
+  assert.deepEqual(urls(media(p, "b")), [image("general").url, image("b-front").url]);
   assert.equal(media(p, "a").variantTitle, p.variants[0].title);
-  assert.deepEqual(urls(media(p, "b")), [image("b-front").url]);
   assert.equal(media(p, "b").variantTitle, p.variants[1].title);
   assert.equal(JSON.stringify(p), before);
 });
 
-test("a variant with no own image falls back to general only, or placeholder if none exists", () => {
+test("a variant without specifics retains generals, otherwise placeholder without another tone's thumbnail", () => {
   const p = product();
   assert.deepEqual(urls(media(p, "c")), [image("general").url]);
   p.images = p.images.filter((item) => item.id !== "general"); p.thumbnail = image("a-front").url;
   assert.deepEqual(media(p, "c").images, []);
   assert.deepEqual(media(p).images, []);
-});
-
-test("native variant thumbnails are reserved even when absent from product images", () => {
-  const p = product(); const only = image("thumbnail-only").url;
-  p.variants[0].images = []; p.variants[0].thumbnail = only; p.images = []; p.thumbnail = only;
-  assert.deepEqual(urls(media(p, "a")), [only]);
-  assert.deepEqual(media(p, "b").images.map((item) => item.url), [image("b-front").url]);
-  assert.deepEqual(media(p, "c").images, []);
-  assert.deepEqual(media(p).images, []);
-});
-
-test("a reserved ID or duplicate URL cannot leak back as general media", () => {
-  const p = product();
-  p.images.push({ id: "duplicate-url", url: image("a-front").url });
-  p.images.push({ id: "a-front", url: image("same-id-another-url").url });
-  assert.deepEqual(urls(media(p)), [image("general").url]);
-  p.variants[0].images.push({ id: "another-id", url: image("a-front").url });
   assert.deepEqual(urls(media(p, "a")), [image("a-front").url, image("a-detail").url]);
 });
 
-test("native rank is respected and an own thumbnail is first without duplicating its URL", () => {
-  const p = product();
-  p.variants[0].images = [image("rank-two", 2), image("rank-zero", 0), image("rank-one", 1)];
-  assert.deepEqual(urls(media(p, "a")), [image("rank-zero").url, image("rank-one").url, image("rank-two").url]);
-  p.variants[0].thumbnail = image("rank-two").url;
-  assert.deepEqual(urls(media(p, "a")), [image("rank-two").url, image("rank-zero").url, image("rank-one").url]);
+test("a native image linked to A+B is shown for both but never as general or for C", () => {
+  const p = product(); const shared = image("shared-ab", 2, ["a", "b"]);
+  p.images.push(shared);
+  p.variants[0].images.push(shared); p.variants[1].images.push(shared);
+  assert.deepEqual(urls(media(p)), [image("general").url]);
+  assert.deepEqual(urls(media(p, "a")), [image("general").url, image("a-front").url, image("a-detail").url, shared.url]);
+  assert.deepEqual(urls(media(p, "b")), [image("general").url, image("b-front").url, shared.url]);
+  assert.deepEqual(urls(media(p, "c")), [image("general").url]);
 });
 
-test("layout reservation remains stable across general, A, B and empty-variant selections", () => {
+test("an image explicitly linked to every variant is still specific before selection", () => {
+  const p = product(); const shared = image("shared-all", 0, ["a", "b", "c"]);
+  p.images = [shared]; p.thumbnail = shared.url;
+  p.variants.forEach((v) => { v.images = [shared]; });
+  assert.deepEqual(media(p).images, []);
+  for (const v of p.variants) assert.deepEqual(urls(media(p, v.id)), [shared.url]);
+});
+
+test("missing, null or malformed explicit links are unknown, never equivalent to variants: []", () => {
+  const p = product();
+  const missing = image("missing"); delete missing.variants;
+  p.images = [missing, { ...image("null"), variants: null }, { ...image("bad"), variants: [{}] },
+    { ...image("blank"), variants: [{ id: "" }] }, { ...image("wrong-shape"), variants: ["a"] }];
+  for (const id of [undefined, "a", "b", "c"]) assert.deepEqual(media(p, id).images, []);
+  p.images.push(image("proven-general"));
+  assert.deepEqual(urls(media(p)), [image("proven-general").url]);
+});
+
+test("an association outside the returned variant set does not become general", () => {
+  const p = product(); p.images = [image("foreign-linked", 0, ["not-returned"])];
+  assert.deepEqual(media(p).images, []);
+  for (const id of ["a", "b", "c", "not-returned"]) assert.deepEqual(media(p, id).images, []);
+});
+
+test("ordering is generals by rank then applicable specifics by rank, stable and deduplicated by ID", () => {
+  const p = product();
+  const firstSpecific = image("specific-zero", 0, ["a"]);
+  p.images = [image("general-two", 2), image("specific-two", 2, ["a"]), image("general-one", 1),
+    firstSpecific, image("specific-one", 1, ["a"]), { ...firstSpecific }];
+  p.variants[0].thumbnail = image("specific-two").url;
+  assert.deepEqual(urls(media(p, "a")), ["general-one", "general-two", "specific-zero", "specific-one", "specific-two"].map((id) => image(id).url));
+});
+
+test("association membership uses IDs, not URL equality or derived variant arrays", () => {
+  const p = product();
+  const a = image("a-link", 0, ["a"]), b = { ...image("b-link", 0, ["b"]), url: a.url };
+  p.images = [a, b]; p.thumbnail = a.url;
+  p.variants.forEach((v) => { v.images = [a, b]; v.thumbnail = a.url; });
+  assert.deepEqual(media(p).images, []);
+  assert.deepEqual(media(p, "a").images.map((i) => i.id), [a.id]);
+  assert.deepEqual(media(p, "b").images.map((i) => i.id), [b.id]);
+  assert.deepEqual(media(p, "c").images, []);
+});
+
+test("conflicting duplicate IDs are withheld instead of trusting an earlier general row", () => {
+  const p = product(); const general = image("conflicting");
+  p.images = [general, { ...general, variants: [{ id: "a" }] }, image("safe-general")];
+  for (const id of [undefined, "a", "b"]) assert.deepEqual(urls(media(p, id)), [image("safe-general").url]);
+});
+
+test("layout reservation remains stable across general, A, B and no-specific selections", () => {
   const p = product();
   const results = [undefined, "a", "b", "c"].map((id) => media(p, id));
-  assert(results.every((r) => r.reserveImageSpace === results[0].reserveImageSpace));
-  assert(results.every((r) => r.reserveThumbnails === results[0].reserveThumbnails));
-  assert.equal(results[0].reserveImageSpace, true);
-  assert.equal(results[0].reserveThumbnails, true);
+  assert(results.every((r) => r.reserveImageSpace === true));
+  assert(results.every((r) => r.reserveThumbnails === true));
 });
 
 function experienceHarness(p) {
@@ -202,14 +236,18 @@ test("one canonical selection drives gallery, exact cart input and WhatsApp thro
   assert.equal(ui.calls.length, 3);
 });
 
-test("stale variant URLs cannot expose a reserved product URL through an earlier duplicate ID", () => {
+test("standalone product and variant thumbnails cannot override proven gallery membership", async () => {
   const p = product();
-  const actual = image("a-front");
-  p.images = [{ id: "unreserved-alias", url: actual.url }, actual];
-  p.thumbnail = actual.url;
-  p.variants[0].images = [{ id: actual.id, url: image("stale-url").url }];
-  assert.deepEqual(media(p).images, []);
-  assert.deepEqual(media(p, "c").images, []);
+  p.images = p.images.filter((i) => i.id !== "general");
+  p.thumbnail = image("a-front").url;
+  p.variants[1].thumbnail = image("a-front").url;
+  const ui = experienceHarness(p);
+  let tree = ui.render();
+  find(tree, (n) => typeof n.props.onSelect === "function").props.onSelect("tone", p.variants[1].title);
+  tree = ui.render();
+  assert.deepEqual(find(tree, (n) => n.type === ui.Gallery).props.images.map((i) => i.url), [image("b-front").url]);
+  await find(tree, (n) => n.type === "button" && n.props.onClick).props.onClick();
+  assert.equal(ui.calls[0][0].thumbnail, image("b-front").url);
 });
 
 test("cart thumbnail is empty when no safe image exists for a selected no-photo variant", async () => {
@@ -262,7 +300,7 @@ test("gallery clamps a stale thumbnail index after images change and exposes pre
   assert.doesNotThrow(() => render([]));
 });
 
-test("only the product-detail query expands native variant images; list queries retain their existing fields", async () => {
+test("only detail expands explicit image-to-variant IDs; list and collection fields are unchanged", async () => {
   const queries = [], p = product();
   const load = loader({
     "@/lib/medusa": { sdk: { store: { product: { list: async (query) => {
@@ -277,7 +315,8 @@ test("only the product-detail query expands native variant images; list queries 
   await api.getProductsByCollection("collection_synthetic");
   assert.equal(queries.length, 3);
   assert.equal(queries[0].handle, p.handle); assert.equal(queries[0].limit, 1);
-  assert(queries[0].fields.split(",").includes("*variants.images"));
+  assert(queries[0].fields.split(",").includes("+images.variants.id"));
+  assert(!queries[0].fields.split(",").includes("*variants.images"));
   const originalFields = "*variants.calculated_price,+variants.inventory_quantity,+variants.metadata,+metadata";
   assert.equal(queries[1].fields, originalFields);
   assert.equal(queries[2].fields, originalFields);

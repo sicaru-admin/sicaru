@@ -24,18 +24,22 @@ NEXT_PUBLIC_MEDUSA_BACKEND_URL=http://127.0.0.1:9000 NEXT_PUBLIC_CATALOG_MODE=tr
 
 Abrir:
 
-- `http://127.0.0.1:3226/productos/qa-galeria-variantes`: general + A (2), B (1), C sin propias.
-- `http://127.0.0.1:3226/productos/qa-galeria-sin-general`: placeholder inicial y para C; propias para A/B.
+- `http://127.0.0.1:3226/productos/qa-galeria-variantes`: dos generales + A (2), B (1), compartida A+B; C sin específicas.
+- `http://127.0.0.1:3226/productos/qa-galeria-sin-general`: placeholder inicial y para C; propias A/B + compartida A+B.
 - `http://127.0.0.1:3226/productos/qa-galeria-sin-imagen`: sin imágenes.
 - `http://127.0.0.1:3226/productos/qa-galeria-general`: dos generales para cualquier selección.
+- `http://127.0.0.1:3226/productos/qa-galeria-compartida-todas`: una imagen enlazada a A+B+C; no aparece antes de seleccionar.
 
-El fixture solo incluye `variant.images` cuando el cliente pide la expansión;
-así se comprueba también el query real del frontend. El thumbnail del producto
+El fixture solo incluye `product.images[].variants` si se solicita `images.variants.id`.
+La galería usa exclusivamente esos enlaces explícitos. Si se solicita `variant.images`,
+se devuelve el array derivado con generales + específicas, como en Medusa 2.13.1.
+Así se comprueba también el query real del frontend. El thumbnail del producto
 con variantes se configura intencionadamente como A para detectar una fuga al
 carrito de B. La implementación debe usar B o un fallback general seguro.
 
 Verificar a 320/375/390 y escritorio: elegir A, activar su miniatura 2 por teclado,
-cambiar a B y después C; comprobar imagen, cantidad, botón seleccionado, posición
+cambiar a B y después C; comprobar generales primero y fotografías propias/compartidas,
+cantidad, botón seleccionado, posición
 del título, URL sin navegación y consulta WhatsApp. Inspeccionar enlaces sin
 abrir WhatsApp ni enviar mensajes. El carrito de esta reproducción es local y
 solo debe contener los productos QA; se puede limpiar desde sus controles.
