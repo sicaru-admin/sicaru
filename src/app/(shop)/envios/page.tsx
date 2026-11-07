@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { ShippingNotice } from "@/components/checkout/ShippingNotice";
 
 export const metadata: Metadata = {
-  title: "Envíos online próximamente",
-  description: "Consulta productos y disponibilidad con SICARÚ por WhatsApp. Los envíos y pagos online aún no están habilitados.",
+  title: { absolute: "Envíos nacionales por DHL | SICARÚ" },
+  description: "SICARÚ realiza envíos nacionales por DHL. Consulta tarifas para pedidos de hasta 2 kg y 5 kg y confirma tu envío por WhatsApp.",
 };
 
 export default function EnviosPage() {
