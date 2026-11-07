@@ -7,8 +7,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { getProductByHandle, getProducts } from "@/lib/data/products";
-import { ImageGallery } from "@/components/product/ImageGallery";
-import { ProductActions } from "@/components/product/ProductActions";
+import { ProductExperience } from "@/components/product/ProductExperience";
 import { ProductTabs } from "@/components/product/ProductTabs";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -119,16 +118,6 @@ export default async function ProductDetailPage({
     notFound();
   }
 
-  // Build image array from product images
-  const images = (product.images ?? [])
-    .filter((img) => !!img.url)
-    .map((img) => ({ id: img.id, url: img.url as string }));
-
-  // Fall back to thumbnail if no images
-  if (images.length === 0 && product.thumbnail) {
-    images.push({ id: "thumb", url: product.thumbnail });
-  }
-
   const brandName = product.collection?.title;
   const collectionId = product.collection?.id;
 
@@ -179,14 +168,7 @@ export default async function ProductDetailPage({
         </nav>
 
         {/* Product grid */}
-        <div className="grid gap-7 lg:grid-cols-[minmax(0,1.28fr)_minmax(360px,1fr)] lg:items-center lg:gap-10 xl:gap-12">
-          {/* Left: Image gallery */}
-          <div className="min-w-0">
-            <ImageGallery images={images} title={product.title || ""} />
-          </div>
-
-          {/* Right: Product info */}
-          <div className="min-w-0 border-t border-[#efe7dd] pt-6 lg:max-w-[520px] lg:border-t-0 lg:pt-0">
+        <ProductExperience product={product}>
             {/* Brand badge */}
             {brandName && (
               <Link
@@ -202,12 +184,7 @@ export default async function ProductDetailPage({
               {product.title}
             </h1>
 
-            {/* Actions (price, variants, quantity, buttons, trust) */}
-            <div className="mt-6 md:mt-8">
-              <ProductActions product={product} />
-            </div>
-          </div>
-        </div>
+        </ProductExperience>
 
         {/* Below fold */}
         <div className="mt-8 space-y-10 md:mt-12 md:space-y-12 lg:mt-12 lg:space-y-12">

@@ -1,10 +1,17 @@
 import withBundleAnalyzer from "@next/bundle-analyzer";
 import type { NextConfig } from "next";
 
+const stagingMediaOrigin = "https://sicaru-backend-staging-voglia.up.railway.app";
+const isVariantMediaPreview =
+  process.env.VERCEL_ENV === "preview" &&
+  process.env.VERCEL_GIT_COMMIT_REF === "codex/variant-product-photos" &&
+  process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL === stagingMediaOrigin;
+
 const nextConfig: NextConfig = {
   turbopack: {},
   images: {
     remotePatterns: [
+      ...(isVariantMediaPreview ? [new URL("/static/**", stagingMediaOrigin)] : []),
       {
         protocol: "http",
         hostname: "localhost",
