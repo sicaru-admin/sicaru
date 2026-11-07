@@ -127,6 +127,9 @@ export default function CarritoPage() {
                   <p className="mt-4 text-sm leading-6 text-gray-600">
                     Enviaremos producto, presentación, tono, SKU y cantidad para confirmar disponibilidad y total directamente con SICARÚ.
                   </p>
+                  <Link href="/envios" className="mt-2 inline-flex min-h-11 items-center text-sm text-[#7f6d8a] underline underline-offset-4">
+                    Envíos nacionales por DHL disponibles.
+                  </Link>
                   <a
                     href={getCartWhatsAppHref(cart.items)}
                     target="_blank"
