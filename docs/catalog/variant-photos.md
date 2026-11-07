@@ -125,3 +125,10 @@ de catálogo existente. No se oculta ni se sustituye por heurísticas.
 
 No merge ni producción. La validación con media real y cualquier operación
 de asociación requieren su alcance autorizado independiente.
+
+## Preview de QA con media de staging
+
+El optimizador admite el origen HTTPS de `staging-voglia` bajo `/static/**`
+cuando Vercel construye la Preview de `codex/variant-product-photos` con ese
+backend de lectura. La regla queda inactiva en Production y en otras ramas.
+Las asociaciones y el orden siguen viniendo de la consulta Store existente.

@@ -323,3 +323,31 @@ test("only detail expands explicit image-to-variant IDs; list and collection fie
   assert.deepEqual(queries[2].collection_id, ["collection_synthetic"]);
   for (const query of queries) assert.equal(query.region_id, "region_synthetic_mx");
 });
+
+test("the Next optimizer accepts only staging static media in the variant QA Preview", () => {
+  const source = readFileSync(new URL("../next.config.ts", import.meta.url), "utf8");
+  const compiled = ts.transpileModule(source, {
+    compilerOptions: { module: ts.ModuleKind.CommonJS, esModuleInterop: true },
+  }).outputText;
+  const { hasRemoteMatch } = require("next/dist/shared/lib/match-remote-pattern");
+  const origin = "https://sicaru-backend-staging-voglia.up.railway.app";
+  const preview = {
+    VERCEL_ENV: "preview",
+    VERCEL_GIT_COMMIT_REF: "codex/variant-product-photos",
+    NEXT_PUBLIC_MEDUSA_BACKEND_URL: origin,
+  };
+  const allows = (env, url) => {
+    const exports = {};
+    vm.runInNewContext(compiled, { exports, require, URL, process: { env } });
+    return hasRemoteMatch([], exports.default.images.remotePatterns, new URL(url));
+  };
+  const photo = `${origin}/static/approved-photo.webp`;
+
+  assert.equal(allows(preview, photo), true);
+  assert.equal(allows(preview, `${origin}/store/products`), false);
+  assert.equal(allows(preview, photo.replace("https:", "http:")), false);
+  assert.equal(allows(preview, "https://other-staging.up.railway.app/static/photo.webp"), false);
+  assert.equal(allows({ ...preview, VERCEL_ENV: "production" }, photo), false);
+  assert.equal(allows({ ...preview, VERCEL_GIT_COMMIT_REF: "codex/other-preview" }, photo), false);
+  assert.equal(allows({ ...preview, NEXT_PUBLIC_MEDUSA_BACKEND_URL: "https://api.distribuidorasicaru.com" }, photo), false);
+});
