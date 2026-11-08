@@ -151,6 +151,19 @@ export function ProductActions({ product, renderExperience }: ProductActionsProp
   }
 
   const price = getApprovedPrice(product, selectedVariant);
+  const variantTitle = selectedVariant?.title?.trim();
+  const variantOptions = (selectedVariant as VariantWithOptions | null)?.options;
+  const singleOption = variantOptions?.length === 1 ? variantOptions[0] : undefined;
+  const optionTitle = (singleOption?.option?.title ??
+    product.options?.find(({ id }) => id === singleOption?.option_id)?.title)?.trim();
+  const variantLabel = optionTitle && variantTitle &&
+    normalizeOptionValue(singleOption?.value) === normalizeOptionValue(variantTitle)
+    ? `${optionTitle} ${variantTitle}`
+    : variantTitle;
+  const showVariantTitle =
+    selectableOptions.length === 0 &&
+    variantTitle &&
+    !/^default(?: title| variant)?$/i.test(variantTitle);
   const selectionMessage = selectableOptions.some((option) =>
     option.title.toLocaleLowerCase("es-MX").includes("tono")
   )
@@ -215,6 +228,9 @@ export function ProductActions({ product, renderExperience }: ProductActionsProp
         selectedOptions={selectedOptions}
         onSelect={handleSelectOption}
       />
+      {showVariantTitle && (
+        <p className="text-sm font-medium text-[#7f6d8a]">{variantLabel}</p>
+      )}
       {requiresVariantSelection && !selectedVariant && (
         <p className="text-sm font-medium text-[#7f6d8a]">
           {selectionMessage}

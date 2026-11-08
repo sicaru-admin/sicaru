@@ -4,6 +4,9 @@ import { getCollections } from "@/lib/data/collections";
 import { getCategories } from "@/lib/data/categories";
 import { getAllPosts } from "@/lib/blog";
 
+// Reflect Store API publication changes without requiring a new build.
+export const dynamic = "force-dynamic";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://www.sicarubeauty.com";
 
@@ -62,7 +65,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     }));
   } catch {
-    // Backend may not be available during build
+    // Keep the static routes available if the catalog cannot be read.
   }
 
   let collectionPages: MetadataRoute.Sitemap = [];
