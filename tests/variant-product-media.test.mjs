@@ -215,6 +215,7 @@ test("one canonical selection drives gallery, exact cart input and WhatsApp thro
   for (const v of p.variants) {
     find(tree, (node) => typeof node.props.onSelect === "function").props.onSelect("tone", v.title);
     tree = ui.render();
+    assert.equal(findAll(tree, (n) => n.type === "p" && n.props.children === v.title).length, 0);
     const gallery = find(tree, (node) => node.type === ui.Gallery);
     assert.deepEqual(gallery.props.images.map((i) => i.url), urls(media(p, v.id)));
     find(tree, (node) => typeof node.props.onChange === "function" && "quantity" in node.props).props.onChange(2);
@@ -322,6 +323,21 @@ test("only detail expands explicit image-to-variant IDs; list and collection fie
   assert.equal(queries[2].fields, originalFields);
   assert.deepEqual(queries[2].collection_id, ["collection_synthetic"]);
   for (const query of queries) assert.equal(query.region_id, "region_synthetic_mx");
+});
+
+test("the exact variant title is visible when there is no selector, without changing the inquiry", () => {
+  const p = product();
+  p.variants = [{ ...p.variants[0], title: "42", options: [{ option_id: "tone", value: "42" }] }];
+  p.options[0].values = [{ value: "42" }];
+  const tree = experienceHarness(p).render();
+  assert.equal(findAll(tree, (n) => n.type === "p" && n.props.children === "Tono 42").length, 1);
+  const inquiry = find(tree, (n) => n.type === "a" && n.props.href?.startsWith("https://wa.me/"));
+  assert.match(new URL(inquiry.props.href).searchParams.get("text"), /Variante: 42.*SKU: SYNTHETIC-a/s);
+
+  p.variants[0].title = "Tono 42";
+  assert.equal(findAll(experienceHarness(p).render(), (n) => n.type === "p" && n.props.children === "Tono 42").length, 1);
+  p.variants[0].title = "Default variant";
+  assert.equal(findAll(experienceHarness(p).render(), (n) => n.type === "p" && n.props.children === "Default variant").length, 0);
 });
 
 test("the Next optimizer accepts only staging static media in the variant QA Preview", () => {
