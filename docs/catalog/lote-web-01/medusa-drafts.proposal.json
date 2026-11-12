@@ -36,7 +36,7 @@
         "google_range": null,
         "copy_basis": "Identidad en BASE_MAESTRA_PRODUCTOS!A241:AA241 y frente auténtico. No se encontró ficha Google por ID, EAN ni nombre exacto; no se transfieren beneficios de la versión libre de sulfatos.",
         "public_price_mxn": 95,
-        "price_authority": "Aprobación expresa de Dirección para este lote 12/11/2026 y registros maestros vigentes; se prepara únicamente el precio público.",
+        "price_authority": "Precio público de $95 MXN previamente aprobado y vigente según BASE_MAESTRA_PRODUCTOS!Q241; este lote únicamente prepara su futura implementación web y no constituye una nueva aprobación de precio.",
         "sku_state": "NO CONFIRMADO · OMITIDO",
         "ean_state": "DOCUMENTAL CONFIRMADO"
       },
@@ -100,7 +100,7 @@
         "google_range": "FICHAS_GOOGLE!A71:N71",
         "copy_basis": "FICHAS_GOOGLE!D71 y fotografía frontal auténtica; separado de Platinum regular.",
         "public_price_mxn": 115,
-        "price_authority": "Aprobación expresa de Dirección para este lote 12/11/2026 y registros maestros vigentes; se prepara únicamente el precio público.",
+        "price_authority": "Precio público de $115 MXN previamente aprobado el 29/10/2026 y vigente según BASE_MAESTRA_PRODUCTOS!Q242 y FICHAS_GOOGLE!F71:G71; este lote únicamente prepara su futura implementación web y no constituye una nueva aprobación de precio.",
         "sku_state": "NO CONFIRMADO · OMITIDO",
         "ean_state": "DOCUMENTAL CONFIRMADO"
       },
@@ -167,7 +167,7 @@
         "google_range": "FICHAS_GOOGLE!A68:N68",
         "copy_basis": "FICHAS_GOOGLE!D68 y fotografías auténticas. No se añaden resultados universales ni tiempos no conciliados.",
         "public_price_mxn": 95,
-        "price_authority": "Aprobación expresa de Dirección para este lote 12/11/2026 y registros maestros vigentes; se prepara únicamente el precio público.",
+        "price_authority": "Precio público de $95 MXN previamente aprobado el 25/10/2026 y vigente según BASE_MAESTRA_PRODUCTOS!Q52 y FICHAS_GOOGLE!F68:G68; este lote únicamente prepara su futura implementación web y no constituye una nueva aprobación de precio.",
         "sku_state": "NO CONFIRMADO · OMITIDO",
         "ean_state": "PENDIENTE DE CONCILIACIÓN",
         "ean_discrepancy": {

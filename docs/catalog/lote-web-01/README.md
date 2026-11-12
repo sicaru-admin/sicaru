@@ -10,13 +10,15 @@ Solo se añaden cinco assets WebP, documentación, un manifiesto de tres borrado
 
 Fuente vigente: [Base Maestra Inventario y Precios 2026](https://docs.google.com/spreadsheets/d/12bFla6f5ceeSFuPYrLvlEdRwCvkWWWYJ3qJYkFoU69g/edit). Se leyeron los encabezados y registros concretos de `BASE_MAESTRA_PRODUCTOS` y `FICHAS_GOOGLE` mediante el conector, sin modificar la hoja.
 
-| Producto exacto | ID maestro | Base Maestra | Ficha Google | Precio público autorizado para preparar | Barcode propuesto |
+| Producto exacto | ID maestro | Base Maestra | Ficha Google | Precio público previamente aprobado y vigente | Barcode propuesto |
 | --- | --- | --- | --- | --- | --- |
 | XIOMARA Shampoo Platinum 250 ml | PRD-9CC3A06A6F10 | fila 241 | No localizada por ID/EAN ni nombre regular en el rango existente | $95 MXN | 7501846500905 |
-| XIOMARA Shampoo Platinum Libre de Sulfatos 250 ml | PRD-3CE612A96316 | fila 242 | fila 71 | $115 MXN | 7501846505863 |
-| NEKANE Morazul Shampoo Matizador 300 g | PRD-ABEB7E8039E3 | fila 52 | fila 68 | $95 MXN | **OMITIDO · pendiente de conciliación** |
+| XIOMARA Shampoo Platinum Libre de Sulfatos 250 ml | PRD-3CE612A96316 | fila 242 | fila 71 | $115 MXN · aprobado 29/10/2026 | 7501846505863 |
+| NEKANE Morazul Shampoo Matizador 300 g | PRD-ABEB7E8039E3 | fila 52 | fila 68 | $95 MXN · aprobado 25/10/2026 | **OMITIDO · pendiente de conciliación** |
 
-Los precios se preparan por autorización expresa de Dirección para estas tres referencias en este lote. No se incluyen precios profesionales, costos ni márgenes. Las observaciones históricas de la fila 242 todavía dicen «por aprobar», mientras la columna de precio y FICHAS_GOOGLE fila 71 registran $115 aprobado; no se modifica esa nota antigua ni se utiliza para trasladar $95 desde el Platinum regular.
+Los precios públicos están previamente aprobados y vigentes según Base Maestra / FICHAS_GOOGLE; este lote únicamente prepara su futura implementación web. No constituye una nueva aprobación ni modifica ninguna decisión histórica de precio. No se incluyen precios profesionales, costos ni márgenes. Las observaciones históricas de la fila 242 todavía dicen «por aprobar», mientras la columna de precio y FICHAS_GOOGLE fila 71 registran $115 aprobado; no se modifica esa nota antigua ni se utiliza para trasladar $95 desde el Platinum regular.
+
+**PRECIO APROBADO ≠ PRODUCTO IMPLEMENTADO EN MEDUSA ≠ PRODUCTO PUBLICADO EN WEB.** Los precios previos no implican que estos cuerpos se hayan ejecutado ni que las tres fichas estén publicadas; este lote conserva propuestas DRAFT no ejecutadas.
 
 No hay SKU proveedor confirmado en los tres registros: se omite `sku`, sin inventar uno. Los IDs maestros son referencias de trazabilidad y no se convierten en SKU/EAN.
 
@@ -79,7 +81,7 @@ Cada cuerpo propone:
 
 - `status: "draft"` y `sales_channels: []`.
 - La categoría existente; una opción Tamaño y una sola variante con su presentación literal.
-- Un único precio público MXN 95 / 115 / 95 y `metadata.storefront_price_approved: true` **en esa variante**, según la autorización específica de este lote.
+- Un único precio público MXN 95 / 115 / 95 y `metadata.storefront_price_approved: true` **en esa variante**, según los precios previamente aprobados y vigentes documentados arriba; este lote únicamente prepara su futura implementación web.
 - `manage_inventory: true`, `allow_backorder: false`.
 - Sin inventory levels, cantidades, ubicaciones, kits de inventario, stock positivo o `storefront_inventory_verified`.
 - Sin peso logístico, SKU inventado ni precio preferente.
