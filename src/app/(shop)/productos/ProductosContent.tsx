@@ -6,6 +6,7 @@ import type { HttpTypes } from "@medusajs/types";
 import { Search } from "lucide-react";
 import { matchesProductQuery } from "@/lib/product-retail";
 import { ProductCatalogCard } from "@/components/products/ProductCatalogCard";
+import { ShippingInquiryHint } from "@/components/checkout/ShippingInquiryHint";
 
 const CATEGORY_LINKS = [
   {
@@ -120,6 +121,7 @@ export function ProductosContent({
             {filteredProducts.length !== 1 ? "s" : ""}
             {hasQuery ? ` encontrado${filteredProducts.length !== 1 ? "s" : ""}` : " en el catálogo"}
           </p>
+          <ShippingInquiryHint className="mt-2" />
         </div>
 
         {filteredProducts.length === 0 ? (

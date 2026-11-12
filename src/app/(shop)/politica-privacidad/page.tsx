@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { CATALOG_MODE } from "@/lib/catalog-mode"
 
 export const metadata: Metadata = {
   title: "Aviso de Privacidad",
@@ -95,10 +96,10 @@ export default function PoliticaPrivacidadPage() {
           para las finalidades indicadas:
         </p>
         <ul className="list-disc ml-6 space-y-2 text-gray-600">
-          <li>
+          {!CATALOG_MODE && <li>
             <strong>Proveedores de pago</strong> (Mercado Pago) — para procesar
             transacciones de forma segura
-          </li>
+          </li>}
           <li>
             <strong>Servicios de paquetería</strong> — para la entrega de tus
             pedidos

@@ -6,6 +6,7 @@ export function WhatsAppBanner() {
     <div className="mx-auto grid max-w-[1320px] gap-5 rounded-xl bg-[#efe7dd] px-4 py-5 sm:px-6 md:grid-cols-[1fr_1.7fr] md:gap-8 md:py-6">
       <div className="flex flex-col items-start justify-center gap-3">
         <h2 className="text-base font-semibold text-[#2e2b2b] sm:text-lg">¿Buscas algún producto?</h2>
+        <p className="max-w-sm text-sm leading-6 text-[#2e2b2b]/80">Envíos por DHL a México · Cotizamos tu envío por WhatsApp.</p>
         <a href="https://wa.me/528281136652" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#7f6d8a]/45 px-4 py-2 text-xs font-semibold text-[#2e2b2b] transition-colors hover:bg-[#faf8f5] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7f6d8a] sm:text-sm"><MessageCircle className="h-4 w-4" aria-hidden="true" />Escríbenos por WhatsApp</a>
       </div>
       <div className="border-t border-[#7f6d8a]/25 pt-5 md:border-l md:border-t-0 md:pl-8 md:pt-0" aria-labelledby="sicaru-profesionales">

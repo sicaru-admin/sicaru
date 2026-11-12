@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 import {
   ShoppingBag,
   User,
@@ -112,6 +113,16 @@ export default function CuentaLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  if (CATALOG_MODE) {
+    return (
+      <main className="mx-auto max-w-2xl px-5 py-12 text-center sm:py-20">
+        <h1 className="font-heading text-3xl text-[#2e2b2b]">Consulta tu pedido por WhatsApp</h1>
+        <p className="mt-5 text-sm leading-7 text-[#2e2b2b]/80">Para consultar un pedido, escríbenos por WhatsApp. Los pedidos y pagos en línea aún no están habilitados.</p>
+        <a href="https://wa.me/528281136652" target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex min-h-12 items-center rounded-[6px] bg-[#7f6d8a] px-5 py-3 text-sm font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7f6d8a]">Consultar por WhatsApp</a>
+        <Link href="/productos" className="mt-4 flex min-h-11 items-center justify-center text-sm text-[#7f6d8a] underline underline-offset-4">Explorar productos</Link>
+      </main>
+    );
+  }
   const isPublicRoute = PUBLIC_ROUTES.some((route) =>
     pathname.startsWith(route)
   );

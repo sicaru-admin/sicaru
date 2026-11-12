@@ -3,17 +3,17 @@ import type { Metadata } from "next"
 import Image from "next/image"
 
 export const metadata: Metadata = {
-  title: "Política de Devoluciones",
+  title: CATALOG_MODE ? "Consultas sobre tu pedido" : "Política de Devoluciones",
   description:
-    "Consulta nuestra política de devoluciones, condiciones, plazos y proceso de reembolso en Distribuidora Sicarú.",
+    CATALOG_MODE ? "Consulta por WhatsApp cualquier duda sobre cambios o devoluciones de tu pedido SICARÚ." : "Consulta nuestra política de devoluciones, condiciones, plazos y proceso de reembolso en Distribuidora Sicarú.",
 }
 
 export default function DevolucionesPage() {
   if (CATALOG_MODE) {
     return (
       <main className="mx-auto max-w-3xl px-5 py-16 text-center">
-        <h1 className="font-heading text-3xl text-[#2e2b2b]">Compras online próximamente</h1>
-        <p className="mt-5 text-[#2e2b2b]/70">Las políticas de devolución de pedidos online se publicarán antes de habilitar las compras en el sitio.</p>
+        <h1 className="font-heading text-3xl text-[#2e2b2b]">Consultas sobre tu pedido</h1>
+        <p className="mt-5 text-[#2e2b2b]/70">Para consultar un cambio o devolución de tu pedido, contáctanos por WhatsApp.</p>
         <a href="https://wa.me/528281136652" target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex min-h-11 items-center bg-[#7f6d8a] px-6 py-3 text-white">Consultar a SICARÚ</a>
       </main>
     );

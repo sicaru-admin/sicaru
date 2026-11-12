@@ -15,6 +15,7 @@ function loader(overrides = {}) {
   const cache = new Map();
   function load(name) {
     if (Object.hasOwn(overrides, name)) return overrides[name];
+    if (name === "next/link") return { __esModule: true, default: ({ children, ...props }) => React.createElement("a", props, children) };
     if (name === "next/image") return { __esModule: true, default: ({ src, alt }) => React.createElement("img", { src, alt }) };
     if (!name.startsWith("@/")) return require(name);
     if (cache.has(name)) return cache.get(name);
