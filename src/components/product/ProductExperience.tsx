@@ -5,6 +5,7 @@ import type { HttpTypes } from "@medusajs/types";
 import { getProductMedia } from "@/lib/product-media";
 import { ImageGallery } from "./ImageGallery";
 import { ProductActions } from "./ProductActions";
+import { ShippingInquiryHint } from "@/components/checkout/ShippingInquiryHint";
 
 /** Actions owns selection; its canonical variant also drives the gallery. */
 export function ProductExperience({ product, children }: {
@@ -33,6 +34,7 @@ export function ProductExperience({ product, children }: {
             <div className="min-w-0 border-t border-[#efe7dd] pt-6 lg:max-w-[520px] lg:border-t-0 lg:pt-0">
               {children}
               <div className="mt-6 md:mt-8">{actions}</div>
+              <ShippingInquiryHint className="mt-3" />
             </div>
           </div>
         );

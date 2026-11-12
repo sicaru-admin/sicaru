@@ -13,9 +13,9 @@ export default function TerminosPage() {
     return (
       <main className="mx-auto max-w-3xl px-5 py-16">
         <h1 className="font-heading text-3xl text-[#2e2b2b]">Uso del catálogo SICARÚ</h1>
-        <p className="mt-5 leading-7 text-[#2e2b2b]/75">Este sitio muestra información sobre productos de belleza. Temporalmente no acepta compras, pagos ni solicitudes de envío online. Los precios, existencias y características se confirman directamente en tienda.</p>
+        <p className="mt-5 leading-7 text-[#2e2b2b]/75">Este sitio muestra información sobre productos de belleza. Consulta y confirma disponibilidad, precio y envío por WhatsApp. Los pedidos y pagos en línea aún no están habilitados.</p>
         <p className="mt-4 leading-7 text-[#2e2b2b]/75">La información sobre productos no sustituye las instrucciones oficiales del fabricante ni la técnica de profesionales capacitados.</p>
-        <Link href="/envios" className="mt-6 inline-block text-[#7f6d8a] underline">Estado de los envíos</Link>
+        <Link href="/envios" className="mt-6 inline-flex min-h-11 items-center text-[#7f6d8a] underline">Envíos con DHL</Link>
       </main>
     );
   }
