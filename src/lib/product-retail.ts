@@ -10,9 +10,31 @@ export function getApprovedPrice(product: HttpTypes.StoreProduct, variant?: Http
   return { ...price, calculated_amount: price.calculated_amount };
 }
 
-export function hasKnownAvailability(variant?: HttpTypes.StoreProductVariant | null) {
-  return !!variant && (variant.manage_inventory === false || variant.allow_backorder === true ||
-    (typeof variant.inventory_quantity === "number" && variant.inventory_quantity > 0));
+export function getInventoryStatus(
+  variant?: HttpTypes.StoreProductVariant | null,
+  catalogMode = true,
+): "unverified" | "available" | "unavailable" {
+  if (!variant) return "unverified";
+
+  if (!catalogMode) {
+    return variant.manage_inventory === false || variant.allow_backorder === true ||
+      (typeof variant.inventory_quantity === "number" && variant.inventory_quantity > 0)
+      ? "available" : "unavailable";
+  }
+
+  const quantity = variant.inventory_quantity;
+  if (
+    variant.metadata?.storefront_inventory_verified !== true ||
+    variant.manage_inventory !== true ||
+    typeof quantity !== "number" ||
+    !Number.isFinite(quantity) || quantity < 0
+  ) return "unverified";
+
+  return quantity > 0 ? "available" : "unavailable";
+}
+
+export function hasKnownAvailability(variant?: HttpTypes.StoreProductVariant | null, catalogMode = true) {
+  return getInventoryStatus(variant, catalogMode) === "available";
 }
 
 const normalize = (value: string) => value.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLocaleLowerCase("es-MX");

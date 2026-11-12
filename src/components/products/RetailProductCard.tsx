@@ -5,7 +5,9 @@ import Link from "next/link";
 import type { HttpTypes } from "@medusajs/types";
 import { ShoppingBag } from "lucide-react";
 import { useCart } from "@/components/cart/CartProvider";
-import { getApprovedPrice, hasKnownAvailability } from "@/lib/product-retail";
+import { getApprovedPrice, getInventoryStatus } from "@/lib/product-retail";
+import { CATALOG_MODE } from "@/lib/catalog-mode";
+import { getProductWhatsAppHref } from "@/lib/product-inquiry";
 import { ProductPhoto } from "./ProductPhoto";
 import { getCatalogCartAddInput } from "@/lib/catalog-cart";
 
@@ -17,7 +19,11 @@ export function RetailProductCard({ product }: { product: HttpTypes.StoreProduct
   const { addToCart, isLoading } = useCart();
   const variant = variants.find((item) => item.id === variantId);
   const price = getApprovedPrice(product, variant);
-  const available = hasKnownAvailability(variant);
+  const inventoryStatus = getInventoryStatus(variant, CATALOG_MODE);
+  const available = inventoryStatus === "available";
+  const availabilityMessage = !variant && variants.length > 1
+    ? "Elige una variante para tu consulta"
+    : inventoryStatus === "unverified" ? "Disponibilidad por confirmar" : "Consultar disponibilidad";
   const brand = product.collection?.title || (typeof product.metadata?.brand === "string" ? product.metadata.brand : null);
   const presentation = product.subtitle || (typeof product.metadata?.presentation === "string" ? product.metadata.presentation : null);
   const image = product.thumbnail || product.images?.[0]?.url;
@@ -47,9 +53,24 @@ export function RetailProductCard({ product }: { product: HttpTypes.StoreProduct
               {variants.map((item) => <option key={item.id} value={item.id}>{item.title}</option>)}
             </select>
           </div>}
-          <button type="button" onClick={() => void add()} disabled={!available || isLoading} aria-label={`Agregar ${product.title}`} className="flex min-h-11 w-full items-center justify-center gap-1.5 rounded-full bg-[#7f6d8a] px-2 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#6c5c76] disabled:cursor-not-allowed disabled:bg-[#efe7dd] disabled:text-[#2e2b2b]/65 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7f6d8a] sm:text-sm">
-            {available && <ShoppingBag className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />}{isLoading ? "Agregando…" : !variant && variants.length > 1 ? "Elige una variante" : !available ? "Consultar disponibilidad" : "Agregar"}
-          </button>
+          {CATALOG_MODE && !available ? (
+            <>
+              <p className="mb-2 text-xs leading-4 text-[#2e2b2b]/65">{availabilityMessage}</p>
+              <a
+                href={getProductWhatsAppHref(product, variant?.id)}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Consultar ${product.title} por WhatsApp`}
+                className="flex min-h-11 w-full items-center justify-center rounded-full border border-[#7f6d8a] px-2 py-2 text-center text-xs font-semibold text-[#7f6d8a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7f6d8a] sm:text-sm"
+              >
+                Consultar por WhatsApp
+              </a>
+            </>
+          ) : (
+            <button type="button" onClick={() => void add()} disabled={!available || isLoading} aria-label={`Agregar ${product.title}`} className="flex min-h-11 w-full items-center justify-center gap-1.5 rounded-full bg-[#7f6d8a] px-2 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#6c5c76] disabled:cursor-not-allowed disabled:bg-[#efe7dd] disabled:text-[#2e2b2b]/65 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7f6d8a] sm:text-sm">
+              {available && <ShoppingBag className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />}{isLoading ? "Agregando…" : !variant && variants.length > 1 ? "Elige una variante" : !available ? "Consultar disponibilidad" : "Agregar"}
+            </button>
+          )}
           {error && <p role="alert" className="mt-2 text-xs leading-4 text-[#7f6d8a]">{error}</p>}
         </div>
       </div>

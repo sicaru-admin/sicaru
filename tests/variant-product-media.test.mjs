@@ -66,7 +66,7 @@ function variant(id, images = []) {
     product_id: "product_media_synthetic", images,
     options: [{ option_id: "tone", value: `Opción sintética ${id}`, option: { id: "tone", title: "Tono" } }],
     manage_inventory: true, inventory_quantity: 2, allow_backorder: false,
-    metadata: { storefront_price_approved: false },
+    metadata: { storefront_price_approved: false, storefront_inventory_verified: true },
   };
 }
 function product() {
