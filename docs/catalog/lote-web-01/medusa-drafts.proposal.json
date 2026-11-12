@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "batch": "SICARU-WEB-01-MATIZADORES-SHAMPOOS",
+  "execution_allowed": false,
+  "state": "PROPUESTAS DRAFT · NO EJECUTADAS",
+  "base_main": "478e0572e59f1081e9c38f2fe8d15f3befc0a4b9",
+  "prepared_at": "2026-11-12",
+  "source_master": {
+    "spreadsheet_id": "12bFla6f5ceeSFuPYrLvlEdRwCvkWWWYJ3qJYkFoU69g",
+    "url": "https://docs.google.com/spreadsheets/d/12bFla6f5ceeSFuPYrLvlEdRwCvkWWWYJ3qJYkFoU69g/edit",
+    "tabs": [
+      "BASE_MAESTRA_PRODUCTOS",
+      "FICHAS_GOOGLE"
+    ]
+  },
+  "category": {
+    "id": "pcat_01KVV3GD50MECKKS27Q8Y21HPK",
+    "name": "Shampoo y Acondicionador",
+    "handle": "shampoo-y-acondicionador",
+    "verified_via": "Production Store API GET · active and public"
+  },
+  "execution_preconditions": [
+    "Autorización expresa independiente para crear las tres fichas en Medusa; esta tarea solo prepara archivos.",
+    "Comprobar por Admin API todos los status inmediatamente antes de crear: handle, master ID, identidad y barcode; detener si existe coincidencia o ambigüedad.",
+    "Revalidar categoría existente y precios públicos autorizados por variante exacta.",
+    "Publicar los assets únicamente tras revisión/autorización y comprobar HTTPS 200, dimensiones y hashes antes de vincular sus URLs.",
+    "Mantener draft y sales_channels:[]; no crear inventory levels ni cargar existencias; no marcar inventario verificado.",
+    "No inferir SKU, peso de envío o barcode de Morazul; no copiar precios preferentes ni stock de hojas/facturas."
+  ],
+  "products": [
+    {
+      "master_id": "PRD-9CC3A06A6F10",
+      "preparation_state": "PREPARADA · NO IMPLEMENTADA EN MEDUSA",
+      "source": {
+        "master_range": "BASE_MAESTRA_PRODUCTOS!A241:AA241",
+        "google_range": null,
+        "copy_basis": "Identidad en BASE_MAESTRA_PRODUCTOS!A241:AA241 y frente auténtico. No se encontró ficha Google por ID, EAN ni nombre exacto; no se transfieren beneficios de la versión libre de sulfatos.",
+        "public_price_mxn": 95,
+        "price_authority": "Precio público de $95 MXN previamente aprobado y vigente según BASE_MAESTRA_PRODUCTOS!Q241; este lote únicamente prepara su futura implementación web y no constituye una nueva aprobación de precio.",
+        "sku_state": "NO CONFIRMADO · OMITIDO",
+        "ean_state": "DOCUMENTAL CONFIRMADO"
+      },
+      "prepared_medusa_body": {
+        "title": "XIOMARA Shampoo Platinum 250 ml",
+        "handle": "xiomara-shampoo-platinum-250ml",
+        "status": "draft",
+        "description": "XIOMARA Platinum es un shampoo para el cuidado del cabello platinado y canoso, en presentación de 250 ml.\n\nConsulta disponibilidad, precio y envío por WhatsApp.",
+        "thumbnail": "https://www.sicarubeauty.com/images/products/xiomara-shampoo-platinum-250ml/01-principal.webp",
+        "images": [
+          {
+            "url": "https://www.sicarubeauty.com/images/products/xiomara-shampoo-platinum-250ml/01-principal.webp"
+          }
+        ],
+        "categories": [
+          {
+            "id": "pcat_01KVV3GD50MECKKS27Q8Y21HPK"
+          }
+        ],
+        "sales_channels": [],
+        "options": [
+          {
+            "title": "Tamaño",
+            "values": [
+              "250 ml"
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "title": "250 ml",
+            "options": {
+              "Tamaño": "250 ml"
+            },
+            "barcode": "7501846500905",
+            "manage_inventory": true,
+            "allow_backorder": false,
+            "prices": [
+              {
+                "currency_code": "mxn",
+                "amount": 95
+              }
+            ],
+            "metadata": {
+              "storefront_price_approved": true
+            }
+          }
+        ],
+        "metadata": {
+          "sicaru_master_product_id": "PRD-9CC3A06A6F10"
+        }
+      },
+      "asset_state": "URLS PROPUESTAS · NO PUBLICADAS NI ASOCIADAS EN MEDUSA",
+      "inventory_state": "SIN CONTEO/LEVELS/EXISTENCIA · DISPONIBILIDAD POR CONFIRMAR"
+    },
+    {
+      "master_id": "PRD-3CE612A96316",
+      "preparation_state": "PREPARADA · NO IMPLEMENTADA EN MEDUSA",
+      "source": {
+        "master_range": "BASE_MAESTRA_PRODUCTOS!A242:AA242",
+        "google_range": "FICHAS_GOOGLE!A71:N71",
+        "copy_basis": "FICHAS_GOOGLE!D71 y fotografía frontal auténtica; separado de Platinum regular.",
+        "public_price_mxn": 115,
+        "price_authority": "Precio público de $115 MXN previamente aprobado el 29/10/2026 y vigente según BASE_MAESTRA_PRODUCTOS!Q242 y FICHAS_GOOGLE!F71:G71; este lote únicamente prepara su futura implementación web y no constituye una nueva aprobación de precio.",
+        "sku_state": "NO CONFIRMADO · OMITIDO",
+        "ean_state": "DOCUMENTAL CONFIRMADO"
+      },
+      "prepared_medusa_body": {
+        "title": "XIOMARA Shampoo Platinum Libre de Sulfatos 250 ml",
+        "handle": "xiomara-shampoo-platinum-libre-sulfatos-250ml",
+        "status": "draft",
+        "description": "Shampoo matizador XIOMARA Platinum Libre de Sulfatos para cabello rubio o decolorado. Ayuda a neutralizar reflejos anaranjados, acondiciona y facilita el desenredo.\n\nPresentación de 250 ml. Sigue las indicaciones del envase y consulta disponibilidad, precio y envío por WhatsApp.",
+        "thumbnail": "https://www.sicarubeauty.com/images/products/xiomara-shampoo-platinum-libre-sulfatos-250ml/01-principal.webp",
+        "images": [
+          {
+            "url": "https://www.sicarubeauty.com/images/products/xiomara-shampoo-platinum-libre-sulfatos-250ml/01-principal.webp"
+          },
+          {
+            "url": "https://www.sicarubeauty.com/images/products/xiomara-shampoo-platinum-libre-sulfatos-250ml/02-reverso.webp"
+          }
+        ],
+        "categories": [
+          {
+            "id": "pcat_01KVV3GD50MECKKS27Q8Y21HPK"
+          }
+        ],
+        "sales_channels": [],
+        "options": [
+          {
+            "title": "Tamaño",
+            "values": [
+              "250 ml"
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "title": "250 ml",
+            "options": {
+              "Tamaño": "250 ml"
+            },
+            "barcode": "7501846505863",
+            "manage_inventory": true,
+            "allow_backorder": false,
+            "prices": [
+              {
+                "currency_code": "mxn",
+                "amount": 115
+              }
+            ],
+            "metadata": {
+              "storefront_price_approved": true
+            }
+          }
+        ],
+        "metadata": {
+          "sicaru_master_product_id": "PRD-3CE612A96316"
+        }
+      },
+      "asset_state": "URLS PROPUESTAS · NO PUBLICADAS NI ASOCIADAS EN MEDUSA",
+      "inventory_state": "SIN CONTEO/LEVELS/EXISTENCIA · DISPONIBILIDAD POR CONFIRMAR"
+    },
+    {
+      "master_id": "PRD-ABEB7E8039E3",
+      "preparation_state": "PREPARADA · NO IMPLEMENTADA EN MEDUSA",
+      "source": {
+        "master_range": "BASE_MAESTRA_PRODUCTOS!A52:AA52",
+        "google_range": "FICHAS_GOOGLE!A68:N68",
+        "copy_basis": "FICHAS_GOOGLE!D68 y fotografías auténticas. No se añaden resultados universales ni tiempos no conciliados.",
+        "public_price_mxn": 95,
+        "price_authority": "Precio público de $95 MXN previamente aprobado el 25/10/2026 y vigente según BASE_MAESTRA_PRODUCTOS!Q52 y FICHAS_GOOGLE!F68:G68; este lote únicamente prepara su futura implementación web y no constituye una nueva aprobación de precio.",
+        "sku_state": "NO CONFIRMADO · OMITIDO",
+        "ean_state": "PENDIENTE DE CONCILIACIÓN",
+        "ean_discrepancy": {
+          "physical_photo_candidate": "0659525853273",
+          "google_candidate": "0659525853365",
+          "resolution": "Ningún barcode/EAN/UPC se incluye en prepared_medusa_body; no se corrige la hoja."
+        }
+      },
+      "prepared_medusa_body": {
+        "title": "NEKANE Morazul Shampoo Matizador 300 g",
+        "handle": "nekane-morazul-shampoo-matizador-300g",
+        "status": "draft",
+        "description": "Shampoo matizador NEKANE Morazul para el cuidado de rubios y platinados. Su fórmula con extracto de mora azul ayuda a neutralizar reflejos amarillos y anaranjados y aporta brillo y suavidad. Libre de sal y parabenos. Contenido neto: 300 g.\n\nAplica sobre cabello húmedo, masajea y enjuaga siguiendo las instrucciones del fabricante. Ajusta la frecuencia al matiz deseado; consulta a tu estilista para orientación de uso. Consulta disponibilidad, precio y envío por WhatsApp.",
+        "thumbnail": "https://www.sicarubeauty.com/images/products/nekane-morazul-shampoo-matizador-300g/01-principal.webp",
+        "images": [
+          {
+            "url": "https://www.sicarubeauty.com/images/products/nekane-morazul-shampoo-matizador-300g/01-principal.webp"
+          },
+          {
+            "url": "https://www.sicarubeauty.com/images/products/nekane-morazul-shampoo-matizador-300g/02-reverso.webp"
+          }
+        ],
+        "categories": [
+          {
+            "id": "pcat_01KVV3GD50MECKKS27Q8Y21HPK"
+          }
+        ],
+        "sales_channels": [],
+        "options": [
+          {
+            "title": "Tamaño",
+            "values": [
+              "300 g"
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "title": "300 g",
+            "options": {
+              "Tamaño": "300 g"
+            },
+            "manage_inventory": true,
+            "allow_backorder": false,
+            "prices": [
+              {
+                "currency_code": "mxn",
+                "amount": 95
+              }
+            ],
+            "metadata": {
+              "storefront_price_approved": true
+            }
+          }
+        ],
+        "metadata": {
+          "sicaru_master_product_id": "PRD-ABEB7E8039E3"
+        }
+      },
+      "asset_state": "URLS PROPUESTAS · NO PUBLICADAS NI ASOCIADAS EN MEDUSA",
+      "inventory_state": "SIN CONTEO/LEVELS/EXISTENCIA · DISPONIBILIDAD POR CONFIRMAR"
+    }
+  ]
+}

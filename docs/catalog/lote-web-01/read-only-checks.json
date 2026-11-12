@@ -1,0 +1,82 @@
+{
+  "checked_at": "2026-11-12T21:18:16.555Z",
+  "source": "Medusa Production Store API · GET only",
+  "product_count": 9,
+  "variant_count": 31,
+  "products_sha256": "45a9badfc546d4ed2f5d8132030c410339d66ae7f213b42d5d972312a0b0e1d9",
+  "categories": {
+    "http": 200,
+    "count": 6,
+    "items": [
+      {
+        "id": "pcat_01KVV3GD50MECKKS27Q8Y21HPK",
+        "name": "Shampoo y Acondicionador",
+        "handle": "shampoo-y-acondicionador",
+        "is_active": true,
+        "is_internal": false,
+        "parent_category_id": null
+      },
+      {
+        "id": "pcat_01KVV3GD526VSDYVWYQNNSARXK",
+        "name": "Color y Tintes",
+        "handle": "color-y-tintes",
+        "is_active": true,
+        "is_internal": false,
+        "parent_category_id": null
+      },
+      {
+        "id": "pcat_01KVV3GD5491Y0VMMN4H2HKCWH",
+        "name": "Styling y Acabado",
+        "handle": "styling-y-acabado",
+        "is_active": true,
+        "is_internal": false,
+        "parent_category_id": null
+      },
+      {
+        "id": "pcat_01KVV3GD56YTCNWJ69BW223XS9",
+        "name": "Línea Natural",
+        "handle": "línea-natural",
+        "is_active": true,
+        "is_internal": false,
+        "parent_category_id": null
+      },
+      {
+        "id": "pcat_01KVV3GD579RMJ43F0YXHGDAD3",
+        "name": "Tratamientos y Mascarillas",
+        "handle": "tratamientos-y-mascarillas",
+        "is_active": true,
+        "is_internal": false,
+        "parent_category_id": null
+      },
+      {
+        "id": "pcat_01KVV3GD598FQQ173NKF1RBATJ",
+        "name": "Herramientas Pro",
+        "handle": "herramientas-pro",
+        "is_active": true,
+        "is_internal": false,
+        "parent_category_id": null
+      }
+    ]
+  },
+  "handles": [
+    {
+      "handle": "xiomara-shampoo-platinum-250ml",
+      "http": 200,
+      "count": 0,
+      "products": []
+    },
+    {
+      "handle": "xiomara-shampoo-platinum-libre-sulfatos-250ml",
+      "http": 200,
+      "count": 0,
+      "products": []
+    },
+    {
+      "handle": "nekane-morazul-shampoo-matizador-300g",
+      "http": 200,
+      "count": 0,
+      "products": []
+    }
+  ],
+  "limitation": "Store API only proves absence from public products, not Admin drafts; recheck all statuses immediately before future creation."
+}

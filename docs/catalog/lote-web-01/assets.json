@@ -1,0 +1,258 @@
+{
+  "schema_version": 1,
+  "batch": "SICARU-WEB-01-MATIZADORES-SHAMPOOS",
+  "prepared_at": "2026-11-12T21:27:12.650Z",
+  "state": "PREPARADO · PENDIENTE DE REVISIÓN · NO PUBLICADO",
+  "tool": {
+    "sharp": "0.34.5",
+    "vips": "8.17.3",
+    "webp": "1.6.0"
+  },
+  "assets": [
+    {
+      "master_id": "PRD-9CC3A06A6F10",
+      "handle": "xiomara-shampoo-platinum-250ml",
+      "role": "01-principal",
+      "path": "public/images/products/xiomara-shampoo-platinum-250ml/01-principal.webp",
+      "format": "webp",
+      "width": 634,
+      "height": 1800,
+      "bytes": 129910,
+      "sha256": "5f545fec3abff825aca893d02b6f5499fb76ce4c533e66a2594a144fe5c789e1",
+      "source": {
+        "drive_id": "13II_d26N029t2joXmw5Q2Vp0T2BrGI6a",
+        "url": "https://drive.google.com/file/d/13II_d26N029t2joXmw5Q2Vp0T2BrGI6a/view",
+        "filename": "WhatsApp Image 2026-07-21 at 17.20.05 (1).jpeg",
+        "format": "jpeg",
+        "width": 3024,
+        "height": 4032,
+        "bytes": 451412,
+        "sha256": "1349ab7e689f002e7be9a30c219f51a22630f71a1af234d0e46f853b4cd284a2"
+      },
+      "transform": {
+        "auto_orient": true,
+        "crop": {
+          "left": 850,
+          "top": 450,
+          "width": 1250,
+          "height": 3550
+        },
+        "max_height": 1800,
+        "without_enlargement": true,
+        "resize_kernel": "lanczos3",
+        "background": "original photographic background retained",
+        "retouch": false,
+        "generative_ai": false,
+        "webp_lossless": false,
+        "webp_quality": 95,
+        "smart_subsample": true,
+        "effort": 6,
+        "color_space": "srgb",
+        "metadata": "private EXIF omitted; no artistic color adjustments"
+      },
+      "verification": {
+        "psnr_db": 46.0213,
+        "mean_absolute_channel_error": 0.8512,
+        "decoded_pixels_equal_crop_resize": false,
+        "original_sha256_unchanged": true,
+        "whole_container_and_label_visually_retained": true
+      }
+    },
+    {
+      "master_id": "PRD-3CE612A96316",
+      "handle": "xiomara-shampoo-platinum-libre-sulfatos-250ml",
+      "role": "01-principal",
+      "path": "public/images/products/xiomara-shampoo-platinum-libre-sulfatos-250ml/01-principal.webp",
+      "format": "webp",
+      "width": 690,
+      "height": 1800,
+      "bytes": 203726,
+      "sha256": "d9bebc39927b24ef1be50e9b31e0e1d470b376e2197464a991bf0b968fb72bc1",
+      "source": {
+        "drive_id": "12uH0eSwBFgh71KHmfyMvaV7hsSFIw2oH",
+        "url": "https://drive.google.com/file/d/12uH0eSwBFgh71KHmfyMvaV7hsSFIw2oH/view",
+        "filename": "WhatsApp Image 2026-02-25 at 16.43.07 (1).jpeg",
+        "format": "jpeg",
+        "width": 3024,
+        "height": 4032,
+        "bytes": 488422,
+        "sha256": "d7e1d2cf714dfeee79b8926af30d6a17bf4c00dfff8d2f459b390aa9297c523b"
+      },
+      "transform": {
+        "auto_orient": true,
+        "crop": {
+          "left": 900,
+          "top": 650,
+          "width": 1150,
+          "height": 3000
+        },
+        "max_height": 1800,
+        "without_enlargement": true,
+        "resize_kernel": "lanczos3",
+        "background": "original photographic background retained",
+        "retouch": false,
+        "generative_ai": false,
+        "webp_lossless": false,
+        "webp_quality": 95,
+        "smart_subsample": true,
+        "effort": 6,
+        "color_space": "srgb",
+        "metadata": "private EXIF omitted; no artistic color adjustments"
+      },
+      "verification": {
+        "psnr_db": 44.756,
+        "mean_absolute_channel_error": 0.9958,
+        "decoded_pixels_equal_crop_resize": false,
+        "original_sha256_unchanged": true,
+        "whole_container_and_label_visually_retained": true
+      }
+    },
+    {
+      "master_id": "PRD-3CE612A96316",
+      "handle": "xiomara-shampoo-platinum-libre-sulfatos-250ml",
+      "role": "02-reverso",
+      "path": "public/images/products/xiomara-shampoo-platinum-libre-sulfatos-250ml/02-reverso.webp",
+      "format": "webp",
+      "width": 662,
+      "height": 1800,
+      "bytes": 206724,
+      "sha256": "c7d7dce8a3b3cb08b083f186d8df25e0c3953f0ad0f589d8f9f132044f1f1ea5",
+      "source": {
+        "drive_id": "17BZdXHs-9i7-rlEIxZk0j1qcEIZgPdIk",
+        "url": "https://drive.google.com/file/d/17BZdXHs-9i7-rlEIxZk0j1qcEIZgPdIk/view",
+        "filename": "WhatsApp Image 2026-02-25 at 16.43.07.jpeg",
+        "format": "jpeg",
+        "width": 3024,
+        "height": 4032,
+        "bytes": 548282,
+        "sha256": "2f6ead48cbe70d0c853c884d3fd56a95376a81d1e89abdaa97beb38b4c97e3b4"
+      },
+      "transform": {
+        "auto_orient": true,
+        "crop": {
+          "left": 900,
+          "top": 400,
+          "width": 1250,
+          "height": 3400
+        },
+        "max_height": 1800,
+        "without_enlargement": true,
+        "resize_kernel": "lanczos3",
+        "background": "original photographic background retained",
+        "retouch": false,
+        "generative_ai": false,
+        "webp_lossless": false,
+        "webp_quality": 95,
+        "smart_subsample": true,
+        "effort": 6,
+        "color_space": "srgb",
+        "metadata": "private EXIF omitted; no artistic color adjustments"
+      },
+      "verification": {
+        "psnr_db": 45.6348,
+        "mean_absolute_channel_error": 0.9377,
+        "decoded_pixels_equal_crop_resize": false,
+        "original_sha256_unchanged": true,
+        "whole_container_and_label_visually_retained": true
+      }
+    },
+    {
+      "master_id": "PRD-ABEB7E8039E3",
+      "handle": "nekane-morazul-shampoo-matizador-300g",
+      "role": "01-principal",
+      "path": "public/images/products/nekane-morazul-shampoo-matizador-300g/01-principal.webp",
+      "format": "webp",
+      "width": 566,
+      "height": 1800,
+      "bytes": 273374,
+      "sha256": "82e1508cc3355b6eeb049229f684edfc101f3910e34f76621f66babe1a54f07b",
+      "source": {
+        "drive_id": "1HP2X3p3THKJ7581EcUBf_6iHHsy3-LKA",
+        "url": "https://drive.google.com/file/d/1HP2X3p3THKJ7581EcUBf_6iHHsy3-LKA/view",
+        "filename": "WhatsApp Image 2026-02-25 at 16.43.27 (1).jpeg",
+        "format": "jpeg",
+        "width": 3024,
+        "height": 4032,
+        "bytes": 840892,
+        "sha256": "5c1186a1401241de65cd630c1517e9851a040182dce6f936f8fce1eca6813f51"
+      },
+      "transform": {
+        "auto_orient": true,
+        "crop": {
+          "left": 900,
+          "top": 250,
+          "width": 1150,
+          "height": 3660
+        },
+        "max_height": 1800,
+        "without_enlargement": true,
+        "resize_kernel": "lanczos3",
+        "background": "original photographic background retained",
+        "retouch": false,
+        "generative_ai": false,
+        "webp_lossless": false,
+        "webp_quality": 95,
+        "smart_subsample": true,
+        "effort": 6,
+        "color_space": "srgb",
+        "metadata": "private EXIF omitted; no artistic color adjustments"
+      },
+      "verification": {
+        "psnr_db": 41.1255,
+        "mean_absolute_channel_error": 1.405,
+        "decoded_pixels_equal_crop_resize": false,
+        "original_sha256_unchanged": true,
+        "whole_container_and_label_visually_retained": true
+      }
+    },
+    {
+      "master_id": "PRD-ABEB7E8039E3",
+      "handle": "nekane-morazul-shampoo-matizador-300g",
+      "role": "02-reverso",
+      "path": "public/images/products/nekane-morazul-shampoo-matizador-300g/02-reverso.webp",
+      "format": "webp",
+      "width": 563,
+      "height": 1800,
+      "bytes": 436352,
+      "sha256": "d5a62ce2e4bdfb663947c88f80fbcb4113e35e64e4a45a8fdc211f7f2a2f010c",
+      "source": {
+        "drive_id": "1ln4qqA_MiqzJ1RRPcdG3z5xglfbClpWM",
+        "url": "https://drive.google.com/file/d/1ln4qqA_MiqzJ1RRPcdG3z5xglfbClpWM/view",
+        "filename": "WhatsApp Image 2026-02-25 at 16.43.27 (2).jpeg",
+        "format": "jpeg",
+        "width": 3024,
+        "height": 4032,
+        "bytes": 1032636,
+        "sha256": "a83ef48f74e2476dee76987390592636bd68558c865fef4a8ef652ea95c87d97"
+      },
+      "transform": {
+        "auto_orient": true,
+        "crop": {
+          "left": 900,
+          "top": 230,
+          "width": 1150,
+          "height": 3680
+        },
+        "max_height": 1800,
+        "without_enlargement": true,
+        "resize_kernel": "lanczos3",
+        "background": "original photographic background retained",
+        "retouch": false,
+        "generative_ai": false,
+        "webp_lossless": false,
+        "webp_quality": 98,
+        "smart_subsample": true,
+        "effort": 6,
+        "color_space": "srgb",
+        "metadata": "private EXIF omitted; no artistic color adjustments"
+      },
+      "verification": {
+        "psnr_db": 40.7458,
+        "mean_absolute_channel_error": 1.3655,
+        "decoded_pixels_equal_crop_resize": false,
+        "original_sha256_unchanged": true,
+        "whole_container_and_label_visually_retained": true
+      }
+    }
+  ]
+}
