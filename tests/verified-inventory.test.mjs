@@ -125,3 +125,12 @@ test("non-catalog cards preserve the existing technical availability rule", () =
   const Card = loadModules({ catalogMode: false })("@/components/products/RetailProductCard").RetailProductCard;
   assert.match(render(Card, product(variant(5))), /aria-label="Agregar Producto de prueba"/);
 });
+
+test("catalog counters describe published records and preserve search counts without promising stock", () => {
+  const Content = loadModules()("@/app/(shop)/productos/ProductosContent").ProductosContent;
+  const products = [product(variant(500)), { ...product(variant(0)), id: "another", title: "Otro producto" }];
+  const plain = (props) => renderToStaticMarkup(React.createElement(Content, props)).replace(/<[^>]+>/g, "");
+  assert.match(plain({ products }), /2 productos en el catálogo/);
+  assert.match(plain({ products, initialQuery: "Otro" }), /1 producto encontrado/);
+  assert.doesNotMatch(plain({ products }), /productos disponibles/);
+});
