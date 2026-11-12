@@ -11,7 +11,7 @@ let paymentRequests = 0;
 let shippingRequests = 0;
 let cartWriteRequests = 0;
 let lastVariantId;
-const variant = { id: "variant_250", title: "250 ml", options: [], manage_inventory: true, inventory_quantity: 5, metadata: { storefront_price_approved: true }, calculated_price: { calculated_amount: 199, original_amount: 199, currency_code: "mxn" } };
+const variant = { id: "variant_250", title: "250 ml", options: [], manage_inventory: true, inventory_quantity: 5, metadata: { storefront_price_approved: true, storefront_inventory_verified: true }, calculated_price: { calculated_amount: 199, original_amount: 199, currency_code: "mxn" } };
 const product = { id: "prod_test", title: "Tratamiento de prueba", handle: "tratamiento-prueba", subtitle: "Cuidado capilar", description: "Producto aislado para las pruebas del storefront.", thumbnail: "/images/products-hero/voglia-total-repair.webp", images: [], options: [], variants: [variant, { ...variant, id: "variant_500", title: "500 ml", metadata: {}, calculated_price: { calculated_amount: 299, currency_code: "mxn" } }], collection: { id: "col_voglia", title: "Voglia", handle: "voglia" } };
 const products = [product,
   { ...product, id: "prod_unapproved", title: "Producto sin precio aprobado", handle: "sin-aprobacion", variants: [{ ...variant, id: "variant_unapproved", inventory_quantity: 0, metadata: {}, calculated_price: { calculated_amount: 987.65, currency_code: "mxn" } }] },
@@ -124,7 +124,9 @@ try {
     assert.equal(await cards.count(), 3);
     const unapproved = cards.filter({ has: page.getByRole("heading", { name: "Producto sin precio aprobado", exact: true }) });
     assert.equal(await unapproved.getByTestId("retail-price").innerText(), "Consultar precio");
-    assert.ok(await unapproved.getByRole("button", { name: "Agregar Producto sin precio aprobado", exact: true }).isDisabled());
+    assert.equal(await unapproved.getByRole("button", { name: /Agregar/ }).count(), 0);
+    assert.ok(await unapproved.getByText("Disponibilidad por confirmar", { exact: true }).isVisible());
+    assert.ok(await unapproved.getByRole("link", { name: "Consultar Producto sin precio aprobado por WhatsApp" }).isVisible());
     await cards.filter({ has: page.getByRole("heading", { name: "Producto sin fotografía", exact: true }) }).getByText("Imagen no disponible").waitFor();
     for (const image of await page.locator("main img").all()) { if (!(await image.isVisible())) continue; await image.scrollIntoViewIfNeeded(); await image.evaluate((element) => element.decode()); }
     await verifyRetailPresentation(page);

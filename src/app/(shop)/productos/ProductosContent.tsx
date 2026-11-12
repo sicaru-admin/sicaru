@@ -118,8 +118,7 @@ export function ProductosContent({
           >
             {filteredProducts.length} producto
             {filteredProducts.length !== 1 ? "s" : ""}
-            {hasQuery ? " encontrado" : " disponible"}
-            {filteredProducts.length !== 1 ? "s" : ""}
+            {hasQuery ? ` encontrado${filteredProducts.length !== 1 ? "s" : ""}` : " en el catálogo"}
           </p>
         </div>
 

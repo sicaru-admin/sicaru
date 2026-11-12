@@ -4,7 +4,8 @@ import { useMemo, useState, type ReactNode } from "react";
 import { HttpTypes } from "@medusajs/types";
 import { MessageCircle, Search, Heart, BadgeCheck } from "lucide-react";
 import { useCart } from "@/components/cart/CartProvider";
-import { getApprovedPrice, hasKnownAvailability } from "@/lib/product-retail";
+import { getApprovedPrice, getInventoryStatus } from "@/lib/product-retail";
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 import { getProductWhatsAppHref } from "@/lib/product-inquiry";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import {
@@ -169,13 +170,23 @@ export function ProductActions({ product, renderExperience }: ProductActionsProp
   )
     ? "Selecciona un tono"
     : "Selecciona una opción";
-  const canAddToCart = hasKnownAvailability(selectedVariant) && !isLoading;
+  const inventoryStatus = getInventoryStatus(selectedVariant, CATALOG_MODE);
+  const available = inventoryStatus === "available";
+  const canAddToCart = available && !isLoading;
+  const unavailableLabel = CATALOG_MODE && inventoryStatus === "unverified"
+    ? "Disponibilidad por confirmar"
+    : "Consultar disponibilidad";
 
   const handleAddToCart = async () => {
     setErrorMessage(null);
 
     if (!selectedVariant?.id) {
       setErrorMessage(selectionMessage);
+      return;
+    }
+
+    if (!available) {
+      setErrorMessage("Consulta disponibilidad por WhatsApp.");
       return;
     }
 
@@ -243,7 +254,7 @@ export function ProductActions({ product, renderExperience }: ProductActionsProp
       )}
 
       {/* Quantity */}
-      <QuantitySelector quantity={quantity} onChange={setQuantity} />
+      {(!CATALOG_MODE || available) && <QuantitySelector quantity={quantity} onChange={setQuantity} />}
 
       {/* Action buttons */}
       <div className="space-y-2.5 md:space-y-3">
@@ -253,7 +264,7 @@ export function ProductActions({ product, renderExperience }: ProductActionsProp
           disabled={!canAddToCart}
           className="btn-ripple tap-feedback w-full bg-[#7f6d8a] px-8 py-3.5 text-base font-semibold text-[#faf8f5] transition-colors duration-200 hover:bg-[#8e7a9e] disabled:cursor-not-allowed disabled:opacity-50 md:text-lg"
         >
-          {isLoading ? "Agregando..." : selectedVariant && !hasKnownAvailability(selectedVariant) ? "Consultar disponibilidad" : "Agregar al Carrito"}
+          {isLoading ? "Agregando..." : selectedVariant && !available ? unavailableLabel : "Agregar al Carrito"}
         </button>
 
         <a

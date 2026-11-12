@@ -6,6 +6,8 @@ import { useCart } from "@/components/cart/CartProvider";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import { getSelectableOptions } from "./VariantSelector";
 import { getCatalogCartAddInput } from "@/lib/catalog-cart";
+import { hasKnownAvailability } from "@/lib/product-retail";
+import { CATALOG_MODE } from "@/lib/catalog-mode";
 
 type StickyAddToCartProps = {
   product: HttpTypes.StoreProduct;
@@ -31,6 +33,7 @@ export function StickyAddToCart({ product }: StickyAddToCartProps) {
 
   if (!firstVariant || !visible) return null;
   if (requiresVariantSelection) return null;
+  if (CATALOG_MODE && !hasKnownAvailability(firstVariant, true)) return null;
 
   const handleAdd = async () => {
     setErrorMessage(null);
