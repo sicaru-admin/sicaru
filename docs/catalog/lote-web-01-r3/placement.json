@@ -1,0 +1,9 @@
+{
+  "canvas": 1600,
+  "approved_mask_sha256": "4abc994aac871a81d5ed27f0ec1f257ebb56aef84f219439ce0edeb08e11a0e0",
+  "profiles": {
+    "xiomara-shampoo-platinum-250ml": { "height": 1472, "base": 1536 },
+    "xiomara-shampoo-platinum-libre-sulfatos-250ml": { "height": 1472, "base": 1536 },
+    "nekane-morazul-shampoo-matizador-300g": { "height": 1464, "base": 1528 }
+  }
+}
