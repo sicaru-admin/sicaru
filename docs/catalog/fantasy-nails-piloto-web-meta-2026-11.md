@@ -28,3 +28,22 @@
 - `npm ci && npm run lint && npm run build`
 - Verificar la preview de Vercel, las seis rutas y el enlace `wa.me/528281136652`.
 - No fusionar a `main` ni publicar sin aprobación de Dirección.
+
+
+## Paquete fotográfico preparado el 12 nov 2026
+Se verificó que existen **seis fotos originales** y **seis versiones 1:1 editadas** en el material suministrado por Dirección. Se preparó localmente el paquete `SICARU_FANTASY_NAILS_ASSETS_WEB_PILOTO.zip`, aún **NO subido al repositorio**.
+
+Destino previsto de los archivos editados en el proyecto:
+- `public/images/fantasy-nails/17133.png` — Gel Rubber Pink Shine
+- `public/images/fantasy-nails/17141.png` — Gel Rubber Petal
+- `public/images/fantasy-nails/17136.png` — Gel Rubber Piel
+- `public/images/fantasy-nails/28101.png` — Gel Polish Super Blanco
+- `public/images/fantasy-nails/28102.png` — Gel Polish Super Negro
+- `public/images/fantasy-nails/20132.png` — TrueBond
+
+El ZIP incluye `manifest.json` con SHA256 y copias originales para contrastar fidelidad. Después de añadir los archivos a GitHub, vincular `imageUrl` únicamente en la rama de prueba y revisar las seis páginas. **No activar ni fusionar producción antes de revisión.**
+
+## Verificación de despliegue
+- Despliegue Vercel de commit `683d07f`: **READY** (se confirmó compilación).
+- La revisión visual y los accesos externos no fueron confirmados aún; la URL de preview puede estar protegida.
+- No se ha realizado importación a Meta ni publicación de productos en Medusa.
