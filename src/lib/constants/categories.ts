@@ -41,6 +41,13 @@ export const CATEGORIES: Record<string, CategoryData> = {
     description:
       "Keratinas, mascarillas de hidratación profunda, botox capilar y tratamientos de reconstrucción para restaurar cabello dañado y procesado químicamente.",
   },
+  "unas-profesionales": {
+    name: "Uñas Profesionales",
+    handle: "unas-profesionales",
+    gradient: "from-sicaru-purple-500 to-sicaru-purple-700",
+    description:
+      "Productos profesionales para uñas: esmaltes en gel, bases rubber, acrílicos, polygel, preparadores, finalizadores y accesorios de marcas como Fantasy Nails. Consulta opciones y disponibilidad con SICARÚ.",
+  },
   "herramientas-pro": {
     name: "Herramientas Pro",
     handle: "herramientas-pro",
