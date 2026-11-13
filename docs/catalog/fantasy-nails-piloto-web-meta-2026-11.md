@@ -47,3 +47,12 @@ El ZIP incluye `manifest.json` con SHA256 y copias originales para contrastar fi
 - Despliegue Vercel de commit `683d07f`: **READY** (se confirmó compilación).
 - La revisión visual y los accesos externos no fueron confirmados aún; la URL de preview puede estar protegida.
 - No se ha realizado importación a Meta ni publicación de productos en Medusa.
+
+
+## Nueva categoría propuesta: Uñas profesionales
+- Nombre comercial: **Uñas profesionales**; handle canónico previsto: `unas-profesionales`.
+- Alcance: esmaltes en gel, bases rubber, acrílicos, polygel, preparación y finalización de uñas, líquidos, accesorios y consumibles, de Fantasy Nails y futuras marcas.
+- Añadida la metadata editorial a `src/lib/constants/categories.ts`.
+- Añadida la vista de demostración `/piloto-unas-profesionales` (noindex) con seis tarjetas que llevan a las fichas piloto.
+- **Todavía no existe confirmación de la categoría correspondiente en Medusa**; por ello no se enlaza en la navegación pública ni en el inicio. La ruta definitiva `/categorias/unas-profesionales` depende de crear la categoría real en Medusa y asignar SKU correctos.
+- Antes de producción: verificar si ya existe una categoría equivalente; evitar duplicados; crear en Medusa únicamente tras validación de catálogo; cargar productos y publicar navegación solo cuando el contenido esté listo.
