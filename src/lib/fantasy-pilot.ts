@@ -1,3 +1,5 @@
+import { STORE } from "@/lib/constants/store";
+
 /**
  * Datos editoriales para el piloto de Fantasy Nails.
  * Fuente: recepción documentada V52007133 (03–04 nov 2026).
@@ -12,7 +14,7 @@ export type FantasyPilotProduct = {
   approvedPublicPrice: number;
   originalPhotoFilename: string;
   catalogPhotoFilename: string;
-  imageUrl: string | null;
+  imageUrl: string;
 };
 
 export const fantasyPilotProducts: readonly FantasyPilotProduct[] = [
@@ -24,7 +26,7 @@ export const fantasyPilotProducts: readonly FantasyPilotProduct[] = [
     approvedPublicPrice: 99,
     originalPhotoFilename: "gel rubber pink shine.jpeg",
     catalogPhotoFilename: "SICARU_FB_FANTASY_17133_1254x1254.png",
-    imageUrl: null,
+    imageUrl: "/images/fantasy-nails/17133.jpeg",
   },
   {
     sku: "17141",
@@ -34,7 +36,7 @@ export const fantasyPilotProducts: readonly FantasyPilotProduct[] = [
     approvedPublicPrice: 99,
     originalPhotoFilename: "gel rubber petal.jpeg",
     catalogPhotoFilename: "SICARU_FB_FANTASY_17141_1254x1254.png",
-    imageUrl: null,
+    imageUrl: "/images/fantasy-nails/17141.jpeg",
   },
   {
     sku: "17136",
@@ -44,7 +46,7 @@ export const fantasyPilotProducts: readonly FantasyPilotProduct[] = [
     approvedPublicPrice: 99,
     originalPhotoFilename: "gel rubber piel.jpeg",
     catalogPhotoFilename: "SICARU_FB_FANTASY_17136_1254x1254.png",
-    imageUrl: null,
+    imageUrl: "/images/fantasy-nails/17136.jpeg",
   },
   {
     sku: "28101",
@@ -54,7 +56,7 @@ export const fantasyPilotProducts: readonly FantasyPilotProduct[] = [
     approvedPublicPrice: 99,
     originalPhotoFilename: "gel super blanco.jpeg",
     catalogPhotoFilename: "SICARU_FB_FANTASY_28101_1254x1254.png",
-    imageUrl: null,
+    imageUrl: "/images/fantasy-nails/28101.jpeg",
   },
   {
     sku: "28102",
@@ -64,7 +66,7 @@ export const fantasyPilotProducts: readonly FantasyPilotProduct[] = [
     approvedPublicPrice: 99,
     originalPhotoFilename: "gel super negro.jpeg",
     catalogPhotoFilename: "SICARU_FB_FANTASY_28102_1254x1254.png",
-    imageUrl: null,
+    imageUrl: "/images/fantasy-nails/28102.jpeg",
   },
   {
     sku: "20132",
@@ -74,10 +76,15 @@ export const fantasyPilotProducts: readonly FantasyPilotProduct[] = [
     approvedPublicPrice: 59,
     originalPhotoFilename: "truebond.jpeg",
     catalogPhotoFilename: "SICARU_FB_FANTASY_20132_1254x1254.png",
-    imageUrl: null,
+    imageUrl: "/images/fantasy-nails/20132.jpeg",
   },
 ];
 
 export function findFantasyPilotProduct(slug: string) {
   return fantasyPilotProducts.find((product) => product.slug === slug);
+}
+
+export function fantasyInquiryHref(product?: FantasyPilotProduct) {
+  const subject = product ? `${product.title}, SKU ${product.sku}` : "productos de Uñas profesionales";
+  return `https://wa.me/${STORE.whatsapp}?text=${encodeURIComponent(`Hola, quisiera consultar ${subject}. ¿Me pueden confirmar precio y disponibilidad?`)}`;
 }

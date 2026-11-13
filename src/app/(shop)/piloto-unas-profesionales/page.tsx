@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import { fantasyPilotProducts } from "@/lib/fantasy-pilot";
+import { fantasyPilotProducts, fantasyInquiryHref } from "@/lib/fantasy-pilot";
 
 export const metadata: Metadata = {
   title: "Uñas profesionales · Vista previa SICARÚ",
@@ -24,7 +25,7 @@ export default function PreviewNailsCategory() {
         <p className="mt-4 max-w-2xl text-sm leading-7 text-[#2E2B2B]/75">
           Explora productos profesionales para uñas: geles de color, bases rubber,
           acrílicos, polygel, preparadores y accesorios. La primera selección
-          de Fantasy Nails se encuentra en revisión de imágenes, precios
+          de Fantasy Nails se encuentra en revisión de precios
           aplicados y disponibilidad.
         </p>
         <p className="mt-6 text-sm font-semibold text-[#7F6D8A]">
@@ -35,9 +36,12 @@ export default function PreviewNailsCategory() {
             <Link
               key={product.sku}
               href={`/piloto-fantasy-nails/${product.slug}`}
-              className="group flex min-h-[180px] flex-col justify-between border border-[#EFE7DD] bg-white/65 p-5 transition-colors hover:border-[#9B89A8]"
+              className="group flex min-h-[180px] flex-col justify-between border border-[#EFE7DD] bg-white/65 p-5 shadow-[0_4px_20px_rgba(46,43,43,0.05)] transition-colors hover:border-[#9B89A8]"
             >
               <div>
+                <div className="relative mb-5 aspect-square bg-[#FAF8F5]">
+                  <Image src={product.imageUrl} alt={`${product.title} · SKU ${product.sku}`} fill unoptimized sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-contain" />
+                </div>
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#7F6D8A]">
                   Fantasy Nails · SKU {product.sku}
                 </p>
@@ -51,6 +55,9 @@ export default function PreviewNailsCategory() {
             </Link>
           ))}
         </div>
+        <a href={fantasyInquiryHref()} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex min-h-12 items-center bg-[#7F6D8A] px-6 py-3 text-sm font-semibold text-[#FAF8F5]">
+          Consultar por WhatsApp
+        </a>
         <p className="mt-10 text-xs leading-6 text-[#7F6D8A]">
           Vista de revisión, no catálogo de venta. No sustituye las fichas definitivas
           del gestor Medusa ni confirma existencias.

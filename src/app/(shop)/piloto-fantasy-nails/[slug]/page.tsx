@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import {
   fantasyPilotProducts,
   findFantasyPilotProduct,
+  fantasyInquiryHref,
 } from "@/lib/fantasy-pilot";
 
 type PageProps = { params: Promise<{ slug: string }> };
@@ -33,20 +34,19 @@ export default async function FantasyPilotPage({ params }: PageProps) {
   const product = findFantasyPilotProduct(slug);
   if (!product) notFound();
 
-  const whatsappText = `Hola, quisiera consultar el producto ${product.title}, código ${product.sku}. ¿Me pueden confirmar precio y disponibilidad?`;
-  const whatsappHref = `https://wa.me/528281136652?text=${encodeURIComponent(whatsappText)}`;
+  const whatsappHref = fantasyInquiryHref(product);
 
   return (
     <main className="min-h-screen bg-[#FAF8F5] text-[#2E2B2B]">
       <div className="mx-auto max-w-[1200px] px-5 py-10 sm:px-8 lg:px-10">
-        <Link href="/productos" className="text-sm font-semibold text-[#7F6D8A] underline underline-offset-4">
-          Volver al catálogo
+        <Link href="/piloto-unas-profesionales" className="text-sm font-semibold text-[#7F6D8A] underline underline-offset-4">
+          Volver a Uñas profesionales
         </Link>
         <p className="mt-8 text-xs font-semibold uppercase tracking-[0.18em] text-[#7F6D8A]">
           SICARÚ · Piloto Fantasy Nails · Vista previa interna
         </p>
         <div className="mt-5 grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-12">
-          <div className="relative flex aspect-square items-center justify-center overflow-hidden border border-[#EFE7DD] bg-[#FAF8F5]">
+          <div className="relative flex aspect-square items-center justify-center overflow-hidden border border-[#EFE7DD] bg-[#FAF8F5] shadow-[0_8px_30px_rgba(46,43,43,0.06)]">
             {product.imageUrl ? (
               <Image
                 src={product.imageUrl}
@@ -54,7 +54,8 @@ export default async function FantasyPilotPage({ params }: PageProps) {
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-contain"
-                priority
+                unoptimized
+                preload
               />
             ) : (
               <p className="max-w-xs px-8 text-center text-sm leading-6 text-[#7F6D8A]">
