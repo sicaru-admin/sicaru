@@ -43,3 +43,8 @@ Estos importes permanecen como referencia histórica del piloto, identificados c
 
 ## Pruebas y vista previa
 Los resultados y enlaces finales se registran en la descripción del PR #30. Las verificaciones HTTP no sustituyen revisión visual en navegador. El manifiesto y las pruebas protegen asociación de imágenes, hashes, noindex, disponibilidad pendiente y contacto oficial.
+
+## Comparación de los seis PNG adjuntos · 13 noviembre 2026
+Se revisaron visualmente las seis versiones editadas suministradas posteriormente frente a los JPEG originales ya integrados. Se priorizaron los originales según instrucción expresa de Dirección: las versiones editadas muestran diferencias de etiquetas, color o presentación que impiden asegurar conservación exacta. No se afirma el método con que fueron editadas. La revisión y hashes de los seis candidatos se registran en `fantasy-photo-review-2026-11-13.json`; no se incorporaron candidatos rechazados a los medios públicos. No hacen falta archivos adicionales para conservar las seis fotos originales. Si se desean fondos nuevos, se requieren versiones editadas que conserven íntegros los píxeles del producto y puedan verificarse contra el original.
+
+Preview del commit de implementación `aca5c29`: READY. Revisadas las siete páginas en navegador, a 390×844 y 1440×1000, fotos cargadas y sin desbordamiento horizontal; disponibilidad pendiente, noindex/nofollow y enlaces oficiales de WhatsApp comprobados. TypeScript `npx tsc --noEmit` también pasó. Lint: cero errores, tres advertencias existentes; build correcto; suite con VM experimental: 113/113.
