@@ -1,0 +1,46 @@
+{
+  "sku": "17141",
+  "status": "candidata_pendiente_aprobacion",
+  "dimensions": [
+    2823,
+    2823
+  ],
+  "scale": 1,
+  "translation": [
+    -5,
+    -475
+  ],
+  "background": "#FAF8F5",
+  "changed_output_pixels": 1699,
+  "changes_outside_authorized_regions": 0,
+  "source_region_boxes": {
+    "union_izquierda": [
+      1140,
+      1795,
+      1240,
+      1885
+    ],
+    "union_derecha": [
+      1615,
+      1795,
+      1730,
+      1885
+    ],
+    "base_derecha": [
+      1680,
+      2810,
+      1780,
+      2890
+    ]
+  },
+  "junction_opaque_black_pixels_preserved": 277,
+  "shadow_sha256_unchanged": "ef83cd5c83cf792b28fdf58895e52596b4d0ae2451b43df3665a94478c4cc34b",
+  "source_sha256": "f7d2eff53c41959555200beb353a4674b0de0f3dce724596900beb760707a62c",
+  "prior_refined_sha256": "baf5dcf1644e9876a6d4e110bf33c37e8a0e86dae9ac5be32da57f9569a8f101",
+  "candidate_sha256": "166df5915a623010dfaf6574e4df1dac2b871f77cf5b022f3683c27bb0c201a7",
+  "generative_ai": false,
+  "whole_joint_opaque_dark_pixels_preserved": 5677,
+  "shadow_file_modified": false,
+  "other_skus_modified": false,
+  "prior_version_preserved": true
+}

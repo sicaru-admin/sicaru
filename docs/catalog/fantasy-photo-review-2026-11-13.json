@@ -1,0 +1,44 @@
+[
+  {
+    "sku": "17133",
+    "candidateFilename": "Esmalte Rubber Pink Shine-2.png",
+    "candidateSha256": "e07d451337297e206484448155c3043055f17e4ff1cb61b42f5a516922784b6a",
+    "decision": "retain-original",
+    "reason": "Diferencias visibles en la tipografía, espaciado y contorno del logotipo y en los reflejos del envase."
+  },
+  {
+    "sku": "17141",
+    "candidateFilename": "Esmalte rosa Fantasy Nails-2-2.png",
+    "candidateSha256": "7da579f6edcac629436bb2b0ff0ec4c2c3ff9265c8d95178c59b2a62ec3ca11d",
+    "decision": "retain-original",
+    "reason": "El tono del envase y el contraste de la impresión difieren del original; no se acredita fidelidad exacta del color."
+  },
+  {
+    "sku": "17136",
+    "candidateFilename": "Esmalte Fantasy Nails Rubber Piel-2.png",
+    "candidateSha256": "274e427a47d2d483ab17458557f471ca96137ab202b694241161bbafbdb443e7",
+    "decision": "retain-original",
+    "reason": "Diferencias de contraste y trazos de la impresión RUBBER y del logotipo frente al original de menor resolución."
+  },
+  {
+    "sku": "28101",
+    "candidateFilename": "Esmalte de gel blanco Fantasy Nails-2.png",
+    "candidateSha256": "38fdada70c50bba3ff4555815bd2d4c0868d01d657b477b62b93259e93c7bad2",
+    "decision": "retain-original",
+    "reason": "Diferencias visibles en trazos y espaciado del logotipo y texto de contenido; no se acredita conservación exacta de etiqueta."
+  },
+  {
+    "sku": "28102",
+    "candidateFilename": "Esmalte Gel Negro Fantasy Nails-2.png",
+    "candidateSha256": "e83aa4bb59b1a2d189c510f71f1405433107ddacbf524d5f9bee54c2ec0971cc",
+    "decision": "retain-original",
+    "reason": "Cambian el tratamiento de los reflejos y los trazos del logotipo y texto de etiqueta frente al original."
+  },
+  {
+    "sku": "20132",
+    "candidateFilename": "Frasco Fantasy Nails True Bond-2.png",
+    "candidateSha256": "5bdc14a1407df7fab00538b7f44db886ee33a64834f5c64d40769b3292df2481",
+    "decision": "retain-original",
+    "reason": "El logotipo editado no conserva el MX visible en el original; cambia el dibujo del icono y la presentación de la etiqueta."
+  }
+]

@@ -1,0 +1,45 @@
+{
+  "sku": "28102",
+  "name": "Gel Super Negro",
+  "status": "pendiente_revision_individual",
+  "source_dimensions": [
+    3024,
+    4032
+  ],
+  "dimensions": [
+    3110,
+    3110
+  ],
+  "source_bbox": [
+    1069,
+    567,
+    1911,
+    2915
+  ],
+  "translation": [
+    65,
+    -186
+  ],
+  "product_scale": 1,
+  "relative_height": 0.754983922829582,
+  "margins_output": [
+    1134,
+    381,
+    1134,
+    381
+  ],
+  "opaque_pixels": 1466907,
+  "opaque_rgb_differences": 0,
+  "partial_alpha_pixels": 8551,
+  "source_sha256": "4c0977e3596a9fcd5a7764e3d8af7d34074bd7dd4924c51580b86d0ab696d668",
+  "candidate_sha256": "60c5cca0c51240ae77e348451b3507c8852eba1db32ea9c791d06eb8a53ac396",
+  "background": "#FAF8F5",
+  "generative_ai": false,
+  "reopened_rgba_original_rgb_differences": 0,
+  "independent_recomposition_differences": 0,
+  "source_matches_original_manifest": true,
+  "review_notes": "Revisar ambos extremos de la unión tapa/cuello, la transición del hombro derecho y los dos escalones laterales de la base. Los destellos claros del filo superior pertenecen al original y se conservan.",
+  "petal_contour_reused": false,
+  "mask_sha256": "edb5939b6769c98482f64d4f4262e927806699615ba42de4e4c71c98f6f0f4c8",
+  "shadow_sha256": "6cb8f41328494621396376eef6c566c6d331a6c094826ec487e2b6a5a650db0c"
+}
