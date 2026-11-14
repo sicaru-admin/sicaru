@@ -1,3 +1,5 @@
+> **Candidata vigente para revisión puntual:** [17141 · corrección R2](correccion-puntual-r2/README.md). Incluye únicamente los dos ajustes solicitados tras la auditoría de Dirección. Los archivos siguientes se conservan como evidencia de la versión anterior; ninguna versión está autorizada para publicación.
+
 # SICARÚ · Revisión visual exclusiva · SKU 17141
 
 **PENDIENTE DE APROBACIÓN VISUAL. NO AUTORIZADO PARA PRODUCCIÓN NI USO COMERCIAL.**
