@@ -1,0 +1,45 @@
+{
+  "sku": "28101",
+  "name": "Gel Super Blanco",
+  "status": "pendiente_revision_individual",
+  "source_dimensions": [
+    960,
+    1280
+  ],
+  "dimensions": [
+    914,
+    914
+  ],
+  "source_bbox": [
+    356,
+    287,
+    601,
+    977
+  ],
+  "translation": [
+    -22,
+    -175
+  ],
+  "product_scale": 1,
+  "relative_height": 0.7549234135667396,
+  "margins_output": [
+    334,
+    112,
+    335,
+    112
+  ],
+  "opaque_pixels": 126569,
+  "opaque_rgb_differences": 0,
+  "partial_alpha_pixels": 775,
+  "source_sha256": "846d9a8009e4bb6e103a7fd3a70e9a1f924c38fa825b7f5e3ed3312858613f45",
+  "candidate_sha256": "7e540771f31d1b43b005f0a6cb2848b0994f939ff662ce02a79cb4386d842831",
+  "background": "#FAF8F5",
+  "generative_ai": false,
+  "reopened_rgba_original_rgb_differences": 0,
+  "independent_recomposition_differences": 0,
+  "source_matches_original_manifest": true,
+  "review_notes": "Original de 960×1280: el envase blanco conserva la iluminación gris/azulada real. Revisar el ribete de la tapa, los extremos del cuello y el contorno de la base: en el cuello puede persistir una franja gris conservadora por el bajo contraste con el fondo original.",
+  "petal_contour_reused": false,
+  "mask_sha256": "25a833212947e85b394e02f9f480e1d553936b1eaf0a8fc311feee80c247dcd9",
+  "shadow_sha256": "e7f06429d00bbd7f57b8f8d0579e8b5f7c39780335af02ff1978521ffe3182fd"
+}

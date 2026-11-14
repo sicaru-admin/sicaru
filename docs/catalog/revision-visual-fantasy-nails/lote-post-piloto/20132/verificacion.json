@@ -1,0 +1,45 @@
+{
+  "sku": "20132",
+  "name": "TrueBond sin ácido",
+  "status": "pendiente_revision_individual",
+  "source_dimensions": [
+    960,
+    1280
+  ],
+  "dimensions": [
+    883,
+    883
+  ],
+  "source_bbox": [
+    362,
+    290,
+    605,
+    956
+  ],
+  "translation": [
+    -42,
+    -182
+  ],
+  "product_scale": 1,
+  "relative_height": 0.7542468856172141,
+  "margins_output": [
+    320,
+    108,
+    320,
+    109
+  ],
+  "opaque_pixels": 153253,
+  "opaque_rgb_differences": 0,
+  "partial_alpha_pixels": 694,
+  "source_sha256": "c30c5e15dbbe9eb61705d53e8e39e65f9c65c77020380316085c4c0461a55479",
+  "candidate_sha256": "f540feeb8dd3ee56b651d343e0f1dfc8f0ee925f343796e2f172a7d50df35b5d",
+  "background": "#FAF8F5",
+  "generative_ai": false,
+  "reopened_rgba_original_rgb_differences": 0,
+  "independent_recomposition_differences": 0,
+  "source_matches_original_manifest": true,
+  "review_notes": "Original de 960×1280. El gris visible a través del frasco translúcido se mantiene para no alterar los píxeles reales. Revisar pequeños remanentes/irregularidades en las esquinas superiores de la tapa, la unión tapa/frasco y la esquina de base derecha; no se declara que esas zonas estén visualmente aprobadas.",
+  "petal_contour_reused": false,
+  "mask_sha256": "2070bf29286a142f1f0fc9263ed915565132db1e0fd849869d806fab42b3742a",
+  "shadow_sha256": "9e72dd62bfd4d68761a6cdd7d58a0d7658f5b631f6f284552796c276bc03ff49"
+}

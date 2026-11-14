@@ -1,0 +1,45 @@
+{
+  "sku": "17133",
+  "name": "Gel Rubber Pink Shine",
+  "status": "pendiente_revision_individual",
+  "source_dimensions": [
+    3024,
+    4032
+  ],
+  "dimensions": [
+    2897,
+    2897
+  ],
+  "source_bbox": [
+    1083,
+    954,
+    1875,
+    3141
+  ],
+  "translation": [
+    -31,
+    -599
+  ],
+  "product_scale": 1,
+  "relative_height": 0.7549188816016569,
+  "margins_output": [
+    1052,
+    355,
+    1053,
+    355
+  ],
+  "opaque_pixels": 1284411,
+  "opaque_rgb_differences": 0,
+  "partial_alpha_pixels": 8530,
+  "source_sha256": "65c3729437597adf94e647502abb1af612340cfca516550de8a2625bb6a49146",
+  "candidate_sha256": "624b84b7da088c266254f3220486c6d32d67d4eae6a312eb46a9ce8098204722",
+  "background": "#FAF8F5",
+  "generative_ai": false,
+  "reopened_rgba_original_rgb_differences": 0,
+  "independent_recomposition_differences": 0,
+  "source_matches_original_manifest": true,
+  "review_notes": "Revisar a tamaño nativo el reflejo del filo superior, los dos extremos de unión tapa/cuello (puede quedar una transición gris puntual) y los escalones de la base. Los arañazos, fibras y reflejos reales no se limpiaron.",
+  "petal_contour_reused": false,
+  "mask_sha256": "2639ad3676b293a4748fb4765f6c87feca867f4ce999503020dd19494f09bd65",
+  "shadow_sha256": "e1afed5079257f45ffa6714213e0be07cecbc3ad3ca3ff07a2b8dde271f69d8a"
+}
