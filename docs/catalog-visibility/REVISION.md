@@ -24,6 +24,8 @@ Ensayo con build/start reales de **Next 16.1.6**, React/SDK de la instalación f
 - Caída del origen: listado y ficha muestran estado neutral, sin datos anteriores de productos. Las respuestas observadas son private/no-cache/no-store.
 - Suite completa: 112/112 pruebas; pruebas afectadas de invalidación/archivos protegidos: 20/20. Lint completo sin errores, con tres advertencias existentes de img y variable no utilizada; lint del alcance sin advertencias ni errores. TypeScript y build correctos. Las pruebas nuevas se integran al CI existente, sin servicios externos nuevos.
 
+El primer CI pasó las 34 comprobaciones nuevas, pero la prueba PWA existente seguía quitando el identificador de caché de la versión anterior. Se actualizó sólo la preparación para leer el identificador real del código; las expectativas de limpieza y conservación del carrito no se relajaron.
+
 El primer ensayo reutilizó Next 16.4.3 y no se tomó como evidencia suficiente de producción; se repitió con 16.1.6. Se descartó una propuesta de modificar cabeceras públicas para conservar la configuración protegida; la única excepción final de vercel.json impide despliegue de la rama. No se relajaron hashes comerciales ni se cambiaron expectativas para ocultar fallos.
 
 Evidencia final: evidencia/browser.json y evidencia/unit.log. El runtime/build completo se conserva localmente en artifacts/catalog-visibility/. Los resultados por caso permiten revisar retiradas HTML/RSC y pérdida de entrega.
