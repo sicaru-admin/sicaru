@@ -6,6 +6,7 @@ import { getAllPosts } from "@/lib/blog";
 
 // Reflect Store API publication changes without requiring a new build.
 export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://www.sicarubeauty.com";

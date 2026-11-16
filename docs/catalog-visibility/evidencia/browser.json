@@ -1,0 +1,172 @@
+{
+  "checks": [
+    {
+      "test": "published HTML /",
+      "status": 200,
+      "cache_control": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "pass": true
+    },
+    {
+      "test": "published RSC /",
+      "pass": true
+    },
+    {
+      "test": "published HTML /productos",
+      "status": 200,
+      "cache_control": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "pass": true
+    },
+    {
+      "test": "published RSC /productos",
+      "pass": true
+    },
+    {
+      "test": "published HTML /categorias/categoria-test",
+      "status": 200,
+      "cache_control": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "pass": true
+    },
+    {
+      "test": "published RSC /categorias/categoria-test",
+      "pass": true
+    },
+    {
+      "test": "published HTML /marcas/marca-test",
+      "status": 200,
+      "cache_control": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "pass": true
+    },
+    {
+      "test": "published RSC /marcas/marca-test",
+      "pass": true
+    },
+    {
+      "test": "published detail",
+      "status": 200,
+      "cache_control": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "pass": true
+    },
+    {
+      "test": "published detail RSC",
+      "pass": true
+    },
+    {
+      "test": "published sitemap",
+      "status": 200,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "pass": true
+    },
+    {
+      "test": "draft HTML before webhook /",
+      "status": 200,
+      "cache_control": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "pass": true
+    },
+    {
+      "test": "draft RSC before webhook /",
+      "pass": true
+    },
+    {
+      "test": "draft HTML before webhook /productos",
+      "status": 200,
+      "cache_control": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "pass": true
+    },
+    {
+      "test": "draft RSC before webhook /productos",
+      "pass": true
+    },
+    {
+      "test": "draft HTML before webhook /categorias/categoria-test",
+      "status": 200,
+      "cache_control": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "pass": true
+    },
+    {
+      "test": "draft RSC before webhook /categorias/categoria-test",
+      "pass": true
+    },
+    {
+      "test": "draft HTML before webhook /marcas/marca-test",
+      "status": 200,
+      "cache_control": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "pass": true
+    },
+    {
+      "test": "draft RSC before webhook /marcas/marca-test",
+      "pass": true
+    },
+    {
+      "test": "retired direct URL",
+      "status": 200,
+      "cache_control": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "pass": true
+    },
+    {
+      "test": "new draft direct URL",
+      "status": 200,
+      "cache_control": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "pass": true
+    },
+    {
+      "test": "draft sitemap",
+      "status": 200,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "pass": true
+    },
+    {
+      "test": "draft direct RSC /productos/retirar",
+      "pass": true
+    },
+    {
+      "test": "draft direct RSC /productos/nunca-publico",
+      "pass": true
+    },
+    {
+      "test": "reject expired",
+      "pass": true
+    },
+    {
+      "test": "reject wrong scope",
+      "pass": true
+    },
+    {
+      "test": "reject oversize",
+      "pass": true
+    },
+    {
+      "test": "signed invalidation and safe retry",
+      "pass": true
+    },
+    {
+      "test": "open tab refreshes after online event",
+      "pass": true
+    },
+    {
+      "test": "history return does not restore retired product",
+      "pass": true
+    },
+    {
+      "test": "mobile published survivor, no drafts",
+      "pass": true
+    },
+    {
+      "test": "offline fails closed /productos",
+      "status": 200,
+      "cache_control": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "pass": true
+    },
+    {
+      "test": "offline fails closed /productos/conservar",
+      "status": 200,
+      "cache_control": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "pass": true
+    },
+    {
+      "test": "zero backend/payment/checkout mutations",
+      "pass": true
+    }
+  ],
+  "backend_writes": 0,
+  "external_writes": 0
+}
