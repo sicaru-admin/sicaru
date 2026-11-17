@@ -61,6 +61,14 @@ jobs:
           trap 'cat /tmp/sicaru-next.log' EXIT
           node tests/storefront-browser.mjs
 
+      - name: Verify catalogue retirement in HTML, RSC and sitemap
+        if: ${{ !cancelled() }}
+        timeout-minutes: 5
+        env:
+          PLAYWRIGHT_MODULE: file:///tmp/sicaru-playwright/node_modules/playwright/index.mjs
+          PLAYWRIGHT_CHANNEL: chrome
+        run: node tests/catalog-visibility-browser.mjs
+
       - name: Upload mobile review screenshots
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
