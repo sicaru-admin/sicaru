@@ -1,0 +1,267 @@
+{
+  "schema_version": 1,
+  "state": "PENDING_VISUAL_APPROVAL",
+  "tool": {
+    "sharp": "0.34.5",
+    "vips": "8.17.3",
+    "webp": "1.6.0"
+  },
+  "generative_ai": false,
+  "assets": [
+    {
+      "handle": "xiomara-shampoo-platinum-250ml",
+      "role": "01-principal",
+      "path": "public/images/products/xiomara-shampoo-platinum-250ml/01-principal-r2.webp",
+      "source": {
+        "drive_id": "13II_d26N029t2joXmw5Q2Vp0T2BrGI6a",
+        "url": "https://drive.google.com/file/d/13II_d26N029t2joXmw5Q2Vp0T2BrGI6a/view",
+        "filename": "WhatsApp Image 2026-07-21 at 17.20.05 (1).jpeg",
+        "format": "jpeg",
+        "width": 3024,
+        "height": 4032,
+        "bytes": 451412,
+        "sha256": "1349ab7e689f002e7be9a30c219f51a22630f71a1af234d0e46f853b4cd284a2"
+      },
+      "source_sha256_unchanged": true,
+      "width": 1600,
+      "height": 1600,
+      "format": "webp",
+      "has_alpha": true,
+      "bytes": 294672,
+      "sha256": "e5352e725484ee98cd350f163ef0db05eea06bb66aec1f6a991fa00ea03b681e",
+      "technique": "manual Bezier alpha mask at native resolution; proportional Lanczos3 reduction; lossless WebP",
+      "generative_ai": false,
+      "product_reconstructed": false,
+      "label_reconstructed": false,
+      "rgb_changes_before_resize": 0,
+      "opaque_source_pixels_checked": 2004033,
+      "exposure_ev": 0,
+      "color_adjustments": false,
+      "shadow_baked": false,
+      "background_baked": false,
+      "bounds_native": {
+        "left": 1038,
+        "top": 592,
+        "width": 769,
+        "height": 3294
+      },
+      "placement": {
+        "left": 637,
+        "top": 128,
+        "rendered_width": 306,
+        "rendered_height": 1312,
+        "base": 1440,
+        "canvas": 1600
+      },
+      "alpha": {
+        "transparent_pixels": 2237176,
+        "opaque_pixels": 313025
+      },
+      "human_review": "White pump tip and rim; concave space under lever preserved as transparent."
+    },
+    {
+      "handle": "xiomara-shampoo-platinum-libre-sulfatos-250ml",
+      "role": "01-principal",
+      "path": "public/images/products/xiomara-shampoo-platinum-libre-sulfatos-250ml/01-principal-r2.webp",
+      "source": {
+        "drive_id": "12uH0eSwBFgh71KHmfyMvaV7hsSFIw2oH",
+        "url": "https://drive.google.com/file/d/12uH0eSwBFgh71KHmfyMvaV7hsSFIw2oH/view",
+        "filename": "WhatsApp Image 2026-02-25 at 16.43.07 (1).jpeg",
+        "format": "jpeg",
+        "width": 3024,
+        "height": 4032,
+        "bytes": 488422,
+        "sha256": "d7e1d2cf714dfeee79b8926af30d6a17bf4c00dfff8d2f459b390aa9297c523b"
+      },
+      "source_sha256_unchanged": true,
+      "width": 1600,
+      "height": 1600,
+      "format": "webp",
+      "has_alpha": true,
+      "bytes": 399170,
+      "sha256": "a9d76020771c3712753900f2e0e49faa1012098e90a04d5878b481940e71ed7a",
+      "technique": "manual Bezier alpha mask at native resolution; proportional Lanczos3 reduction; lossless WebP",
+      "generative_ai": false,
+      "product_reconstructed": false,
+      "label_reconstructed": false,
+      "rgb_changes_before_resize": 0,
+      "opaque_source_pixels_checked": 1430112,
+      "exposure_ev": 0,
+      "color_adjustments": false,
+      "shadow_baked": false,
+      "background_baked": false,
+      "bounds_native": {
+        "left": 1067,
+        "top": 795,
+        "width": 742,
+        "height": 2732
+      },
+      "placement": {
+        "left": 602,
+        "top": 128,
+        "rendered_width": 356,
+        "rendered_height": 1312,
+        "base": 1440,
+        "canvas": 1600
+      },
+      "alpha": {
+        "transparent_pixels": 2223854,
+        "opaque_pixels": 324901
+      },
+      "human_review": "Translucent pump plastic retains photographed RGB/reflections. No optical reconstruction or recoloring."
+    },
+    {
+      "handle": "xiomara-shampoo-platinum-libre-sulfatos-250ml",
+      "role": "02-reverso",
+      "path": "public/images/products/xiomara-shampoo-platinum-libre-sulfatos-250ml/02-reverso-r2.webp",
+      "source": {
+        "drive_id": "17BZdXHs-9i7-rlEIxZk0j1qcEIZgPdIk",
+        "url": "https://drive.google.com/file/d/17BZdXHs-9i7-rlEIxZk0j1qcEIZgPdIk/view",
+        "filename": "WhatsApp Image 2026-02-25 at 16.43.07.jpeg",
+        "format": "jpeg",
+        "width": 3024,
+        "height": 4032,
+        "bytes": 548282,
+        "sha256": "2f6ead48cbe70d0c853c884d3fd56a95376a81d1e89abdaa97beb38b4c97e3b4"
+      },
+      "source_sha256_unchanged": true,
+      "width": 1600,
+      "height": 1600,
+      "format": "webp",
+      "has_alpha": true,
+      "bytes": 370402,
+      "sha256": "b9f355a9d7e78005ed9e9dd61aca5657b0c94ecacb67e9b6569b88deb2b850b6",
+      "technique": "manual Bezier alpha mask at native resolution; proportional Lanczos3 reduction; lossless WebP",
+      "generative_ai": false,
+      "product_reconstructed": false,
+      "label_reconstructed": false,
+      "rgb_changes_before_resize": 0,
+      "opaque_source_pixels_checked": 2142499,
+      "exposure_ev": 0,
+      "color_adjustments": false,
+      "shadow_baked": false,
+      "background_baked": false,
+      "bounds_native": {
+        "left": 1087,
+        "top": 538,
+        "width": 853,
+        "height": 3078
+      },
+      "placement": {
+        "left": 615,
+        "top": 128,
+        "rendered_width": 364,
+        "rendered_height": 1312,
+        "base": 1440,
+        "canvas": 1600
+      },
+      "alpha": {
+        "transparent_pixels": 2165062,
+        "opaque_pixels": 384559
+      },
+      "human_review": "Rear pump nozzle is naturally out of focus; retain its photographed softness and full outline."
+    },
+    {
+      "handle": "nekane-morazul-shampoo-matizador-300g",
+      "role": "01-principal",
+      "path": "public/images/products/nekane-morazul-shampoo-matizador-300g/01-principal-r2.webp",
+      "source": {
+        "drive_id": "1HP2X3p3THKJ7581EcUBf_6iHHsy3-LKA",
+        "url": "https://drive.google.com/file/d/1HP2X3p3THKJ7581EcUBf_6iHHsy3-LKA/view",
+        "filename": "WhatsApp Image 2026-02-25 at 16.43.27 (1).jpeg",
+        "format": "jpeg",
+        "width": 3024,
+        "height": 4032,
+        "bytes": 840892,
+        "sha256": "5c1186a1401241de65cd630c1517e9851a040182dce6f936f8fce1eca6813f51"
+      },
+      "source_sha256_unchanged": true,
+      "width": 1600,
+      "height": 1600,
+      "format": "webp",
+      "has_alpha": true,
+      "bytes": 484204,
+      "sha256": "d1d5af36ff864517a9daabf39110cfcd7d032e5a3233f917d052cbc5da34394e",
+      "technique": "manual Bezier alpha mask at native resolution; proportional Lanczos3 reduction; lossless WebP",
+      "generative_ai": false,
+      "product_reconstructed": false,
+      "label_reconstructed": false,
+      "rgb_changes_before_resize": 0,
+      "opaque_source_pixels_checked": 2211208,
+      "exposure_ev": 0,
+      "color_adjustments": false,
+      "shadow_baked": false,
+      "background_baked": false,
+      "bounds_native": {
+        "left": 1111,
+        "top": 367,
+        "width": 746,
+        "height": 3419
+      },
+      "placement": {
+        "left": 659,
+        "top": 128,
+        "rendered_width": 286,
+        "rendered_height": 1312,
+        "base": 1440,
+        "canvas": 1600
+      },
+      "alpha": {
+        "transparent_pixels": 2229682,
+        "opaque_pixels": 321223
+      },
+      "human_review": "Gold flip-cap notch and small real base imperfections must remain untouched."
+    },
+    {
+      "handle": "nekane-morazul-shampoo-matizador-300g",
+      "role": "02-reverso",
+      "path": "public/images/products/nekane-morazul-shampoo-matizador-300g/02-reverso-r2.webp",
+      "source": {
+        "drive_id": "1ln4qqA_MiqzJ1RRPcdG3z5xglfbClpWM",
+        "url": "https://drive.google.com/file/d/1ln4qqA_MiqzJ1RRPcdG3z5xglfbClpWM/view",
+        "filename": "WhatsApp Image 2026-02-25 at 16.43.27 (2).jpeg",
+        "format": "jpeg",
+        "width": 3024,
+        "height": 4032,
+        "bytes": 1032636,
+        "sha256": "a83ef48f74e2476dee76987390592636bd68558c865fef4a8ef652ea95c87d97"
+      },
+      "source_sha256_unchanged": true,
+      "width": 1600,
+      "height": 1600,
+      "format": "webp",
+      "has_alpha": true,
+      "bytes": 520118,
+      "sha256": "5077888e6cf52fe616569ec99aa2c8d191f1200c22890f1e2490fbf96e819cf3",
+      "technique": "manual Bezier alpha mask at native resolution; proportional Lanczos3 reduction; lossless WebP",
+      "generative_ai": false,
+      "product_reconstructed": false,
+      "label_reconstructed": false,
+      "rgb_changes_before_resize": 0,
+      "opaque_source_pixels_checked": 2215120,
+      "exposure_ev": 0,
+      "color_adjustments": false,
+      "shadow_baked": false,
+      "background_baked": false,
+      "bounds_native": {
+        "left": 1123,
+        "top": 310,
+        "width": 736,
+        "height": 3454
+      },
+      "placement": {
+        "left": 661,
+        "top": 128,
+        "rendered_width": 280,
+        "rendered_height": 1312,
+        "base": 1440,
+        "canvas": 1600
+      },
+      "alpha": {
+        "transparent_pixels": 2235510,
+        "opaque_pixels": 315107
+      },
+      "human_review": "Barcode stays exactly as photographed; no barcode/EAN/UPC write or reconciliation."
+    }
+  ]
+}
