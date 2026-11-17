@@ -1,0 +1,120 @@
+{
+  "modified_candidates": [
+    {
+      "sku": "28101",
+      "status": "candidata_final_r3_pendiente_revision_y_publicacion",
+      "dimensions": [
+        914,
+        914
+      ],
+      "source_regions": [
+        {
+          "zone": "Extremo inferior izquierdo",
+          "source_box": [
+            350,
+            908,
+            391,
+            955
+          ]
+        },
+        {
+          "zone": "Extremo inferior derecho",
+          "source_box": [
+            561,
+            908,
+            610,
+            955
+          ]
+        }
+      ],
+      "changed_output_pixels": 160,
+      "changes_outside_regions": 0,
+      "translation": [
+        -22,
+        -175
+      ],
+      "product_scale": 1,
+      "background": "#FAF8F5",
+      "protected_interior_box": [
+        380,
+        635,
+        575,
+        905
+      ],
+      "protected_interior_differences": 0,
+      "shadow_sha256_unchanged": "e7f06429d00bbd7f57b8f8d0579e8b5f7c39780335af02ff1978521ffe3182fd",
+      "before_sha256": "7c990efd8cf2835914bc1cf66174a88710b5b3a67909c57a76b3dea61f24598a",
+      "after_sha256": "32a8522411002291217c9b8cb737ca36d50c0c63f058802e405f405917c7ff83",
+      "generative_ai": false,
+      "independent_verification": {
+        "dimensions_unchanged": true,
+        "changes_outside_regions": 0,
+        "corrected_pixels_explained_by_source_plus_existing_background_only": true,
+        "max_rgb_compositing_residual": 0.5864155881330646,
+        "protected_interior_differences": 0,
+        "shadow_file_modified": false
+      }
+    },
+    {
+      "sku": "20132",
+      "status": "candidata_final_r3_pendiente_revision_y_publicacion",
+      "dimensions": [
+        883,
+        883
+      ],
+      "source_regions": [
+        {
+          "zone": "Contorno derecho junto a etiqueta",
+          "source_box": [
+            585,
+            864,
+            615,
+            926
+          ]
+        }
+      ],
+      "changed_output_pixels": 144,
+      "changes_outside_regions": 0,
+      "translation": [
+        -42,
+        -182
+      ],
+      "product_scale": 1,
+      "background": "#FAF8F5",
+      "protected_interior_box": [
+        380,
+        600,
+        585,
+        915
+      ],
+      "protected_interior_differences": 0,
+      "shadow_sha256_unchanged": "9e72dd62bfd4d68761a6cdd7d58a0d7658f5b631f6f284552796c276bc03ff49",
+      "before_sha256": "95415191fbc8f4e688c299bfe340bc338e631f5c6f8ecb5d6e29c852b619840b",
+      "after_sha256": "b93a2e358085b4659a74f730343b671faba839722e7348d5ffcc86db6718d652",
+      "generative_ai": false,
+      "independent_verification": {
+        "dimensions_unchanged": true,
+        "changes_outside_regions": 0,
+        "corrected_pixels_explained_by_source_plus_existing_background_only": true,
+        "max_rgb_compositing_residual": 0.5559172142725401,
+        "protected_interior_differences": 0,
+        "shadow_file_modified": false
+      }
+    }
+  ],
+  "unchanged_four_skus": {
+    "17133": "624b84b7da088c266254f3220486c6d32d67d4eae6a312eb46a9ce8098204722",
+    "17141": "166df5915a623010dfaf6574e4df1dac2b871f77cf5b022f3683c27bb0c201a7",
+    "17136": "f206d9fa4e90ed46fc297d7aa594487fe0441b02d01063d0b39ff58ac21656f0",
+    "28102": "eca55c9e5bf3cb11975f7fd1d7290164f5ca7ab1ebec201a102192769da1dad7"
+  },
+  "selected_versions": {
+    "17133": "lote-post-piloto/17133/17133-catalogo-candidata.png",
+    "17141": "17141/correccion-puntual-r2/17141-catalogo-candidata-r2.png",
+    "17136": "lote-post-piloto/17136/17136-catalogo-candidata.png",
+    "28101": "correcciones-finales-dos-sku-r3/28101-candidata-final-r3.png",
+    "28102": "correcciones-tres-sku-r2/28102-refinada-r2.png",
+    "20132": "correcciones-finales-dos-sku-r3/20132-candidata-final-r3.png"
+  },
+  "commercial_publication_authorization": "not_granted"
+}
