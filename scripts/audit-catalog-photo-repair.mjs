@@ -13,12 +13,14 @@ export const APPROVED_R3_CANDIDATES = [
   {
     handle: "xiomara-shampoo-platinum-250ml",
     masterId: "PRD-9CC3A06A6F10",
+    historicalMedusaId: "prod_01M79C6MFY2YPX504ZMDW9HJ0A",
     title: "XIOMARA Shampoo Platinum 250 ml",
     front: "/images/products/xiomara-shampoo-platinum-250ml/01-principal-r3.webp",
   },
   {
     handle: "xiomara-shampoo-platinum-libre-sulfatos-250ml",
     masterId: "PRD-3CE612A96316",
+    historicalMedusaId: "prod_01M79C7BHA8D7GCZG4DTBM1Q68",
     title: "XIOMARA Shampoo Platinum Libre de Sulfatos 250 ml",
     front: "/images/products/xiomara-shampoo-platinum-libre-sulfatos-250ml/01-principal-r3.webp",
     back: "/images/products/xiomara-shampoo-platinum-libre-sulfatos-250ml/02-reverso-r3.webp",
@@ -26,6 +28,7 @@ export const APPROVED_R3_CANDIDATES = [
   {
     handle: "nekane-morazul-shampoo-matizador-300g",
     masterId: "PRD-ABEB7E8039E3",
+    historicalMedusaId: "prod_01M79C817D78WYM8K6D9W32NH1",
     title: "NEKANE Morazul Shampoo Matizador 300 g",
     front: "/images/products/nekane-morazul-shampoo-matizador-300g/01-principal-r3.webp",
     back: "/images/products/nekane-morazul-shampoo-matizador-300g/02-reverso-r3.webp",
@@ -69,16 +72,19 @@ export function makeReport(products) {
   const r3 = APPROVED_R3_CANDIDATES.map(c => {
     const product = byHandle.get(c.handle);
     const sameIdentity = !!product && getMasterId(product) === c.masterId;
+    const historicalIdMatch = !!product && !getMasterId(product) && product.id === c.historicalMedusaId;
     return {
       handle: c.handle,
       productId: product?.id ?? null,
       currentTitle: product?.title ?? null,
       masterIdInStore: product ? (getMasterId(product) || null) : null,
       expectedMasterId: c.masterId,
-      identity: !product ? "NOT_PUBLIC" : sameIdentity ? "MATCH" : "BLOCKED_IDENTITY_NOT_VERIFIED",
+      historicalMedusaId: c.historicalMedusaId,
+      historicalProductIdMatches: historicalIdMatch,
+      identity: !product ? "NOT_PUBLIC" : sameIdentity ? "MATCH" : historicalIdMatch ? "HISTORICAL_MATCH_REQUIRES_ADMIN_VERIFICATION" : "BLOCKED_IDENTITY_NOT_VERIFIED",
       currentImage: product ? imageInfo(product) : null,
       proposedR3: {front:c.front, ...(c.back ? {back:c.back} : {})},
-      action: sameIdentity ? "CANDIDATE_FOR_REVIEW_NO_WRITE" : "DO_NOT_ASSOCIATE",
+      action: sameIdentity || historicalIdMatch ? "CANDIDATE_FOR_REVIEW_NO_WRITE" : "DO_NOT_ASSOCIATE",
     };
   });
   const montisMatches = products.filter(p =>
