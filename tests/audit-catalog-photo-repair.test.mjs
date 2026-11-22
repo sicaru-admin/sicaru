@@ -33,3 +33,20 @@ test("registra diferencia Montis sin cambiar el registro", () => {
   assert.equal(report.montis[0].action,"TITLE_REVIEW_NO_WRITE");
   assert.deepEqual(p,before);
 });
+
+test("ID histórico exacto permite revisión visual, pero exige confirmar Admin", () => {
+  const master = APPROVED_R3_CANDIDATES[0];
+  const product = {id: master.historicalMedusaId, handle: master.handle, title: master.title, metadata: {}};
+  const report = makeReport([product]);
+  assert.equal(report.r3[0].historicalProductIdMatches, true);
+  assert.equal(report.r3[0].identity, "HISTORICAL_MATCH_REQUIRES_ADMIN_VERIFICATION");
+  assert.equal(report.r3[0].action, "CANDIDATE_FOR_REVIEW_NO_WRITE");
+});
+
+test("ID histórico de otro producto bloquea asociación aun con handle coincidente", () => {
+  const master = APPROVED_R3_CANDIDATES[0];
+  const product = {id: "prod_DISTINTO", handle: master.handle, title: master.title, metadata: {}};
+  const report = makeReport([product]);
+  assert.equal(report.r3[0].historicalProductIdMatches, false);
+  assert.equal(report.r3[0].action, "DO_NOT_ASSOCIATE");
+});
