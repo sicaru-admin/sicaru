@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -22,7 +23,7 @@ const images = {
   xiomara: "/images/products/xiomara-shampoo-platinum-250ml/01-principal-r3.webp",
 };
 
-function Headline({ children }: { children: React.ReactNode }) {
+function Headline({ children }: { children: ReactNode }) {
   return <h2 className="text-[clamp(2.1rem,5vw,4rem)] font-bold leading-[0.98] tracking-[-0.06em]">{children}</h2>;
 }
 
