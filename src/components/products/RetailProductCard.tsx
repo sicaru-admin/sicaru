@@ -10,6 +10,7 @@ import { CATALOG_MODE } from "@/lib/catalog-mode";
 import { getProductWhatsAppHref } from "@/lib/product-inquiry";
 import { ProductPhoto } from "./ProductPhoto";
 import { getCatalogCartAddInput } from "@/lib/catalog-cart";
+import { getVerifiedCatalogCardPhoto } from "@/lib/catalog-verified-card-photos";
 
 export function RetailProductCard({ product }: { product: HttpTypes.StoreProduct }) {
   const variants = product.variants ?? [];
@@ -26,7 +27,7 @@ export function RetailProductCard({ product }: { product: HttpTypes.StoreProduct
     : inventoryStatus === "unverified" ? "Disponibilidad por confirmar" : "Consultar disponibilidad";
   const brand = product.collection?.title || (typeof product.metadata?.brand === "string" ? product.metadata.brand : null);
   const presentation = product.subtitle || (typeof product.metadata?.presentation === "string" ? product.metadata.presentation : null);
-  const image = product.thumbnail || product.images?.[0]?.url;
+  const image = getVerifiedCatalogCardPhoto(product, product.thumbnail || product.images?.[0]?.url);
 
   async function add() {
     if (!variant || !available) return;
