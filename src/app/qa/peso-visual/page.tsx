@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CATALOG_MODE } from "@/lib/catalog-mode";
 
@@ -130,7 +129,6 @@ export default function ProductVisualLab() {
           <h2 className="font-heading text-xl">Qué evaluamos</h2>
           <p className="mt-2 text-sm leading-6">Legibilidad del envase, balance entre producto y texto, reconocimiento de marca, espacio vertical de scroll, claridad del CTA y contraste real en 320, 375 y 390 px. Los precios quedan intencionalmente sin cifra para no inventar información comercial.</p>
           <p className="mt-3 text-xs text-[#7f6d8a]">La muestra es una comparación de diseño aislada; no es la tarjeta interactiva de producción. No fusionar por aprobar únicamente una maqueta.</p>
-          <Link href="/qa/reparacion-shampoos" className="mt-3 inline-block text-xs font-semibold text-[#7f6d8a] underline">Diagnóstico anterior de fotografías (si está disponible en esta rama)</Link>
         </section>
       </div>
     </main>
