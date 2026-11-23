@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postbuild": "node scripts/preview-snapshot-four-products.tmp.mjs"
   },
   "dependencies": {
     "@medusajs/js-sdk": "^2.13.1",
