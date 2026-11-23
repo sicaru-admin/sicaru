@@ -36,15 +36,15 @@ export function RetailProductCard({ product }: { product: HttpTypes.StoreProduct
   }
 
   return (
-    <article data-testid="retail-product-card" className="group flex min-w-0 flex-col rounded-xl border border-[#efe7dd] bg-[#faf8f5] p-2.5 transition-colors hover:border-[#9b89a8] sm:p-4">
-      <Link href={`/productos/${product.handle}`} className="relative block aspect-square overflow-hidden rounded-lg bg-[#faf8f5] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7f6d8a]" aria-label={`Ver ${product.title}`}>
+    <article data-testid="retail-product-card" className="group flex min-w-0 flex-col rounded-xl border border-[#efe7dd] bg-[#faf8f5] p-2.5 transition-colors hover:border-[#9b89a8] hover:shadow-[0_8px_26px_rgba(46,43,43,0.055)] sm:p-3.5">
+      <Link href={`/productos/${product.handle}`} className="relative block aspect-[4/5] overflow-hidden rounded-lg bg-[#f5f1eb] sm:aspect-[5/6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7f6d8a]" aria-label={`Ver ${product.title}`}>
         <ProductPhoto src={image} alt={product.title || "Producto SICARÚ"} />
       </Link>
-      <div className="flex flex-1 flex-col pt-2.5">
+      <div className="flex flex-1 flex-col pt-3">
         {brand && <p className="mb-1 text-[0.6rem] font-semibold uppercase tracking-[0.08em] text-[#7f6d8a] sm:text-xs">{brand}</p>}
-        <h3 className="line-clamp-2 text-xs font-medium leading-5 text-[#2e2b2b] sm:text-sm"><Link href={`/productos/${product.handle}`}>{product.title}</Link></h3>
+        <h3 className="line-clamp-2 min-h-10 text-xs font-semibold leading-5 text-[#2e2b2b] sm:text-sm"><Link href={`/productos/${product.handle}`}>{product.title}</Link></h3>
         {presentation && <p className="mt-1 text-[0.65rem] leading-4 text-[#2e2b2b]/65 sm:text-xs">{presentation}</p>}
-        <p className="mt-2 text-sm font-semibold text-[#7f6d8a] sm:text-base" data-testid="retail-price">{price ? new Intl.NumberFormat("es-MX", { style: "currency", currency: price.currency_code || "MXN" }).format(price.calculated_amount) : "Consultar precio"}</p>
+        <p className="mt-2 text-base font-bold text-[#7f6d8a] sm:text-lg" data-testid="retail-price">{price ? new Intl.NumberFormat("es-MX", { style: "currency", currency: price.currency_code || "MXN" }).format(price.calculated_amount) : "Consultar precio"}</p>
         <div className="mt-auto pt-3">
           {variants.length > 1 && <div className="mb-2">
             <label htmlFor={selectId} className="sr-only">Variante de {product.title}</label>
@@ -61,7 +61,7 @@ export function RetailProductCard({ product }: { product: HttpTypes.StoreProduct
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`Consultar ${product.title} por WhatsApp`}
-                className="flex min-h-11 w-full items-center justify-center rounded-full border border-[#7f6d8a] px-2 py-2 text-center text-xs font-semibold text-[#7f6d8a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7f6d8a] sm:text-sm"
+                className="flex min-h-11 w-full items-center justify-center rounded-full bg-[#7f6d8a] px-2 py-2 text-center text-xs font-semibold text-white transition-colors hover:bg-[#6c5c76] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7f6d8a] sm:text-sm"
               >
                 Consultar por WhatsApp
               </a>
