@@ -94,7 +94,7 @@ export default async function LiveImageAudit() {
                 {allowCandidate&&row.front&&<div className="mt-6" data-testid={`retail-card-${row.handle}`}>
                   <p className="mb-3 text-xs font-semibold text-[#7F6D8A]">Vista de tarjeta REAL del catálogo · prueba, sin cambios Medusa</p>
                   <div className="grid grid-cols-2 gap-3 sm:max-w-[740px] sm:gap-6">
-                    <div className="min-w-0"><p className="mb-2 text-xs">Como llega hoy</p><RetailProductCard product={p as HttpTypes.StoreProduct}/></div>
+                    <div className="min-w-0"><p className="mb-2 text-xs">Como llega hoy</p><RetailProductCard product={p as HttpTypes.StoreProduct} disableVerifiedPhoto/></div>
                     <div className="min-w-0"><p className="mb-2 text-xs">Con R3 candidata</p><RetailProductCard product={{...p,thumbnail:row.front} as HttpTypes.StoreProduct}/></div>
                   </div>
                   <p className="mt-2 text-xs text-[#7F6D8A]">El precio y disponibilidad de ambas tarjetas se calculan con la misma ficha recibida; solo cambia thumbnail en memoria para la comparación.</p>
