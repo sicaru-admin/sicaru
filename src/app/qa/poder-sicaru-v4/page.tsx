@@ -9,6 +9,8 @@ import { CATALOG_MODE } from "@/lib/catalog-mode";
 import { getProductByHandle } from "@/lib/data/products";
 import { getApprovedPrice } from "@/lib/product-retail";
 import { getProductWhatsAppHref } from "@/lib/product-inquiry";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -70,6 +72,8 @@ export default async function CommerceExperienceLab() {
     : "Consultar precio";
 
   return (
+    <>
+    <Navbar />
     <main className="min-h-screen bg-[#FAF8F5] text-[#2E2B2B]">
 
       <div className="border-b border-[#9B89A8]/25 bg-[#FAF8F5] px-4 py-2 text-center text-[0.65rem] font-semibold uppercase tracking-[0.13em] text-[#7F6D8A]">SICARÚ · Laboratorio V4 · No aprobado</div>
@@ -218,5 +222,7 @@ export default async function CommerceExperienceLab() {
         <p className="mt-5 text-xs text-[#2E2B2B]/65">Laboratorio V4 · Preview, no aprobado. Fotografías de producto reales sin alterar. Foto humana de referencia externa, no afiliada a SICARÚ. No se publican precios, inventario ni pagos sin validación.</p>
       </section>
     </main>
+    <Footer />
+    </>
   );
 }
