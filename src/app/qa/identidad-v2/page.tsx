@@ -104,6 +104,35 @@ function FluidComposition() {
   );
 }
 
+
+/** Phase 1B: the actual bottle creates visual weight, without graphic lines. */
+function ProductFirstComposition() {
+  return (
+    <div className="relative isolate overflow-hidden rounded-[1.5rem] bg-[#FAF8F5] shadow-[0_19px_42px_-25px_rgba(46,43,43,0.22)]">
+      <Grain light />
+      <div aria-hidden="true" className="pointer-events-none absolute bottom-[-18%] right-[-26%] h-[98%] w-[112%] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(155,137,168,0.48)_0%,rgba(142,122,158,0.15)_47%,transparent_73%)] blur-[25px] sm:bottom-[-34%] sm:right-[-13%] sm:h-[145%] sm:w-[76%] sm:blur-[38px]" />
+      <div className="relative min-h-[610px] px-5 pb-9 pt-9 sm:min-h-[560px] sm:px-10 sm:pb-10 sm:pt-12 lg:px-14">
+        <div className="relative z-30 max-w-[95%] sm:max-w-[56%]">
+          <p className="text-[0.65rem] font-semibold tracking-[0.10em] text-[#7F6D8A] sm:text-sm">SICARÚ · Belleza profesional</p>
+          <h2 className="mt-5 font-sans text-[clamp(3.25rem,7.2vw,6.1rem)] font-bold leading-[0.9] tracking-[-0.08em] text-[#2E2B2B] [text-shadow:0_7px_18px_rgba(46,43,43,0.14)]">
+            Belleza<br/><span className="relative ml-[3%] inline-block -rotate-[4deg] text-[#7F6D8A] [text-shadow:0_8px_18px_rgba(127,109,138,0.24)]">sin</span><br/>límites.
+          </h2>
+          <p className="mt-5 max-w-[19ch] text-sm font-medium leading-6 text-[#2E2B2B] sm:mt-7 sm:text-base">Productos para crear tu propio estilo.</p>
+        </div>
+        <div aria-hidden="true" className="pointer-events-none absolute bottom-[6%] right-[3%] z-10 h-[13%] w-[72%] rounded-full bg-[#2E2B2B]/20 blur-[22px] sm:bottom-[8%] sm:right-[5%] sm:h-[12%] sm:w-[48%] sm:blur-[30px]" />
+        <div className="pointer-events-none absolute bottom-[3%] right-[-12%] z-20 h-[66%] w-[91%] -rotate-[6deg] drop-shadow-[16px_22px_17px_rgba(35,26,40,0.24)] sm:bottom-[1%] sm:right-[-6%] sm:h-[105%] sm:w-[65%] sm:-rotate-[5deg]">
+          <Image src={front} alt="Fotografía real de XIOMARA Shampoo Platinum 250 ml; prueba de mayor protagonismo del envase" fill sizes="(max-width: 639px) 95vw, 65vw" className="object-contain" />
+        </div>
+        <div className="absolute bottom-8 left-5 z-40 sm:bottom-11 sm:left-10 lg:left-14">
+          <span className="inline-flex min-h-11 items-center justify-center rounded-full bg-[#7F6D8A] px-5 py-3 text-xs font-semibold text-white shadow-[0_10px_20px_-9px_rgba(46,43,43,0.38)] sm:text-sm">
+            Explorar productos <span className="ml-2" aria-hidden="true">↗</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function IdentityLab() {
   if (!CATALOG_MODE || (process.env.VERCEL_ENV !== "preview" && process.env.NODE_ENV !== "development")) notFound();
   return (
@@ -130,6 +159,12 @@ export default function IdentityLab() {
             <p className="mt-2 max-w-3xl text-sm leading-6">Sin caja alrededor del producto, sin titulares todos iguales y sin dividir la pantalla en mitades rígidas. Aquí la fotografía cruza las formas, el texto tiene ritmo y el peso visual viene de una composición asimétrica.</p>
           </div>
           <FluidComposition />
+        </section>
+        <section aria-labelledby="lab-product-first" className="mt-12">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#7F6D8A]">E · FASE 1B — CORRECCIÓN PEDIDA</p>
+          <h2 id="lab-product-first" className="mt-2 text-2xl font-bold tracking-[-0.05em] sm:text-3xl">Menos líneas. Más producto.</h2>
+          <p className="mb-4 mt-2 max-w-3xl text-sm leading-6">Conservamos la tipografía que te gustó, pero la sombra del texto ahora se difumina. Eliminamos las formas y líneas protagonistas. El envase real ocupa más espacio, con sombra ambiental y un apoyo de color desenfocado que no compite con él. Prueba visual, todavía no aprobada.</p>
+          <ProductFirstComposition />
         </section>
         <section aria-labelledby="lab-type" className="mt-12">
           <h2 id="lab-type" className="mb-3 text-xl font-bold">Tipografía, textura y volumen</h2>
