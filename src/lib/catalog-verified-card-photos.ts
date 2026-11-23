@@ -50,3 +50,26 @@ export function getVerifiedCatalogCardPhoto(
   if ("barcode" in candidate && variant.barcode !== candidate.barcode) return fallback;
   return candidate.image;
 }
+
+/**
+ * Map known original gallery filenames to their R3 photographs without changing
+ * their image IDs or variant associations. Any unrecognized image is preserved.
+ */
+export function getVerifiedCatalogGalleryPhoto(
+  product: CatalogProductIdentity,
+  originalUrl: string,
+): string {
+  const candidate = catalogPhotoMatches.find(
+    (item) => item.id === product.id && item.handle === product.handle,
+  );
+  if (!candidate || getVerifiedCatalogCardPhoto(product, null) !== candidate.image) return originalUrl;
+  let current: URL;
+  try { current = new URL(originalUrl, "https://www.sicarubeauty.com"); }
+  catch { return originalUrl; }
+  if (current.origin !== "https://www.sicarubeauty.com" || current.search || current.hash) return originalUrl;
+  const originalFront = candidate.image.replace("-r3.webp", ".webp");
+  if (current.pathname === originalFront) return candidate.image;
+  const back = candidate.image.replace("/01-principal-r3.webp", "/02-reverso-r3.webp");
+  if (current.pathname === back.replace("-r3.webp", ".webp") && candidate.handle !== "xiomara-shampoo-platinum-250ml") return back;
+  return originalUrl;
+}
