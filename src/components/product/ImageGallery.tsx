@@ -19,7 +19,7 @@ export function ImageGallery({ images, title, reserveImageSpace = false, reserve
 
   return (
     <div>
-      <div className={`relative aspect-[16/10] w-full overflow-hidden border border-[#efe7dd] bg-[#faf8f5] md:aspect-square lg:aspect-auto ${
+      <div className={`relative aspect-[4/5] w-full overflow-hidden rounded-xl border border-[#efe7dd] bg-[#f5f1eb] sm:aspect-square lg:aspect-auto ${
         selectedImage || reserveImageSpace ? "lg:h-[600px] xl:h-[620px]" : "lg:h-[460px] xl:h-[500px]"
       }`}>
         {selectedImage ? (
@@ -28,7 +28,7 @@ export function ImageGallery({ images, title, reserveImageSpace = false, reserve
             alt={`${title} - imagen ${selectedIndex + 1}`}
             fill
             sizes="(max-width: 767px) 100vw, (max-width: 1023px) 60vw, 56vw"
-            className="object-contain"
+            className="object-contain p-2 sm:p-4"
             priority
           />
         ) : (
@@ -65,7 +65,7 @@ export function ImageGallery({ images, title, reserveImageSpace = false, reserve
               onClick={() => setSelected(i)}
               aria-label={`Ver imagen ${i + 1}`}
               aria-pressed={i === selectedIndex}
-              className={`relative h-16 w-16 shrink-0 overflow-hidden border transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8] ${
+              className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b89a8] ${
                 i === selectedIndex
                   ? "border-[#7f6d8a] bg-[#faf8f5]"
                   : "border-[#efe7dd] bg-[#f5f1eb] opacity-75 hover:opacity-100"
