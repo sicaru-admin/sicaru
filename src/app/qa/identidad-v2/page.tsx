@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { CATALOG_MODE } from "@/lib/catalog-mode";
@@ -10,9 +11,6 @@ export const metadata: Metadata = {
 };
 
 const front = "/images/products/xiomara-shampoo-platinum-250ml/01-principal-r3.webp";
-const purple = "#7F6D8A";
-const offwhite = "#FAF8F5";
-const ink = "#2E2B2B";
 
 /** No external network images; uses the existing unaltered XIOMARA product photo. */
 function Bottle({ mode }: { mode: "dark" | "purple" | "light" }) {
@@ -26,7 +24,7 @@ function Bottle({ mode }: { mode: "dark" | "purple" | "light" }) {
 function Grain({ light = false }: { light?: boolean }) {
   return <div aria-hidden="true" className={`noise-overlay pointer-events-none absolute inset-0 z-0 ${light ? "opacity-50" : "opacity-100"}`} />;
 }
-function Label({ children }: { children: React.ReactNode }) {
+function Label({ children }: { children: ReactNode }) {
   return <span className="text-[0.64rem] font-bold uppercase tracking-[0.14em] sm:text-xs">{children}</span>;
 }
 function Visual({ variant }: { variant: "light" | "purple" | "dark" }) {
