@@ -76,35 +76,30 @@ export default async function CommerceExperienceLab() {
         <p className="mt-2 max-w-3xl text-xs leading-5 text-[#2E2B2B]/75">Esta página prueba el recorrido completo: descubrir una categoría → conocer un producto real → consultar su variante por WhatsApp. No simula pagos, existencias ni envíos automáticos.</p>
       </div>
 
-      <section className="overflow-hidden bg-[#F5F1EB]" aria-labelledby="lab-hero-title">
-        <div className="mx-auto grid max-w-[1400px] grid-cols-1 md:grid-cols-[0.94fr_1.06fr]">
-          <div className="relative z-20 flex min-h-[270px] flex-col justify-center px-5 pb-4 pt-9 sm:px-9 sm:py-14 lg:pl-12">
-            <p className="text-xs font-semibold uppercase tracking-[0.11em] text-[#7F6D8A]">SICARÚ · Cuidado capilar</p>
-            <h1 id="lab-hero-title" className="mt-4 max-w-[13ch] text-[clamp(2.8rem,7.2vw,6.4rem)] font-bold leading-[0.94] tracking-[-0.075em] text-[#2E2B2B] [text-shadow:0_8px_19px_rgba(46,43,43,0.10)]">Tu cabello. Tu estilo.</h1>
-            <p className="mt-5 max-w-[33ch] text-sm leading-6 text-[#2E2B2B]/85 sm:text-base">Descubre tratamientos y productos profesionales para tu rutina.</p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/categorias/tratamientos-y-mascarillas" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#7F6D8A] px-5 py-3 text-xs font-semibold text-white shadow-[0_12px_22px_-11px_rgba(46,43,43,0.42)] transition-transform hover:-translate-y-0.5 motion-reduce:transform-none sm:text-sm">
-                Explorar tratamientos <ArrowUpRight size={17} aria-hidden="true"/>
-              </Link>
-              <Link href="/productos" className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#7F6D8A] px-5 py-3 text-xs font-semibold text-[#2E2B2B] sm:text-sm">
-                <Search size={16} aria-hidden="true"/> Buscar productos
-              </Link>
+      <section className="relative isolate overflow-hidden bg-[#F5F1EB]" aria-labelledby="lab-hero-title">
+        <div className="pointer-events-none absolute inset-0 opacity-50 noise-overlay" aria-hidden="true" />
+        <div aria-hidden="true" className="pointer-events-none absolute -right-[24%] top-[-18%] h-[115%] w-[100%] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(155,137,168,0.38)_0%,rgba(155,137,168,0.17)_43%,transparent_72%)] blur-2xl sm:-right-[8%] sm:w-[65%]" />
+        <div className="relative mx-auto max-w-[1400px] px-5 pb-9 pt-11 sm:px-9 sm:py-16 lg:px-12">
+          <div className="relative z-20 flex min-h-[555px] flex-col justify-start md:min-h-[510px] md:justify-center">
+            <div className="relative z-20 max-w-[75%] md:max-w-[51%]">
+              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-[#7F6D8A] sm:text-xs">SICARÚ · Belleza profesional</p>
+              <h1 id="lab-hero-title" className="mt-4 max-w-[12ch] text-[clamp(2.9rem,7.1vw,6rem)] font-bold leading-[0.96] tracking-[-0.072em] text-[#2E2B2B] [text-shadow:0_7px_18px_rgba(46,43,43,0.09)]">Tu cabello.<br/><span className="text-[#7F6D8A]">Tu estilo.</span></h1>
+              <p className="mt-5 max-w-[30ch] text-sm leading-6 text-[#2E2B2B]/85 sm:text-base">Encuentra productos profesionales para tu rutina.</p>
+              <div className="mt-6 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap">
+                <Link href="/categorias/tratamientos-y-mascarillas" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#7F6D8A] px-5 py-3 text-xs font-semibold text-white shadow-[0_12px_20px_-10px_rgba(46,43,43,0.33)] transition-transform hover:-translate-y-0.5 motion-reduce:transform-none sm:text-sm">
+                  Explorar tratamientos <ArrowUpRight size={17} aria-hidden="true"/>
+                </Link>
+                <Link href="/productos" className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#7F6D8A] bg-[#FAF8F5]/75 px-5 py-3 text-xs font-semibold text-[#2E2B2B] sm:text-sm">
+                  <Search size={16} aria-hidden="true"/> Buscar productos
+                </Link>
+              </div>
             </div>
           </div>
-          <div className="relative isolate min-h-[370px] overflow-hidden bg-[#9B89A8] sm:min-h-[480px] md:min-h-[530px]">
-            <div className="noise-overlay pointer-events-none absolute inset-0 z-0 opacity-75" aria-hidden="true"/>
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(250,248,245,0.45)_0%,rgba(155,137,168,0.28)_56%,rgba(127,109,138,0.28)_100%)]" aria-hidden="true"/>
-            <div aria-hidden="true" className="absolute bottom-[4%] left-[20%] h-[12%] w-[64%] rounded-full bg-[#2E2B2B]/25 blur-[24px]"/>
-            <div className="absolute -bottom-[9%] left-[-5%] h-[91%] w-[60%] -rotate-[8deg] drop-shadow-[14px_22px_16px_rgba(35,24,38,0.24)]">
-              <Image src={images.voglia} alt="Voglia Total Repair, fotografía de producto SICARÚ" fill priority sizes="(max-width: 767px) 55vw, 32vw" className="object-contain"/>
-            </div>
-            <div className="absolute -bottom-[4%] right-[-5%] h-[90%] w-[60%] rotate-[7deg] drop-shadow-[14px_22px_16px_rgba(35,24,38,0.25)]">
-              <Image src={images.vitale} alt="Vitale Bifase Pro-Keratin, fotografía de producto SICARÚ" fill priority sizes="(max-width: 767px) 55vw, 32vw" className="object-contain"/>
-            </div>
-            <div className="absolute bottom-[0%] left-[32%] h-[73%] w-[45%] drop-shadow-[15px_22px_18px_rgba(35,24,38,0.33)]">
-              <Image src={images.hidra} alt="HIDRA Color Mask, fotografía de producto SICARÚ" fill priority sizes="(max-width: 767px) 47vw, 22vw" className="object-contain"/>
-            </div>
+          <div aria-hidden="true" className="pointer-events-none absolute bottom-[6%] right-[4%] z-0 h-[8%] w-[66%] rounded-full bg-[#2E2B2B]/16 blur-[24px] md:bottom-[12%] md:right-[5%] md:w-[39%] md:blur-[34px]" />
+          <div className="pointer-events-none absolute bottom-[0%] right-[-20%] z-10 h-[69%] w-[94%] drop-shadow-[16px_23px_15px_rgba(35,24,38,0.22)] sm:right-[-8%] sm:h-[78%] sm:w-[65%] md:bottom-[-8%] md:right-[0%] md:h-[113%] md:w-[52%]">
+            <Image src={images.voglia} alt="Voglia Total Repair, fotografía real de tratamiento capilar SICARÚ" fill priority sizes="(max-width: 767px) 85vw, 50vw" className="object-contain" />
           </div>
+          <div aria-hidden="true" className="pointer-events-none absolute bottom-3 left-5 z-10 text-[0.65rem] font-semibold tracking-[0.1em] text-[#7F6D8A]/80 sm:left-9 lg:left-12">SICARÚ · CADEREYTA JIMÉNEZ, N.L.</div>
         </div>
       </section>
 
