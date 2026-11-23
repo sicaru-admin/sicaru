@@ -32,7 +32,7 @@ function CategoryImage({
   image, alt, label, href, dark,
 }: { image: string; alt: string; label: string; href: string; dark?: boolean }) {
   return (
-    <Link href={href} className={`group relative isolate block min-h-[230px] overflow-hidden rounded-[18px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7F6D8A] sm:min-h-[320px] ${dark ? "bg-[#2E2B2B] text-[#FAF8F5]" : "bg-[#D9CCDE] text-[#2E2B2B]"}`}>
+    <Link href={href} className={`group relative isolate block min-h-[230px] min-w-[86%] shrink-0 snap-start overflow-hidden md:min-w-0 rounded-[18px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7F6D8A] sm:min-h-[320px] ${dark ? "bg-[#2E2B2B] text-[#FAF8F5]" : "bg-[#9B89A8] text-[#2E2B2B]"}`}>
       <div aria-hidden="true" className="absolute -right-10 -top-10 h-[70%] w-[80%] rounded-full bg-[#FAF8F5]/15 blur-3xl" />
       <Image src={image} alt={alt} fill sizes="(max-width: 639px) 100vw, 50vw" className="object-contain object-[85%_center] p-4 drop-shadow-[13px_18px_13px_rgba(22,16,25,0.26)] transition-transform duration-300 group-hover:scale-[1.04] motion-reduce:transition-none sm:p-7" />
       <div className="absolute inset-0 bg-gradient-to-r from-[#2E2B2B]/55 via-transparent to-transparent" aria-hidden="true" />
@@ -103,23 +103,24 @@ export default async function CommerceExperienceLab() {
         </div>
       </section>
 
-      <section className="relative border-b border-[#E7DDE9] bg-[#FAF8F5] py-9 sm:py-12" aria-labelledby="choose-goal-title">
+      <section className="relative border-b border-[#8E7A9E]/20 bg-[#FAF8F5] py-9 sm:py-12" aria-labelledby="choose-goal-title">
         <div className="mx-auto max-w-[1400px] px-4 sm:px-8 lg:px-12">
           <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[#7F6D8A]">La belleza comienza con una buena elección</p>
           <div className="mt-2 grid gap-4 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
             <h2 id="choose-goal-title" className="max-w-[16ch] text-[clamp(2.15rem,4.5vw,3.9rem)] font-bold leading-[0.98] tracking-[-0.06em]">¿Qué quieres lograr?</h2>
             <p className="max-w-xl text-sm leading-6 text-[#2E2B2B]/80 sm:text-base">No necesitas conocer todos los productos para empezar. Elige tu objetivo y explora una selección de productos profesionales.</p>
           </div>
-          <div className="mt-7 grid gap-3 sm:grid-cols-3">
-            <Link href="/categorias/tratamientos-y-mascarillas" className="group flex min-h-[130px] flex-col justify-between rounded-[18px] bg-[#F5F1EB] p-5 transition-transform hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] motion-reduce:transform-none">
+          <p id="goals-swipe-hint" className="mt-5 text-xs font-medium text-[#7F6D8A] sm:hidden">Desliza para explorar las opciones →</p>
+          <div role="region" aria-label="Explora según lo que necesitas" aria-describedby="goals-swipe-hint" tabIndex={0} className="mt-3 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-3 pr-[16%] [-webkit-overflow-scrolling:touch] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] sm:mt-7 sm:grid sm:grid-cols-3 sm:overflow-visible sm:pr-0">
+            <Link href="/categorias/tratamientos-y-mascarillas" className="group flex min-h-[160px] min-w-[82%] shrink-0 snap-start flex-col justify-between rounded-[18px] bg-[#F5F1EB] p-5 transition-transform hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] motion-reduce:transform-none sm:min-w-0">
               <span className="text-xs font-semibold text-[#7F6D8A]">01 · Cuidado capilar</span>
               <span className="flex items-end justify-between gap-3 text-lg font-bold leading-tight">Cuidar y tratar mi cabello <ArrowUpRight className="shrink-0 text-[#7F6D8A]" size={20} aria-hidden="true"/></span>
             </Link>
-            <Link href="/categorias/color-y-tintes" className="group flex min-h-[130px] flex-col justify-between rounded-[18px] bg-[#DED3E3] p-5 transition-transform hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] motion-reduce:transform-none">
+            <Link href="/categorias/color-y-tintes" className="group flex min-h-[160px] min-w-[82%] shrink-0 snap-start flex-col justify-between rounded-[18px] bg-[#9B89A8]/65 p-5 transition-transform hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] motion-reduce:transform-none sm:min-w-0">
               <span className="text-xs font-semibold text-[#6C5C76]">02 · Coloración</span>
               <span className="flex items-end justify-between gap-3 text-lg font-bold leading-tight">Encontrar mi tono y color <ArrowUpRight className="shrink-0 text-[#7F6D8A]" size={20} aria-hidden="true"/></span>
             </Link>
-            <Link href="/salon-pro" className="group flex min-h-[130px] flex-col justify-between rounded-[18px] bg-[#2E2B2B] p-5 text-[#FAF8F5] transition-transform hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9B89A8] motion-reduce:transform-none">
+            <Link href="/salon-pro" className="group flex min-h-[160px] min-w-[82%] shrink-0 snap-start flex-col justify-between rounded-[18px] bg-[#2E2B2B] p-5 text-[#FAF8F5] transition-transform hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9B89A8] motion-reduce:transform-none sm:min-w-0">
               <span className="text-xs font-semibold text-[#D9CCDE]">03 · Para profesionales</span>
               <span className="flex items-end justify-between gap-3 text-lg font-bold leading-tight">Productos para mi trabajo <ArrowUpRight className="shrink-0 text-[#D9CCDE]" size={20} aria-hidden="true"/></span>
             </Link>
@@ -134,7 +135,8 @@ export default async function CommerceExperienceLab() {
           <Headline>Explora por categoría.</Headline>
           <p className="mt-2 text-sm text-[#2E2B2B]/75">Explora productos de belleza profesional para uso personal y para tu trabajo.</p>
         </div>
-        <div className="grid gap-3 md:grid-cols-2 md:gap-5">
+        <p id="category-swipe-hint" className="mb-3 text-xs font-medium text-[#7F6D8A] md:hidden">Desliza para ver las categorías →</p>
+        <div role="region" aria-label="Categorías de belleza SICARÚ" aria-describedby="category-swipe-hint" tabIndex={0} className="flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-4 pr-[12%] [-webkit-overflow-scrolling:touch] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] md:grid md:grid-cols-2 md:overflow-visible md:pr-0 md:gap-5">
           <CategoryImage image={images.voglia} alt="Voglia Total Repair" label="Tratamientos" href="/categorias/tratamientos-y-mascarillas" dark/>
           <CategoryImage image={images.color} alt="Voglia Color Fun" label="Coloración" href="/categorias/color-y-tintes" />
         </div>
@@ -147,7 +149,7 @@ export default async function CommerceExperienceLab() {
           <p className="mt-3 max-w-xl text-sm leading-6 text-[#2E2B2B]/75">Revisa la presentación y consulta precio y disponibilidad antes de pedir. No utilizamos fotografías con errores pendientes.</p>
           {verifiedProduct && variant ? (
             <div className="mt-6 grid gap-0 overflow-hidden rounded-[24px] bg-[#FAF8F5] shadow-[0_20px_45px_-30px_rgba(46,43,43,0.31)] md:grid-cols-2">
-              <div className="relative isolate min-h-[420px] overflow-hidden bg-[#D9CCDE] sm:min-h-[500px]">
+              <div className="relative isolate min-h-[420px] overflow-hidden bg-[#9B89A8]/55 sm:min-h-[500px]">
                 <div className="noise-overlay pointer-events-none absolute inset-0 opacity-40" aria-hidden="true"/>
                 <div className="absolute bottom-[12%] left-[15%] h-[12%] w-[70%] rounded-full bg-[#2E2B2B]/20 blur-3xl" aria-hidden="true"/>
                 <Image src={images.xiomara} alt={verifiedProduct.title + ", fotografía frontal real"} fill sizes="(max-width: 767px) 100vw, 50vw" className="object-contain p-4 drop-shadow-[15px_22px_18px_rgba(46,43,43,0.24)] sm:p-6"/>
