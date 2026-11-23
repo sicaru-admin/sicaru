@@ -80,32 +80,29 @@ export default async function CommerceExperienceLab() {
         Variante de rendimiento: menos filtros y un deslizamiento más libre. Todavía es una prueba, no una mejora medida.
       </div>
 
-      <section className="relative isolate overflow-hidden bg-[#F5F1EB]" aria-labelledby="lab-hero-title">
-        <div className="pointer-events-none absolute inset-0 opacity-20 noise-overlay" aria-hidden="true" />
-        <div aria-hidden="true" className="pointer-events-none absolute -right-[24%] top-[-18%] h-[115%] w-[100%] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(155,137,168,0.38)_0%,rgba(155,137,168,0.17)_43%,transparent_72%)] blur-xl sm:-right-[8%] sm:w-[65%]" />
-        <div className="relative mx-auto max-w-[1400px] px-5 pb-9 pt-11 sm:px-9 sm:py-16 lg:px-12">
-          <div className="relative z-20 flex min-h-[555px] flex-col justify-start md:min-h-[510px] md:justify-center">
-            <div className="relative z-20 max-w-[75%] md:max-w-[51%]">
-              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-[#7F6D8A] sm:text-xs">SICARÚ · Belleza profesional para ti y tu salón</p>
-              <h1 id="lab-hero-title" className="mt-4 max-w-[12ch] text-[clamp(2.9rem,7.1vw,6rem)] font-bold leading-[0.96] tracking-[-0.072em] text-[#2E2B2B] [text-shadow:0_7px_18px_rgba(46,43,43,0.09)]">Tu belleza.<br/><span className="text-[#7F6D8A]">A tu manera.</span></h1>
-              <p className="mt-5 max-w-[30ch] text-sm leading-6 text-[#2E2B2B]/85 sm:text-base">Para quien cuida su cabello y para quien hace de la belleza su profesión. Encuentra el producto adecuado para lo que necesitas.</p>
-              <div className="mt-6 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap">
-                <Link href="/categorias/tratamientos-y-mascarillas" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#7F6D8A] px-5 py-3 text-xs font-semibold text-white shadow-[0_12px_20px_-10px_rgba(46,43,43,0.33)] motion-safe:md:transition-transform motion-safe:md:hover:-translate-y-0.5 sm:text-sm">
-                  Encontrar mi tratamiento <ArrowUpRight size={17} aria-hidden="true"/>
-                </Link>
-                <Link href="/productos" className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#7F6D8A] bg-[#FAF8F5]/75 px-5 py-3 text-xs font-semibold text-[#2E2B2B] sm:text-sm">
-                  <Search size={16} aria-hidden="true"/> Buscar productos
-                </Link>
-              </div>
+      <section className="relative isolate overflow-hidden bg-[#7F6D8A] text-[#FAF8F5]" aria-labelledby="lab-hero-title">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(108deg,rgba(46,43,43,0.28)_0%,rgba(127,109,138,0)_56%)]" aria-hidden="true" />
+        <div className="pointer-events-none absolute -right-[22%] top-[-35%] h-[120%] w-[95%] rounded-full bg-[#9B89A8]/45 blur-[32px] sm:-right-[5%] sm:w-[55%]" aria-hidden="true" />
+        <div className="relative mx-auto max-w-[1400px] px-5 pb-8 pt-10 sm:px-9 sm:pb-12 sm:pt-14 lg:px-12">
+          <div className="relative z-20 flex min-h-[590px] flex-col justify-start md:min-h-[510px] md:justify-center">
+            <div className="relative z-30 max-w-[83%] md:max-w-[53%]">
+              <p className="text-[0.69rem] font-bold uppercase tracking-[0.12em] text-[#FAF8F5]/95 sm:text-xs">SICARÚ · Belleza profesional para ti y tu salón</p>
+              <h1 id="lab-hero-title" className="mt-5 max-w-[11ch] text-[clamp(3rem,7.5vw,6.5rem)] font-bold leading-[0.94] tracking-[-0.075em] text-[#FAF8F5] [text-shadow:0_8px_18px_rgba(46,43,43,0.18)]">Tu belleza.<br/><span className="text-[#FAF8F5]">A tu manera.</span></h1>
+              <p className="mt-5 max-w-[30ch] text-sm leading-6 text-[#FAF8F5]/95 sm:text-base">Encuentra coloración, tratamientos y productos profesionales para tu rutina o tu trabajo.</p>
+              <Link href="/productos" className="mt-6 inline-flex min-h-12 items-center gap-2 rounded-full bg-[#FAF8F5] px-6 py-3 text-xs font-bold text-[#2E2B2B] shadow-[0_9px_23px_-12px_rgba(46,43,43,0.32)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white sm:text-sm">Explorar productos <ArrowUpRight size={18} aria-hidden="true" /></Link>
+              <p className="mt-4 max-w-[30ch] text-[0.66rem] leading-4 text-[#FAF8F5]/85">Asesoría por WhatsApp · Catálogo de belleza profesional</p>
             </div>
           </div>
-          <div aria-hidden="true" className="pointer-events-none absolute bottom-[6%] right-[4%] z-0 h-[8%] w-[66%] rounded-full bg-[#2E2B2B]/16 blur-[16px] md:bottom-[12%] md:right-[5%] md:w-[39%] md:blur-[18px]" />
-          <div className="pointer-events-none absolute bottom-[0%] right-[-20%] z-10 h-[69%] w-[94%] drop-shadow-[7px_11px_10px_rgba(35,24,38,0.18)] sm:right-[-8%] sm:h-[78%] sm:w-[65%] md:bottom-[-8%] md:right-[0%] md:h-[113%] md:w-[52%]">
-            <Image src={images.voglia} alt="Voglia Total Repair, fotografía real de tratamiento capilar SICARÚ" fill priority sizes="(max-width: 767px) 85vw, 50vw" className="object-contain" />
+          <div aria-hidden="true" className="pointer-events-none absolute bottom-[5%] right-[0%] h-[10%] w-[70%] rounded-full bg-[#2E2B2B]/30 blur-[20px] sm:bottom-[10%] sm:w-[42%]" />
+          <div className="pointer-events-none absolute bottom-[-3%] right-[-23%] z-10 h-[67%] w-[110%] rotate-[-6deg] drop-shadow-[7px_13px_11px_rgba(46,43,43,0.25)] sm:right-[-6%] sm:h-[101%] sm:w-[61%] sm:-rotate-[5deg] md:right-[-2%]">
+            <Image src={images.voglia} alt="Fotografía real de Voglia Total Repair para composición provisional SICARÚ" fill priority sizes="(max-width: 767px) 95vw, 53vw" className="object-contain" />
           </div>
-          <div aria-hidden="true" className="pointer-events-none absolute bottom-3 left-5 z-10 text-[0.65rem] font-semibold tracking-[0.1em] text-[#7F6D8A]/80 sm:left-9 lg:left-12">SICARÚ · BELLEZA PROFESIONAL EN NUEVO LEÓN</div>
         </div>
       </section>
+
+      <div className="bg-[#FAF8F5] px-4 py-3 text-center text-xs font-medium leading-5 text-[#7F6D8A] sm:px-8">
+        Hero V2 · Paleta oficial SICARÚ. Fotografía de producto provisional: la imagen de campaña con modelo todavía requiere aprobación e integración.
+      </div>
 
       <section className="relative border-b border-[#8E7A9E]/20 bg-[#FAF8F5] py-9 sm:py-12" aria-labelledby="choose-goal-title">
         <div className="mx-auto max-w-[1400px] px-4 sm:px-8 lg:px-12">
