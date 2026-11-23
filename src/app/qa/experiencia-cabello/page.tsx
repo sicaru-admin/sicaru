@@ -33,8 +33,8 @@ function CategoryImage({
 }: { image: string; alt: string; label: string; href: string; dark?: boolean }) {
   return (
     <Link href={href} className={`group relative isolate block min-h-[230px] min-w-[86%] shrink-0 snap-start overflow-hidden md:min-w-0 rounded-[18px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7F6D8A] sm:min-h-[320px] ${dark ? "bg-[#2E2B2B] text-[#FAF8F5]" : "bg-[#9B89A8] text-[#2E2B2B]"}`}>
-      <div aria-hidden="true" className="absolute -right-10 -top-10 h-[70%] w-[80%] rounded-full bg-[#FAF8F5]/15 blur-3xl" />
-      <Image src={image} alt={alt} fill sizes="(max-width: 639px) 100vw, 50vw" className="object-contain object-[85%_center] p-4 drop-shadow-[13px_18px_13px_rgba(22,16,25,0.26)] transition-transform duration-300 group-hover:scale-[1.04] motion-reduce:transition-none sm:p-7" />
+      <div aria-hidden="true" className="absolute -right-10 -top-10 h-[70%] w-[80%] rounded-full bg-[#FAF8F5]/15 blur-xl" />
+      <Image src={image} alt={alt} fill sizes="(max-width: 639px) 100vw, 50vw" className="object-contain object-[85%_center] p-4 drop-shadow-[6px_10px_9px_rgba(22,16,25,0.18)] motion-safe:md:transition-transform motion-safe:md:duration-200 motion-safe:md:group-hover:scale-[1.025] sm:p-7" />
       <div className="absolute inset-0 bg-gradient-to-r from-[#2E2B2B]/55 via-transparent to-transparent" aria-hidden="true" />
       <div className="relative z-10 flex min-h-[230px] flex-col items-start justify-between p-5 text-[#FAF8F5] sm:min-h-[320px] sm:p-7">
         <span className="text-xs font-semibold uppercase tracking-[0.12em]">Explora SICARÚ</span>
@@ -76,9 +76,13 @@ export default async function CommerceExperienceLab() {
         <p className="mt-2 max-w-3xl text-xs leading-5 text-[#2E2B2B]/75">Esta página prueba el recorrido completo: descubrir una categoría → conocer un producto real → consultar su variante por WhatsApp. No simula pagos, existencias ni envíos automáticos.</p>
       </div>
 
+      <div className="border-y border-[#9B89A8]/25 bg-[#FAF8F5] px-4 py-2 text-center text-xs font-medium text-[#7F6D8A] sm:px-8">
+        Variante de rendimiento: menos filtros y un deslizamiento más libre. Todavía es una prueba, no una mejora medida.
+      </div>
+
       <section className="relative isolate overflow-hidden bg-[#F5F1EB]" aria-labelledby="lab-hero-title">
-        <div className="pointer-events-none absolute inset-0 opacity-50 noise-overlay" aria-hidden="true" />
-        <div aria-hidden="true" className="pointer-events-none absolute -right-[24%] top-[-18%] h-[115%] w-[100%] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(155,137,168,0.38)_0%,rgba(155,137,168,0.17)_43%,transparent_72%)] blur-2xl sm:-right-[8%] sm:w-[65%]" />
+        <div className="pointer-events-none absolute inset-0 opacity-20 noise-overlay" aria-hidden="true" />
+        <div aria-hidden="true" className="pointer-events-none absolute -right-[24%] top-[-18%] h-[115%] w-[100%] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(155,137,168,0.38)_0%,rgba(155,137,168,0.17)_43%,transparent_72%)] blur-xl sm:-right-[8%] sm:w-[65%]" />
         <div className="relative mx-auto max-w-[1400px] px-5 pb-9 pt-11 sm:px-9 sm:py-16 lg:px-12">
           <div className="relative z-20 flex min-h-[555px] flex-col justify-start md:min-h-[510px] md:justify-center">
             <div className="relative z-20 max-w-[75%] md:max-w-[51%]">
@@ -86,7 +90,7 @@ export default async function CommerceExperienceLab() {
               <h1 id="lab-hero-title" className="mt-4 max-w-[12ch] text-[clamp(2.9rem,7.1vw,6rem)] font-bold leading-[0.96] tracking-[-0.072em] text-[#2E2B2B] [text-shadow:0_7px_18px_rgba(46,43,43,0.09)]">Tu belleza.<br/><span className="text-[#7F6D8A]">A tu manera.</span></h1>
               <p className="mt-5 max-w-[30ch] text-sm leading-6 text-[#2E2B2B]/85 sm:text-base">Para quien cuida su cabello y para quien hace de la belleza su profesión. Encuentra el producto adecuado para lo que necesitas.</p>
               <div className="mt-6 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap">
-                <Link href="/categorias/tratamientos-y-mascarillas" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#7F6D8A] px-5 py-3 text-xs font-semibold text-white shadow-[0_12px_20px_-10px_rgba(46,43,43,0.33)] transition-transform hover:-translate-y-0.5 motion-reduce:transform-none sm:text-sm">
+                <Link href="/categorias/tratamientos-y-mascarillas" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#7F6D8A] px-5 py-3 text-xs font-semibold text-white shadow-[0_12px_20px_-10px_rgba(46,43,43,0.33)] motion-safe:md:transition-transform motion-safe:md:hover:-translate-y-0.5 sm:text-sm">
                   Encontrar mi tratamiento <ArrowUpRight size={17} aria-hidden="true"/>
                 </Link>
                 <Link href="/productos" className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#7F6D8A] bg-[#FAF8F5]/75 px-5 py-3 text-xs font-semibold text-[#2E2B2B] sm:text-sm">
@@ -95,8 +99,8 @@ export default async function CommerceExperienceLab() {
               </div>
             </div>
           </div>
-          <div aria-hidden="true" className="pointer-events-none absolute bottom-[6%] right-[4%] z-0 h-[8%] w-[66%] rounded-full bg-[#2E2B2B]/16 blur-[24px] md:bottom-[12%] md:right-[5%] md:w-[39%] md:blur-[34px]" />
-          <div className="pointer-events-none absolute bottom-[0%] right-[-20%] z-10 h-[69%] w-[94%] drop-shadow-[16px_23px_15px_rgba(35,24,38,0.22)] sm:right-[-8%] sm:h-[78%] sm:w-[65%] md:bottom-[-8%] md:right-[0%] md:h-[113%] md:w-[52%]">
+          <div aria-hidden="true" className="pointer-events-none absolute bottom-[6%] right-[4%] z-0 h-[8%] w-[66%] rounded-full bg-[#2E2B2B]/16 blur-[16px] md:bottom-[12%] md:right-[5%] md:w-[39%] md:blur-[18px]" />
+          <div className="pointer-events-none absolute bottom-[0%] right-[-20%] z-10 h-[69%] w-[94%] drop-shadow-[7px_11px_10px_rgba(35,24,38,0.18)] sm:right-[-8%] sm:h-[78%] sm:w-[65%] md:bottom-[-8%] md:right-[0%] md:h-[113%] md:w-[52%]">
             <Image src={images.voglia} alt="Voglia Total Repair, fotografía real de tratamiento capilar SICARÚ" fill priority sizes="(max-width: 767px) 85vw, 50vw" className="object-contain" />
           </div>
           <div aria-hidden="true" className="pointer-events-none absolute bottom-3 left-5 z-10 text-[0.65rem] font-semibold tracking-[0.1em] text-[#7F6D8A]/80 sm:left-9 lg:left-12">SICARÚ · BELLEZA PROFESIONAL EN NUEVO LEÓN</div>
@@ -111,16 +115,16 @@ export default async function CommerceExperienceLab() {
             <p className="max-w-xl text-sm leading-6 text-[#2E2B2B]/80 sm:text-base">No necesitas conocer todos los productos para empezar. Elige tu objetivo y explora una selección de productos profesionales.</p>
           </div>
           <p id="goals-swipe-hint" className="mt-5 text-xs font-medium text-[#7F6D8A] sm:hidden">Desliza para explorar las opciones →</p>
-          <div role="region" aria-label="Explora según lo que necesitas" aria-describedby="goals-swipe-hint" tabIndex={0} className="mt-3 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-3 pr-[16%] [-webkit-overflow-scrolling:touch] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] sm:mt-7 sm:grid sm:grid-cols-3 sm:overflow-visible sm:pr-0">
-            <Link href="/categorias/tratamientos-y-mascarillas" className="group flex min-h-[160px] min-w-[82%] shrink-0 snap-start flex-col justify-between rounded-[18px] bg-[#F5F1EB] p-5 transition-transform hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] motion-reduce:transform-none sm:min-w-0">
+          <div role="region" aria-label="Explora según lo que necesitas" aria-describedby="goals-swipe-hint" tabIndex={0} className="mt-3 flex snap-x snap-proximity gap-3 overflow-x-auto overscroll-x-contain pb-3 pr-[16%] [-webkit-overflow-scrolling:touch] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] sm:mt-7 sm:grid sm:grid-cols-3 sm:overflow-visible sm:pr-0">
+            <Link href="/categorias/tratamientos-y-mascarillas" className="group flex min-h-[160px] min-w-[82%] shrink-0 snap-start flex-col justify-between rounded-[18px] bg-[#F5F1EB] p-5 motion-safe:md:transition-transform motion-safe:md:hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] motion-reduce:transform-none sm:min-w-0">
               <span className="text-xs font-semibold text-[#7F6D8A]">01 · Cuidado capilar</span>
               <span className="flex items-end justify-between gap-3 text-lg font-bold leading-tight">Cuidar y tratar mi cabello <ArrowUpRight className="shrink-0 text-[#7F6D8A]" size={20} aria-hidden="true"/></span>
             </Link>
-            <Link href="/categorias/color-y-tintes" className="group flex min-h-[160px] min-w-[82%] shrink-0 snap-start flex-col justify-between rounded-[18px] bg-[#9B89A8]/65 p-5 transition-transform hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] motion-reduce:transform-none sm:min-w-0">
+            <Link href="/categorias/color-y-tintes" className="group flex min-h-[160px] min-w-[82%] shrink-0 snap-start flex-col justify-between rounded-[18px] bg-[#9B89A8]/50 p-5 motion-safe:md:transition-transform motion-safe:md:hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] motion-reduce:transform-none sm:min-w-0">
               <span className="text-xs font-semibold text-[#6C5C76]">02 · Coloración</span>
               <span className="flex items-end justify-between gap-3 text-lg font-bold leading-tight">Encontrar mi tono y color <ArrowUpRight className="shrink-0 text-[#7F6D8A]" size={20} aria-hidden="true"/></span>
             </Link>
-            <Link href="/salon-pro" className="group flex min-h-[160px] min-w-[82%] shrink-0 snap-start flex-col justify-between rounded-[18px] bg-[#2E2B2B] p-5 text-[#FAF8F5] transition-transform hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9B89A8] motion-reduce:transform-none sm:min-w-0">
+            <Link href="/salon-pro" className="group flex min-h-[160px] min-w-[82%] shrink-0 snap-start flex-col justify-between rounded-[18px] bg-[#2E2B2B] p-5 text-[#FAF8F5] motion-safe:md:transition-transform motion-safe:md:hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9B89A8] motion-reduce:transform-none sm:min-w-0">
               <span className="text-xs font-semibold text-[#D9CCDE]">03 · Para profesionales</span>
               <span className="flex items-end justify-between gap-3 text-lg font-bold leading-tight">Productos para mi trabajo <ArrowUpRight className="shrink-0 text-[#D9CCDE]" size={20} aria-hidden="true"/></span>
             </Link>
@@ -136,7 +140,7 @@ export default async function CommerceExperienceLab() {
           <p className="mt-2 text-sm text-[#2E2B2B]/75">Explora productos de belleza profesional para uso personal y para tu trabajo.</p>
         </div>
         <p id="category-swipe-hint" className="mb-3 text-xs font-medium text-[#7F6D8A] md:hidden">Desliza para ver las categorías →</p>
-        <div role="region" aria-label="Categorías de belleza SICARÚ" aria-describedby="category-swipe-hint" tabIndex={0} className="flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-4 pr-[12%] [-webkit-overflow-scrolling:touch] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] md:grid md:grid-cols-2 md:overflow-visible md:pr-0 md:gap-5">
+        <div role="region" aria-label="Categorías de belleza SICARÚ" aria-describedby="category-swipe-hint" tabIndex={0} className="flex snap-x snap-proximity gap-3 overflow-x-auto overscroll-x-contain pb-4 pr-[12%] [-webkit-overflow-scrolling:touch] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] md:grid md:grid-cols-2 md:overflow-visible md:pr-0 md:gap-5">
           <CategoryImage image={images.voglia} alt="Voglia Total Repair" label="Tratamientos" href="/categorias/tratamientos-y-mascarillas" dark/>
           <CategoryImage image={images.color} alt="Voglia Color Fun" label="Coloración" href="/categorias/color-y-tintes" />
         </div>
@@ -150,9 +154,9 @@ export default async function CommerceExperienceLab() {
           {verifiedProduct && variant ? (
             <div className="mt-6 grid gap-0 overflow-hidden rounded-[24px] bg-[#FAF8F5] shadow-[0_20px_45px_-30px_rgba(46,43,43,0.31)] md:grid-cols-2">
               <div className="relative isolate min-h-[420px] overflow-hidden bg-[#9B89A8]/55 sm:min-h-[500px]">
-                <div className="noise-overlay pointer-events-none absolute inset-0 opacity-40" aria-hidden="true"/>
-                <div className="absolute bottom-[12%] left-[15%] h-[12%] w-[70%] rounded-full bg-[#2E2B2B]/20 blur-3xl" aria-hidden="true"/>
-                <Image src={images.xiomara} alt={verifiedProduct.title + ", fotografía frontal real"} fill sizes="(max-width: 767px) 100vw, 50vw" className="object-contain p-4 drop-shadow-[15px_22px_18px_rgba(46,43,43,0.24)] sm:p-6"/>
+                <div className="noise-overlay pointer-events-none absolute inset-0 opacity-20" aria-hidden="true"/>
+                <div className="absolute bottom-[12%] left-[15%] h-[12%] w-[70%] rounded-full bg-[#2E2B2B]/20 blur-xl" aria-hidden="true"/>
+                <Image src={images.xiomara} alt={verifiedProduct.title + ", fotografía frontal real"} fill sizes="(max-width: 767px) 100vw, 50vw" className="object-contain p-4 drop-shadow-[7px_11px_10px_rgba(46,43,43,0.18)] sm:p-6"/>
               </div>
               <div className="flex flex-col justify-center p-6 sm:p-9 lg:p-12">
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#7F6D8A]">XIOMARA</p>
