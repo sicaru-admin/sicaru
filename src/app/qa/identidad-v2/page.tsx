@@ -75,6 +75,35 @@ function TypeAndTexture() {
   );
 }
 
+
+/** Unbalanced editorial-free merchandising stage: overlap, loose placement, no enclosing card. */
+function FluidComposition() {
+  return (
+    <div className="relative isolate overflow-hidden rounded-[1.65rem] bg-[#FAF8F5] shadow-[0_24px_45px_-30px_rgba(46,43,43,0.38)]">
+      <Grain light />
+      <div aria-hidden="true" className="pointer-events-none absolute -right-[16%] -top-[15%] h-[110%] w-[74%] rotate-[-12deg] rounded-[43%_57%_58%_42%/46%_37%_63%_54%] bg-[#8E7A9E] sm:right-[-8%] sm:w-[63%]" />
+      <div aria-hidden="true" className="pointer-events-none absolute right-[-10%] top-[13%] h-[78%] w-[65%] rotate-[17deg] rounded-[57%_43%_32%_68%/60%_51%_49%_40%] border-[24px] border-[#9B89A8]/65 sm:border-[52px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute bottom-[13%] left-[-10%] h-2 w-[63%] -rotate-[12deg] bg-[#7F6D8A]/35 sm:h-3" />
+      <div className="relative z-10 min-h-[480px] px-5 pb-5 pt-8 sm:min-h-[590px] sm:px-10 sm:pt-14 lg:min-h-[520px] lg:px-16">
+        <div className="relative z-20 max-w-[74%] sm:max-w-[58%]">
+          <p className="text-[0.68rem] font-bold tracking-[0.09em] text-[#7F6D8A] sm:text-sm">SICARÚ · Belleza profesional</p>
+          <h2 className="mt-4 font-sans text-[clamp(2.8rem,7.7vw,6.6rem)] font-bold leading-[0.83] tracking-[-0.085em] text-[#2E2B2B]">
+            Belleza<br/><span className="relative ml-[4%] inline-block -rotate-[5deg] text-[#7F6D8A] [text-shadow:3px_5px_0_rgba(155,137,168,0.22)] sm:ml-[7%]">sin</span><br/>límites.
+          </h2>
+          <p className="mt-5 max-w-[20ch] text-xs font-medium leading-5 text-[#2E2B2B] sm:mt-7 sm:text-base sm:leading-6">Productos para crear tu propio estilo.</p>
+        </div>
+        <div className="pointer-events-none absolute bottom-[15%] right-[-11%] z-30 h-[64%] w-[62%] -rotate-[10deg] drop-shadow-[20px_26px_14px_rgba(46,43,43,0.28)] sm:bottom-[6%] sm:right-[-2%] sm:h-[83%] sm:w-[49%] sm:-rotate-[8deg]">
+          <Image src={front} alt="XIOMARA Shampoo Platinum 250 ml, fotografía real de producto para prueba de composición" fill sizes="(max-width: 639px) 65vw, 45vw" className="object-contain" />
+        </div>
+        <div className="relative z-40 mt-10 inline-flex min-h-11 items-center justify-center rounded-full bg-[#2E2B2B] px-5 py-3 text-[0.72rem] font-semibold text-white shadow-[5px_7px_0_rgba(127,109,138,0.32)] sm:mt-12 sm:text-sm">
+          Explorar productos <span className="ml-2" aria-hidden="true">↗</span>
+        </div>
+        <div className="absolute bottom-5 left-5 z-20 text-[0.62rem] font-semibold text-[#7F6D8A] sm:bottom-7 sm:left-10">COMPOSICIÓN EN PRUEBA · NO APROBADA</div>
+      </div>
+    </div>
+  );
+}
+
 export default function IdentityLab() {
   if (!CATALOG_MODE || (process.env.VERCEL_ENV !== "preview" && process.env.NODE_ENV !== "development")) notFound();
   return (
@@ -83,7 +112,7 @@ export default function IdentityLab() {
         <header className="mb-7">
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#7F6D8A]">SICARÚ · Laboratorio independiente · Fase 1</p>
           <h1 className="mt-3 text-3xl font-bold uppercase tracking-[-0.045em] sm:text-5xl">Identidad con fuerza.</h1>
-          <p className="mt-3 max-w-3xl text-sm leading-6">Esta prueba NO adopta la dirección editorial ni Retail Energy anteriores. Comparamos únicamente color, tipografía, sombra tipográfica, grain y presencia fotográfica. Se usa una fotografía real existente de XIOMARA Platinum 250 ml, sin alterar su empaque.</p>
+          <p className="mt-3 max-w-3xl text-sm leading-6">Las primeras variantes A–C quedaron como contraste histórico: no están aprobadas. Comparamos color, tipografía, sombra tipográfica, grain y una nueva composición libre y asimétrica. Se usa una fotografía real existente de XIOMARA Platinum 250 ml, sin alterar su empaque.</p>
           <p className="mt-2 text-xs font-semibold text-[#7F6D8A]">Los titulares son demostraciones, no textos comerciales aprobados. Los botones son ilustrativos; no generan pedidos ni consultas.</p>
         </header>
         <section aria-labelledby="lab-variants" className="space-y-4">
@@ -93,6 +122,14 @@ export default function IdentityLab() {
             <div><p className="mb-2 text-xs font-bold uppercase tracking-[0.1em]">B · Morado SICARÚ + alto contraste</p><Visual variant="purple"/></div>
           </div>
           <div className="lg:max-w-[calc(50%-8px)]"><p className="mb-2 text-xs font-bold uppercase tracking-[0.1em]">C · Carbón + acento morado</p><Visual variant="dark"/></div>
+        </section>
+        <section aria-labelledby="lab-fluid" className="mt-12">
+          <div className="mb-4">
+            <p className="text-xs font-bold tracking-[0.12em] text-[#7F6D8A]">D · NUEVA PRUEBA PARA CORREGIR LA RIGIDEZ</p>
+            <h2 id="lab-fluid" className="mt-2 text-2xl font-bold tracking-[-0.05em] sm:text-3xl">Más natural. Más atrevida. Más movimiento.</h2>
+            <p className="mt-2 max-w-3xl text-sm leading-6">Sin caja alrededor del producto, sin titulares todos iguales y sin dividir la pantalla en mitades rígidas. Aquí la fotografía cruza las formas, el texto tiene ritmo y el peso visual viene de una composición asimétrica.</p>
+          </div>
+          <FluidComposition />
         </section>
         <section aria-labelledby="lab-type" className="mt-12">
           <h2 id="lab-type" className="mb-3 text-xl font-bold">Tipografía, textura y volumen</h2>
