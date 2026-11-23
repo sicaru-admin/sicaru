@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import type { HttpTypes } from "@medusajs/types";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -50,7 +51,7 @@ export default async function CommerceExperienceLab() {
   // This route never exists in production. No checkout/payment features are enabled.
   if (!CATALOG_MODE || (process.env.VERCEL_ENV !== "preview" && process.env.NODE_ENV !== "development")) notFound();
 
-  let product: Awaited<ReturnType<typeof getProductByHandle>> = null;
+  let product: HttpTypes.StoreProduct | null = null;
   try {
     product = await getProductByHandle("xiomara-shampoo-platinum-250ml");
   } catch {
