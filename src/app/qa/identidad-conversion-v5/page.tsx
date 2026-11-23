@@ -19,9 +19,9 @@ export const metadata: Metadata = {
 };
 
 const portfolio = [
-  { title: "Coloración", detail: "Encuentra productos y tonos", href: "/categorias/color-y-tintes", photo: "/images/products-hero/voglia-color-fun.webp", shade: "#8E7A9E" },
-  { title: "Cuidado capilar", detail: "Tratamientos para tu rutina", href: "/categorias/tratamientos-y-mascarillas", photo: "/images/products-hero/voglia-total-repair.webp", shade: "#F5F1EB" },
-  { title: "Tu trabajo", detail: "Productos para profesionales", href: "/salon-pro", photo: "/images/products-hero/vitale-bifase-pro-keratin.webp", shade: "#9B89A8" },
+  { title: "Coloración", detail: "Encuentra productos y tonos", href: "/categorias/color-y-tintes", photo: "/images/products-hero/voglia-color-fun.webp" },
+  { title: "Cuidado capilar", detail: "Tratamientos para tu rutina", href: "/categorias/tratamientos-y-mascarillas", photo: "/images/products-hero/voglia-total-repair.webp" },
+  { title: "Tu trabajo", detail: "Productos para profesionales", href: "/salon-pro", photo: "/images/products-hero/vitale-bifase-pro-keratin.webp" },
 ] as const;
 
 export default async function IdentidadConversionV5() {
@@ -81,20 +81,22 @@ export default async function IdentidadConversionV5() {
           <p id="v5-swipe-hint" className="mt-5 text-xs font-medium text-[#7F6D8A] md:hidden">Desliza para explorar →</p>
           <div role="region" aria-label="Explorar según tu objetivo" aria-describedby="v5-swipe-hint" tabIndex={0} className="mt-4 flex snap-x snap-proximity gap-3 overflow-x-auto overscroll-x-contain pb-5 pr-[17%] [-webkit-overflow-scrolling:touch] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] md:grid md:grid-cols-3 md:gap-5 md:overflow-visible md:pr-0">
             {portfolio.map((item,idx)=>(
-              <Link key={item.title} href={item.href} className="group relative flex min-h-[350px] min-w-[83%] shrink-0 snap-start flex-col overflow-hidden rounded-[20px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] md:min-w-0" style={{backgroundColor:item.shade}}>
-                <div className="relative flex-1">
-                  <Image src={item.photo} alt={item.title + " · fotografía real de producto"} fill sizes="(max-width: 767px) 85vw, 33vw" className="object-contain p-5 motion-safe:md:transition-transform motion-safe:md:duration-200 motion-safe:md:group-hover:scale-[1.035]" />
+              <Link key={item.title} href={item.href} className="group relative flex min-h-[395px] min-w-[83%] shrink-0 snap-start flex-col overflow-hidden rounded-[22px] border border-[#8E7A9E]/15 bg-[#F5F1EB] shadow-[0_14px_30px_-25px_rgba(46,43,43,0.23)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] md:min-w-0">
+                <div className="pointer-events-none absolute inset-0" aria-hidden="true" style={{background:idx===0 ? "radial-gradient(ellipse 90% 80% at 66% 30%,rgba(142,122,158,0.46),transparent 75%),linear-gradient(140deg,#FAF8F5,#F5F1EB)" : idx===1 ? "radial-gradient(ellipse 90% 80% at 66% 30%,rgba(155,137,168,0.23),transparent 76%),linear-gradient(140deg,#FAF8F5,#F5F1EB)" : "radial-gradient(ellipse 90% 80% at 65% 30%,rgba(127,109,138,0.35),transparent 75%),linear-gradient(140deg,#FAF8F5,#F5F1EB)"}} />
+                <div className="noise-overlay pointer-events-none absolute inset-0 z-10" aria-hidden="true" />
+                <div className="relative z-0 h-[270px] flex-1">
+                  <div aria-hidden="true" className="absolute bottom-[9%] left-[22%] h-5 w-[56%] rounded-full bg-[#2E2B2B]/10 blur-[13px]" />
+                  <Image src={item.photo} alt={item.title + " · fotografía real de producto"} fill sizes="(max-width: 767px) 85vw, 33vw" className="object-contain p-1 drop-shadow-[5px_9px_9px_rgba(46,43,43,0.13)] motion-safe:md:transition-transform motion-safe:md:duration-200 motion-safe:md:group-hover:scale-[1.045]" />
                 </div>
-                <div className={`relative z-10 min-h-[138px] p-5 sm:p-6 ${idx===1 ? "bg-[#F5F1EB] text-[#2E2B2B]" : "bg-[#2E2B2B] text-[#FAF8F5]"}`}>
-                  <p className="text-[0.65rem] font-bold uppercase tracking-[0.1em] opacity-80">{item.detail}</p>
+                <div className="relative z-20 min-h-[122px] px-5 pb-5 pt-1 text-[#2E2B2B] sm:px-6 sm:pb-6">
+                  <p className="text-[0.65rem] font-bold uppercase tracking-[0.09em] text-[#7F6D8A]">{item.detail}</p>
                   <div className="mt-3 flex items-center justify-between gap-3">
-                    <h3 className="text-2xl font-bold leading-none tracking-[-0.05em]">{item.title}</h3>
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#FAF8F5] text-[#2E2B2B]"><ChevronRight size={20} aria-hidden="true"/></span>
+                    <h3 className="text-[clamp(1.35rem,2vw,1.75rem)] font-bold leading-tight tracking-[-0.045em]">{item.title}</h3>
+                    <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-[#7F6D8A]/35 bg-[#FAF8F5] text-[#7F6D8A] transition-colors group-hover:bg-[#7F6D8A] group-hover:text-[#FAF8F5] motion-reduce:transition-none"><ChevronRight size={19} aria-hidden="true"/></span>
                   </div>
                 </div>
               </Link>
-            ))}
-          </div>
+            ))}         </div>
         </section>
 
         <section aria-labelledby="v5-product-title" className="bg-[#F5F1EB] py-12 sm:py-16">
