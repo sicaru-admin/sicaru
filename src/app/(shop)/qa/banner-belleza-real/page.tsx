@@ -44,17 +44,14 @@ function PreviewHeroA() {
           </p>
         </div>
         <div className="relative isolate min-h-[370px] overflow-hidden sm:min-h-[470px] lg:min-h-[530px]">
-          {/* Campaign photo is an existing repository asset, NOT a newly invented product image.
-              Verify rights, authenticity and model consent before a public release. */}
-          <Image
-            src="/images/hero-mujer-salon-elegante.jpg"
-            alt="Retrato de campaña en evaluación para SICARÚ, con protagonismo de cabello y belleza personal"
-            fill
-            priority
-            sizes="(max-width: 1023px) 100vw, 53vw"
-            className="object-cover object-[center_28%]"
-          />
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(245,241,235,0.12)_0%,transparent_38%)]" aria-hidden="true" />
+          {/* The earlier model photo was explicitly rejected on 24 Nov 2026.
+              Never render or release it; this is an intentionally temporary
+              product-only stage until a new portrait is approved. */}
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[linear-gradient(132deg,#B6A4C2_0%,#9B89A8_48%,#7F6D8A_100%)]" />
+          <div aria-hidden="true" className="pointer-events-none absolute -right-[26%] -top-[43%] h-[115%] w-[96%] rounded-full border-[42px] border-white/15 sm:border-[68px]" />
+          <div className="absolute left-5 top-6 z-30 max-w-[18rem] rounded-xl border border-white/50 bg-[#2E2B2B]/60 px-4 py-3 text-xs font-semibold leading-5 text-white sm:left-8 sm:top-8">
+            Imagen humana en revisión · Foto anterior rechazada
+          </div>
           <div className="pointer-events-none absolute bottom-0 right-0 z-10 h-[50%] w-[48%] bg-[linear-gradient(0deg,rgba(245,241,235,0.78),transparent)]" aria-hidden="true" />
           <div className="pointer-events-none absolute bottom-0 right-[1%] z-20 h-[45%] w-[34%] sm:h-[52%] sm:w-[30%]">
             <Image src="/images/products-hero/voglia-total-repair.webp" alt="Voglia Total Repair, fotografía existente del producto" fill sizes="(max-width: 640px) 34vw, 18vw" className="object-contain drop-shadow-[0_12px_10px_rgba(46,43,43,0.18)]" />
