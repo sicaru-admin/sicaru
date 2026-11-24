@@ -20,20 +20,20 @@ function CampaignHeroPreview() {
   return (
     <section
       aria-labelledby="sicaru-campaign-title"
-      className="isolate overflow-hidden bg-[#7F6D8A] text-[#FAF8F5]"
+      className="isolate overflow-hidden bg-[#7F6D8A] text-white"
     >
       <div className="mx-auto grid max-w-[1440px] md:grid-cols-[1.03fr_0.97fr] md:items-stretch">
         <div className="relative z-20 flex min-w-0 flex-col justify-center px-5 pb-5 pt-6 sm:px-8 sm:py-8 md:px-9 md:py-12 lg:px-12 lg:py-16">
-          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[#F5F1EB] sm:text-xs">
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-white sm:text-xs">
             SICARÚ · Beauty Supply
           </p>
           <h1
             id="sicaru-campaign-title"
-            className="font-heading mt-3 max-w-[20ch] text-[clamp(2.125rem,8.8vw,2.6875rem)] md:mt-4 md:max-w-[16ch] md:text-[clamp(2.45rem,5vw,5rem)] font-medium leading-[1.02] tracking-[-0.035em] text-[#FAF8F5]"
+            className="font-heading mt-3 max-w-[20ch] text-[clamp(2.125rem,8.8vw,2.6875rem)] md:mt-4 md:max-w-[16ch] md:text-[clamp(2.45rem,5vw,5rem)] font-medium leading-[1.02] tracking-[-0.035em] text-white"
           >
             Belleza profesional para ti y tu salón.
           </h1>
-          <p className="mt-3 max-w-[37ch] text-sm leading-6 md:mt-4 text-[#FAF8F5] sm:text-base sm:leading-7">
+          <p className="mt-3 max-w-[37ch] text-sm leading-6 md:mt-4 text-white sm:text-base sm:leading-7">
             Coloración, cuidado capilar y herramientas para tu estilo y tu profesión.
           </p>
           <div className="mt-4 flex flex-wrap items-center gap-4 md:mt-6">
@@ -45,7 +45,7 @@ function CampaignHeroPreview() {
             </Link>
             <Link
               href="/salon-pro"
-              className="hidden min-h-11 items-center text-sm font-medium text-[#FAF8F5] underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white md:inline-flex"
+              className="hidden min-h-11 items-center text-sm font-medium text-white underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white md:inline-flex"
             >
               Para profesionales
             </Link>
