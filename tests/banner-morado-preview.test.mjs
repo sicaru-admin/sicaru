@@ -31,3 +31,11 @@ test("recurso conceptual identificado, sin fotografía rechazada ni empaques fic
   assert.doesNotMatch(page, /hero-mujer-salon-elegante/);
   assert.doesNotMatch(page, /checkout|pago en línea|envío gratis/i);
 });
+
+test("encuadre refinado separa texto y fotografía en móvil", () => {
+  assert.match(page, /h-\[298px\]/);
+  assert.match(page, /object-\[50%_top\]/);
+  assert.match(page, /md:grid-cols-\[1\.03fr_0\.97fr\]/);
+  assert.match(page, /text-\[clamp\(2\.125rem,8\.8vw,2\.6875rem\)\]/);
+  assert.doesNotMatch(page, /h-\[235px\]|object-\[72%_36%\]/);
+});
