@@ -127,7 +127,12 @@ try {
     assert.equal(await unapproved.getByRole("button", { name: /Agregar/ }).count(), 0);
     assert.ok(await unapproved.getByText("Disponibilidad por confirmar", { exact: true }).isVisible());
     assert.ok(await unapproved.getByRole("link", { name: "Consultar Producto sin precio aprobado por WhatsApp" }).isVisible());
-    await cards.filter({ has: page.getByRole("heading", { name: "Producto sin fotografía", exact: true }) }).getByText("Imagen no disponible").waitFor();
+    // The expanded categories block can push featured photos below the first viewport.
+    // Scroll the broken-image fixture into view to trigger Next Image lazy loading,
+    // then still require the real image-error fallback; do not skip the assertion.
+    const missingPhotoCard = cards.filter({ has: page.getByRole("heading", { name: "Producto sin fotografía", exact: true }) });
+    await missingPhotoCard.scrollIntoViewIfNeeded();
+    await missingPhotoCard.getByText("Imagen no disponible").waitFor();
     for (const image of await page.locator("main img").all()) { if (!(await image.isVisible())) continue; await image.scrollIntoViewIfNeeded(); await image.evaluate((element) => element.decode()); }
     await verifyRetailPresentation(page);
     await page.screenshot({ path: `artifacts/home-${width}.png`, fullPage: true });
