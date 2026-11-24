@@ -35,7 +35,7 @@ export function CategoriesGrid() {
             </div>
             <span className="relative z-10 inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-[#7F6D8A] px-5 py-3 text-xs font-semibold text-[#FAF8F5] sm:text-sm">Explorar tratamientos <ArrowUpRight className="size-4" aria-hidden="true"/></span>
           </Link>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 lg:gap-4">
+          <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 lg:gap-4">
             {categoryLinks.map((category) => (
               <Link key={category.href} href={category.href} className={`group relative isolate flex min-h-[190px] overflow-hidden rounded-[18px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] sm:min-h-[235px] lg:min-h-[181px] ${category.background} ${category.foreground}`}>
                 <div className="relative z-10 flex w-[57%] flex-col items-start justify-between p-5 sm:p-6">
