@@ -146,7 +146,17 @@ try {
     await page.waitForURL("**/categorias/color-y-tintes");
     await page.getByRole("heading", { name: "Coloración", exact: true }).waitFor();
     await page.goto(baseUrl, { waitUntil: "networkidle" });
-    assert.equal(await page.locator('[aria-labelledby="home-categories"] a').count(), 4);
+    // The approved grid retains four destinations and adds a separate catalog CTA.
+    const categoryDestinations = await page.locator('[aria-labelledby="home-categories"] a').evaluateAll(
+      (links) => links.map((link) => link.getAttribute("href")).sort()
+    );
+    assert.deepEqual(categoryDestinations, [
+      "/categorias/color-y-tintes",
+      "/categorias/herramientas-pro",
+      "/categorias/tratamientos-y-mascarillas",
+      "/productos",
+      "/salon-pro",
+    ].sort());
     assert.equal(await page.locator('[aria-labelledby="home-brands"] a').count(), 1);
     assert.equal(await page.locator('[aria-labelledby="home-brands"] a').getAttribute("href"), "/productos?q=Voglia");
     await page.getByRole("button", { name: "Abrir menú" }).click();
