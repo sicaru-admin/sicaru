@@ -1,0 +1,142 @@
+[
+  {
+    "version": "anterior",
+    "hero": {
+      "height": 968.78125,
+      "width": 305,
+      "x": 0,
+      "y": 220
+    },
+    "overflow": false,
+    "pageHeight": 4329,
+    "robots": "noindex, nofollow",
+    "width": 320,
+    "y": 0
+  },
+  {
+    "version": "pr42",
+    "hero": {
+      "height": 550.875,
+      "width": 305,
+      "x": 0,
+      "y": 171
+    },
+    "overflow": false,
+    "pageHeight": 3974,
+    "robots": "noindex, nofollow",
+    "width": 320,
+    "y": 0
+  },
+  {
+    "version": "anterior",
+    "hero": {
+      "height": 944.78125,
+      "width": 360,
+      "x": 0,
+      "y": 200
+    },
+    "overflow": false,
+    "pageHeight": 4187,
+    "robots": "noindex, nofollow",
+    "width": 375,
+    "y": 0
+  },
+  {
+    "version": "pr42",
+    "hero": {
+      "height": 477.4375,
+      "width": 360,
+      "x": 0,
+      "y": 151
+    },
+    "overflow": false,
+    "pageHeight": 3758,
+    "robots": "noindex, nofollow",
+    "width": 375,
+    "y": 0
+  },
+  {
+    "version": "anterior",
+    "hero": {
+      "height": 903.234375,
+      "width": 375,
+      "x": 0,
+      "y": 200
+    },
+    "overflow": false,
+    "pageHeight": 4101,
+    "robots": "noindex, nofollow",
+    "width": 390,
+    "y": 0
+  },
+  {
+    "version": "pr42",
+    "hero": {
+      "height": 453.4375,
+      "width": 375,
+      "x": 0,
+      "y": 151
+    },
+    "overflow": false,
+    "pageHeight": 3690,
+    "robots": "noindex, nofollow",
+    "width": 390,
+    "y": 0
+  },
+  {
+    "version": "anterior",
+    "hero": {
+      "height": 934.09375,
+      "width": 753,
+      "x": 0,
+      "y": 188
+    },
+    "overflow": false,
+    "pageHeight": 3322,
+    "robots": "noindex, nofollow",
+    "width": 768,
+    "y": 0
+  },
+  {
+    "version": "pr42",
+    "hero": {
+      "height": 390,
+      "width": 753,
+      "x": 0,
+      "y": 159
+    },
+    "overflow": false,
+    "pageHeight": 2813,
+    "robots": "noindex, nofollow",
+    "width": 768,
+    "y": 0
+  },
+  {
+    "version": "anterior",
+    "hero": {
+      "height": 648.6640625,
+      "width": 1425,
+      "x": 0,
+      "y": 168
+    },
+    "overflow": false,
+    "pageHeight": 2772,
+    "robots": "noindex, nofollow",
+    "width": 1440,
+    "y": 0
+  },
+  {
+    "version": "pr42",
+    "hero": {
+      "height": 480,
+      "width": 1425,
+      "x": 0,
+      "y": 159
+    },
+    "overflow": false,
+    "pageHeight": 2634,
+    "robots": "noindex, nofollow",
+    "width": 1440,
+    "y": 0
+  }
+]
