@@ -104,7 +104,7 @@ export default function ContactoPage() {
             ¿Prefieres WhatsApp?
           </h2>
           <p className="mt-2 text-white/90">
-                  Escríbenos para consultar productos, disponibilidad, precio y envío por DHL.
+                  Escríbenos para consultar productos, disponibilidad, precio y opciones de envío.
           </p>
           <a
             href="https://wa.me/528281136652"

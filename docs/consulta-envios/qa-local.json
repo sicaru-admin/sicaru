@@ -1,0 +1,56 @@
+[
+  {
+    "dhl": false,
+    "disabled": true,
+    "overflow": false,
+    "title": "Consulta de envíos | SICARÚ",
+    "wa": "https://wa.me/528281136652",
+    "width": 320
+  },
+  {
+    "dhl": false,
+    "disabled": true,
+    "overflow": false,
+    "title": "Consulta de envíos | SICARÚ",
+    "wa": "https://wa.me/528281136652",
+    "width": 390
+  },
+  {
+    "dhl": false,
+    "disabled": true,
+    "overflow": false,
+    "title": "Consulta de envíos | SICARÚ",
+    "wa": "https://wa.me/528281136652",
+    "width": 1440
+  },
+  {
+    "route": "/",
+    "checkoutBlocked": false,
+    "dhl": false,
+    "heading": "Belleza profesional para ti y tu salón"
+  },
+  {
+    "route": "/contacto",
+    "checkoutBlocked": false,
+    "dhl": false,
+    "heading": "Contáctanos"
+  },
+  {
+    "route": "/terminos",
+    "checkoutBlocked": true,
+    "dhl": false,
+    "heading": "Uso del catálogo SICARÚ"
+  },
+  {
+    "route": "/carrito",
+    "checkoutBlocked": false,
+    "dhl": false,
+    "heading": "Tu Carrito"
+  },
+  {
+    "route": "/checkout",
+    "checkoutBlocked": true,
+    "dhl": false,
+    "heading": "Consulta de envíos"
+  }
+]
