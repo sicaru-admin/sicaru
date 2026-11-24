@@ -325,6 +325,16 @@ try {
     console.log(`PASS: ${width}px search, categories, brand links, images, approved prices, variants, cart quantities, shipping guard, recovery and no horizontal overflow.`);
   }
   offline = false;
+  // Tablet uses the two-column category grid. Check it separately from iPhone flows.
+  const tablet = await browser.newContext({ viewport: { width: 768, height: 1024 }, deviceScaleFactor: 1 });
+  const tabletPage = activePage = await tablet.newPage();
+  await tabletPage.goto(baseUrl, { waitUntil: "networkidle" });
+  await loadPresentationPhotos(tabletPage);
+  await verifyRetailPresentation(tabletPage);
+  await tabletPage.evaluate(() => window.scrollTo(0, 0));
+  await tabletPage.screenshot({ path: "artifacts/home-tablet-768.png", fullPage: true });
+  await tablet.close();
+  console.log("PASS: 768px tablet photo integrity, navigation and horizontal-overflow checks.");
   const desktop = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
   const desktopPage = activePage = await desktop.newPage();
   await desktopPage.goto(baseUrl, { waitUntil: "networkidle" });
