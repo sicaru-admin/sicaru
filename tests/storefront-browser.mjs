@@ -95,6 +95,24 @@ async function verifyRetailPresentation(page) {
     }, photoBounds);
     assert.ok(result.intact, `Package cropped: ${result.name}`);
   }
+  // Verify real opaque package bounds stay inside their card and away from its CTA.
+  const treatmentCard = page.locator('[aria-labelledby="home-categories"] a[href="/categorias/tratamientos-y-mascarillas"]');
+  const treatmentClear = await treatmentCard.evaluate((card) => {
+    const img = card.querySelector("img");
+    const cta = card.querySelector("span");
+    if (!img || !cta) return false;
+    const box = img.getBoundingClientRect();
+    const tile = card.getBoundingClientRect();
+    const button = cta.getBoundingClientRect();
+    const scale = Math.min(box.width / 1200, box.height / 1400);
+    const x = box.left + (box.width - 1200 * scale) / 2;
+    const y = box.top + (box.height - 1400 * scale) / 2;
+    const packageBounds = { left: x + 438 * scale, top: y + 114 * scale, right: x + 754 * scale, bottom: y + 1286 * scale };
+    const contained = packageBounds.left >= tile.left - 1 && packageBounds.right <= tile.right + 1 && packageBounds.top >= tile.top - 1 && packageBounds.bottom <= tile.bottom + 1;
+    const noOverlap = packageBounds.right <= button.left || packageBounds.left >= button.right || packageBounds.bottom <= button.top || packageBounds.top >= button.bottom;
+    return contained && noOverlap;
+  });
+  assert.ok(treatmentClear, "The treatment package must be fully inside its card and unobstructed by the CTA");
   const hero = page.locator('[aria-labelledby="retail-hero"]');
   assert.ok(await hero.getByRole("link", { name: "Explorar productos", exact: true }).isVisible());
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
