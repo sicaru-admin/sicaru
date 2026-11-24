@@ -43,3 +43,8 @@ function requireHash(bytes) {
   // Keep the existing manifest authoritative for production hero files.
   return createHash("sha256").update(bytes).digest("hex");
 }
+
+test("provisional banner excludes rejected decorative treatment", () => {
+  assert.doesNotMatch(page, /linear-gradient|radial-gradient|drop-shadow|border-\[42px\]/);
+  assert.match(page, /Propuesta provisional/);
+});
