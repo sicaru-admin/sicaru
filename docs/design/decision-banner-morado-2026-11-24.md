@@ -34,3 +34,11 @@
 - Mantener `main`, variables, precios, inventario, cobros y envíos sin modificaciones. Cualquier publicación o merge requiere autorización explícita.
 
 **Conclusión:** se aprobó explorar la composición, **no** una imagen ni una publicación. El siguiente cuello de botella comercial del banner es una fotografía auténtica con calidad y derechos suficientes, no otra ronda de decoración CSS.
+
+## Aprobación de corrección cromática — 24/11/2026
+- La propietaria aprobó visualmente la propuesta cromática basada en `#7F6D8A` (morado profundo), con fondos de apoyo `#9B89A8`, marfil `#FAF8F5` y texto oscuro `#2E2B2B` fuera del hero.
+- Implementado **solo en la ruta experimental** `/qa/banner-morado`: el fondo del panel de texto usa exactamente `#7F6D8A`; el área de la fotografía usa `#9B89A8`; se quitó la gradación accidental `#49314B`/ciruela.
+- Para texto pequeño sobre `#7F6D8A`, usar `#FFFFFF` (aprox. 4.71:1); el marfil `#FAF8F5` da aprox. 4.44:1 y no alcanza WCAG AA para texto normal.
+- **Limitación explícita:** la fotografía limpia que aparece en la maqueta cromática está alojada como imagen generada en la conversación y **no se ha importado al repositorio**. La Preview sigue usando la lámina antigua `sicaru-textura-en-libertad-concepto.png`, con problemas ya identificados. Por eso la Preview solo valida **fondo/texto y estructura**, no la imagen que gustó.
+- La fotografía creada para la maqueta mide 1774 × 887 px y no cumple aún el master horizontal ≥3000 px ni existe un master móvil independiente ≥1800 px. No se deben aplicar upscalings que se presenten como detalle real.
+- **No publicar, no fusionar** hasta resolver archivo maestro, modelo visual, fotografía definitiva, logo, mensajes de envío y QA integrado. Mantener intacta producción.
