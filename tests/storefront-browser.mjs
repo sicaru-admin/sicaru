@@ -119,6 +119,18 @@ async function verifyRetailPresentation(page) {
   assert.ok(await hero.getByRole("link", { name: "Explorar productos", exact: true }).isVisible());
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
 }
+async function loadPresentationPhotos(page) {
+  for (const image of await page.locator("main img").all()) {
+    if (!(await image.isVisible())) continue;
+    // Scroll the containing link, not an overflow-clipped absolute image.
+    // Otherwise Playwright can shift an overflow-hidden card internally and
+    // make the saved screenshot appear to crop text that is actually intact.
+    const parentLink = image.locator("xpath=ancestor::a[1]");
+    if (await parentLink.count()) await parentLink.scrollIntoViewIfNeeded();
+    else await image.scrollIntoViewIfNeeded();
+    await image.evaluate((element) => element.decode());
+  }
+}
 try {
   for (let attempt = 0; attempt < 60; attempt++) {
     try { if ((await fetch(baseUrl)).ok) break; } catch {}
@@ -153,7 +165,7 @@ try {
     const missingPhotoCard = cards.filter({ has: page.getByRole("heading", { name: "Producto sin fotografía", exact: true }) });
     await missingPhotoCard.scrollIntoViewIfNeeded();
     await missingPhotoCard.getByText("Imagen no disponible").waitFor();
-    for (const image of await page.locator("main img").all()) { if (!(await image.isVisible())) continue; await image.scrollIntoViewIfNeeded(); await image.evaluate((element) => element.decode()); }
+    await loadPresentationPhotos(page);
     await verifyRetailPresentation(page);
     await page.screenshot({ path: `artifacts/home-${width}.png`, fullPage: true });
 
@@ -315,7 +327,7 @@ try {
   const desktop = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
   const desktopPage = activePage = await desktop.newPage();
   await desktopPage.goto(baseUrl, { waitUntil: "networkidle" });
-  for (const image of await desktopPage.locator("main img").all()) { await image.scrollIntoViewIfNeeded(); await image.evaluate((element) => element.decode()); }
+  await loadPresentationPhotos(desktopPage);
   await verifyRetailPresentation(desktopPage);
   await desktopPage.screenshot({ path: "artifacts/home-desktop-1440.png", fullPage: true });
   // Validate only published articles as public pages; intentionally retired posts must return 404.
