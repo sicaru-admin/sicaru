@@ -30,7 +30,7 @@ export function CategoriesGrid() {
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#7F6D8A]">Cuidado capilar</p>
               <h3 className="mt-3 text-[clamp(2rem,4vw,3.8rem)] font-bold leading-[0.98] tracking-[-0.065em]">Cuida tu cabello.</h3>
             </div>
-            <div className="pointer-events-none absolute bottom-[-7%] right-[-10%] h-[84%] w-[76%] sm:bottom-[-4%] sm:right-[-4%] sm:h-[92%] sm:w-[65%]">
+            <div className="pointer-events-none absolute bottom-[-7%] right-[-26%] h-[84%] w-[76%] sm:bottom-[-4%] sm:right-[-4%] sm:h-[92%] sm:w-[65%]">
               <Image src="/images/products-hero/voglia-total-repair.webp" alt="Voglia Total Repair, fotografía real de tratamiento capilar" fill sizes="(max-width: 1023px) 72vw, 40vw" className="object-contain" />
             </div>
             <span className="relative z-10 inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-[#7F6D8A] px-5 py-3 text-xs font-semibold text-[#FAF8F5] sm:text-sm">Explorar tratamientos <ArrowUpRight className="size-4" aria-hidden="true"/></span>
