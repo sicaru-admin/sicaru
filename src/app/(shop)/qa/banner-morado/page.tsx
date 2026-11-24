@@ -24,20 +24,20 @@ function CampaignHeroPreview() {
       style={{ background: "linear-gradient(115deg, #2E2B2B 0%, #49314B 52%, #7F6D8A 100%)" }}
     >
       <div className="mx-auto grid max-w-[1440px] md:grid-cols-[1.03fr_0.97fr] md:items-stretch">
-        <div className="relative z-20 flex min-w-0 flex-col justify-center px-5 pb-7 pt-9 sm:px-8 sm:py-10 md:px-9 md:py-12 lg:px-12 lg:py-16">
+        <div className="relative z-20 flex min-w-0 flex-col justify-center px-5 pb-5 pt-6 sm:px-8 sm:py-8 md:px-9 md:py-12 lg:px-12 lg:py-16">
           <p className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[#F5F1EB] sm:text-xs">
             SICARÚ · Beauty Supply
           </p>
           <h1
             id="sicaru-campaign-title"
-            className="font-heading mt-4 max-w-[16ch] text-[clamp(2.45rem,5vw,5rem)] font-medium leading-[1.02] tracking-[-0.035em] text-[#FAF8F5]"
+            className="font-heading mt-3 max-w-[20ch] text-[clamp(2.125rem,8.8vw,2.6875rem)] md:mt-4 md:max-w-[16ch] md:text-[clamp(2.45rem,5vw,5rem)] font-medium leading-[1.02] tracking-[-0.035em] text-[#FAF8F5]"
           >
             Belleza profesional para ti y tu salón.
           </h1>
-          <p className="mt-4 max-w-[37ch] text-sm leading-6 text-[#FAF8F5] sm:text-base sm:leading-7">
+          <p className="mt-3 max-w-[37ch] text-sm leading-6 md:mt-4 text-[#FAF8F5] sm:text-base sm:leading-7">
             Coloración, cuidado capilar y herramientas para tu estilo y tu profesión.
           </p>
-          <div className="mt-6 flex flex-wrap items-center gap-4">
+          <div className="mt-4 flex flex-wrap items-center gap-4 md:mt-6">
             <Link
               href="/productos"
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#FAF8F5] px-6 py-3 text-sm font-semibold text-[#2E2B2B] transition-colors hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white motion-reduce:transition-none sm:text-base"
@@ -52,14 +52,14 @@ function CampaignHeroPreview() {
             </Link>
           </div>
         </div>
-        <div className="relative isolate h-[235px] min-w-0 overflow-hidden sm:h-[300px] md:h-auto md:min-h-[425px] lg:min-h-[475px]">
+        <div className="relative isolate h-[298px] min-w-0 overflow-hidden sm:h-[345px] md:h-auto md:min-h-[425px] lg:min-h-[475px]">
           <Image
             src="/images/preview/sicaru-textura-en-libertad-concepto.png"
             alt="Exploración visual sintética de cabello rizado en movimiento; fotografía de campaña no aprobada"
             fill
             priority
             sizes="(max-width: 767px) 100vw, 49vw"
-            className="object-cover object-[72%_36%] md:object-[66%_center]"
+            className="object-cover object-[50%_top] md:object-[52%_15%]"
           />
           <div
             aria-hidden="true"
