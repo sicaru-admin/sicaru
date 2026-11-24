@@ -5,24 +5,25 @@ import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const component = readFileSync(resolve(root, "src/components/layout/BrandWordmark.tsx"), "utf8");
+const read = (path) => readFileSync(resolve(root, path), "utf8");
+const brand = read("src/components/layout/BrandWordmark.tsx");
+const navbar = read("src/components/layout/Navbar.tsx");
 
-test("BrandWordmark uses unaltered official assets with correct accessible link name", () => {
-  assert.ok(existsSync(resolve(root, "public/brand/logo-dark.png")));
-  assert.ok(existsSync(resolve(root, "public/brand/logo-cream.png")));
-  assert.match(component, /"\/brand\/logo-dark\.png"/);
-  assert.match(component, /"\/brand\/logo-cream\.png"/);
-  assert.match(component, /width=\{1600\}/);
-  assert.match(component, /height=\{993\}/);
-  assert.match(component, /aria-label="SICARÚ, productos de belleza\. Ir al inicio"/);
-  assert.match(component, /href="\/"/);
-  assert.doesNotMatch(component, />\s*SICARÚ\s*</);
+test("no se recorta ni modifica el logotipo gráfico oficial", () => {
+  for (const path of ["public/brand/logo-dark.png", "public/brand/logo-cream.png", "public/brand/logo-violet.png"]) {
+    assert.ok(existsSync(resolve(root, path)), path);
+  }
+  assert.match(brand, /aria-label="Sicarú, inicio"/);
+  assert.match(brand, />\s*SICARÚ\s*</);
+  assert.doesNotMatch(brand, /overflow-hidden|object-cover|logo-dark\.png/);
 });
 
-test("BrandWordmark is larger on desktop and accommodates mobile layout", () => {
-  assert.match(component, /lg:w-\[240px\]/);
-  assert.match(component, /w-\[178px\]/);
-  assert.match(component, /md:w-\[188px\]/);
-  assert.match(component, /overflow-hidden/);
-  assert.match(component, /logo-cream\.png/);
+test("solo el encabezado eleva la escala de wordmark con tamaños adaptativos", () => {
+  assert.match(navbar, /<BrandWordmark className="shrink-0/);
+  assert.match(navbar, /text-\[1\.98rem\]!/);
+  assert.match(navbar, /sm:text-\[2\.35rem\]!/);
+  assert.match(navbar, /md:text-\[2\.15rem\]!/);
+  assert.match(navbar, /lg:text-\[2\.65rem\]!/);
+  assert.match(navbar, /<HeaderSearch \/>/);
+  assert.match(navbar, /<MobileNav \/>/);
 });
