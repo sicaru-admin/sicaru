@@ -1,0 +1,12 @@
+{
+  "brands": 7,
+  "categoryLinks": [
+    "/productos",
+    "/categorias/tratamientos-y-mascarillas",
+    "/categorias/color-y-tintes",
+    "/categorias/herramientas-pro",
+    "/salon-pro"
+  ],
+  "dhl": true,
+  "featured": 8
+}

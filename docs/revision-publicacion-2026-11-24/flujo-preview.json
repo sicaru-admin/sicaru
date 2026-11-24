@@ -1,0 +1,44 @@
+{
+  "search": "Voglia → 2 resultados",
+  "cardVariant": "7.35 Rubio medio dorado caoba",
+  "cardSku": "VOGLIA-TINTE-7-35-90ML",
+  "pdpWhatsApp": "https://wa.me/528281136652?text=Hola%2C%20me%20interesa%20Voglia%20Tinte%20Permanente%2090ml.%0AVariante%3A%207.35%20Rubio%20medio%20dorado%20caoba.%0ASKU%3A%20VOGLIA-TINTE-7-35-90ML.%0A%C2%BFMe%20pueden%20confirmar%20precio%20y%20disponibilidad%3F",
+  "routes": [
+    {
+      "route": "/categorias/tratamientos-y-mascarillas",
+      "checkoutBlocked": false,
+      "error": false,
+      "h1": "Tratamientos y Mascarillas"
+    },
+    {
+      "route": "/categorias/color-y-tintes",
+      "checkoutBlocked": false,
+      "error": false,
+      "h1": "Color y Tintes"
+    },
+    {
+      "route": "/categorias/herramientas-pro",
+      "checkoutBlocked": false,
+      "error": false,
+      "h1": "Herramientas Pro"
+    },
+    {
+      "route": "/salon-pro",
+      "checkoutBlocked": false,
+      "error": false,
+      "h1": "Un aliado para tu trabajo"
+    },
+    {
+      "route": "/carrito",
+      "checkoutBlocked": false,
+      "error": false,
+      "h1": "Tu Carrito"
+    },
+    {
+      "route": "/checkout",
+      "checkoutBlocked": true,
+      "error": false,
+      "h1": "Envíos con DHL"
+    }
+  ]
+}
