@@ -39,3 +39,10 @@ test("encuadre refinado separa texto y fotografía en móvil", () => {
   assert.match(page, /text-\[clamp\(2\.125rem,8\.8vw,2\.6875rem\)\]/);
   assert.doesNotMatch(page, /h-\[235px\]|object-\[72%_36%\]/);
 });
+
+test("paleta cromática oficial SICARÚ en el hero y texto de alto contraste", () => {
+  assert.match(page, /bg-\[#7F6D8A\]/);
+  assert.match(page, /bg-\[#9B89A8\]/);
+  assert.match(page, /text-white/);
+  assert.doesNotMatch(page, /#49314B|#36243D|#39273E/);
+});
