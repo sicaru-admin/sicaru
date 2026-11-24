@@ -167,6 +167,7 @@ try {
     await missingPhotoCard.getByText("Imagen no disponible").waitFor();
     await loadPresentationPhotos(page);
     await verifyRetailPresentation(page);
+    await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({ path: `artifacts/home-${width}.png`, fullPage: true });
 
     await search.fill("Voglia 500");
@@ -329,6 +330,7 @@ try {
   await desktopPage.goto(baseUrl, { waitUntil: "networkidle" });
   await loadPresentationPhotos(desktopPage);
   await verifyRetailPresentation(desktopPage);
+  await desktopPage.evaluate(() => window.scrollTo(0, 0));
   await desktopPage.screenshot({ path: "artifacts/home-desktop-1440.png", fullPage: true });
   // Validate only published articles as public pages; intentionally retired posts must return 404.
   const blogFiles = (await readdir("content/blog")).filter((file) => file.endsWith(".mdx"));
