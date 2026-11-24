@@ -20,8 +20,7 @@ function CampaignHeroPreview() {
   return (
     <section
       aria-labelledby="sicaru-campaign-title"
-      className="isolate overflow-hidden bg-[#2E2B2B] text-[#FAF8F5]"
-      style={{ background: "linear-gradient(115deg, #2E2B2B 0%, #49314B 52%, #7F6D8A 100%)" }}
+      className="isolate overflow-hidden bg-[#7F6D8A] text-[#FAF8F5]"
     >
       <div className="mx-auto grid max-w-[1440px] md:grid-cols-[1.03fr_0.97fr] md:items-stretch">
         <div className="relative z-20 flex min-w-0 flex-col justify-center px-5 pb-5 pt-6 sm:px-8 sm:py-8 md:px-9 md:py-12 lg:px-12 lg:py-16">
@@ -52,7 +51,7 @@ function CampaignHeroPreview() {
             </Link>
           </div>
         </div>
-        <div className="relative isolate h-[298px] min-w-0 overflow-hidden sm:h-[345px] md:h-auto md:min-h-[425px] lg:min-h-[475px]">
+        <div className="relative isolate h-[298px] min-w-0 overflow-hidden bg-[#9B89A8] sm:h-[345px] md:h-auto md:min-h-[425px] lg:min-h-[475px]">
           <Image
             src="/images/preview/sicaru-textura-en-libertad-concepto.png"
             alt="Exploración visual sintética de cabello rizado en movimiento; fotografía de campaña no aprobada"
@@ -63,7 +62,7 @@ function CampaignHeroPreview() {
           />
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(46,43,43,0.12)_0%,transparent_40%)]"
+            className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(127,109,138,0.09)_0%,transparent_40%)]"
           />
         </div>
       </div>
