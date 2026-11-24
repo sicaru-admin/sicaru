@@ -240,7 +240,7 @@ try {
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
     assert.equal(await page.getByText(/Gratis|149[.,]00|218[.,]38|280[.,]96|\$60/).count(), 0);
     assert.equal(
-      await page.getByRole("link", { name: "Envíos por DHL · Cotización por WhatsApp" }).getAttribute("href"),
+      await page.getByRole("link", { name: "Opciones de envío · Consulta por WhatsApp" }).getAttribute("href"),
       "/envios"
     );
     assert.equal(await page.getByText(/Productos \(\d+\)/).count(), 0);
@@ -256,7 +256,7 @@ try {
     assert.doesNotMatch(whatsappMessage, /199|299|Mercado Pago|DHL|envío/i);
     assert.equal(cartWriteRequests, 0);
     await page.goto(`${baseUrl}/checkout`, { waitUntil: "networkidle" });
-    await page.getByRole("heading", { name: "Envíos con DHL" }).waitFor();
+    await page.getByRole("heading", { name: "Consulta de envíos" }).waitFor();
     assert.ok(await page.getByText("Los pedidos y pagos en línea aún no están habilitados.").isVisible());
     assert.equal(await page.locator('input[name="cardNumber"], iframe').count(), 0);
     assert.equal(paymentRequests, 0);
@@ -264,15 +264,15 @@ try {
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
     await page.screenshot({ path: `artifacts/shipping-${width}.png`, fullPage: true });
     await page.goto(`${baseUrl}/envios`, { waitUntil: "networkidle" });
-    await page.getByRole("heading", { name: "Envíos con DHL" }).waitFor();
-    assert.equal(await page.title(), "Envíos con DHL | SICARÚ");
+    await page.getByRole("heading", { name: "Consulta de envíos" }).waitFor();
+    assert.equal(await page.title(), "Consulta de envíos | SICARÚ");
     assert.equal(await page.getByText("Envíos online próximamente").count(), 0);
-    const shippingNotice = page.getByRole("region", { name: "Envíos con DHL" });
-    assert.doesNotMatch(await shippingNotice.innerText(), /\$|gratis|mismo día|automáticamente/i);
-    assert.ok(await page.getByText("El costo del envío se cotiza antes de confirmar tu pedido, de acuerdo con el destino, peso, volumen y cobertura.").isVisible());
-    assert.ok(await page.getByText("Algunas zonas extendidas pueden generar cargos adicionales.").isVisible());
+    const shippingNotice = page.getByRole("region", { name: "Consulta de envíos" });
+    assert.doesNotMatch(await shippingNotice.innerText(), /\$|gratis|mismo día|automáticamente|DHL/i);
+    assert.ok(await page.getByText("Te confirmaremos cobertura y costo antes de confirmar tu pedido.").isVisible());
+    assert.ok(await page.getByText("Los pedidos y pagos en línea aún no están habilitados.").isVisible());
     assert.equal(
-      await page.getByRole("link", { name: "Cotizar pedido por WhatsApp" }).getAttribute("href"),
+      await page.getByRole("link", { name: "Consultar envío por WhatsApp" }).getAttribute("href"),
       "https://wa.me/528281136652"
     );
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
