@@ -88,16 +88,48 @@ async function verifyRetailPresentation(page) {
       const name = (src.searchParams.get("url") || src.pathname).split("/").pop();
       const box = element.getBoundingClientRect();
       const [left, top, right, bottom] = bounds[name];
-      const scale = Math.max(box.width / 1200, box.height / 1400);
+      // object-contain scales to fit the entire package; object-cover fills and may crop.
+      const fit = getComputedStyle(element).objectFit;
+      const scale = (fit === "contain" ? Math.min : Math.max)(box.width / 1200, box.height / 1400);
       const offsetX = (box.width - 1200 * scale) / 2;
       const offsetY = (box.height - 1400 * scale) / 2;
       return { name, intact: offsetX + left * scale >= -1 && offsetY + top * scale >= -1 && offsetX + right * scale <= box.width + 1 && offsetY + bottom * scale <= box.height + 1 };
     }, photoBounds);
     assert.ok(result.intact, `Package cropped: ${result.name}`);
   }
+  // Verify real opaque package bounds stay inside their card and away from its CTA.
+  const treatmentCard = page.locator('[aria-labelledby="home-categories"] a[href="/categorias/tratamientos-y-mascarillas"]');
+  const treatmentClear = await treatmentCard.evaluate((card) => {
+    const img = card.querySelector("img");
+    const cta = card.querySelector("span");
+    if (!img || !cta) return false;
+    const box = img.getBoundingClientRect();
+    const tile = card.getBoundingClientRect();
+    const button = cta.getBoundingClientRect();
+    const scale = Math.min(box.width / 1200, box.height / 1400);
+    const x = box.left + (box.width - 1200 * scale) / 2;
+    const y = box.top + (box.height - 1400 * scale) / 2;
+    const packageBounds = { left: x + 438 * scale, top: y + 114 * scale, right: x + 754 * scale, bottom: y + 1286 * scale };
+    const contained = packageBounds.left >= tile.left - 1 && packageBounds.right <= tile.right + 1 && packageBounds.top >= tile.top - 1 && packageBounds.bottom <= tile.bottom + 1;
+    const noOverlap = packageBounds.right <= button.left || packageBounds.left >= button.right || packageBounds.bottom <= button.top || packageBounds.top >= button.bottom;
+    return contained && noOverlap;
+  });
+  assert.ok(treatmentClear, "The treatment package must be fully inside its card and unobstructed by the CTA");
   const hero = page.locator('[aria-labelledby="retail-hero"]');
   assert.ok(await hero.getByRole("link", { name: "Explorar productos", exact: true }).isVisible());
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
+}
+async function loadPresentationPhotos(page) {
+  for (const image of await page.locator("main img").all()) {
+    if (!(await image.isVisible())) continue;
+    // Scroll the containing link, not an overflow-clipped absolute image.
+    // Otherwise Playwright can shift an overflow-hidden card internally and
+    // make the saved screenshot appear to crop text that is actually intact.
+    const parentLink = image.locator("xpath=ancestor::a[1]");
+    if (await parentLink.count()) await parentLink.scrollIntoViewIfNeeded();
+    else await image.scrollIntoViewIfNeeded();
+    await image.evaluate((element) => element.decode());
+  }
 }
 try {
   for (let attempt = 0; attempt < 60; attempt++) {
@@ -127,9 +159,15 @@ try {
     assert.equal(await unapproved.getByRole("button", { name: /Agregar/ }).count(), 0);
     assert.ok(await unapproved.getByText("Disponibilidad por confirmar", { exact: true }).isVisible());
     assert.ok(await unapproved.getByRole("link", { name: "Consultar Producto sin precio aprobado por WhatsApp" }).isVisible());
-    await cards.filter({ has: page.getByRole("heading", { name: "Producto sin fotografía", exact: true }) }).getByText("Imagen no disponible").waitFor();
-    for (const image of await page.locator("main img").all()) { if (!(await image.isVisible())) continue; await image.scrollIntoViewIfNeeded(); await image.evaluate((element) => element.decode()); }
+    // The expanded categories block can push featured photos below the first viewport.
+    // Scroll the broken-image fixture into view to trigger Next Image lazy loading,
+    // then still require the real image-error fallback; do not skip the assertion.
+    const missingPhotoCard = cards.filter({ has: page.getByRole("heading", { name: "Producto sin fotografía", exact: true }) });
+    await missingPhotoCard.scrollIntoViewIfNeeded();
+    await missingPhotoCard.getByText("Imagen no disponible").waitFor();
+    await loadPresentationPhotos(page);
     await verifyRetailPresentation(page);
+    await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({ path: `artifacts/home-${width}.png`, fullPage: true });
 
     await search.fill("Voglia 500");
@@ -141,7 +179,17 @@ try {
     await page.waitForURL("**/categorias/color-y-tintes");
     await page.getByRole("heading", { name: "Coloración", exact: true }).waitFor();
     await page.goto(baseUrl, { waitUntil: "networkidle" });
-    assert.equal(await page.locator('[aria-labelledby="home-categories"] a').count(), 4);
+    // The approved grid retains four destinations and adds a separate catalog CTA.
+    const categoryDestinations = await page.locator('[aria-labelledby="home-categories"] a').evaluateAll(
+      (links) => links.map((link) => link.getAttribute("href")).sort()
+    );
+    assert.deepEqual(categoryDestinations, [
+      "/categorias/color-y-tintes",
+      "/categorias/herramientas-pro",
+      "/categorias/tratamientos-y-mascarillas",
+      "/productos",
+      "/salon-pro",
+    ].sort());
     assert.equal(await page.locator('[aria-labelledby="home-brands"] a').count(), 1);
     assert.equal(await page.locator('[aria-labelledby="home-brands"] a').getAttribute("href"), "/productos?q=Voglia");
     await page.getByRole("button", { name: "Abrir menú" }).click();
@@ -277,11 +325,22 @@ try {
     console.log(`PASS: ${width}px search, categories, brand links, images, approved prices, variants, cart quantities, shipping guard, recovery and no horizontal overflow.`);
   }
   offline = false;
+  // Tablet uses the two-column category grid. Check it separately from iPhone flows.
+  const tablet = await browser.newContext({ viewport: { width: 768, height: 1024 }, deviceScaleFactor: 1 });
+  const tabletPage = activePage = await tablet.newPage();
+  await tabletPage.goto(baseUrl, { waitUntil: "networkidle" });
+  await loadPresentationPhotos(tabletPage);
+  await verifyRetailPresentation(tabletPage);
+  await tabletPage.evaluate(() => window.scrollTo(0, 0));
+  await tabletPage.screenshot({ path: "artifacts/home-tablet-768.png", fullPage: true });
+  await tablet.close();
+  console.log("PASS: 768px tablet photo integrity, navigation and horizontal-overflow checks.");
   const desktop = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
   const desktopPage = activePage = await desktop.newPage();
   await desktopPage.goto(baseUrl, { waitUntil: "networkidle" });
-  for (const image of await desktopPage.locator("main img").all()) { await image.scrollIntoViewIfNeeded(); await image.evaluate((element) => element.decode()); }
+  await loadPresentationPhotos(desktopPage);
   await verifyRetailPresentation(desktopPage);
+  await desktopPage.evaluate(() => window.scrollTo(0, 0));
   await desktopPage.screenshot({ path: "artifacts/home-desktop-1440.png", fullPage: true });
   // Validate only published articles as public pages; intentionally retired posts must return 404.
   const blogFiles = (await readdir("content/blog")).filter((file) => file.endsWith(".mdx"));

@@ -12,7 +12,7 @@
   "src/components/cart/CartProvider.tsx": "142b4d23d104d34dc0ccbe4b6d707ee7ccbc2a343732a4a46a9fafc282315cc2",
   "src/components/home/HeroSection.tsx": "9c5346ea9800c346cdc94e9c19150af93ca367b2087152bbefb6b2d5c8915bfe",
   "src/components/home/HomeHeroVisual.tsx": "8a08f65e08c06a07fe0d9c57228f95a92a34c4e5aef9eb811def92f1cf63c965",
-  "src/components/home/CategoriesGrid.tsx": "d3980986fafa2a942310508757f4fdae0983d0e65bc04a1af6e530fd782c9dfb",
+  "src/components/home/CategoriesGrid.tsx": "cbe2ccf7faa96470952fa6b98b136c1b23e65fbebc2d865e882f9e9adf78de04",
   "src/components/home/FeaturedProducts.tsx": "a449880a107fe2b96d5aea0c324002df3eb4ce81eece244513100e4dd7d6936f",
   "vercel.json": "28763df6a4fd1e4d6e84789a577ef0f93d1b23ea37e6fc9aeeb6729e739fc211",
   "public/brand/logo-cream.png": "534a30f50449a3e67b49d89a380b32e55fcb05b1887d6e4c7a59918c1fcfa14a",
