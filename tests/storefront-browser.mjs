@@ -88,7 +88,7 @@ async function verifyRetailPresentation(page) {
       const name = (src.searchParams.get("url") || src.pathname).split("/").pop();
       const box = element.getBoundingClientRect();
       const [left, top, right, bottom] = bounds[name];
-      const scale = Math.max(box.width / 1200, box.height / 1400);
+      // object-contain scales to fit the entire package; object-cover fills and may crop.\n      const fit = getComputedStyle(element).objectFit;\n      const scale = (fit === "contain" ? Math.min : Math.max)(box.width / 1200, box.height / 1400);
       const offsetX = (box.width - 1200 * scale) / 2;
       const offsetY = (box.height - 1400 * scale) / 2;
       return { name, intact: offsetX + left * scale >= -1 && offsetY + top * scale >= -1 && offsetX + right * scale <= box.width + 1 && offsetY + bottom * scale <= box.height + 1 };
