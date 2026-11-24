@@ -19,7 +19,8 @@ test("banner A uses existing commercial product photographs and safe links", () 
     "/images/products-hero/voglia-total-repair.webp",
     "/images/products-hero/vitale-bifase-pro-keratin.webp",
   ]) assert.ok(page.includes(source), source);
-  assert.ok(page.includes("/images/hero-mujer-salon-elegante.jpg"));
+  assert.doesNotMatch(page, /hero-mujer-salon-elegante\.jpg/);
+  assert.ok(page.includes("Imagen humana en revisión"));
   assert.ok(page.includes('href="/productos"'));
   assert.ok(page.includes('href="/salon-pro"'));
   assert.ok(page.includes("<CategoriesGrid />"));
