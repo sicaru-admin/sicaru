@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
 /**
@@ -56,7 +57,7 @@ export function CampaignHeroCandidate() {
               srcSet="/images/campaign/sicaru-hero-mobile.webp"
               type="image/webp"
             />
-            <img
+            <Image
               src="/images/campaign/sicaru-hero-desktop.webp"
               alt="Retrato conceptual de belleza con cabello rizado y sonrisa natural"
               width={1774}
