@@ -29,6 +29,9 @@ test("candidate requires distinct photographic assets and HTML copy/CTA", () => 
   assert.match(candidate, /sicaru-hero-mobile\.webp/);
   assert.match(candidate, /sicaru-hero-desktop\.webp/);
   assert.match(candidate, /media="\(max-width: 767px\)"/);
+  assert.match(candidate, /md:object-\[86%_center\]/);
+  assert.match(candidate, /lg:object-\[70%_center\]/);
+  assert.match(candidate, /xl:object-\[60%_center\]/);
   assert.match(candidate, /Belleza profesional para ti y tu salón/);
   assert.match(candidate, /href="\/productos"/);
   assert.match(candidate, /href="\/salon-pro"/);
