@@ -18,6 +18,7 @@ Por instrucción de la propietaria «no no, terminemos lo que ya tenemos y despu
 3. Destino «Herramientas» dentro del catálogo: acceso explícito a consulta por WhatsApp, sin enviar clientes a categoría vacía, manteniendo la categoría histórica para enlaces externos/SEO.
 4. Para categorías de Medusa actualmente vacías: mensaje preciso «aún no hay productos publicados» y WhatsApp con nombre de la categoría, además del enlace al catálogo completo.
 5. Carrito informativo: texto confirma que el cliente revisa y envía manualmente la consulta, sin venta, pedido ni cobro.
+5a. Fallos temporales de backend: `/productos` diferencia un catálogo no cargado de una selección realmente vacía; presenta aviso sin afirmar falta de stock, conserva WhatsApp y el término de búsqueda, evita mostrar engañosamente `0 productos`. Prueba E2E móvil con backend 503.
 6. Contacto consistente: el pie usa `STORE.email` igual que `/contacto`; `/contacto` y el aviso de privacidad identifican el número oficial como **WhatsApp**, no como teléfono de llamadas. **La recepción real del correo sigue pendiente de verificación**, y el texto jurídico necesita revisión comercial/legal antes de darlo como definitivo.
 7. Tests unitarios de enlaces, límites y no intervención de Medusa, pruebas de consistencia de contacto y prueba móvil de búsqueda sin resultados / enlace herramientas. Actualización del hash protegido del componente revisado.
 
