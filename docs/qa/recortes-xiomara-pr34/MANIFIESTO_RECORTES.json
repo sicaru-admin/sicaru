@@ -1,0 +1,64 @@
+{
+  "proyecto": "SICARÚ",
+  "fecha_revision": "2026-11-24",
+  "destino": "PR #34, rama por verificar por Codex",
+  "estado": "No subido, sin cambio en Medusa/producción",
+  "items": [
+    {
+      "producto": "XIOMARA Shampoo Platinum 250 ml",
+      "handle": "xiomara-shampoo-platinum-250ml",
+      "original": "Botella de shampoo Platinum profesional.png",
+      "dimensiones_original": [
+        1086,
+        1448
+      ],
+      "archivo_web": "public/images/products/xiomara-shampoo-platinum-250ml/01-principal-recorte-propietaria-candidato.webp",
+      "dimensiones_web": [
+        1600,
+        1600
+      ],
+      "original_sha256": "1bf849880929b5df388b58aeed27bfac88da8fbabcd7fe9ca776de2dc36f7e80",
+      "web_sha256": "868c47a8d945eb3406b2446557a2ce9aca2d35e5c430a1eb124693dc23a9eb85",
+      "bytes_original": 641040,
+      "bytes_web": 402958,
+      "alpha_bbox": [
+        17,
+        19,
+        1074,
+        1448
+      ],
+      "metodo": "Colocar PNG original RGBA centrado en lienzo transparente; sin redimensionar, sin IA, sin retocar etiquetas, luces, sombras ni colores; WebP lossless",
+      "max_diferencia_composicion_RGB": 0,
+      "mean_diferencia_composicion_RGB": 0.0,
+      "estado": "CANDIDATA PARA PREVIEW; NO PUBLICAR EN PRODUCCION"
+    },
+    {
+      "producto": "XIOMARA Shampoo Platinum Libre de Sulfatos 250 ml",
+      "handle": "xiomara-shampoo-platinum-libre-sulfatos-250ml",
+      "original": "Botella de shampoo Platinum Xiomara.png",
+      "dimensiones_original": [
+        1086,
+        1448
+      ],
+      "archivo_web": "public/images/products/xiomara-shampoo-platinum-libre-sulfatos-250ml/01-principal-recorte-propietaria-candidato.webp",
+      "dimensiones_web": [
+        1600,
+        1600
+      ],
+      "original_sha256": "0d0a082119ed802ed0d7dfca01ab899e639d3310ea0ba7a17b938ac0494485c1",
+      "web_sha256": "5d829ee65edfe4618eb74a64d62b91db7aa592c4e768823cce4890e43c1bc07f",
+      "bytes_original": 831441,
+      "bytes_web": 536118,
+      "alpha_bbox": [
+        31,
+        19,
+        1050,
+        1422
+      ],
+      "metodo": "Colocar PNG original RGBA centrado en lienzo transparente; sin redimensionar, sin IA, sin retocar etiquetas, luces, sombras ni colores; WebP lossless",
+      "max_diferencia_composicion_RGB": 0,
+      "mean_diferencia_composicion_RGB": 0.0,
+      "estado": "CANDIDATA PARA PREVIEW; NO PUBLICAR EN PRODUCCION"
+    }
+  ]
+}
