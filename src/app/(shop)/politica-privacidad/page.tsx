@@ -33,14 +33,6 @@ export default function PoliticaPrivacidadPage() {
           responsable del tratamiento de tus datos personales.
         </p>
         <p className="text-gray-600 leading-relaxed mt-3">
-          Correo electrónico:{" "}
-          <a
-            href="mailto:contacto@sicaru.com"
-            className="text-sicaru-purple-700 underline"
-          >
-            contacto@sicaru.com
-          </a>
-          <br />
           WhatsApp de atención:{" "}
           <a
             href="https://wa.me/528281136652"
@@ -126,14 +118,18 @@ export default function PoliticaPrivacidadPage() {
           <strong>Oposición</strong> (Derechos ARCO).
         </p>
         <p className="text-gray-600 leading-relaxed mt-3">
-          Para ejercer estos derechos, envía tu solicitud a{" "}
+          Para ejercer estos derechos, solicita el procedimiento por{" "}
           <a
-            href="mailto:contacto@sicaru.com"
+            href="https://wa.me/528281136652"
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-sicaru-purple-700 underline"
           >
-            contacto@sicaru.com
+            WhatsApp oficial
           </a>{" "}
-          acompañada de una copia de tu identificación oficial. Daremos
+          o directamente en nuestro establecimiento. Te indicaremos cómo
+          acreditar tu identidad por un medio seguro; no envíes documentos
+          de identificación sin verificar antes el procedimiento. Daremos
           respuesta a tu solicitud en un plazo máximo de 20 días hábiles.
         </p>
 
@@ -167,15 +163,8 @@ export default function PoliticaPrivacidadPage() {
           Contacto
         </h2>
         <p className="text-gray-600 leading-relaxed mb-4">
-          Para dudas o aclaraciones sobre este aviso de privacidad, puedes
-          escribirnos a{" "}
-          <a
-            href="mailto:contacto@sicaru.com"
-            className="text-sicaru-purple-700 underline"
-          >
-            contacto@sicaru.com
-          </a>{" "}
-          o contactarnos por WhatsApp.
+          Para dudas o aclaraciones sobre este aviso de privacidad,
+          puedes escribirnos por WhatsApp o acudir directamente a la tienda.
         </p>
         <a
           href="https://wa.me/528281136652"

@@ -10,7 +10,7 @@ export const STORE = {
   },
   phone: "+52 828 113 6652",
   whatsapp: "528281136652",
-  email: "contacto@sicaru.com",
+  // No se publica correo electrónico hasta confirmar que SICARÚ controla ese buzón.
   hours: "Lunes a Sábado 9:00 - 19:00",
   coordinates: { lat: 25.5933, lng: -99.9836 },
   googleMapsEmbedUrl:
