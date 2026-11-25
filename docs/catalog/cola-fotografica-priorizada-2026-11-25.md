@@ -8,7 +8,7 @@
 - [PR #34](https://github.com/sicaru-admin/sicaru/pull/34) y [matriz de sustitución existente](../catalog/matriz-sustitucion-shampoos-2026-11-22.md), versión R3 de shampoos y dos recortes aportados por la propietaria.
 - Nuevos candidatos XIOMARA: azul y morado en `public/images/products/*/01-principal-recorte-propietaria-candidato.webp`, con hash y transparencia íntegros; publicados **solo en Preview**.
 - [Carpeta Drive: recortes de productos](https://drive.google.com/drive/folders/1Li4e_-qIqj_o9Ns1kH9jk2-eGLv7w38q): 48 PNG, inspeccionados **por inventario de nombre**, no todos visualmente. Hay fotos de Voglia Anti Frizz, reveladores, Hidra bifásica, shampoo violeta Vittalé, NEKANE Planchado Express, herramientas y uñas; **no equivalen** a los productos concretos sin imagen.
-- [Carpeta Drive: recortes genéricos](https://drive.google.com/drive/folders/17XZr17-e_zU0m8LdlW1uYvQuiItDwZL7): 17 PNG con nombres genéricos de archivo; **contenido no identificado todavía**.
+- [Carpeta Drive: recortes genéricos](https://drive.google.com/drive/folders/17XZr17-e_zU0m8LdlW1uYvQuiItDwZL7): 17 archivos listados; **16 imágenes revisadas visualmente** a 25/11. Identificación positiva: depilación PASSINI, aftershave ZANDOKAN, coloración y peróxidos VOGLIA y KÜÜL/Change. **Ninguna de las 16 es el gel XIOMARA, tratamiento NEKANE ni keratina VITALE pendientes**. Un archivo con nombre genérico no se pudo leer (Drive respondió 404); queda sin clasificar.
 - [Carpeta Drive: fotos editadas](https://drive.google.com/drive/folders/1-7yUAooSQpmaqRjCu8khHDvJQcyyszRn): 27 JPEG con nombres DSC; contenido no catalogado por SKU.
 - [Carpeta Drive: catálogo PNG sin fondo](https://drive.google.com/drive/folders/1FEgpCyJvMMzeYqE_MwCU9M1pbc2Ivt7P): cuatro subcarpetas; `03 — Shampoos` y `90 — Por identificar` actualmente vacías al listar hijos directos.
 
@@ -31,7 +31,7 @@
 
 ## Flujo de control
 
-1. **Recuperar primero, recortar después:** inventariar PNG sin nombres y fotos editadas por inspección visual; no dar por terminado el inventario solo por su título.
+1. **Recuperar primero, recortar después:** 16 de 17 PNG sin nombre ya se identificaron visualmente como PASSINI/ZANDOKAN/VOGLIA/KÜÜL; queda uno inaccesible, además de 27 JPEG editados por clasificar por imagen. No dar por terminado el inventario solo por su título.
 2. Confirmar el producto exacto: marca, línea, presentación, tono/SKU y código de barras cuando aplique. No asumir stock por la presencia de fotografía.
 3. Foto real con alfa genuino. Componer a estándar de catálogo acordado, sin alterar letras/colores, sin fabricar etiquetas y sin recortar parte del producto.
 4. Comparar original vs candidato en tarjeta 320/390 px y galería escritorio sobre `#FAF8F5`; revisar escala, bordes, sombras, código y compatibilidad con imágenes restantes.
