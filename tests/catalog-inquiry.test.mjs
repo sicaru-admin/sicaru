@@ -52,5 +52,9 @@ test("rutas de consulta se mantienen sin backend y sin checkout", async () => {
   assert.match(category, /getCatalogCategoryWhatsAppHref\(category.name\)/);
   assert.match(cart, /No se realiza ninguna compra ni pago en esta página/);
   assert.match(catalog, /No encontramos productos con esa búsqueda/);
+  const productsPage = await readFile(new URL("../src/app/(shop)/productos/page.tsx", import.meta.url), "utf8");
+  assert.match(productsPage, /catalogUnavailable = true/);
+  assert.match(catalog, /data-testid="catalog-unavailable"/);
+  assert.match(catalog, /no significa que los productos estén agotados/);
   assert.doesNotMatch(source, /fetch\(|sdk\.|createOrder\(|payment\.|checkout/);
 });
