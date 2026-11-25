@@ -18,11 +18,12 @@ Por instrucción de la propietaria «no no, terminemos lo que ya tenemos y despu
 3. Destino «Herramientas» dentro del catálogo: acceso explícito a consulta por WhatsApp, sin enviar clientes a categoría vacía, manteniendo la categoría histórica para enlaces externos/SEO.
 4. Para categorías de Medusa actualmente vacías: mensaje preciso «aún no hay productos publicados» y WhatsApp con nombre de la categoría, además del enlace al catálogo completo.
 5. Carrito informativo: texto confirma que el cliente revisa y envía manualmente la consulta, sin venta, pedido ni cobro.
-6. Tests unitarios de enlaces, límites y no intervención de Medusa y prueba móvil de búsqueda sin resultados / enlace herramientas. Actualización del hash protegido del componente revisado.
+6. Contacto consistente: el pie usa `STORE.email` igual que `/contacto`; `/contacto` y el aviso de privacidad identifican el número oficial como **WhatsApp**, no como teléfono de llamadas. **La recepción real del correo sigue pendiente de verificación**, y el texto jurídico necesita revisión comercial/legal antes de darlo como definitivo.
+7. Tests unitarios de enlaces, límites y no intervención de Medusa, pruebas de consistencia de contacto y prueba móvil de búsqueda sin resultados / enlace herramientas. Actualización del hash protegido del componente revisado.
 
 ## Excluido del alcance
 - Fotos, recortes, fichas nuevas, precios, stock, Medusa Admin/Store, base de datos, pagos, checkout, políticas legales, dominios, credenciales, SEO de fichas existentes, diseño aprobado de inicio y cambios en producción.
-- Ajustar correos de contacto o datos legales sin verificación adicional.
+- Sustituir o dar por validado el buzón de correo: se armonizan las referencias al correo que ya figuraba en `STORE.email`, sin verificar su recepción ni alterar condiciones legales sustantivas.
 
 ## Puertas de verificación
 1. GitHub CI: lint, tipos, protecciones de pagos/archivos, pruebas Node y navegador 320/375/390, build con backend no disponible.
