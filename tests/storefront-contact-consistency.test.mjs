@@ -4,14 +4,23 @@ import { readFile } from "node:fs/promises";
 
 const read = (path) => readFile(new URL("../" + path, import.meta.url), "utf8");
 
-test("pie y contacto usan la misma fuente de correo, sin direcciones contradictorias", async () => {
-  const footer = await read("src/components/layout/Footer.tsx");
-  const contact = await read("src/app/(shop)/contacto/page.tsx");
-  const store = await read("src/lib/constants/store.ts");
-  assert.match(footer, /STORE\.email/);
-  assert.match(contact, /STORE\.email/);
-  assert.match(store, /email:\s*"contacto@sicaru\.com"/);
-  assert.doesNotMatch(footer, /hola@sicaru\.com/);
+test("SICARÚ no publica ni configura correos no verificados", async () => {
+  const paths = [
+    "src/components/layout/Footer.tsx",
+    "src/app/(shop)/contacto/page.tsx",
+    "src/app/(shop)/politica-privacidad/page.tsx",
+    "src/app/(shop)/terminos/page.tsx",
+    "src/lib/constants/store.ts",
+  ];
+  for (const path of paths) {
+    const file = await read(path);
+    assert.doesNotMatch(file, /contacto@sicaru\\.com|hola@sicaru\\.com|mailto:/i, path);
+    assert.doesNotMatch(file, /STORE\\.email/, path);
+  }
+  const privacy = await read("src/app/(shop)/politica-privacidad/page.tsx");
+  assert.match(privacy, /Derechos ARCO/);
+  assert.match(privacy, /solicita el procedimiento por/);
+  assert.match(privacy, /o directamente en nuestro establecimiento/);
 });
 
 test("el número oficial conduce a WhatsApp, no a llamadas telefónicas", async () => {
