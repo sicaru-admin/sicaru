@@ -65,7 +65,7 @@ export function CampaignHeroCandidate() {
               loading="eager"
               fetchPriority="high"
               decoding="async"
-              className="absolute inset-0 h-full w-full object-cover object-center md:object-[60%_center]"
+              className="absolute inset-0 h-full w-full object-cover object-center md:object-[86%_center] lg:object-[70%_center] xl:object-[60%_center]"
             />
           </picture>
           <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 hidden w-[38%] bg-gradient-to-r from-[#7F6D8A] via-[#7F6D8A]/70 to-transparent md:block" />
