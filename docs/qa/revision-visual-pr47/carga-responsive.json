@@ -1,0 +1,74 @@
+[
+  {
+    "brokenImages": [],
+    "image": [
+      {
+        "fit": "cover",
+        "loaded": true,
+        "naturalHeight": 887,
+        "naturalWidth": 1174,
+        "position": "50% 50%",
+        "src": "https://sicaru-3mz70g4os-sicaru-admins-projects.vercel.app/images/campaign/sicaru-hero-mobile.webp"
+      }
+    ],
+    "missingPhotos": false,
+    "overflow": false,
+    "robots": "noindex, nofollow",
+    "scrollY": 0,
+    "width": 320
+  },
+  {
+    "brokenImages": [],
+    "image": [
+      {
+        "fit": "cover",
+        "loaded": true,
+        "naturalHeight": 887,
+        "naturalWidth": 1174,
+        "position": "50% 50%",
+        "src": "https://sicaru-3mz70g4os-sicaru-admins-projects.vercel.app/images/campaign/sicaru-hero-mobile.webp"
+      }
+    ],
+    "missingPhotos": false,
+    "overflow": false,
+    "robots": "noindex, nofollow",
+    "scrollY": 0,
+    "width": 390
+  },
+  {
+    "brokenImages": [],
+    "image": [
+      {
+        "fit": "cover",
+        "loaded": true,
+        "naturalHeight": 887,
+        "naturalWidth": 1774,
+        "position": "86% 50%",
+        "src": "https://sicaru-3mz70g4os-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fcampaign%2Fsicaru-hero-desktop.webp&w=1920&q=75"
+      }
+    ],
+    "missingPhotos": false,
+    "overflow": false,
+    "robots": "noindex, nofollow",
+    "scrollY": 0,
+    "width": 768
+  },
+  {
+    "brokenImages": [],
+    "image": [
+      {
+        "fit": "cover",
+        "loaded": true,
+        "naturalHeight": 887,
+        "naturalWidth": 1774,
+        "position": "60% 50%",
+        "src": "https://sicaru-3mz70g4os-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fcampaign%2Fsicaru-hero-desktop.webp&w=1920&q=75"
+      }
+    ],
+    "missingPhotos": false,
+    "overflow": false,
+    "robots": "noindex, nofollow",
+    "scrollY": 0,
+    "width": 1440
+  }
+]
