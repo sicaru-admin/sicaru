@@ -3,11 +3,12 @@ import type { HttpTypes } from "@medusajs/types";
 import { ArrowRight } from "lucide-react";
 import { getProducts } from "@/lib/data/products";
 import { RetailProductCard } from "@/components/products/RetailProductCard";
+import { hasCatalogPhoto } from "@/lib/catalog-display";
 
 export async function FeaturedProducts() {
   let products: HttpTypes.StoreProduct[] = [];
   let unavailable = false;
-  try { products = (await getProducts({ limit: 8 })).products; }
+  try { products = (await getProducts({ limit: 100 })).products.filter(hasCatalogPhoto).slice(0, 4); }
   catch { unavailable = true; }
 
   return (
