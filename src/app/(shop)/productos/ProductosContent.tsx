@@ -36,9 +36,11 @@ const CATEGORY_LINKS = [
 export function ProductosContent({
   products,
   initialQuery = "",
+  catalogUnavailable = false,
 }: {
   products: HttpTypes.StoreProduct[];
   initialQuery?: string;
+  catalogUnavailable?: boolean;
 }) {
   const [query, setQuery] = useState(initialQuery);
   const filteredProducts = useMemo(() => {
@@ -121,14 +123,29 @@ export function ProductosContent({
             className="mt-5 text-sm font-medium text-[#2e2b2b]/65"
             aria-live="polite"
           >
-            {filteredProducts.length} producto
-            {filteredProducts.length !== 1 ? "s" : ""}
-            {hasQuery ? ` encontrado${filteredProducts.length !== 1 ? "s" : ""}` : " en el catálogo"}
+            {catalogUnavailable
+              ? "Catálogo temporalmente no disponible"
+              : <>{filteredProducts.length} producto{filteredProducts.length !== 1 ? "s" : ""}{hasQuery ? ` encontrado${filteredProducts.length !== 1 ? "s" : ""}` : " en el catálogo"}</>}
           </p>
           <ShippingInquiryHint className="mt-2" />
         </div>
 
-        {filteredProducts.length === 0 ? (
+        {catalogUnavailable ? (
+          <div data-testid="catalog-unavailable" role="status" className="border border-[#efe7dd] bg-[#f5f1eb] px-5 py-14 text-center md:px-8 md:py-16">
+            <h2 className="font-heading text-2xl font-medium text-[#2e2b2b] md:text-3xl">No pudimos cargar el catálogo por ahora</h2>
+            <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[#2e2b2b]/75">
+              Puede ser un problema temporal de conexión; no significa que los productos estén agotados. Podemos ayudarte directamente.
+            </p>
+            <a
+              href={getCatalogSearchWhatsAppHref(query)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg bg-[#7f6d8a] px-5 py-3 text-sm font-semibold text-white hover:bg-[#6c5c76]"
+            >
+              Consultar por WhatsApp
+            </a>
+          </div>
+        ) : filteredProducts.length === 0 ? (
           <div className="border border-[#efe7dd] bg-[#f5f1eb] px-5 py-14 text-center md:px-8 md:py-16">
             <h2 className="font-heading text-2xl font-medium text-[#2e2b2b] md:text-3xl">
               {products.length === 0 && !hasQuery ? "No hay productos para mostrar por ahora" : "No encontramos productos con esa búsqueda"}
