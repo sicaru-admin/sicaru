@@ -184,6 +184,23 @@ try {
     assert.equal(await textOnly.locator("img").count(), 0);
     assert.ok(await textOnly.getByText("Fotografía no disponible · consulta la presentación").isVisible());
     assert.ok(await textOnly.getByRole("link", { name: /Consultar Producto sin imagen registrada por WhatsApp/ }).isVisible());
+    // Incomplete search results should produce a qualified WhatsApp consultation.
+    await page.getByRole("searchbox", { name: "Buscar en productos" }).fill("pestañas KIKI MPC4");
+    const missingInquiry = page.getByRole("link", { name: "Consultar esta búsqueda por WhatsApp" });
+    assert.ok(await missingInquiry.isVisible());
+    const inquiryUrl = new URL(await missingInquiry.getAttribute("href"));
+    assert.equal(inquiryUrl.hostname, "wa.me");
+    assert.equal(inquiryUrl.pathname, "/528281136652");
+    assert.match(inquiryUrl.searchParams.get("text") || "", /pestañas KIKI MPC4/);
+    assert.ok(await page.getByRole("button", { name: "Limpiar búsqueda" }).isVisible());
+    await page.getByRole("button", { name: "Limpiar búsqueda" }).click();
+    assert.ok(await textOnly.isVisible());
+    const toolsLink = page.locator('nav[aria-label="Categorías de productos"] a[href^="https://wa.me/"]');
+    assert.equal(await toolsLink.count(), 1);
+    const toolsHref = new URL(await toolsLink.getAttribute("href"));
+    assert.equal(toolsHref.hostname, "wa.me");
+    assert.match(toolsHref.searchParams.get("text") || "", /Herramientas profesionales/);
+    assert.equal(await toolsLink.getAttribute("target"), "_blank");
     await page.goto(baseUrl, { waitUntil: "networkidle" });
     await page.locator('[aria-labelledby="home-categories"] a[href="/categorias/color-y-tintes"]').click();
     await page.waitForURL("**/categorias/color-y-tintes");
@@ -325,6 +342,12 @@ try {
     assert.equal(await page.getByTestId("retail-product-card").count(), 0);
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
     await page.screenshot({ path: `artifacts/offline-${width}.png`, fullPage: true });
+    await page.goto(`${baseUrl}/productos`, { waitUntil: "networkidle" });
+    const catalogUnavailable = page.getByTestId("catalog-unavailable");
+    await catalogUnavailable.waitFor();
+    assert.ok(await catalogUnavailable.getByRole("heading", { name: "No pudimos cargar el catálogo por ahora" }).isVisible());
+    assert.ok(await catalogUnavailable.getByRole("link", { name: "Consultar por WhatsApp" }).isVisible());
+    assert.equal(await page.getByText("0 productos en el catálogo").count(), 0);
     if (width === 390) for (const path of ["/productos/backend-offline", "/categorias/backend-offline", "/marcas/backend-offline"]) {
       await page.goto(`${baseUrl}${path}`, { waitUntil: "networkidle" });
       await page.getByRole("heading", { name: /No pudimos cargar este producto|Esta selección no está disponible/ }).waitFor();

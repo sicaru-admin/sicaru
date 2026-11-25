@@ -41,9 +41,11 @@ export default function PoliticaPrivacidadPage() {
             contacto@sicaru.com
           </a>
           <br />
-          Teléfono:{" "}
+          WhatsApp de atención:{" "}
           <a
-            href="tel:+528281136652"
+            href="https://wa.me/528281136652"
+          target="_blank"
+          rel="noopener noreferrer"
             className="text-sicaru-purple-700 underline"
           >
             +52 828 113 6652

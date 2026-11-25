@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { MapPin, Clock, Phone, Mail, MessageCircle } from "lucide-react";
+import { MapPin, Clock, Mail, MessageCircle } from "lucide-react";
 
 import { STORE } from "@/lib/constants/store";
 import ContactFormClient from "@/components/contact/ContactFormClient";
@@ -58,8 +58,15 @@ export default function ContactoPage() {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <Phone className="mt-0.5 h-5 w-5 shrink-0 text-sicaru-purple-600" />
-                  <span className="text-sm text-gray-700">{STORE.phone}</span>
+                  <MessageCircle className="mt-0.5 h-5 w-5 shrink-0 text-sicaru-purple-600" aria-hidden="true" />
+                  <a
+                    href={`https://wa.me/${STORE.whatsapp}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-sicaru-purple-600 underline hover:text-sicaru-purple-800"
+                  >
+                    {STORE.phone} · WhatsApp
+                  </a>
                 </div>
 
                 <div className="flex items-start gap-3">
