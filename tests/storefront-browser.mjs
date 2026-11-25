@@ -184,6 +184,20 @@ try {
     assert.equal(await textOnly.locator("img").count(), 0);
     assert.ok(await textOnly.getByText("Fotografía no disponible · consulta la presentación").isVisible());
     assert.ok(await textOnly.getByRole("link", { name: /Consultar Producto sin imagen registrada por WhatsApp/ }).isVisible());
+    // Incomplete search results should produce a qualified WhatsApp consultation.
+    await page.getByRole("searchbox", { name: "Buscar en productos" }).fill("pestañas KIKI MPC4");
+    const missingInquiry = page.getByRole("link", { name: "Consultar esta búsqueda por WhatsApp" });
+    assert.ok(await missingInquiry.isVisible());
+    const inquiryUrl = new URL(await missingInquiry.getAttribute("href"));
+    assert.equal(inquiryUrl.hostname, "wa.me");
+    assert.equal(inquiryUrl.pathname, "/528281136652");
+    assert.match(inquiryUrl.searchParams.get("text") || "", /pestañas KIKI MPC4/);
+    assert.ok(await page.getByRole("button", { name: "Limpiar búsqueda" }).isVisible());
+    await page.getByRole("button", { name: "Limpiar búsqueda" }).click();
+    assert.ok(await textOnly.isVisible());
+    const toolsLink = page.getByRole("link", { name: "Herramientas · Consultar opciones", exact: true });
+    assert.equal(new URL(await toolsLink.getAttribute("href")).hostname, "wa.me");
+    assert.equal(await toolsLink.getAttribute("target"), "_blank");
     await page.goto(baseUrl, { waitUntil: "networkidle" });
     await page.locator('[aria-labelledby="home-categories"] a[href="/categorias/color-y-tintes"]').click();
     await page.waitForURL("**/categorias/color-y-tintes");
