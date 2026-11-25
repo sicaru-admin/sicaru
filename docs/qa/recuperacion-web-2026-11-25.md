@@ -13,7 +13,8 @@
 3. **Navbar:** escala tipográfica de PR #46, sin alterar `BrandWordmark` ni recortar `logo-dark.png`, `logo-cream.png` o `logo-violet.png`.
 4. **Destacados:** consultar lista (hasta 100, sin escritura de datos), conservar solo fichas con URL de fotografía de `thumbnail` o primera imagen, presentar máximo 4. Ficha sin imagen no se borra del catálogo. No supone stock o precio aprobado.
 5. **Catálogo completo:** fotografías primero en orden **estable**; siguen presentes todos los registros originales, incluso los que no tienen foto. Búsqueda conserva el término y funciona sobre el catálogo completo.
-6. **Pruebas:** suite de navegador adaptada a categorías fotográficas y CTA de herramientas; pruebas puras que exigen no eliminar registros; huellas protegidas actualizadas solo para los componentes revisados.
+6. **Tarjetas sin fotografía:** conservan su ficha, título, precio aprobado o estado de consulta, variante y WhatsApp; se elimina el cuadro vacío de gran tamaño y se usa aviso compacto. La fotografía con URL rota sigue mostrando su recuperación habitual sin asignar una imagen ficticia.
+7. **Pruebas:** suite de navegador adaptada a categorías fotográficas y CTA de herramientas; pruebas puras que exigen no eliminar registros; huellas protegidas actualizadas solo para los componentes revisados.
 
 ## Restricciones
 - No incorpora fotografía humana conceptual del banner (PR #44/#47) ni activa un hero no aprobado final.
