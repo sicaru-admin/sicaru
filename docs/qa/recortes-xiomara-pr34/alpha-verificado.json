@@ -1,0 +1,28 @@
+[
+  {
+    "handle": "xiomara-shampoo-platinum-250ml",
+    "width": 1600,
+    "height": 1600,
+    "alphaBBox": [
+      274,
+      95,
+      1331,
+      1524
+    ],
+    "transparentPixels": 2193617,
+    "partialAlphaPixels": 366130
+  },
+  {
+    "handle": "xiomara-shampoo-platinum-libre-sulfatos-250ml",
+    "width": 1600,
+    "height": 1600,
+    "alphaBBox": [
+      288,
+      95,
+      1307,
+      1498
+    ],
+    "transparentPixels": 2132386,
+    "partialAlphaPixels": 427551
+  }
+]

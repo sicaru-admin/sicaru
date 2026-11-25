@@ -11,7 +11,7 @@ import { getProductWhatsAppHref } from "@/lib/product-inquiry";
 import { ProductPhoto } from "./ProductPhoto";
 import { getCatalogCartAddInput } from "@/lib/catalog-cart";
 
-export function RetailProductCard({ product }: { product: HttpTypes.StoreProduct }) {
+export function RetailProductCard({ product }: { product: HttpTypes.StoreProduct; disableVerifiedPhoto?: boolean }) {
   const variants = product.variants ?? [];
   const [variantId, setVariantId] = useState(variants.length === 1 ? variants[0].id : "");
   const [error, setError] = useState<string | null>(null);
