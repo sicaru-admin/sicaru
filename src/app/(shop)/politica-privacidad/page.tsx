@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { CATALOG_MODE } from "@/lib/catalog-mode"
+import { STORE } from "@/lib/constants/store"
 
 export const metadata: Metadata = {
   title: "Aviso de Privacidad",
@@ -28,9 +29,9 @@ export default function PoliticaPrivacidadPage() {
           Identidad del Responsable
         </h2>
         <p className="text-gray-600 leading-relaxed">
-          <strong>Distribuidora Sicarú</strong>, con domicilio en La Plaza Local
-          204, Cadereyta Jiménez, Nuevo León, C.P. 67480, México, es
-          responsable del tratamiento de tus datos personales.
+          <strong>Distribuidora Sicarú</strong>, con domicilio en{" "}
+          {STORE.address.full}, es responsable del tratamiento de tus datos
+          personales.
         </p>
         <p className="text-gray-600 leading-relaxed mt-3">
           WhatsApp de atención:{" "}
