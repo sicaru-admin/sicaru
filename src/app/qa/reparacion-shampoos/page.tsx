@@ -14,6 +14,8 @@ type Candidate = {
   handle: string;
   original: string;
   prepared: string;
+  originalBack?: string;
+  preparedBack?: string;
   notes: string;
 };
 
@@ -30,6 +32,8 @@ const candidates: Candidate[] = [
     handle: "xiomara-shampoo-platinum-libre-sulfatos-250ml",
     original: "/images/products/xiomara-shampoo-platinum-libre-sulfatos-250ml/01-principal.webp",
     prepared: "/images/products/xiomara-shampoo-platinum-libre-sulfatos-250ml/01-principal-r3.webp",
+    originalBack: "/images/products/xiomara-shampoo-platinum-libre-sulfatos-250ml/02-reverso.webp",
+    preparedBack: "/images/products/xiomara-shampoo-platinum-libre-sulfatos-250ml/02-reverso-r3.webp",
     notes: "No confundir con Platinum regular. Tiene reverso R3 adicional disponible.",
   },
   {
@@ -37,6 +41,8 @@ const candidates: Candidate[] = [
     handle: "nekane-morazul-shampoo-matizador-300g",
     original: "/images/products/nekane-morazul-shampoo-matizador-300g/01-principal.webp",
     prepared: "/images/products/nekane-morazul-shampoo-matizador-300g/01-principal-r3.webp",
+    originalBack: "/images/products/nekane-morazul-shampoo-matizador-300g/02-reverso.webp",
+    preparedBack: "/images/products/nekane-morazul-shampoo-matizador-300g/02-reverso-r3.webp",
     notes: "Conservar presentación 300 g. Código de barras documental pendiente de conciliación.",
   },
 ];
@@ -84,6 +90,24 @@ export default function ShampoosRepairReview() {
                   <CompareImage src={candidate.prepared} alt={`Master R3 · ${candidate.title}`} />
                 </div>
               </div>
+              {candidate.originalBack && candidate.preparedBack && (
+                <div className="mt-6" data-testid={`compare-back-${candidate.handle}`}>
+                  <h3 className="mb-3 text-base font-semibold">Reverso · etiqueta posterior</h3>
+                  <p className="mb-4 text-xs text-[#7F6D8A]">
+                    Archivos del repositorio para evaluación visual; no demuestra que el reverso R3 esté asociado en Medusa.
+                  </p>
+                  <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:max-w-4xl">
+                    <div className="min-w-0 rounded-xl border border-[#e9e1dd] p-2 sm:p-4">
+                      <p className="mb-3 text-xs font-semibold">Reverso original</p>
+                      <CompareImage src={candidate.originalBack} alt={`Reverso original · ${candidate.title}`} />
+                    </div>
+                    <div className="min-w-0 rounded-xl border border-[#9B89A8] p-2 sm:p-4">
+                      <p className="mb-3 text-xs font-semibold text-[#7F6D8A]">Reverso R3 · candidato</p>
+                      <CompareImage src={candidate.preparedBack} alt={`Reverso R3 · ${candidate.title}`} />
+                    </div>
+                  </div>
+                </div>
+              )}
             </section>
           ))}
 
