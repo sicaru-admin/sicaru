@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { HttpTypes } from "@medusajs/types";
 import { Search } from "lucide-react";
 import { matchesProductQuery } from "@/lib/product-retail";
+import { prioritizeProductsWithPhoto } from "@/lib/catalog-display";
 import { ProductCatalogCard } from "@/components/products/ProductCatalogCard";
 import { ShippingInquiryHint } from "@/components/checkout/ShippingInquiryHint";
 
@@ -42,9 +43,9 @@ export function ProductosContent({
   const filteredProducts = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase("es-MX");
 
-    if (!normalizedQuery) return products;
+    if (!normalizedQuery) return prioritizeProductsWithPhoto(products);
 
-    return products.filter((product) => matchesProductQuery(product, normalizedQuery));
+    return prioritizeProductsWithPhoto(products.filter((product) => matchesProductQuery(product, normalizedQuery)));
   }, [products, query]);
 
   const hasQuery = query.trim().length > 0;
