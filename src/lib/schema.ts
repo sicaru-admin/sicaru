@@ -1,6 +1,7 @@
 import { CATALOG_MODE } from "@/lib/catalog-mode";
 import type { HttpTypes } from "@medusajs/types";
 import { BRANDS } from "@/lib/constants/brands";
+import { STORE } from "@/lib/constants/store";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://www.sicarubeauty.com";
@@ -41,10 +42,13 @@ export function generateOrganizationSchema(): Record<string, unknown> {
     telephone: "+528281136652",
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Cadereyta Jiménez",
-      addressRegion: "Nuevo León",
+      streetAddress: STORE.address.street,
+      addressLocality: STORE.address.city,
+      addressRegion: STORE.address.state,
+      postalCode: STORE.address.zip,
       addressCountry: "MX",
     },
+    hasMap: STORE.googleMapsPlaceUrl,
     areaServed: [
       { "@type": "City", name: "Cadereyta Jiménez" },
       { "@type": "State", name: "Nuevo León" },
