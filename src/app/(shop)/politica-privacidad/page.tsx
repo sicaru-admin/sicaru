@@ -30,8 +30,7 @@ export default function PoliticaPrivacidadPage() {
         </h2>
         <p className="text-gray-600 leading-relaxed">
           <strong>Distribuidora Sicarú</strong>, con domicilio en{" "}
-          {STORE.address.full}, es responsable del tratamiento de tus datos
-          personales.
+          {STORE.address.full}, es responsable del tratamiento de tus datos personales.
         </p>
         <p className="text-gray-600 leading-relaxed mt-3">
           WhatsApp de atención:{" "}
