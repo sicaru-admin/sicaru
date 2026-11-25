@@ -53,5 +53,19 @@ test("laboratorio protege producción, respeta noindex y no muestra archivos fal
   assert.match(page, /availablePhotoAssets\(\)/);
   assert.match(page, /<CategoriesGrid \/>/);
   assert.match(page, /<WhatsAppBanner \/>/);
-  assert.doesNotMatch(page, /<FeaturedProducts \/>|<BrandsShowcase \/>/);
+  assert.match(page, /<BrandsShowcase \/>/);
+  assert.match(page, /<Suspense fallback=\{<ProductLoading \/>\}><FeaturedProducts \/><\/Suspense>/);
+  assert.match(page, /belleza-identidad/);
+});
+
+
+test("category small copy meets AA without transparent text", () => {
+  const categories = readFileSync(resolve(root, "src/components/home/CategoriesGrid.tsx"), "utf8");
+  assert.doesNotMatch(categories, /opacity-90|text-\[#FAF8F5\]/);
+  assert.match(categories, /background: "bg-\[#7F6D8A\]", foreground: "text-white"/);
+  assert.match(categories, /descriptionColor: "text-\[#292529\]"/);
+  for (const [foreground, background] of [["#FFFFFF", "#7F6D8A"], ["#292529", "#9B89A8"], ["#2E2B2B", "#FAF8F5"], ["#2E2B2B", "#F5F1EB"]]) {
+    const ratio = (Math.max(luminance(foreground), luminance(background)) + 0.05) / (Math.min(luminance(foreground), luminance(background)) + 0.05);
+    assert.ok(ratio >= 4.5, `${foreground} on ${background}: ${ratio}`);
+  }
 });
