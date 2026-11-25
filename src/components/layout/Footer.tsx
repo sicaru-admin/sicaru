@@ -1,6 +1,7 @@
 import { CATALOG_MODE } from "@/lib/catalog-mode";
 import Link from "next/link";
 import { BrandWordmark } from "./BrandWordmark";
+import { STORE } from "@/lib/constants/store";
 
 const footerLinks = {
   tienda: [
@@ -18,7 +19,7 @@ const footerLinks = {
   ],
   contacto: [
     { href: "https://wa.me/528281136652", label: "WhatsApp" },
-    { href: "mailto:hola@sicaru.com", label: "hola@sicaru.com" },
+    { href: `mailto:${STORE.email}`, label: STORE.email },
   ],
   legales: [
     { href: "/terminos", label: "Términos" },
