@@ -8,6 +8,7 @@ import { matchesProductQuery } from "@/lib/product-retail";
 import { prioritizeProductsWithPhoto } from "@/lib/catalog-display";
 import { ProductCatalogCard } from "@/components/products/ProductCatalogCard";
 import { ShippingInquiryHint } from "@/components/checkout/ShippingInquiryHint";
+import { getCatalogCategoryWhatsAppHref, getCatalogSearchWhatsAppHref } from "@/lib/catalog-inquiry";
 
 const CATEGORY_LINKS = [
   {
@@ -23,8 +24,8 @@ const CATEGORY_LINKS = [
     label: "Styling y acabado",
   },
   {
-    href: "/categorias/herramientas-pro",
-    label: "Herramientas profesionales",
+    href: getCatalogCategoryWhatsAppHref("Herramientas profesionales"),
+    label: "Herramientas · Consultar opciones",
   },
   {
     href: "/categorias/shampoo-y-acondicionador",
@@ -69,6 +70,8 @@ export function ProductosContent({
               <Link
                 key={category.href}
                 href={category.href}
+                target={category.href.startsWith("https://") ? "_blank" : undefined}
+                rel={category.href.startsWith("https://") ? "noopener noreferrer" : undefined}
                 className="group flex min-h-[76px] flex-col justify-between border-b border-[#efe7dd] px-4 py-4 text-left transition-colors duration-[200ms] hover:bg-[#f5f1eb] focus:outline-none focus-visible:bg-[#f5f1eb] focus-visible:shadow-[inset_0_-3px_0_#7f6d8a] min-[360px]:border-r lg:border-b-0"
               >
                 <span className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[#9b89a8]">
@@ -131,10 +134,20 @@ export function ProductosContent({
               {products.length === 0 && !hasQuery ? "No hay productos para mostrar por ahora" : "No encontramos productos con esa búsqueda"}
             </h2>
             <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[#2e2b2b]/65">
-              {products.length === 0 && !hasQuery ? "¿Buscas algo en particular? Te ayudamos a encontrarlo." : "Prueba con otra palabra o explora una de nuestras categorías."}
+              {products.length === 0 && !hasQuery ? "¿Buscas algo en particular? Te ayudamos a encontrarlo." : "El catálogo web aún es una selección. Podemos revisar por WhatsApp si manejamos lo que buscas, sin compromiso de compra."}
             </p>
             {hasQuery ? (
-              <button type="button" onClick={() => setQuery("")} className="mt-5 inline-flex min-h-11 items-center text-sm font-semibold text-[#7f6d8a] underline underline-offset-4">Limpiar búsqueda</button>
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
+                <a
+                  href={getCatalogSearchWhatsAppHref(query)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-11 items-center justify-center rounded-lg bg-[#7f6d8a] px-5 py-3 text-sm font-semibold text-white hover:bg-[#6c5c76] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7f6d8a]"
+                >
+                  Consultar esta búsqueda por WhatsApp
+                </a>
+                <button type="button" onClick={() => setQuery("")} className="inline-flex min-h-11 items-center text-sm font-semibold text-[#7f6d8a] underline underline-offset-4">Limpiar búsqueda</button>
+              </div>
             ) : (
               <a href="https://wa.me/528281136652" target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex min-h-11 items-center text-sm font-semibold text-[#7f6d8a] underline underline-offset-4">Escríbenos por WhatsApp</a>
             )}
