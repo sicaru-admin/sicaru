@@ -13,6 +13,7 @@ import {
   generateBreadcrumbSchema,
 } from "@/lib/schema"
 import { getCategoryData } from "@/lib/constants/categories"
+import { getCatalogCategoryWhatsAppHref } from "@/lib/catalog-inquiry"
 
 export const revalidate = 1800
 
@@ -129,17 +130,27 @@ export default async function CategoryPage({ params }: Props) {
           {products.length === 0 ? (
             <div className="border border-[#efe7dd] bg-[#f5f1eb] px-5 py-14 text-center md:px-8 md:py-16">
               <h2 className="font-heading text-2xl font-medium text-[#2e2b2b] md:text-3xl">
-                No hay productos disponibles en esta categoría
+                Aún no hay productos publicados en esta categoría
               </h2>
               <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[#2e2b2b]/65">
-                Puedes explorar el catálogo completo mientras actualizamos esta selección.
+                Nuestro catálogo web es una selección. Podemos revisar opciones de esta categoría por WhatsApp y confirmar disponibilidad antes de cualquier pedido.
               </p>
-              <Link
-                href="/productos"
-                className="mt-6 inline-flex min-h-11 items-center justify-center bg-[#7f6d8a] px-6 py-3 text-sm font-semibold text-[#faf8f5] transition-colors hover:bg-[#8e7a9e] focus:outline-none focus-visible:shadow-[0_0_0_3px_rgba(127,109,138,0.22)]"
-              >
-                Ver todos los productos
-              </Link>
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
+                <a
+                  href={getCatalogCategoryWhatsAppHref(category.name)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-11 items-center justify-center rounded-lg bg-[#7f6d8a] px-6 py-3 text-sm font-semibold text-white hover:bg-[#6c5c76] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7f6d8a]"
+                >
+                  Consultar esta categoría por WhatsApp
+                </a>
+                <Link
+                  href="/productos"
+                  className="inline-flex min-h-11 items-center justify-center text-sm font-semibold text-[#7f6d8a] underline underline-offset-4"
+                >
+                  Ver todos los productos
+                </Link>
+              </div>
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3 xl:grid-cols-4 xl:gap-6">
