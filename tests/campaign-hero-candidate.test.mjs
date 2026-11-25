@@ -42,3 +42,16 @@ test("candidate stays inactive while photograph masters await final approval", (
   assert.doesNotMatch(liveHome, /CampaignHeroCandidate/);
   assert.match(liveHome, /<HeroSection \/>/);
 });
+
+test("laboratorio protege producción, respeta noindex y no muestra archivos faltantes", () => {
+  const page = readFileSync(resolve(root, "src/app/(shop)/qa/banner-candidato/page.tsx"), "utf8");
+  assert.match(page, /robots: \{ index: false, follow: false \}/);
+  assert.match(page, /process\.env\.VERCEL_ENV !== "preview"/);
+  assert.match(page, /process\.env\.NODE_ENV !== "development"/);
+  assert.match(page, /notFound\(\)/);
+  assert.match(page, /<MissingPhotos \/>/);
+  assert.match(page, /availablePhotoAssets\(\)/);
+  assert.match(page, /<CategoriesGrid \/>/);
+  assert.match(page, /<WhatsAppBanner \/>/);
+  assert.doesNotMatch(page, /<FeaturedProducts \/>|<BrandsShowcase \/>/);
+});
