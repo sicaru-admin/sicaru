@@ -22,7 +22,7 @@
   "src/components/home/HomeHeroVisual.tsx": "8a08f65e08c06a07fe0d9c57228f95a92a34c4e5aef9eb811def92f1cf63c965",
   "src/components/home/CategoriesGrid.tsx": "432afdc2bc97608b2195408c05f5823dc2fd2c68260d2f9fbf42f0ab18608a01",
   "src/app/globals.css": "a7fa6e6362592469b70c264287f6f48a60ed35d6cdaafacc738daba1526a24f1",
-  "src/lib/constants/store.ts": "a2d86953fc83dd915c14415e1576307d617a77228ea63a26164e32261ad98571",
+  "src/lib/constants/store.ts": "6a44a70a8e143fb711577fd39881683667b2e1b60dc60a21b194a3e288a4fc37",
   "src/app/favicon.ico/route.ts": "98a8ce3fcb55c6b737084ac0f2046c8eae2dfc954a9c8610208d285e7bbcf9ba",
   "public/brand/logo-cream.png": "534a30f50449a3e67b49d89a380b32e55fcb05b1887d6e4c7a59918c1fcfa14a",
   "public/brand/logo-dark.png": "5037127c4faa82fe7a96f4cb9da2c816d4011ea6d9646dd221b9d70438e3421d",
