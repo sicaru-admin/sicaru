@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { MapPin, Clock, Mail, MessageCircle } from "lucide-react";
+import { MapPin, Clock, MessageCircle } from "lucide-react";
 
 import { STORE } from "@/lib/constants/store";
 import ContactFormClient from "@/components/contact/ContactFormClient";
@@ -66,16 +66,6 @@ export default function ContactoPage() {
                     className="text-sm text-sicaru-purple-600 underline hover:text-sicaru-purple-800"
                   >
                     {STORE.phone} · WhatsApp
-                  </a>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <Mail className="mt-0.5 h-5 w-5 shrink-0 text-sicaru-purple-600" />
-                  <a
-                    href={`mailto:${STORE.email}`}
-                    className="text-sm text-sicaru-purple-600 underline hover:text-sicaru-purple-800"
-                  >
-                    {STORE.email}
                   </a>
                 </div>
 
