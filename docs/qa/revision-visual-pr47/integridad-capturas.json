@@ -1,0 +1,26 @@
+[
+  {
+    "viewport": 320,
+    "path": "pagina-completa-320.jpg",
+    "sha256": "f8ec68b4e608f9b1f40b19c2fcdc24266a809f81c9abbc9e9d3f057a28286b69",
+    "copied_without_changes": true
+  },
+  {
+    "viewport": 390,
+    "path": "pagina-completa-390.jpg",
+    "sha256": "059ede4cfc9aec6c7deffbbcce73aeb7c3b3f427d4ad9749ec54b4e2a82348c1",
+    "copied_without_changes": true
+  },
+  {
+    "viewport": 768,
+    "path": "pagina-completa-768.jpg",
+    "sha256": "b8bac73b824f7cc961fc516b6a857ecb51a0c30a584ebbdf9b30650e0e1894a1",
+    "copied_without_changes": true
+  },
+  {
+    "viewport": 1440,
+    "path": "pagina-completa-1440.jpg",
+    "sha256": "6e377dbf06e60962c998a42ad6b0c43314b811a6b4d24f68f3ea88b87426abac",
+    "copied_without_changes": true
+  }
+]

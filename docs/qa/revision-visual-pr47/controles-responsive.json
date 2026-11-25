@@ -1,0 +1,138 @@
+[
+  {
+    "categoryTop": 815.8828125,
+    "headerHeight": 115,
+    "links": [
+      {
+        "height": 48,
+        "href": "/productos",
+        "label": "Explorar productos",
+        "visible": true
+      },
+      {
+        "height": 0,
+        "href": "/salon-pro",
+        "label": "Para profesionales",
+        "visible": false
+      }
+    ],
+    "logo": {
+      "bottom": 43.8359375,
+      "height": 31.6796875,
+      "left": 16,
+      "right": 152.5625,
+      "top": 12.15625,
+      "width": 136.5625,
+      "x": 16,
+      "y": 12.15625
+    },
+    "whatsApp": [
+      "https://wa.me/528281136652",
+      "https://wa.me/528281136652",
+      "https://wa.me/528281136652?text=%C2%A1Hola!%20Me%20interesa%20saber%20m%C3%A1s%20sobre%20los%20productos%20de%20Sicar%C3%BA."
+    ],
+    "width": 320
+  },
+  {
+    "categoryTop": 757.1796875,
+    "headerHeight": 115,
+    "links": [
+      {
+        "height": 48,
+        "href": "/productos",
+        "label": "Explorar productos",
+        "visible": true
+      },
+      {
+        "height": 0,
+        "href": "/salon-pro",
+        "label": "Para profesionales",
+        "visible": false
+      }
+    ],
+    "logo": {
+      "bottom": 43.8359375,
+      "height": 31.6796875,
+      "left": 16,
+      "right": 152.5625,
+      "top": 12.15625,
+      "width": 136.5625,
+      "x": 16,
+      "y": 12.15625
+    },
+    "whatsApp": [
+      "https://wa.me/528281136652",
+      "https://wa.me/528281136652",
+      "https://wa.me/528281136652?text=%C2%A1Hola!%20Me%20interesa%20saber%20m%C3%A1s%20sobre%20los%20productos%20de%20Sicar%C3%BA."
+    ],
+    "width": 390
+  },
+  {
+    "categoryTop": 614,
+    "headerHeight": 123,
+    "links": [
+      {
+        "height": 48,
+        "href": "/productos",
+        "label": "Explorar productos",
+        "visible": true
+      },
+      {
+        "height": 44,
+        "href": "/salon-pro",
+        "label": "Para profesionales",
+        "visible": true
+      }
+    ],
+    "logo": {
+      "bottom": 49.1953125,
+      "height": 34.3984375,
+      "left": 32,
+      "right": 180.28125,
+      "top": 14.796875,
+      "width": 148.28125,
+      "x": 32,
+      "y": 14.796875
+    },
+    "whatsApp": [
+      "https://wa.me/528281136652",
+      "https://wa.me/528281136652",
+      "https://wa.me/528281136652?text=%C2%A1Hola!%20Me%20interesa%20saber%20m%C3%A1s%20sobre%20los%20productos%20de%20Sicar%C3%BA."
+    ],
+    "width": 768
+  },
+  {
+    "categoryTop": 616.3984375,
+    "headerHeight": 125.3984375,
+    "links": [
+      {
+        "height": 48,
+        "href": "/productos",
+        "label": "Explorar productos",
+        "visible": true
+      },
+      {
+        "height": 44,
+        "href": "/salon-pro",
+        "label": "Para profesionales",
+        "visible": true
+      }
+    ],
+    "logo": {
+      "bottom": 54.3984375,
+      "height": 42.3984375,
+      "left": 60,
+      "right": 242.765625,
+      "top": 12,
+      "width": 182.765625,
+      "x": 60,
+      "y": 12
+    },
+    "whatsApp": [
+      "https://wa.me/528281136652",
+      "https://wa.me/528281136652",
+      "https://wa.me/528281136652?text=%C2%A1Hola!%20Me%20interesa%20saber%20m%C3%A1s%20sobre%20los%20productos%20de%20Sicar%C3%BA."
+    ],
+    "width": 1440
+  }
+]

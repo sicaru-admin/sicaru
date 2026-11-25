@@ -2,35 +2,55 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
-const categories = [
-  { label: "Coloración", href: "/categorias/color-y-tintes", image: "/images/products-hero/voglia-color-fun.webp", alt: "Voglia Color Fun, coloración profesional" },
-  { label: "Tratamientos", href: "/categorias/tratamientos-y-mascarillas", image: "/images/products-hero/voglia-total-repair.webp", alt: "Voglia Total Repair, tratamiento capilar" },
-  { label: "Herramientas", href: "/categorias/herramientas-pro", image: "/images/products-hero/navaja-profesional.webp", alt: "Navaja profesional para barbería" },
-  { label: "Para profesionales", href: "/salon-pro", image: "/images/products-hero/vitale-bifase-pro-keratin.webp", alt: "Vitale Bifase Pro-Keratin para el cuidado capilar profesional", companion: true },
-];
+/**
+ * SICARÚ approved photographic direction A/B/C.
+ * All photographs are existing source assets. No synthetic packages, decorative
+ * blur or checkout promises. C is a provisional information hierarchy.
+ */
+const categoryLinks = [
+  { href: "/categorias/color-y-tintes", label: "Coloración", description: "Explora productos y tonos", image: "/images/products-hero/voglia-color-fun.webp", alt: "Voglia Color Fun, fotografía real de producto", background: "bg-[#7F6D8A]", foreground: "text-white", descriptionColor: "text-white" },
+  { href: "/categorias/herramientas-pro", label: "Herramientas", description: "Equipa tu trabajo", image: "/images/products-hero/navaja-profesional.webp", alt: "Navaja profesional de barbería, fotografía real de producto", background: "bg-[#F5F1EB]", foreground: "text-[#2E2B2B]", descriptionColor: "text-[#2E2B2B]" },
+  { href: "/salon-pro", label: "Para profesionales", description: "Productos para tu profesión", image: "/images/products-hero/vitale-bifase-pro-keratin.webp", alt: "Vitale Bifase Pro-Keratin, fotografía real de producto", background: "bg-[#9B89A8]", foreground: "text-[#2E2B2B]", descriptionColor: "text-[#292529]" },
+] as const;
 
 export function CategoriesGrid() {
   return (
-    <section className="bg-[#faf8f5] py-5 sm:py-7" aria-labelledby="home-categories">
+    <section className="bg-[#FAF8F5] py-7 sm:py-10" aria-labelledby="home-categories">
       <div className="mx-auto max-w-[1400px] px-4 sm:px-8 lg:px-10">
-        <h2 id="home-categories" className="mb-3 scroll-mt-36 text-base font-semibold text-[#2e2b2b] sm:mb-4 sm:text-xl">Compra por categoría</h2>
-        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-4">
-          {categories.map((category) => (
-            <Link key={category.href} href={category.href} className="group relative min-w-0 overflow-hidden rounded-xl border border-[#efe7dd] bg-[#faf8f5] transition-colors hover:border-[#9b89a8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7f6d8a] motion-reduce:transition-none">
-              <div className="relative h-28 overflow-hidden bg-[#f5f1eb]/60 sm:h-40">
-                <div className={`absolute inset-y-0 left-1/2 w-20 sm:w-[120px] ${category.companion ? "-translate-x-[70%]" : "-translate-x-1/2"}`}>
-                  <Image src={category.image} alt={category.alt} fill sizes="(max-width: 639px) 120px, 180px" className="object-cover drop-shadow-[0_4px_3px_rgba(46,43,43,0.08)] transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transform-none motion-reduce:transition-none" />
+        <div className="mb-5 flex flex-wrap items-end justify-between gap-3 sm:mb-7">
+          <div>
+            <p className="mb-2 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-[#2E2B2B] sm:text-xs">SICARÚ · Explora por necesidad</p>
+            <h2 id="home-categories" className="scroll-mt-36 text-[clamp(1.65rem,3vw,2.75rem)] font-bold leading-[1.05] tracking-[-0.055em] text-[#2E2B2B]">¿Qué buscas hoy?</h2>
+          </div>
+          <Link href="/productos" className="inline-flex min-h-11 items-center gap-2 text-xs font-semibold text-[#2E2B2B] underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] sm:text-sm">Ver productos <ArrowUpRight className="size-4" aria-hidden="true"/></Link>
+        </div>
+        <div className="grid gap-3 lg:grid-cols-[1.14fr_0.86fr] lg:gap-4">
+          <Link href="/categorias/tratamientos-y-mascarillas" className="group relative isolate flex min-h-[360px] flex-col justify-between overflow-hidden rounded-[18px] bg-[#F5F1EB] p-6 text-[#2E2B2B] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] sm:min-h-[490px] sm:p-9 lg:min-h-[580px]">
+            <div className="relative z-10 max-w-[55%]">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#2E2B2B]">Cuidado capilar</p>
+              <h3 className="mt-3 text-[clamp(2rem,4vw,3.8rem)] font-bold leading-[0.98] tracking-[-0.065em]">Cuida tu cabello.</h3>
+            </div>
+            <div className="pointer-events-none absolute bottom-[-7%] right-[-26%] h-[84%] w-[76%] sm:bottom-[-4%] sm:right-[-4%] sm:h-[92%] sm:w-[65%]">
+              <Image src="/images/products-hero/voglia-total-repair.webp" alt="Voglia Total Repair, fotografía real de tratamiento capilar" fill sizes="(max-width: 1023px) 72vw, 40vw" className="object-contain" />
+            </div>
+            <span className="relative z-10 inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-[#7F6D8A] px-5 py-3 text-xs font-semibold text-white sm:text-sm">Explorar tratamientos <ArrowUpRight className="size-4" aria-hidden="true"/></span>
+          </Link>
+          <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 lg:gap-4">
+            {categoryLinks.map((category) => (
+              <Link key={category.href} href={category.href} className={`group relative isolate flex min-h-[190px] overflow-hidden rounded-[18px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7F6D8A] sm:min-h-[235px] lg:min-h-[181px] ${category.background} ${category.foreground}`}>
+                <div className="relative z-10 flex w-[57%] flex-col items-start justify-between p-5 sm:p-6">
+                  <p className={`text-[0.66rem] font-semibold uppercase tracking-[0.1em] ${category.descriptionColor}`}>{category.description}</p>
+                  <div className="flex flex-col items-start gap-2">
+                    <h3 className="text-[clamp(1.2rem,2.4vw,1.9rem)] font-bold leading-tight tracking-[-0.045em]">{category.label}</h3>
+                    <span className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-full border border-current/40"><ArrowUpRight className="size-5" aria-hidden="true" /></span>
+                  </div>
                 </div>
-                {category.companion && <div className="absolute bottom-0 left-1/2 h-[72%] w-16 -translate-x-[5%] sm:w-[88px]">
-                  <Image src="/images/products-hero/hidra-color-mask.webp" alt="Hidra Color Mask, tratamiento matizante" fill sizes="(max-width: 639px) 100px, 150px" className="object-cover drop-shadow-[0_4px_3px_rgba(46,43,43,0.08)]" />
-                </div>}
-              </div>
-              <div className="flex min-h-11 items-center justify-between gap-1 border-t border-[#efe7dd]/70 px-2.5 py-2 text-[#2e2b2b] sm:px-4">
-                <h3 className="text-[0.7rem] font-semibold leading-4 sm:text-sm">{category.label}</h3>
-                <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-[#7f6d8a]" aria-hidden="true" />
-              </div>
-            </Link>
-          ))}
+                <div className="pointer-events-none absolute inset-y-[3%] right-[-4%] w-[48%]">
+                  <Image src={category.image} alt={category.alt} fill sizes="(max-width: 639px) 45vw, 20vw" className="object-contain" />
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>

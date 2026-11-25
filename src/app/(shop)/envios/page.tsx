@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { ShippingNotice } from "@/components/checkout/ShippingNotice";
 
 export const metadata: Metadata = {
-  title: { absolute: "Envíos con DHL | SICARÚ" },
-  description: "Envíos por DHL desde Cadereyta Jiménez, Nuevo León. Cotiza según destino, peso, volumen y cobertura, y confirma tu pedido por WhatsApp.",
+  title: { absolute: "Consulta de envíos | SICARÚ" },
+  description: "Consulta por WhatsApp las opciones de envío, cobertura y costo a tu destino antes de confirmar tu pedido con SICARÚ.",
 };
 
 export default function EnviosPage() {

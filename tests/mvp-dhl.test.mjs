@@ -33,20 +33,20 @@ function loader(catalogMode = true) {
   return load;
 }
 const render = (Component, props = {}) => renderToStaticMarkup(React.createElement(Component, props));
-const forbidden = /\$|env[ií]os? gratis|mismo d[ií]a|OXXO|Mercado\s?Pago|\bVisa\b|Mastercard|c[aá]lculo autom[aá]tico/i;
+const forbidden = /DHL|cobertura nacional|a todo México|\$|env[ií]os? gratis|mismo d[ií]a|OXXO|Mercado\s?Pago|\bVisa\b|Mastercard|c[aá]lculo autom[aá]tico/i;
 
 test("shipping communication quotes each order without public rates or automatic purchasing", () => {
   const html = render(loader()("@/components/checkout/ShippingNotice").ShippingNotice);
-  for (const copy of ["Envíos con DHL", "Realizamos envíos por DHL desde Cadereyta Jiménez, Nuevo León.", "El costo del envío se cotiza antes de confirmar tu pedido, de acuerdo con el destino, peso, volumen y cobertura.", "Consulta los productos que necesitas por WhatsApp y te ayudamos a confirmar disponibilidad, precio y envío.", "Algunas zonas extendidas pueden generar cargos adicionales.", "Los pedidos y pagos en línea aún no están habilitados."]) assert.ok(html.includes(copy), copy);
+  for (const copy of ["Consulta de envíos", "Escríbenos por WhatsApp para consultar opciones de envío a tu destino.", "Te confirmaremos cobertura y costo antes de confirmar tu pedido.", "Consulta los productos que necesitas por WhatsApp y te ayudamos a confirmar disponibilidad, precio y envío.", "Los pedidos y pagos en línea aún no están habilitados."]) assert.ok(html.includes(copy), copy);
   assert.ok(html.includes('href="https://wa.me/528281136652"'));
-  assert.ok(html.includes("Cotizar pedido por WhatsApp"));
+  assert.ok(html.includes("Consultar envío por WhatsApp"));
   assert.doesNotMatch(html.replace(/<[^>]+>/g, ""), forbidden);
 });
 
 test("shipping metadata has the approved title and no tariff or delivery deadline", () => {
   const { metadata } = loader()("@/app/(shop)/envios/page");
-  assert.equal(metadata.title.absolute, "Envíos con DHL | SICARÚ");
-  assert.match(metadata.description, /destino, peso, volumen y cobertura/);
+  assert.equal(metadata.title.absolute, "Consulta de envíos | SICARÚ");
+  assert.match(metadata.description, /opciones de envío, cobertura y costo a tu destino/);
   assert.doesNotMatch(metadata.description, /\$|\bkg\b|d[ií]as|gratis/i);
 });
 
@@ -60,23 +60,23 @@ test("catalog checkout and confirmation layout cannot mount payment or order con
 
 test("the compact shipping hint links to the real policy without quoting a price", () => {
   const html = render(loader()("@/components/checkout/ShippingInquiryHint").ShippingInquiryHint);
-  assert.ok(html.includes("Envíos por DHL a México"));
-  assert.ok(html.includes("Cotizamos tu envío por WhatsApp"));
+  assert.ok(html.includes("Opciones de envío ·"));
+  assert.ok(html.includes("Consulta cobertura y costo por WhatsApp"));
   assert.ok(html.includes('href="/envios"'));
   assert.doesNotMatch(html, /\$|<form|<img/);
 });
 
 test("catalog discovery keeps its search and cards while exposing a single shipping hint", () => {
   const html = render(loader()("@/app/(shop)/productos/ProductosContent").ProductosContent, { products: [] });
-  assert.equal((html.match(/Envíos por DHL a México/g) ?? []).length, 1);
+  assert.equal((html.match(/Opciones de envío ·/g) ?? []).length, 1);
   assert.ok(html.includes("Buscar en productos"));
   assert.ok(html.includes('href="/categorias/color-y-tintes"'));
   assert.ok(html.includes("0 productos en el catálogo"));
 });
 
-test("home help mentions DHL once and preserves the approved professional invitation", () => {
+test("home help offers shipping inquiries once and preserves the approved professional invitation", () => {
   const html = render(loader()("@/components/home/WhatsAppBanner").WhatsAppBanner);
-  assert.equal((html.match(/Envíos por DHL a México/g) ?? []).length, 1);
+  assert.ok(html.includes("Consulta opciones de envío, cobertura y costo por WhatsApp antes de confirmar tu pedido."));
   for (const copy of ["SICARÚ PROFESIONALES", "Para quienes hacen de la belleza su profesión.", "Valoramos tu experiencia y apoyamos tu trabajo con productos profesionales y precios especiales."]) assert.ok(html.includes(copy));
   assert.ok(html.includes('href="/salon-pro"'));
 });
@@ -112,4 +112,17 @@ test("catalog return inquiries use WhatsApp without inventing refund terms or a 
   assert.ok(html.includes('href="https://wa.me/528281136652"'));
   assert.doesNotMatch(html, /próximamente|15 d[ií]as|reembolso|OXXO/);
   assert.ok(render(loader(false)("@/app/(shop)/devoluciones/page").default).includes("Política de Devoluciones"));
+});
+
+// This change withdraws the carrier claim across public entry points, including metadata.
+test("shipping entry points do not promise a carrier, tariff or nationwide coverage", () => {
+  for (const file of [
+    "src/components/home/WhatsAppBanner.tsx",
+    "src/components/checkout/ShippingInquiryHint.tsx",
+    "src/components/checkout/ShippingNotice.tsx",
+    "src/app/(shop)/carrito/page.tsx",
+    "src/app/(shop)/contacto/page.tsx",
+    "src/app/(shop)/envios/page.tsx",
+    "src/app/(shop)/terminos/page.tsx",
+  ]) assert.doesNotMatch(read(file), /DHL|cobertura nacional|a todo México/i, file);
 });

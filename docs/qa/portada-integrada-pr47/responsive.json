@@ -1,0 +1,498 @@
+[
+  {
+    "catalogFallback": true,
+    "contrast": [
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "SICARÚ · Explora por necesidad"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Ver productos"
+      },
+      {
+        "background": "rgb(245, 241, 235)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Cuidado capilarCuida tu cabello.Explorar tratamientos"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Cuidado capilar"
+      },
+      {
+        "background": "rgb(127, 109, 138)",
+        "foreground": "rgb(255, 255, 255)",
+        "opacity": "1",
+        "text": "Explora productos y tonosColoración"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(255, 255, 255)",
+        "opacity": "1",
+        "text": "Explora productos y tonos"
+      },
+      {
+        "background": "rgb(245, 241, 235)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Equipa tu trabajoHerramientas"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Equipa tu trabajo"
+      },
+      {
+        "background": "rgb(155, 137, 168)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Productos para tu profesiónPara profesionales"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(41, 37, 41)",
+        "opacity": "1",
+        "text": "Productos para tu profesión"
+      }
+    ],
+    "headings": [
+      "Belleza profesional para ti y tu salón.",
+      "¿Qué buscas hoy?",
+      "Nuestras marcas",
+      "Productos destacados",
+      "La belleza tiene muchas formas.",
+      "¿Buscas algún producto?",
+      "Para quienes hacen de la belleza su profesión."
+    ],
+    "height": 4000,
+    "images": [
+      {
+        "alt": "Retrato conceptual de belleza con cabello rizado y sonrisa natural",
+        "loaded": true,
+        "position": "50% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/images/campaign/sicaru-hero-mobile.webp"
+      },
+      {
+        "alt": "Voglia Total Repair, fotografía real de tratamiento capilar",
+        "loaded": true,
+        "position": "50% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fproducts-hero%2Fvoglia-total-repair.webp&w=256&q=75"
+      },
+      {
+        "alt": "Voglia Color Fun, fotografía real de producto",
+        "loaded": true,
+        "position": "50% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fproducts-hero%2Fvoglia-color-fun.webp&w=256&q=75"
+      },
+      {
+        "alt": "Navaja profesional de barbería, fotografía real de producto",
+        "loaded": true,
+        "position": "50% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fproducts-hero%2Fnavaja-profesional.webp&w=256&q=75"
+      },
+      {
+        "alt": "Vitale Bifase Pro-Keratin, fotografía real de producto",
+        "loaded": true,
+        "position": "50% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fproducts-hero%2Fvitale-bifase-pro-keratin.webp&w=256&q=75"
+      }
+    ],
+    "links": [
+      {
+        "height": 48,
+        "href": "/productos",
+        "text": "Explorar productos",
+        "visible": true
+      },
+      {
+        "height": 0,
+        "href": "/salon-pro",
+        "text": "Para profesionales",
+        "visible": false
+      }
+    ],
+    "scrollWidth": 320,
+    "scrollY": 0,
+    "width": 320
+  },
+  {
+    "catalogFallback": true,
+    "contrast": [
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "SICARÚ · Explora por necesidad"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Ver productos"
+      },
+      {
+        "background": "rgb(245, 241, 235)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Cuidado capilarCuida tu cabello.Explorar tratamientos"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Cuidado capilar"
+      },
+      {
+        "background": "rgb(127, 109, 138)",
+        "foreground": "rgb(255, 255, 255)",
+        "opacity": "1",
+        "text": "Explora productos y tonosColoración"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(255, 255, 255)",
+        "opacity": "1",
+        "text": "Explora productos y tonos"
+      },
+      {
+        "background": "rgb(245, 241, 235)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Equipa tu trabajoHerramientas"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Equipa tu trabajo"
+      },
+      {
+        "background": "rgb(155, 137, 168)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Productos para tu profesiónPara profesionales"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(41, 37, 41)",
+        "opacity": "1",
+        "text": "Productos para tu profesión"
+      }
+    ],
+    "headings": [
+      "Belleza profesional para ti y tu salón.",
+      "¿Qué buscas hoy?",
+      "Nuestras marcas",
+      "Productos destacados",
+      "La belleza tiene muchas formas.",
+      "¿Buscas algún producto?",
+      "Para quienes hacen de la belleza su profesión."
+    ],
+    "height": 3869,
+    "images": [
+      {
+        "alt": "Retrato conceptual de belleza con cabello rizado y sonrisa natural",
+        "loaded": true,
+        "position": "50% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/images/campaign/sicaru-hero-mobile.webp"
+      },
+      {
+        "alt": "Voglia Total Repair, fotografía real de tratamiento capilar",
+        "loaded": true,
+        "position": "50% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fproducts-hero%2Fvoglia-total-repair.webp&w=384&q=75"
+      },
+      {
+        "alt": "Voglia Color Fun, fotografía real de producto",
+        "loaded": true,
+        "position": "50% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fproducts-hero%2Fvoglia-color-fun.webp&w=256&q=75"
+      },
+      {
+        "alt": "Navaja profesional de barbería, fotografía real de producto",
+        "loaded": true,
+        "position": "50% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fproducts-hero%2Fnavaja-profesional.webp&w=256&q=75"
+      },
+      {
+        "alt": "Vitale Bifase Pro-Keratin, fotografía real de producto",
+        "loaded": true,
+        "position": "50% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fproducts-hero%2Fvitale-bifase-pro-keratin.webp&w=256&q=75"
+      }
+    ],
+    "links": [
+      {
+        "height": 48,
+        "href": "/productos",
+        "text": "Explorar productos",
+        "visible": true
+      },
+      {
+        "height": 0,
+        "href": "/salon-pro",
+        "text": "Para profesionales",
+        "visible": false
+      }
+    ],
+    "scrollWidth": 390,
+    "scrollY": 0,
+    "width": 390
+  },
+  {
+    "catalogFallback": true,
+    "contrast": [
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "SICARÚ · Explora por necesidad"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Ver productos"
+      },
+      {
+        "background": "rgb(245, 241, 235)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Cuidado capilarCuida tu cabello.Explorar tratamientos"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Cuidado capilar"
+      },
+      {
+        "background": "rgb(127, 109, 138)",
+        "foreground": "rgb(255, 255, 255)",
+        "opacity": "1",
+        "text": "Explora productos y tonosColoración"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(255, 255, 255)",
+        "opacity": "1",
+        "text": "Explora productos y tonos"
+      },
+      {
+        "background": "rgb(245, 241, 235)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Equipa tu trabajoHerramientas"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Equipa tu trabajo"
+      },
+      {
+        "background": "rgb(155, 137, 168)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Productos para tu profesiónPara profesionales"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(41, 37, 41)",
+        "opacity": "1",
+        "text": "Productos para tu profesión"
+      }
+    ],
+    "headings": [
+      "Belleza profesional para ti y tu salón.",
+      "¿Qué buscas hoy?",
+      "Nuestras marcas",
+      "Productos destacados",
+      "La belleza tiene muchas formas.",
+      "¿Buscas algún producto?",
+      "Para quienes hacen de la belleza su profesión."
+    ],
+    "height": 2927,
+    "images": [
+      {
+        "alt": "Retrato conceptual de belleza con cabello rizado y sonrisa natural",
+        "loaded": true,
+        "position": "86% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fcampaign%2Fsicaru-hero-desktop.webp&w=1920&q=75"
+      },
+      {
+        "alt": "Voglia Total Repair, fotografía real de tratamiento capilar",
+        "loaded": true,
+        "position": "50% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fproducts-hero%2Fvoglia-total-repair.webp&w=640&q=75"
+      },
+      {
+        "alt": "Voglia Color Fun, fotografía real de producto",
+        "loaded": true,
+        "position": "50% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fproducts-hero%2Fvoglia-color-fun.webp&w=256&q=75"
+      },
+      {
+        "alt": "Navaja profesional de barbería, fotografía real de producto",
+        "loaded": true,
+        "position": "50% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fproducts-hero%2Fnavaja-profesional.webp&w=256&q=75"
+      },
+      {
+        "alt": "Vitale Bifase Pro-Keratin, fotografía real de producto",
+        "loaded": true,
+        "position": "50% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fproducts-hero%2Fvitale-bifase-pro-keratin.webp&w=256&q=75"
+      }
+    ],
+    "links": [
+      {
+        "height": 48,
+        "href": "/productos",
+        "text": "Explorar productos",
+        "visible": true
+      },
+      {
+        "height": 44,
+        "href": "/salon-pro",
+        "text": "Para profesionales",
+        "visible": true
+      }
+    ],
+    "scrollWidth": 768,
+    "scrollY": 0,
+    "width": 768
+  },
+  {
+    "catalogFallback": true,
+    "contrast": [
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "SICARÚ · Explora por necesidad"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Ver productos"
+      },
+      {
+        "background": "rgb(245, 241, 235)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Cuidado capilarCuida tu cabello.Explorar tratamientos"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Cuidado capilar"
+      },
+      {
+        "background": "rgb(127, 109, 138)",
+        "foreground": "rgb(255, 255, 255)",
+        "opacity": "1",
+        "text": "Explora productos y tonosColoración"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(255, 255, 255)",
+        "opacity": "1",
+        "text": "Explora productos y tonos"
+      },
+      {
+        "background": "rgb(245, 241, 235)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Equipa tu trabajoHerramientas"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Equipa tu trabajo"
+      },
+      {
+        "background": "rgb(155, 137, 168)",
+        "foreground": "rgb(46, 43, 43)",
+        "opacity": "1",
+        "text": "Productos para tu profesiónPara profesionales"
+      },
+      {
+        "background": "rgba(0, 0, 0, 0)",
+        "foreground": "rgb(41, 37, 41)",
+        "opacity": "1",
+        "text": "Productos para tu profesión"
+      }
+    ],
+    "headings": [
+      "Belleza profesional para ti y tu salón.",
+      "¿Qué buscas hoy?",
+      "Nuestras marcas",
+      "Productos destacados",
+      "La belleza tiene muchas formas.",
+      "¿Buscas algún producto?",
+      "Para quienes hacen de la belleza su profesión."
+    ],
+    "height": 2685,
+    "images": [
+      {
+        "alt": "Retrato conceptual de belleza con cabello rizado y sonrisa natural",
+        "loaded": true,
+        "position": "60% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fcampaign%2Fsicaru-hero-desktop.webp&w=1920&q=75"
+      },
+      {
+        "alt": "Voglia Total Repair, fotografía real de tratamiento capilar",
+        "loaded": true,
+        "position": "50% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fproducts-hero%2Fvoglia-total-repair.webp&w=640&q=75"
+      },
+      {
+        "alt": "Voglia Color Fun, fotografía real de producto",
+        "loaded": true,
+        "position": "50% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fproducts-hero%2Fvoglia-color-fun.webp&w=384&q=75"
+      },
+      {
+        "alt": "Navaja profesional de barbería, fotografía real de producto",
+        "loaded": true,
+        "position": "50% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fproducts-hero%2Fnavaja-profesional.webp&w=384&q=75"
+      },
+      {
+        "alt": "Vitale Bifase Pro-Keratin, fotografía real de producto",
+        "loaded": true,
+        "position": "50% 50%",
+        "src": "https://sicaru-3c2bxxblv-sicaru-admins-projects.vercel.app/_next/image?url=%2Fimages%2Fproducts-hero%2Fvitale-bifase-pro-keratin.webp&w=384&q=75"
+      }
+    ],
+    "links": [
+      {
+        "height": 48,
+        "href": "/productos",
+        "text": "Explorar productos",
+        "visible": true
+      },
+      {
+        "height": 44,
+        "href": "/salon-pro",
+        "text": "Para profesionales",
+        "visible": true
+      }
+    ],
+    "scrollWidth": 1440,
+    "scrollY": 0,
+    "width": 1440
+  }
+]

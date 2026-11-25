@@ -1,0 +1,20 @@
+{
+  "status": "conceptual_only_not_for_production",
+  "branch": "release/home-categorias-envios-logo-preview-20261124",
+  "files": [
+    {
+      "path": "public/images/campaign/sicaru-hero-desktop.webp",
+      "width": 1774,
+      "height": 887,
+      "bytes": 120978,
+      "sha256": "0f4208c7af841770546949b7b5f25075b63b8f906821faa354cdc63ac9cbaaaf"
+    },
+    {
+      "path": "public/images/campaign/sicaru-hero-mobile.webp",
+      "width": 1174,
+      "height": 887,
+      "bytes": 113096,
+      "sha256": "2099a50e583230ba5291c1f991fc316c8bebc3cc88516f73f624d5e0e7a74254"
+    }
+  ]
+}

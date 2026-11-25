@@ -28,7 +28,7 @@ export function Navbar() {
   return (
     <header className="sicaru-navbar sticky top-0 z-30">
       <nav className="mx-auto flex max-w-[1400px] items-center justify-between px-4 py-2 sm:px-8 lg:px-10 md:py-3">
-        <BrandWordmark className="shrink-0" />
+        <BrandWordmark className="shrink-0 text-[1.98rem]! sm:text-[2.35rem]! md:text-[2.15rem]! lg:text-[2.65rem]!" />
 
         <div className="hidden items-center gap-5 lg:gap-8 md:flex">
           {navLinks.map((link) => {

@@ -1,0 +1,18 @@
+{
+  "pagina-completa-1440.jpg": {
+    "bytes": 232834,
+    "sha256": "dced814a366d48648c09ae49873ec7170c8b62fc4805ee8d43894b9e0c7c37a2"
+  },
+  "pagina-completa-320.jpg": {
+    "bytes": 137857,
+    "sha256": "573805ae006f8a44d492ae99faf49eca4190eb5bf5a0b042a49d8f783822f920"
+  },
+  "pagina-completa-390.jpg": {
+    "bytes": 145357,
+    "sha256": "a24fcfba9458284022791fdd2365c58ca700afe8d60ab975103254a82c85ebdc"
+  },
+  "pagina-completa-768.jpg": {
+    "bytes": 173805,
+    "sha256": "3fccc54cd054cc7b31d8bde92410669aecafe573a4540e3f8035822ba51b6fa4"
+  }
+}
