@@ -1,3 +1,4 @@
+import { protectedFileBytes } from "./helpers/protected-file-bytes.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -28,7 +29,7 @@ const render=Component=>renderToStaticMarkup(React.createElement(Component));
 
 test("production photos, catalog, commercial guards, protected files and home visuals are unchanged",()=>{
   const hashes=JSON.parse(read("tests/publication-protected-hashes.json"));
-  for(const [file,hash] of Object.entries(hashes))assert.equal(createHash("sha256").update(readFileSync(new URL(`../${file}`,import.meta.url))).digest("hex"),hash,file);
+  for(const [file,hash] of Object.entries(hashes))assert.equal(createHash("sha256").update(protectedFileBytes(file,readFileSync(new URL(`../${file}`,import.meta.url)))).digest("hex"),hash,file);
 });
 test("Conócenos contains the exact approved history, no provisional image and official contact",()=>{
  const html=render(load("@/app/(shop)/nosotros/page").default);

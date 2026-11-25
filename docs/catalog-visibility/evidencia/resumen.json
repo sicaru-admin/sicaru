@@ -1,0 +1,24 @@
+{
+  "next": "16.1.6",
+  "full_unit": {
+    "pass": 112,
+    "fail": 0
+  },
+  "affected_guard_tests": {
+    "pass": 20,
+    "fail": 0
+  },
+  "runtime_browser_http": {
+    "pass": 34,
+    "fail": 0
+  },
+  "typescript": "PASS",
+  "build": "PASS",
+  "scoped_lint": "PASS",
+  "full_lint": {
+    "errors": 0,
+    "existing_warnings": 3
+  },
+  "production_writes": false,
+  "preview_deployment_enabled": false
+}

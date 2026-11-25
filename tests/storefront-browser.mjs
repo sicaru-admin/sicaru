@@ -5,6 +5,10 @@ import { createServer } from "node:http";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 const { chromium, devices } = await import(process.env.PLAYWRIGHT_MODULE || "playwright");
 
+// Simulate an upgrade for the version under test, rather than an obsolete release key.
+const resetSource = await readFile(new URL("../src/components/system/BrowserCacheReset.tsx", import.meta.url), "utf8");
+const resetVersion = resetSource.match(/const RESET_KEY = "([^"]+)"/u)?.[1];
+assert.ok(resetVersion);
 const baseUrl = process.env.TEST_BASE_URL || "http://127.0.0.1:3000";
 let offline = false;
 let paymentRequests = 0;
@@ -307,13 +311,13 @@ try {
     if (width === 390) {
       await page.goto(baseUrl, { waitUntil: "networkidle" });
       const cartBefore = await page.evaluate(() => localStorage.getItem("sicaru_cart_id"));
-      await page.evaluate(async () => {
+      await page.evaluate(async (resetKey) => {
         const cache = await caches.open("legacy-storefront");
         await cache.put("/old-page", new Response("OLD SICARU"));
         sessionStorage.setItem("sicaru-cache-reset-2026-06-29", "done");
         sessionStorage.setItem("sicaru-retail-cache-2026-10-23", "done");
-        sessionStorage.removeItem("sicaru-retail-refinement-2026-10-23");
-      });
+        sessionStorage.removeItem(resetKey);
+      }, resetVersion);
       await page.reload({ waitUntil: "networkidle" });
       assert.equal(await page.evaluate(async () => (await caches.keys()).includes("legacy-storefront")), false);
       assert.equal(await page.evaluate(() => localStorage.getItem("sicaru_cart_id")), cartBefore);

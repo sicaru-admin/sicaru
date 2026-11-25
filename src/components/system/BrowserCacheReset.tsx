@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-const RESET_KEY = "sicaru-retail-refinement-2026-10-23";
+const RESET_KEY = "sicaru-catalog-visibility-2026-11-15";
 
 export function BrowserCacheReset() {
+  const router = useRouter();
   useEffect(() => {
     let running = false;
     async function refresh() {
@@ -29,13 +31,22 @@ export function BrowserCacheReset() {
         // Retry on the next online/visible event; never clear the customer's cart.
       } finally { running = false; }
     }
+    function refreshVisibleCatalog() {
+      if (document.visibilityState === "hidden") return;
+      void refresh();
+      router.refresh();
+    }
     void refresh();
-    window.addEventListener("online", refresh);
-    document.addEventListener("visibilitychange", refresh);
+    window.addEventListener("online", refreshVisibleCatalog);
+    window.addEventListener("pageshow", refreshVisibleCatalog);
+    window.addEventListener("popstate", refreshVisibleCatalog);
+    document.addEventListener("visibilitychange", refreshVisibleCatalog);
     return () => {
-      window.removeEventListener("online", refresh);
-      document.removeEventListener("visibilitychange", refresh);
+      window.removeEventListener("online", refreshVisibleCatalog);
+      window.removeEventListener("pageshow", refreshVisibleCatalog);
+      window.removeEventListener("popstate", refreshVisibleCatalog);
+      document.removeEventListener("visibilitychange", refreshVisibleCatalog);
     };
-  }, []);
+  }, [router]);
   return null;
 }
