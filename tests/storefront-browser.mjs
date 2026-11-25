@@ -195,8 +195,11 @@ try {
     assert.ok(await page.getByRole("button", { name: "Limpiar búsqueda" }).isVisible());
     await page.getByRole("button", { name: "Limpiar búsqueda" }).click();
     assert.ok(await textOnly.isVisible());
-    const toolsLink = page.getByRole("link", { name: "Herramientas · Consultar opciones", exact: true });
-    assert.equal(new URL(await toolsLink.getAttribute("href")).hostname, "wa.me");
+    const toolsLink = page.locator('nav[aria-label="Categorías de productos"] a[href^="https://wa.me/"]');
+    assert.equal(await toolsLink.count(), 1);
+    const toolsHref = new URL(await toolsLink.getAttribute("href"));
+    assert.equal(toolsHref.hostname, "wa.me");
+    assert.match(toolsHref.searchParams.get("text") || "", /Herramientas profesionales/);
     assert.equal(await toolsLink.getAttribute("target"), "_blank");
     await page.goto(baseUrl, { waitUntil: "networkidle" });
     await page.locator('[aria-labelledby="home-categories"] a[href="/categorias/color-y-tintes"]').click();
