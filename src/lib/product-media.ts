@@ -1,5 +1,4 @@
 import type { HttpTypes } from "@medusajs/types";
-import { getVerifiedCatalogGalleryPhoto } from "@/lib/catalog-verified-card-photos";
 
 export type ProductGalleryImage = { id: string; url: string };
 
@@ -55,7 +54,7 @@ export function getProductMedia(
   const specific = selected
     ? candidates.filter((image) => image.variantIds.includes(selected.id)) : [];
   return {
-    images: [...general, ...specific].map(({ id, url }) => ({ id, url: getVerifiedCatalogGalleryPhoto(product, url) })),
+    images: [...general, ...specific].map(({ id, url }) => ({ id, url })),
     variantTitle: specific.length ? selected?.title ?? null : null,
     reserveImageSpace: candidates.some((image) => image.variantIds.length > 0),
     reserveThumbnails: general.length > 1 || variants.some((variant) =>
