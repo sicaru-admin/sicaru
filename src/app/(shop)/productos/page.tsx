@@ -15,11 +15,13 @@ export default async function ProductosPage({ searchParams }: { searchParams: Pr
   const { q } = await searchParams;
   const query = (typeof q === "string" ? q : "").trim().slice(0, 120);
   let products: Awaited<ReturnType<typeof getProducts>>["products"] = [];
+  let catalogUnavailable = false;
   try {
     const result = await getProducts({ limit: 100 });
     products = result.products;
   } catch {
-    // Si Railway no responde, el catálogo mantiene la página en lugar de romperla.
+    // Distinguir un fallo temporal del backend de un catálogo realmente vacío.
+    catalogUnavailable = true;
   }
 
   return (
@@ -29,7 +31,7 @@ export default async function ProductosPage({ searchParams }: { searchParams: Pr
         title="Encuentra tu próximo favorito"
         description="Coloración, tratamientos y herramientas para ti y tu salón."
       />
-      <ProductosContent key={query} products={products} initialQuery={query} />
+      <ProductosContent key={query} products={products} initialQuery={query} catalogUnavailable={catalogUnavailable} />
     </>
   );
 }
