@@ -125,7 +125,7 @@ export default function CarritoPage() {
               {CATALOG_MODE ? (
                 <>
                   <p className="mt-4 text-sm leading-6 text-gray-600">
-                    Enviaremos producto, presentación, tono, SKU y cantidad para confirmar disponibilidad y total directamente con SICARÚ.
+                    Tu carrito prepara una consulta con producto, presentación, tono, SKU y cantidad. Al continuar a WhatsApp, revisa el mensaje y envíalo para confirmar disponibilidad, precio y envío. No se realiza ninguna compra ni pago en esta página.
                   </p>
                   <Link href="/envios" className="mt-2 inline-flex min-h-11 items-center text-sm text-[#7f6d8a] underline underline-offset-4">
                     Envíos por DHL · Cotización por WhatsApp
