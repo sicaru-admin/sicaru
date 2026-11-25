@@ -11,7 +11,7 @@
   "src/components/cart/CartProvider.tsx": "142b4d23d104d34dc0ccbe4b6d707ee7ccbc2a343732a4a46a9fafc282315cc2",
   "src/app/(checkout)/checkout/page.tsx": "31c9c8b67837bc6bca5dec85fcf2b8a1f668ec4c8fed95d037524f4e913137a9",
   "src/app/(checkout)/checkout/confirmacion/page.tsx": "c9ea9aef7afa6834d0915f882770b08741387786d93011f9fc0e2dbdf230790a",
-  "src/app/(shop)/productos/ProductosContent.tsx": "48cbd59a8bad780410bb765255873356e65b5b5c7028a2c1650428367d83d60b",
+  "src/app/(shop)/productos/ProductosContent.tsx": "081064494ab502ce68fa50a8735ecefbd97a2f2e7ebcf6c41a6127e286a4ed80",
   "src/components/products/ProductPhoto.tsx": "322e9e24fca6769da7d6bf02377a660de91993dda0a5b5d2f9ffd3d0f29ed9f7",
   "src/components/product/ImageGallery.tsx": "d8ff65691ad672d0b30b8846983ae610bd58deeb8d04e7a565406ba3d36f384f",
   "src/app/(shop)/page.tsx": "9b2a5a7a8c4376272a793cc7dd04a69964da64b864a9b6e92d4acc010bc709ba",
