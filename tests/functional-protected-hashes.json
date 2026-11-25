@@ -20,7 +20,7 @@
   "src/components/home/WhatsAppBanner.tsx": "15275b73255c75eb90da2e67fe825acc8c9c2119470fbdc2fdce1ed32e6d56eb",
   "src/components/home/HeroSection.tsx": "9c5346ea9800c346cdc94e9c19150af93ca367b2087152bbefb6b2d5c8915bfe",
   "src/components/home/HomeHeroVisual.tsx": "8a08f65e08c06a07fe0d9c57228f95a92a34c4e5aef9eb811def92f1cf63c965",
-  "src/components/home/CategoriesGrid.tsx": "d3980986fafa2a942310508757f4fdae0983d0e65bc04a1af6e530fd782c9dfb",
+  "src/components/home/CategoriesGrid.tsx": "cbe2ccf7faa96470952fa6b98b136c1b23e65fbebc2d865e882f9e9adf78de04",
   "src/app/globals.css": "a7fa6e6362592469b70c264287f6f48a60ed35d6cdaafacc738daba1526a24f1",
   "src/lib/constants/store.ts": "caee38a563e0eb126596f2a376818fd964f276aeb48de5a1ca111e3097abf31e",
   "src/app/favicon.ico/route.ts": "98a8ce3fcb55c6b737084ac0f2046c8eae2dfc954a9c8610208d285e7bbcf9ba",
