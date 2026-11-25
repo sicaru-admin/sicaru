@@ -339,6 +339,12 @@ try {
     assert.equal(await page.getByTestId("retail-product-card").count(), 0);
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
     await page.screenshot({ path: `artifacts/offline-${width}.png`, fullPage: true });
+    await page.goto(`${baseUrl}/productos`, { waitUntil: "networkidle" });
+    const catalogUnavailable = page.getByTestId("catalog-unavailable");
+    await catalogUnavailable.waitFor();
+    assert.ok(await catalogUnavailable.getByRole("heading", { name: "No pudimos cargar el catálogo por ahora" }).isVisible());
+    assert.ok(await catalogUnavailable.getByRole("link", { name: "Consultar por WhatsApp" }).isVisible());
+    assert.equal(await page.getByText("0 productos en el catálogo").count(), 0);
     if (width === 390) for (const path of ["/productos/backend-offline", "/categorias/backend-offline", "/marcas/backend-offline"]) {
       await page.goto(`${baseUrl}${path}`, { waitUntil: "networkidle" });
       await page.getByRole("heading", { name: /No pudimos cargar este producto|Esta selección no está disponible/ }).waitFor();
