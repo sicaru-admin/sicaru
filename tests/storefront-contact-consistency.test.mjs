@@ -14,8 +14,9 @@ test("SICARÚ no publica ni configura correos no verificados", async () => {
   ];
   for (const path of paths) {
     const file = await read(path);
-    assert.doesNotMatch(file, /contacto@sicaru\\.com|hola@sicaru\\.com|mailto:/i, path);
-    assert.doesNotMatch(file, /STORE\\.email/, path);
+    for (const unwanted of ["contacto@sicaru.com", "hola@sicaru.com", "mailto:", "STORE.email"]) {
+      assert.ok(!file.includes(unwanted), `${path} contiene una referencia no verificada: ${unwanted}`);
+    }
   }
   const privacy = await read("src/app/(shop)/politica-privacidad/page.tsx");
   assert.match(privacy, /Derechos ARCO/);
