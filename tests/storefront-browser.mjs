@@ -16,6 +16,7 @@ const product = { id: "prod_test", title: "Tratamiento de prueba", handle: "trat
 const products = [product,
   { ...product, id: "prod_unapproved", title: "Producto sin precio aprobado", handle: "sin-aprobacion", variants: [{ ...variant, id: "variant_unapproved", inventory_quantity: 0, metadata: {}, calculated_price: { calculated_amount: 987.65, currency_code: "mxn" } }] },
   { ...product, id: "prod_missing", title: "Producto sin fotografía", handle: "sin-foto", thumbnail: "/images/foto-que-no-existe.jpg", variants: [{ id: "variant_unknown", title: "Default Variant", metadata: {} }] },
+  { ...product, id: "prod_no_photo", title: "Producto sin imagen registrada", handle: "sin-imagen-registrada", thumbnail: null, images: [], variants: [{ id: "variant_no_photo", title: "250 ml", metadata: {} }] },
 ];
 // Include a legacy shipping method to prove it is never shown as an active rate.
 const cart = { id: "cart_test", items: [], total: 0, subtotal: 0, item_subtotal: 0, item_total: 0, shipping_total: 149, shipping_subtotal: 149, shipping_methods: [{ id: "old_dhl", name: "DHL provisional" }] };
@@ -174,6 +175,15 @@ try {
     await page.getByRole("button", { name: "Buscar productos", exact: true }).click();
     await page.waitForURL("**/productos?q=*");
     assert.equal(await page.getByTestId("retail-product-card").count(), 1);
+    // The full catalog retains its text-only products, without giant empty photo frames.
+    await page.goto(`${baseUrl}/productos`, { waitUntil: "networkidle" });
+    const textOnly = page.getByTestId("retail-product-card").filter({
+      has: page.getByRole("heading", { name: "Producto sin imagen registrada", exact: true }),
+    });
+    assert.equal(await textOnly.count(), 1);
+    assert.equal(await textOnly.locator("img").count(), 0);
+    assert.ok(await textOnly.getByText("Fotografía no disponible · consulta la presentación").isVisible());
+    assert.ok(await textOnly.getByRole("link", { name: /Consultar Producto sin imagen registrada por WhatsApp/ }).isVisible());
     await page.goto(baseUrl, { waitUntil: "networkidle" });
     await page.locator('[aria-labelledby="home-categories"] a[href="/categorias/color-y-tintes"]').click();
     await page.waitForURL("**/categorias/color-y-tintes");
