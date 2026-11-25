@@ -181,14 +181,7 @@ export default function TerminosPage() {
         </h2>
         <p className="text-gray-600 leading-relaxed mb-4">
           Para cualquier duda o aclaración sobre estos términos y condiciones,
-          puedes contactarnos en{" "}
-          <a
-            href="mailto:contacto@sicaru.com"
-            className="text-sicaru-purple-700 underline"
-          >
-            contacto@sicaru.com
-          </a>{" "}
-          o por WhatsApp al{" "}
+          puedes contactarnos por WhatsApp al{" "}
           <a
             href="https://wa.me/528281136652"
             target="_blank"
