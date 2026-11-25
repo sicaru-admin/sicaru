@@ -9,8 +9,8 @@ import { ArrowRight } from "lucide-react";
  * checked into the paths below and responsive quality/accessibility QA passes.
  * Both photographs must contain NO embedded text, product packaging or logos.
  *
- * Desktop portrait is shown in a half-width panel; on a max-width 1440px home
- * it requires 1440 source pixels for a 2× density screen (we have 1774).
+ * Desktop portrait uses only the right 58% of a max-width 1440px hero:
+ * 835 CSS px at 2× require 1670 source pixels (we have 1774).
  * Mobile portrait fills the width up to 390px at 3× (1170 source pixels; we
  * have 1174). This is an assessment for the intended display, not proof that
  * these assets meet the separate 3000px / 1800px master-image requirement.
@@ -21,8 +21,8 @@ export function CampaignHeroCandidate() {
       aria-labelledby="sicaru-campaign-title"
       className="isolate overflow-hidden bg-[#7F6D8A] text-white"
     >
-      <div className="mx-auto grid max-w-[1440px] md:grid-cols-2">
-        <div className="flex min-w-0 flex-col justify-center px-5 pb-6 pt-7 sm:px-8 sm:py-9 md:px-9 md:py-14 lg:px-12">
+      <div className="relative mx-auto flex max-w-[1440px] flex-col md:min-h-[455px] md:justify-center">
+        <div className="relative z-10 flex min-w-0 flex-col justify-center px-5 pb-6 pt-7 sm:px-8 sm:py-9 md:max-w-[57%] md:px-9 md:py-14 lg:px-12">
           <p className="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-white">
             SICARÚ · Beauty Supply
           </p>
@@ -50,7 +50,7 @@ export function CampaignHeroCandidate() {
             </Link>
           </div>
         </div>
-        <div className="relative h-[298px] min-w-0 overflow-hidden bg-[#9B89A8] sm:h-[350px] md:h-auto md:min-h-[425px] lg:min-h-[455px]">
+        <div className="relative h-[298px] min-w-0 overflow-hidden bg-[#9B89A8] sm:h-[350px] md:absolute md:inset-y-0 md:right-0 md:h-auto md:w-[58%]">
           <picture>
             <source
               media="(max-width: 767px)"
@@ -68,6 +68,7 @@ export function CampaignHeroCandidate() {
               className="absolute inset-0 h-full w-full object-cover object-center md:object-[60%_center]"
             />
           </picture>
+          <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 hidden w-[38%] bg-gradient-to-r from-[#7F6D8A] via-[#7F6D8A]/70 to-transparent md:block" />
         </div>
       </div>
     </section>
