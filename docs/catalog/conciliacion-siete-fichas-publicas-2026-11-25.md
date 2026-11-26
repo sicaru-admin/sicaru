@@ -34,3 +34,19 @@ Se consultaron las siete URLs públicas de ficha mediante Vercel autenticado, to
 ## Corrección de Dirección · 25 noviembre 2026
 
 La propietaria precisa: **KÜÜL Cure Me mascarilla/reconstructor = 1 kg (peso), NO 1 L (volumen)**. La posible presentación de 1 L corresponde a un producto **leave-in** distinto y debe verificarse, no asumirse. Los campos «1L» del producto y la variante pública están registrados arriba como **valores observados, no como identidad comercial aprobada**. **No se debe renombrar automáticamente** la ficha ni reutilizar una foto del leave-in o de otro tamaño; requiere cotejo de producto, empaque, SKU y fuente maestra. Este documento no autoriza actualizaciones de Medusa.
+
+## Facturas Henkel · conciliación KÜÜL Cure Me 1 kg · 25 noviembre 2026
+
+**Evidencia directa:** XML CFDI originales en Gmail, emisor HENKEL CAPITAL; se examinaron las líneas de concepto, fecha y campo `NoIdentificacion`. Los documentos no demuestran inventario físico ni el motivo técnico del cambio de código.
+
+| Factura | Fecha | Descripción literal | NoIdentificacion del proveedor |
+|---|---|---|---|
+| FA1123765101 | 2026-06-09 | Kuul Cure Me Recons 1 kg | `7501438366445` |
+| FA1124490778 | 2026-09-28 | Kuul Cure Me Reconstructor System 1 Kg | `7501438306731` |
+| FA1124762867 | 2026-11-10 | Kuul Cure Me Reconstructor System 1 Kg | `7501438306731` |
+
+**Hallazgo:** existe una transición documental de identificador del fabricante para la presentación 1 kg entre junio y septiembre 2026. `7501438366445` es anterior documentado y `7501438306731` es el más reciente de las facturas revisadas. Se conserva ambos códigos como referencia de conciliación/historial; verificar EAN físico de la unidad actual y registro maestro antes de tratar `NoIdentificacion` como EAN garantizado. No es evidencia suficiente de que el cambio se debiera a KÜÜLPLEX+ ni de la fecha exacta de modificación del fabricante.
+
+**Producto distinto, no confundir:** FA1124490778 de 2026-09-28 distingue `KUUL Cure Me Leave-in Treatment 1 L` con `NoIdentificacion=7501438368500`. FA1124762867 de noviembre también distingue `KUUL Cure Me Shampoo 1 L`, `NoIdentificacion=7501438368494`. **Ni leave-in 1 L ni shampoo 1 L deben reemplazar la mascarilla/reconstructor 1 kg.**
+
+**Corrección propuesta a revisión:** para el producto Medusa `prod_01KVV3GD5ZFG0NT90YWFXRPZFK`, el título `Küül Cure Me Reconstructor 1L`, la variante `1L` y SKU interno `KUUL-CURE-1L` **son inconsistentes con la referencia documentada si representan la mascarilla**. Nombre de destino tentativo `KÜÜL Cure Me Reconstructor System 1 kg`. Antes de editar: cotejar foto real, EAN impreso y base maestra; decidir la política de SKU interno y conservar historial de ambos NoIdentificacion. La factura no autoriza un cambio de SKU automático ni confirma existencia. No realizar escrituras, despliegues o fusiones sin aprobación separada.
