@@ -2,7 +2,7 @@
 
 **Estado: SOLO PREVIEW · SIN PUBLICAR · SIN ESCRITURAS EN MEDUSA**
 
-## Archivo fotográfico
+## Historial del archivo fotográfico
 - Fuente: fotografía original aportada por Dirección en la conversación (envase verde Cure Me, KÜÜLPLEX+, 35.27 oz / 1 kg).
 - Fuente local original: 1536 × 1152 px, WebP, SHA-256 `19d32735dbb0f9e1d26a86306cfbe4a8ee51c2d6bee4b37170468806623ebee0` (no alojada aquí).
 - **Versión temporal para revisión:** `public/images/products/kuul-cure-me-reconstructor-1kg/cure-me-1kg-preview-400.webp` (400 × 300 px; calidad 65), SHA-256 `255a4bee816af0641728c853426a4ac12f3bc353f961cff8ef00fc41f88e2510`. Generada por reescalado proporcional y compresión estándar; no se editaron etiquetas, colores ni contenidos.
@@ -36,9 +36,19 @@
 - `tests/kuul-cure-me-1kg-preview.test.mjs`: verifica cabecera RIFF/WEBP de la referencia, aislamiento Preview/noindex, nombre propuesto y WhatsApp oficial. Es comprobación estructural, **no** prueba calidad visual, fidelidad de píxeles ni EAN físico.
 
 
-## Nuevo recorte entregado por Dirección · 26 noviembre 2026
+## Historial: nuevo recorte entregado por Dirección · 26 noviembre 2026
 - Se recibió una **nueva foto recortada transparente** del tarro 1 kg: `Tarro KÜÜL Reconstructor verde neón.png`, **1122 × 1402 px**, RGBA. Se comprobó transparencia real en las cuatro esquinas; no es fondo negro. La etiqueta fotografiada muestra `1 Kg`, `KÜÜLPLEX+` y `Cure Me`.
 - **Archivo final preparado fuera del repositorio:** `SICARU_KUUL_Cure_Me_Reconstructor_1kg_web.webp`, **1600 × 1600**, WebP, **216.2 KiB**, SHA-256 `363a20a1e70cb3d2a0e1af4da5fd8c4bed5730674ceedd7e1383fa5e27d51633`. Se centró el recorte original sobre canvas transparente sin redibujar, sin alterar escala del tarro, color, texto ni etiqueta; WebP Q94.
 - **Propuesta de ruta comercial:** `public/images/products/kuul-cure-me-reconstructor-1kg/01-principal.webp` (aún NO subida al repositorio). Sustituir la versión reducida 400×300 de la QA **solo cuando el binario exacto pueda transferirse y verificarse en GitHub**. No usar la vieja imagen baja resolución ni reescalarla.
 - La foto permite confirmar visualmente producto y peso, pero no revela EAN impreso en la cara posterior. Mantener bloqueada la mutación de SKU, título Medusa y producción hasta conciliación y autorización separada.
 - **Checklist de aceptación para la integración posterior:** validar SHA-256 de subida, HTTP 200 `image/webp`, 1600×1600, transparencia y bordes, vista en tarjeta 320/390, galería y zoom, contraste sobre fondo `#FAF8F5`, enlace de WhatsApp con 1 kg, y ausencia de regresión de checkout/carrito/precios.
+
+
+## Integración definitiva · 26 noviembre 2026
+- Archivo recibido: adjunto `01-principal-2.webp`, copiado sin edición ni recompresión a `public/images/products/kuul-cure-me-reconstructor-1kg/01-principal.webp`.
+- SHA-256 verificado: `363a20a1e70cb3d2a0e1af4da5fd8c4bed5730674ceedd7e1383fa5e27d51633`.
+- WebP 1600 × 1600, sRGB, cuatro canales; alfa mínimo 0 y máximo 255. Transparencia real conservada.
+- La QA utiliza exclusivamente el definitivo, con `object-contain` y `unoptimized` para servir los bytes aprobados. Se conserva el diseño y el aislamiento Preview/noindex. El asset 400 × 300 queda únicamente como antecedente, sin uso en la QA.
+- Verificación local del build: 320, 390 y 1440 px, sin desbordamiento horizontal ni errores de JavaScript; envase íntegro, centrado, sin deformación y fondo transparente. HTTP 200 `image/webp`, dimensiones 1600 × 1600 y SHA servido coincidente. CTA conserva el WhatsApp oficial y la consulta de 1 kg.
+- Pruebas: `node --experimental-vm-modules --test tests/*.test.mjs`, 132 aprobadas; `npx tsc --noEmit`, aprobado; `npm run lint`, cero errores y tres advertencias preexistentes; `VERCEL_ENV=preview npm run build`, aprobado. El build necesitó acceso de red para las fuentes Google.
+- Sin cambios en precios, SKU, inventario, Medusa ni ficha comercial. PR #57 debe permanecer borrador; no autoriza fusión ni producción. Los bloqueos comerciales anteriores siguen vigentes.

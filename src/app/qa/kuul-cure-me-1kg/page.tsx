@@ -3,7 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 const previewOnly = process.env.VERCEL_ENV === "preview" || process.env.NODE_ENV === "development";
-const image = "/images/products/kuul-cure-me-reconstructor-1kg/cure-me-1kg-preview-400.webp";
+const image = "/images/products/kuul-cure-me-reconstructor-1kg/01-principal.webp";
 
 export const metadata: Metadata = {
   title: "Revisión KÜÜL Cure Me 1 kg | SICARÚ",
@@ -18,11 +18,11 @@ export default function CureMeOneKgPhotoReview() {
       <div className="mx-auto max-w-4xl space-y-7">
         <p className="text-sm font-semibold uppercase tracking-widest text-[#7F6D8A]">SICARÚ · Revisión privada de producto</p>
         <h1 className="font-heading text-3xl md:text-5xl">KÜÜL Cure Me Reconstructor System · 1 kg</h1>
-        <p className="max-w-2xl text-sm leading-6">Vista previa editorial de identificación y fotografía aportada por Dirección. No es una ficha publicada ni una actualización de Medusa. El archivo optimizado a 400 × 300 px es temporal para revisión; conservar el original para el arte final.</p>
+        <p className="max-w-2xl text-sm leading-6">Vista previa editorial de identificación y fotografía aportada por Dirección. No es una ficha publicada ni una actualización de Medusa. Fotografía definitiva aprobada de 1600 × 1600 px con fondo transparente.</p>
 
         <div className="grid gap-6 md:grid-cols-2">
           <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-[#efe7dd] bg-[#F5F1EB]">
-            <Image src={image} alt="Envase verde KÜÜL Reconstructor System Cure Me, 1 kg, fotografía aportada por SICARÚ" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-contain" priority />
+            <Image src={image} alt="Envase verde KÜÜL Reconstructor System Cure Me, 1 kg, fotografía aportada por SICARÚ" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-contain" unoptimized preload />
           </div>
           <div className="flex flex-col justify-center space-y-4">
             <p className="text-xs font-semibold uppercase tracking-widest text-[#7F6D8A]">Identidad propuesta</p>
