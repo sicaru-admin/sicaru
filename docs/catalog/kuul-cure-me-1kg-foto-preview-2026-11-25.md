@@ -34,3 +34,11 @@
 
 ## Control agregado
 - `tests/kuul-cure-me-1kg-preview.test.mjs`: verifica cabecera RIFF/WEBP de la referencia, aislamiento Preview/noindex, nombre propuesto y WhatsApp oficial. Es comprobación estructural, **no** prueba calidad visual, fidelidad de píxeles ni EAN físico.
+
+
+## Nuevo recorte entregado por Dirección · 26 noviembre 2026
+- Se recibió una **nueva foto recortada transparente** del tarro 1 kg: `Tarro KÜÜL Reconstructor verde neón.png`, **1122 × 1402 px**, RGBA. Se comprobó transparencia real en las cuatro esquinas; no es fondo negro. La etiqueta fotografiada muestra `1 Kg`, `KÜÜLPLEX+` y `Cure Me`.
+- **Archivo final preparado fuera del repositorio:** `SICARU_KUUL_Cure_Me_Reconstructor_1kg_web.webp`, **1600 × 1600**, WebP, **216.2 KiB**, SHA-256 `363a20a1e70cb3d2a0e1af4da5fd8c4bed5730674ceedd7e1383fa5e27d51633`. Se centró el recorte original sobre canvas transparente sin redibujar, sin alterar escala del tarro, color, texto ni etiqueta; WebP Q94.
+- **Propuesta de ruta comercial:** `public/images/products/kuul-cure-me-reconstructor-1kg/01-principal.webp` (aún NO subida al repositorio). Sustituir la versión reducida 400×300 de la QA **solo cuando el binario exacto pueda transferirse y verificarse en GitHub**. No usar la vieja imagen baja resolución ni reescalarla.
+- La foto permite confirmar visualmente producto y peso, pero no revela EAN impreso en la cara posterior. Mantener bloqueada la mutación de SKU, título Medusa y producción hasta conciliación y autorización separada.
+- **Checklist de aceptación para la integración posterior:** validar SHA-256 de subida, HTTP 200 `image/webp`, 1600×1600, transparencia y bordes, vista en tarjeta 320/390, galería y zoom, contraste sobre fondo `#FAF8F5`, enlace de WhatsApp con 1 kg, y ausencia de regresión de checkout/carrito/precios.
