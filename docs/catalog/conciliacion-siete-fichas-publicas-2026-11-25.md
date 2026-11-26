@@ -50,3 +50,33 @@ La propietaria precisa: **KÜÜL Cure Me mascarilla/reconstructor = 1 kg (peso),
 **Producto distinto, no confundir:** FA1124490778 de 2026-09-28 distingue `KUUL Cure Me Leave-in Treatment 1 L` con `NoIdentificacion=7501438368500`. FA1124762867 de noviembre también distingue `KUUL Cure Me Shampoo 1 L`, `NoIdentificacion=7501438368494`. **Ni leave-in 1 L ni shampoo 1 L deben reemplazar la mascarilla/reconstructor 1 kg.**
 
 **Corrección propuesta a revisión:** para el producto Medusa `prod_01KVV3GD5ZFG0NT90YWFXRPZFK`, el título `Küül Cure Me Reconstructor 1L`, la variante `1L` y SKU interno `KUUL-CURE-1L` **son inconsistentes con la referencia documentada si representan la mascarilla**. Nombre de destino tentativo `KÜÜL Cure Me Reconstructor System 1 kg`. Antes de editar: cotejar foto real, EAN impreso y base maestra; decidir la política de SKU interno y conservar historial de ambos NoIdentificacion. La factura no autoriza un cambio de SKU automático ni confirma existencia. No realizar escrituras, despliegues o fusiones sin aprobación separada.
+
+
+## Cotejo adicional · foto aportada y Base Maestra · 25 noviembre 2026
+
+### Fotografía del producto
+- Archivo recibido directamente de Dirección en esta conversación: `1000712365.png`, cuyo contenido binario real es **WebP**, no PNG.
+- Tamaño detectado: **1536 × 1152 px**, RGB; SHA-256 exacto `19d32735dbb0f9e1d26a86306cfbe4a8ee51c2d6bee4b37170468806623ebee0`.
+- Para integración sin recodificar: usar extensión `.webp` con los mismos bytes. Ruta sugerida **no implementada**: `public/images/products/kuul-cure-me-reconstructor-1kg/01-foto-usuario.webp`.
+- Foto muestra envase verde rotulado `KÜÜL RECONSTRUCTOR SYSTEM CURE ME`, `KÜÜLPLEX+`, `35.27 OZ U.S. | 1 Kg`. La foto NO acredita el EAN de la cara posterior; no añadir un EAN a partir de la imagen.
+- Este archivo **no está integrado en GitHub todavía**. Debe subirse sin alterar los rótulos y verificarse por SHA-256. No usar imágenes generadas como sustituto.
+
+### Identidad en Base Maestra, hoja BASE_MAESTRA_PRODUCTOS, lectura de 25/11/2026
+| Campo | Referencia 1 kg | Referencia separada 245 g |
+|---|---|---|
+| Fila | 76 | 77 |
+| ID interno | `PRD-1A10D85B307D` | `PRD-01A70147D6CF` |
+| SKU / código proveedor en esa hoja | `3136871` | `3136872` |
+| Nombre | `Cure Me Reconstructor System` | `Cure Me Reconstructor System` |
+| Presentación | **1 kg** | **245 g** |
+| Validación según hoja | CONFIRMADO (20/09/2026) | CONFIRMADO (20/09/2026) |
+
+Los valores `3136871` y `3136872` son **códigos de la hoja**: no deben confundirse ni reemplazarse automáticamente por el `NoIdentificacion` de las facturas Henkel, ni por el SKU técnico actual de Medusa `KUUL-CURE-1L`. La fila de 1 kg no tiene código de barras acreditado en la columna correspondiente.
+
+**Mapa de equivalencias propuesto, no aplicado:**
+- Producto maestro 1 kg: `PRD-1A10D85B307D`; código de hoja `3136871`.
+- Identificador de proveedor histórico en factura junio: `7501438366445`.
+- Identificador de proveedor reciente en facturas septiembre/noviembre: `7501438306731`.
+- Candidato de Medusa a conciliar: `prod_01KVV3GD5ZFG0NT90YWFXRPZFK`, variante `variant_01KVV3GD877SSAGARCPETM9JT5`; su título y SKU siguen indicando erróneamente `1L` **si realmente representa la mascarilla 1 kg**.
+
+No inferir alta, existencia física, precio web ni fecha del cambio de fórmula. **Pendiente de aprobación y cotejo físico:** foto/EAN del envase actual, trazabilidad de SKU interno, y cambio separado de título, variante, URL o imagen. No publicar mientras esos datos sean contradictorios.
