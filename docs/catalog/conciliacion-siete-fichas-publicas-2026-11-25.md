@@ -11,7 +11,7 @@ Se consultaron las siete URLs públicas de ficha mediante Vercel autenticado, to
 | `hidra-color-tinte-cremoso` | `prod_01KVV3GD5Z8Q1ND1PXMBD6PZ47` | `HIDRA-COLOR-90ML` | `variant_01KVV3GD87P3WFSH6R73379RZD` | Tono no acreditado; no asignar foto de un tono por defecto |
 | `xiomara-gel-fijacion-fuerte` | `prod_01KVV3GD5Z9RXF3QAZWM7TJCDS` | `XIOMARA-GEL-250ML` | `variant_01KVV3GD87T6ZD7C1DZ0PVXRF5` | Foto exacta y presentación por validar |
 | `voglia-tinte-permanente-90ml` | `prod_01KVV3GD5ZD8R40HF48DRBF37A` | **Múltiples SKU**, entre ellos `VOGLIA-TINTE-1-90ML`, `VOGLIA-TINTE-3-90ML` | Múltiples variantes (no listado exhaustivo aquí) | Asociar por variante/tono; no usar una imagen de tono para todos |
-| `kuul-cure-me-reconstructor-1l` | `prod_01KVV3GD5ZFG0NT90YWFXRPZFK` | `KUUL-CURE-1L` | `variant_01KVV3GD877SSAGARCPETM9JT5` | Revisar fotografía anterior aprobada: no confundir 1 L con 1 kg ni 3 oz |
+| `kuul-cure-me-reconstructor-1l` | `prod_01KVV3GD5ZFG0NT90YWFXRPZFK` | `KUUL-CURE-1L` | `variant_01KVV3GD877SSAGARCPETM9JT5` | **Discrepancia de presentación:** Medusa publica «Reconstructor 1L» y variante «1L», pero Dirección aclara que, si el producto es **mascarilla Cure Me**, su presentación correcta es **1 kg**. **Leave-in** puede ser otra presentación y no debe confundirse con la mascarilla. Confirmar producto físico, nombre, unidad, SKU y foto; bloquear sustitución hasta conciliar. |
 | `montis-shampoo-extracto-natural` | `prod_01KVV3GD5ZR40Q6YWBS7QHJ48Z` | `MONTIS-SHAMPOO-NAT` | `variant_01KVV3GD87JA7N4A9201QH2MEW` | **Identidad incongruente** frente a referencia maestra Shampoo de Caballo Montis 650 ml / PRD-MONTIS-CABALLO-650; no cambiar nombre ni imagen sin cotejo |
 
 ## Fuentes y límites
@@ -30,3 +30,7 @@ Se consultaron las siete URLs públicas de ficha mediante Vercel autenticado, to
 5. Preservar títulos, URL y foto anteriores para rollback. No tocar precio, stock, canal, checkout, pagos ni envíos.
 
 **No deducir permisos de escritura ni ausencia de registros a partir de esta conciliación Store API.**
+
+## Corrección de Dirección · 25 noviembre 2026
+
+La propietaria precisa: **KÜÜL Cure Me mascarilla/reconstructor = 1 kg (peso), NO 1 L (volumen)**. La posible presentación de 1 L corresponde a un producto **leave-in** distinto y debe verificarse, no asumirse. Los campos «1L» del producto y la variante pública están registrados arriba como **valores observados, no como identidad comercial aprobada**. **No se debe renombrar automáticamente** la ficha ni reutilizar una foto del leave-in o de otro tamaño; requiere cotejo de producto, empaque, SKU y fuente maestra. Este documento no autoriza actualizaciones de Medusa.
