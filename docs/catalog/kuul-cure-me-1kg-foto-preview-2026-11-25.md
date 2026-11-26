@@ -24,3 +24,13 @@
 - Probar QA en 320/390/1440 px y CTA WhatsApp.
 - Confirmar página pública sin modificaciones y ausencia de efectos en precios, stock, variantes, checkout, búsqueda o carrito.
 - CI y build antes de aprobar; plan de rollback: cerrar PR y descartar rama Preview. No publicar ni mergear sin autorización.
+
+
+## Original íntegro y exportación comercial de alta resolución
+- En el entorno de trabajo de esta revisión se verificó directamente el original aportado por Dirección: WebP **1536 × 1152**, 46,856 bytes, SHA-256 `19d32735dbb0f9e1d26a86306cfbe4a8ee51c2d6bee4b37170468806623ebee0`.
+- También se generó exportación WebP a resolución íntegra, calidad 90: 1536 × 1152, **55,908 bytes**, SHA-256 `50cd454e020909cd118c47c798dd7858c394b226f0c6ac1296c8db4581db8fa0`. Es un archivo local de entrega, **no integrado todavía en este PR**.
+- Para el asset comercial final se prefiere el original íntegro de 46,856 bytes: evita recomprimir y pesa menos. No declarar que el original se ha publicado.
+- La foto reducida en este PR es solo para la ruta de QA; no reemplazar el recurso de Medusa sin evidencia de identidad y aprobación específica.
+
+## Control agregado
+- `tests/kuul-cure-me-1kg-preview.test.mjs`: verifica cabecera RIFF/WEBP de la referencia, aislamiento Preview/noindex, nombre propuesto y WhatsApp oficial. Es comprobación estructural, **no** prueba calidad visual, fidelidad de píxeles ni EAN físico.
