@@ -87,6 +87,25 @@ test("only the canonical selected variant can contribute an approved price", () 
   assert(!text(inquiry({ ...p, metadata: { storefront_price_approved: true } }, "002")).includes("Precio publicado:"));
 });
 
+test("the reconciled Cure Me inquiry shows 1 kg while retaining the technical SKU in the product", () => {
+  const selected = {
+    ...variant("variant_01KVV3GD877SSAGARCPETM9JT5"),
+    title: "1 kg",
+    sku: "KUUL-CURE-1L",
+  };
+  const p = {
+    ...product([selected]),
+    id: "prod_01KVV3GD5ZFG0NT90YWFXRPZFK",
+    title: "KÜÜL Cure Me Reconstructor System 1 kg",
+  };
+  const message = text(inquiry(p, selected.id));
+  assert(message.includes(p.title));
+  assert(message.includes("Variante: 1 kg."));
+  assert(!message.includes(selected.sku));
+  assert.equal(p.variants[0].sku, "KUUL-CURE-1L");
+  assert(text(inquiry({ ...p, id: "prod_distinct" }, selected.id)).includes(selected.sku));
+});
+
 test("missing information, false/string approvals and invalid amounts never invent or expose a price", () => {
   for (const v of [
     { id: "missing" },

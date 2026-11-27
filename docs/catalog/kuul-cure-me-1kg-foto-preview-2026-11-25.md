@@ -52,3 +52,17 @@
 - Verificación local del build: 320, 390 y 1440 px, sin desbordamiento horizontal ni errores de JavaScript; envase íntegro, centrado, sin deformación y fondo transparente. HTTP 200 `image/webp`, dimensiones 1600 × 1600 y SHA servido coincidente. CTA conserva el WhatsApp oficial y la consulta de 1 kg.
 - Pruebas: `node --experimental-vm-modules --test tests/*.test.mjs`, 132 aprobadas; `npx tsc --noEmit`, aprobado; `npm run lint`, cero errores y tres advertencias preexistentes; `VERCEL_ENV=preview npm run build`, aprobado. El build necesitó acceso de red para las fuentes Google.
 - Sin cambios en precios, SKU, inventario, Medusa ni ficha comercial. PR #57 debe permanecer borrador; no autoriza fusión ni producción. Los bloqueos comerciales anteriores siguen vigentes.
+
+## Preparación de la ficha comercial · 27 noviembre 2026
+
+- La conciliación de la propietaria identifica el reconstructor como tratamiento en crema en tarro de 1 kg. Leave-in 1 L y shampoo son referencias independientes.
+- La categoría, el catálogo y la ficha de este Preview muestran el nombre, la descripción, el tamaño y el WebP aprobados para el producto `prod_01KVV3GD5ZFG0NT90YWFXRPZFK` y la variante `variant_01KVV3GD877SSAGARCPETM9JT5`. Los datos se leen de Store API. La presentación de prueba requiere `VERCEL_ENV=preview` y esta rama exacta. El SKU `KUUL-CURE-1L` permanece en los datos. El mensaje prellenado de WhatsApp usa el nombre y la variante de 1 kg.
+- La ruta `/productos/kuul-cure-me-reconstructor-1kg` muestra la ficha de prueba. La antigua sigue atendiendo mientras Store API encuentre su registro. La regla preparada devuelve 308 solo si el handle antiguo dejó de existir y el nuevo devuelve el mismo ID de producto. Conserva la consulta de URL y admite reversión sin caché del 308.
+
+### Publicación coordinada pendiente de aprobación
+
+1. Capturar en solo lectura el producto, variante, valor `Tamaño`, imágenes, estado, canales, precios e inventario. Ensayar los cambios sobre esos mismos IDs en un entorno aislado. Confirmar reversión de contenido y URL.
+2. Tras autorizar la publicación del frontend, verificar la URL pública de `01-principal.webp` sin sesión ni bypass. Debe responder 200, `image/webp` y el SHA-256 aprobado. Verificar que la regla de redirección ya esté disponible y siga dejando pasar el handle antiguo mientras exista.
+3. Tras autorizar Medusa, aplicar desde sus herramientas oficiales únicamente nombre, descripción, título de variante, valor de opción y media del producto. Mantener el handle antiguo hasta comprobar que los cambios se sirven juntos y que los datos comerciales coinciden con la captura.
+4. Cambiar el handle a `kuul-cure-me-reconstructor-1kg`. Comprobar que Store API devuelve el mismo ID, la ficha nueva muestra la foto, la anterior devuelve un 308 único y el sitemap, canonical y datos estructurados apuntan a la nueva ruta.
+5. Ante inconsistencia, recuperar los campos afectados desde la captura y reponer el handle antiguo. La regla vuelve a dejar pasar la ruta anterior cuando Medusa la sirve.

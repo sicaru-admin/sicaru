@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ProductosContent } from "./ProductosContent";
 import { InternalPageHeader } from "@/components/internal/InternalPageHeader";
 import { getProducts } from "@/lib/data/products";
+import { projectCureMePreview } from "@/lib/data/kuul-cure-me-preview";
 
 export const metadata: Metadata = {
   title: "Nuestros Productos",
@@ -18,7 +19,7 @@ export default async function ProductosPage({ searchParams }: { searchParams: Pr
   let catalogUnavailable = false;
   try {
     const result = await getProducts({ limit: 100 });
-    products = result.products;
+    products = result.products.map(projectCureMePreview);
   } catch {
     // Distinguir un fallo temporal del backend de un catálogo realmente vacío.
     catalogUnavailable = true;

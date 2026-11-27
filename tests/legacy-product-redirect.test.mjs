@@ -14,14 +14,18 @@ const compiled = ts.transpileModule(source, {
 const origin = "https://preview.example.invalid";
 const legacy = "kuul-color-system-cream-3oz";
 const replacement = "kuul-color-system-90ml";
+const cureMeLegacy = "kuul-cure-me-reconstructor-1l";
+const cureMeReplacement = "kuul-cure-me-reconstructor-1kg";
+const cureMeId = "prod_01KVV3GD5ZFG0NT90YWFXRPZFK";
 const absent = { count: 0, products: [] };
-const present = (handle) => ({ count: 1, products: [{ id: "prod_fixture", handle }] });
+const present = (handle, id = "prod_fixture") => ({ count: 1, products: [{ id, handle }] });
 
 function harness(responses) {
   const exports = {};
   const calls = [];
   vm.runInNewContext(compiled, {
-    require, exports, URL, URLSearchParams, AbortSignal,
+    require: (id) => id === "./lib/kuul-cure-me" ? require("../src/lib/kuul-cure-me.ts") : require(id),
+    exports, URL, URLSearchParams, AbortSignal,
     process: { env: {
       NEXT_PUBLIC_MEDUSA_BACKEND_URL: "https://store.example.invalid",
       NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: "pk_fixture",
@@ -40,7 +44,7 @@ function harness(responses) {
   });
   return {
     calls,
-    request: (method = "GET") => exports.proxy(new NextRequest(`${origin}/productos/${legacy}`, { method })),
+    request: (method = "GET", handle = legacy) => exports.proxy(new NextRequest(`${origin}/productos/${handle}`, { method })),
   };
 }
 
@@ -51,6 +55,26 @@ test("legacy remains accessible before cutover, during coexistence and after rol
     assert.equal(response.headers.get("x-middleware-next"), "1");
     assert.equal(response.headers.get("location"), null);
     assert.deepEqual(qa.calls, [legacy]);
+  }
+});
+
+test("Cure Me keeps its old URL until the existing product is public on the new handle", async () => {
+  const coexist = harness({
+    [cureMeLegacy]: present(cureMeLegacy, cureMeId), [cureMeReplacement]: present(cureMeReplacement, cureMeId),
+  });
+  assert.equal((await coexist.request("GET", cureMeLegacy)).headers.get("location"), null);
+  assert.deepEqual(coexist.calls, [cureMeLegacy]);
+
+  for (const destination of [absent, present(cureMeReplacement, "prod_distinct"), new Error("timeout")]) {
+    const qa = harness({ [cureMeLegacy]: absent, [cureMeReplacement]: destination });
+    assert.equal((await qa.request("GET", cureMeLegacy)).headers.get("location"), null);
+  }
+  const cutover = harness({ [cureMeLegacy]: absent, [cureMeReplacement]: present(cureMeReplacement, cureMeId) });
+  for (const method of ["GET", "HEAD"]) {
+    const response = await cutover.request(method, `${cureMeLegacy}?utm_source=prueba`);
+    assert.equal(response.status, 308);
+    assert.equal(response.headers.get("location"), `${origin}/productos/${cureMeReplacement}?utm_source=prueba`);
+    assert.match(response.headers.get("cache-control"), /no-store/);
   }
 });
 
