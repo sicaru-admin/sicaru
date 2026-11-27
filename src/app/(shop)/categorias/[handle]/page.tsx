@@ -5,6 +5,7 @@ import { notFound } from "next/navigation"
 import { ChevronRight } from "lucide-react"
 import { getCategoryByHandle } from "@/lib/data/categories"
 import { getProducts } from "@/lib/data/products"
+import { projectCureMePreview } from "@/lib/data/kuul-cure-me-preview"
 import { InternalPageHeader } from "@/components/internal/InternalPageHeader"
 import { ProductCatalogCard } from "@/components/products/ProductCatalogCard"
 import { JsonLd } from "@/components/seo/JsonLd"
@@ -62,7 +63,7 @@ export default async function CategoryPage({ params }: Props) {
   } catch {
     return <CatalogUnavailable />
   }
-  const { products } = result
+  const products = result.products.map(projectCureMePreview)
   const categoryData = getCategoryData(handle)
 
   const collectionSchema = generateCollectionPageSchema({

@@ -6,7 +6,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
-import { getProductByHandle, getProducts } from "@/lib/data/products";
+import { getProducts } from "@/lib/data/products";
+import { getProductForDisplay, isCureMePreview } from "@/lib/data/kuul-cure-me-preview";
+import { CURE_ME } from "@/lib/kuul-cure-me";
 import { ProductExperience } from "@/components/product/ProductExperience";
 import { ProductTabs } from "@/components/product/ProductTabs";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
@@ -39,7 +41,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   try {
     const { handle } = await params;
-    const product = await getProductByHandle(handle);
+    const product = await getProductForDisplay(handle);
 
     if (!product) {
       return { title: "Producto no encontrado" };
@@ -57,10 +59,16 @@ export async function generateMetadata({
     const description =
       product.description ||
       `Compra ${product.title} en Distribuidora Sicarú`;
+    const isCorrectedCureMe =
+      product.id === CURE_ME.productId && product.handle === CURE_ME.handle;
 
     return {
       title: product.title,
       description,
+      ...(isCorrectedCureMe && {
+        alternates: { canonical: `/productos/${CURE_ME.handle}` },
+        ...(isCureMePreview() && { robots: { index: false, follow: false } }),
+      }),
       openGraph: {
         title: `${product.title}${!CATALOG_MODE && priceStr ? ` — ${priceStr}` : ""}`,
         description,
@@ -109,7 +117,7 @@ export default async function ProductDetailPage({
   const { handle } = await params;
   let product;
   try {
-    product = await getProductByHandle(handle);
+    product = await getProductForDisplay(handle);
   } catch {
     return <CatalogUnavailable title="No pudimos cargar este producto." />;
   }
