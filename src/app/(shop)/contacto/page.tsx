@@ -85,9 +85,17 @@ export default function ContactoPage() {
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Ubicación de Distribuidora Sicarú"
+                  title="Mapa de la ubicación de Distribuidora Sicarú en Calle 20 de Noviembre Norte 102"
                 />
               </div>
+              <a
+                href={STORE.googleMapsPlaceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-sicaru-purple-600 underline underline-offset-4 hover:text-sicaru-purple-800"
+              >
+                Ver ubicación de SICARÚ en Google Maps
+              </a>
             </div>
           </div>
         </div>
