@@ -4,13 +4,20 @@ import { readFileSync } from "node:fs";
 import ts from "typescript";
 import vm from "node:vm";
 
-function loadHelper() {
-  const source = readFileSync(new URL("../src/lib/cart-inquiry.ts", import.meta.url), "utf8");
+function loadSource(path, imports) {
+  const source = readFileSync(new URL(path, import.meta.url), "utf8");
   const compiled = ts.transpileModule(source, {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
   }).outputText;
   const mod = { exports: {} };
-  const require = (id) => {
+  vm.runInThisContext(`(function(require,module,exports){${compiled}\n})`)(imports, mod, mod.exports);
+  return mod.exports;
+}
+
+const { CURE_ME } = loadSource("../src/lib/kuul-cure-me.ts");
+function loadHelper() {
+  return loadSource("../src/lib/cart-inquiry.ts", (id) => {
+    if (id === "./kuul-cure-me") return { CURE_ME };
     if (id === "@/lib/constants/store") return { STORE: { whatsapp: "528281136652" } };
     if (id === "@/components/cart/cart-line-variant") return {
       getCartLineVariantLabel(item) {
@@ -22,9 +29,7 @@ function loadHelper() {
       },
     };
     throw new Error("Unexpected module " + id);
-  };
-  vm.runInThisContext(`(function(require,module,exports){${compiled}\n})`)(require, mod, mod.exports);
-  return mod.exports.getCartWhatsAppHref;
+  }).getCartWhatsAppHref;
 }
 
 const getHref = loadHelper();
@@ -87,4 +92,27 @@ test("el carrito usa WhatsApp solo en modo catálogo y conserva checkout fuera d
   }
   assert.match(page, /Consultar carrito por WhatsApp/);
   assert.match(drawer, /Consultar por WhatsApp/);
+});
+
+
+test("un carrito anterior conserva la cantidad del reconstructor y consulta 1 kg sin SKU legado ni tono", () => {
+  const previous = {
+    variant_id: CURE_ME.variantId,
+    product_title: "Küül Cure Me Reconstructor 1L",
+    variant_title: "1L",
+    variant_sku: CURE_ME.legacySku,
+    variant_option_values: { Tamaño: "1L" },
+    quantity: 2,
+  };
+  const current = { ...previous, product_title: CURE_ME.title, variant_title: "1 kg", variant_option_values: { Tamaño: "1 kg" } };
+  for (const line of [previous, current]) {
+    const text = message(getHref([line]));
+    assert.match(text, /KÜÜL Cure Me Reconstructor System 1 kg/);
+    assert.match(text, /Presentación: 1 kg/);
+    assert.match(text, /Cantidad: 2/);
+    assert.doesNotMatch(text, /1L|SKU:|Tono:/);
+    assert.equal(line.variant_sku, CURE_ME.legacySku);
+  }
+  const unrelated = message(getHref([{ ...previous, variant_id: "other_variant" }]));
+  assert.match(unrelated, /SKU: KUUL-CURE-1L/);
 });
