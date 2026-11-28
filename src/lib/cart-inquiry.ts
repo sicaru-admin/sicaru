@@ -1,4 +1,5 @@
 import { STORE } from "@/lib/constants/store";
+import { CURE_ME } from "./kuul-cure-me";
 import { getCartLineVariantLabel, type CartLineVariantDetails } from "@/components/cart/cart-line-variant";
 
 type CartInquiryOption = {
@@ -9,10 +10,12 @@ type CartInquiryOption = {
 export type CartInquiryItem = CartLineVariantDetails & {
   title?: string | null;
   product_title?: string | null;
+  variant_id?: string | null;
   variant_title?: string | null;
   variant_sku?: string | null;
   quantity?: number | null;
   variant?: {
+    id?: string | null;
     title?: string | null;
     sku?: string | null;
     options?: CartInquiryOption[] | null;
@@ -56,16 +59,17 @@ export function getCartWhatsAppHref(items: CartInquiryItem[]) {
   const lines = ["Hola, quisiera consultar disponibilidad de estos productos:"];
 
   for (const item of items) {
-    const product = clean(item.product_title) || clean(item.title) || "Producto";
-    const presentation = getPresentation(item);
-    const tone = getCartLineVariantLabel(item)?.replace(/^Tono:\s*/i, "") ?? "";
+    const cureMe = (item.variant_id ?? item.variant?.id) === CURE_ME.variantId;
+    const product = cureMe ? CURE_ME.title : clean(item.product_title) || clean(item.title) || "Producto";
+    const presentation = cureMe ? CURE_ME.presentation : getPresentation(item);
+    const tone = cureMe ? "" : getCartLineVariantLabel(item)?.replace(/^Tono:\s*/i, "") ?? "";
     const sku = clean(item.variant_sku ?? item.variant?.sku);
     const quantity = Math.max(1, Number.isFinite(item.quantity) ? Number(item.quantity) : 1);
 
     lines.push("", `• ${product}`);
     if (presentation) lines.push(`Presentación: ${presentation}`);
     if (tone) lines.push(`Tono: ${tone}`);
-    if (sku) lines.push(`SKU: ${sku}`);
+    if (sku && !(cureMe && sku === CURE_ME.legacySku)) lines.push(`SKU: ${sku}`);
     lines.push(`Cantidad: ${quantity}`);
   }
 

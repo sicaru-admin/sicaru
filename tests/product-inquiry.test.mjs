@@ -155,3 +155,16 @@ test("the real product action updates the WhatsApp reference after selection wit
   assert.equal(link(tree).props.rel, "noopener noreferrer");
   assert.equal(cartCalls, 0);
 });
+
+
+test("Cure Me identifica la variante de 1 kg y oculta solo su SKU histórico", () => {
+  const { CURE_ME } = loader()("@/lib/kuul-cure-me");
+  const exact = { ...variant(CURE_ME.variantId), title: "1 kg", sku: CURE_ME.legacySku };
+  const p = { id: CURE_ME.productId, title: CURE_ME.title, variants: [exact] };
+  const message = text(inquiry(p, exact.id));
+  assert.match(message, /KÜÜL Cure Me Reconstructor System 1 kg/);
+  assert.match(message, /Variante: 1 kg/);
+  assert.doesNotMatch(message, /SKU:|KUUL-CURE-1L/);
+  assert.match(text(inquiry({ ...p, id: "other" }, exact.id)), /SKU: KUUL-CURE-1L/);
+  assert.match(text(inquiry({ ...p, variants: [{ ...exact, sku: "CURRENT" }] }, exact.id)), /SKU: CURRENT/);
+});

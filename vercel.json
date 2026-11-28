@@ -1,5 +1,10 @@
 {
   "framework": "nextjs",
+  "git": {
+    "deploymentEnabled": {
+      "codex/kuul-reconstructor-1kg-url": false
+    }
+  },
   "regions": [
     "iad1"
   ],

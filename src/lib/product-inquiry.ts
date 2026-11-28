@@ -1,5 +1,6 @@
 import type { HttpTypes } from "@medusajs/types";
 import { STORE } from "./constants/store";
+import { CURE_ME } from "./kuul-cure-me";
 import { getApprovedPrice } from "./product-retail";
 
 /** Preserve the exact selected reference when the customer continues to WhatsApp. */
@@ -14,7 +15,9 @@ export function getProductWhatsAppHref(
   const lines = [`Hola, me interesa ${product.title || "este producto"}.`];
 
   if (variant?.title) lines.push(`Variante: ${variant.title}.`);
-  if (variant?.sku) lines.push(`SKU: ${variant.sku}.`);
+  const legacyCureMeSku = product.id === CURE_ME.productId &&
+    variant?.id === CURE_ME.variantId && variant.sku === CURE_ME.legacySku;
+  if (variant?.sku && !legacyCureMeSku) lines.push(`SKU: ${variant.sku}.`);
   if (price) {
     const formattedPrice = new Intl.NumberFormat("es-MX", {
       style: "currency",

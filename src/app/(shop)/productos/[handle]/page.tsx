@@ -7,6 +7,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { getProductByHandle, getProducts } from "@/lib/data/products";
+import { CURE_ME, isCureMeHandle } from "@/lib/kuul-cure-me";
 import { ProductExperience } from "@/components/product/ProductExperience";
 import { ProductTabs } from "@/components/product/ProductTabs";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
@@ -23,9 +24,9 @@ export const revalidate = 300;
 export async function generateStaticParams() {
   try {
     const { products } = await getProducts();
-    return products.map((product) => ({
-      handle: product.handle,
-    }));
+    return products
+      .filter(({ handle }) => !isCureMeHandle(handle))
+      .map(({ handle }) => ({ handle }));
   } catch {
     // Backend may not be available during build (e.g. Vercel)
     return [];
@@ -37,8 +38,9 @@ export async function generateMetadata({
 }: {
   params: Promise<{ handle: string }>;
 }): Promise<Metadata> {
+  const { handle } = await params;
+
   try {
-    const { handle } = await params;
     const product = await getProductByHandle(handle);
 
     if (!product) {
@@ -58,10 +60,16 @@ export async function generateMetadata({
       product.description ||
       `Compra ${product.title} en Distribuidora Sicarú`;
 
+    const canonical = product.id === CURE_ME.productId && isCureMeHandle(product.handle)
+      ? `/productos/${product.handle}`
+      : undefined;
+
     return {
       title: product.title,
       description,
+      ...(canonical && { alternates: { canonical } }),
       openGraph: {
+        ...(canonical && { url: canonical }),
         title: `${product.title}${!CATALOG_MODE && priceStr ? ` — ${priceStr}` : ""}`,
         description,
         images: product.thumbnail ? [{ url: product.thumbnail }] : undefined,
@@ -107,6 +115,7 @@ export default async function ProductDetailPage({
   params: Promise<{ handle: string }>;
 }) {
   const { handle } = await params;
+
   let product;
   try {
     product = await getProductByHandle(handle);

@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { CURE_ME } from "./lib/kuul-cure-me";
 
 const legacyHandle = "kuul-color-system-cream-3oz";
 const replacementHandle = "kuul-color-system-90ml";
 
-async function isPublicProduct(handle: string, signal: AbortSignal) {
+async function isPublicProduct(handle: string, signal: AbortSignal, expectedId?: string) {
   const backendUrl = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL;
   const publishableKey = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY;
   if (!backendUrl || !publishableKey) return null;
@@ -20,23 +21,31 @@ async function isPublicProduct(handle: string, signal: AbortSignal) {
   const { products, count } = await response.json();
   if (!Array.isArray(products)) return null;
   if (count === 0 && products.length === 0) return false;
-  if (count === 1 && products.length === 1 && products[0]?.handle === handle) return true;
+  if (count === 1 && products.length === 1 && products[0]?.handle === handle) {
+    return expectedId && products[0].id !== expectedId ? null : true;
+  }
   return null;
 }
 
 export async function proxy(request: NextRequest) {
   if (request.method !== "GET" && request.method !== "HEAD") return NextResponse.next();
 
+  const pathname = request.nextUrl.pathname;
+  const cureMe = pathname === `/productos/${CURE_ME.legacyHandle}`;
+  if (!cureMe && pathname !== `/productos/${legacyHandle}`) return NextResponse.next();
+  const from = cureMe ? CURE_ME.legacyHandle : legacyHandle;
+  const to = cureMe ? CURE_ME.handle : replacementHandle;
+
   // Keep the legacy URL during coexistence. Redirect only on two conclusive
   // Store API reads: the old handle is absent and the replacement is public.
   try {
     const signal = AbortSignal.timeout(2500);
-    if (await isPublicProduct(legacyHandle, signal) === false &&
-        await isPublicProduct(replacementHandle, signal) === true) {
-      const response = NextResponse.redirect(
-        new URL(`/productos/${replacementHandle}`, request.url),
-        308,
-      );
+    if (await isPublicProduct(from, signal) === false &&
+        await isPublicProduct(to, signal, cureMe ? CURE_ME.productId : undefined) === true) {
+      const destination = new URL(`/productos/${to}`, request.url);
+      if (cureMe) destination.search = request.nextUrl.search;
+
+      const response = NextResponse.redirect(destination, 308);
       // A rollback must restore the original URL without a cached redirect.
       response.headers.set("Cache-Control", "no-store, max-age=0");
       return response;
@@ -48,5 +57,8 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: "/productos/kuul-color-system-cream-3oz",
+  matcher: [
+    "/productos/kuul-color-system-cream-3oz",
+    "/productos/kuul-cure-me-reconstructor-1l",
+  ],
 };
