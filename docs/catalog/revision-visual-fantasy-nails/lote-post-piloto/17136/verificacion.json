@@ -1,0 +1,45 @@
+{
+  "sku": "17136",
+  "name": "Gel Rubber Piel",
+  "status": "pendiente_revision_individual",
+  "source_dimensions": [
+    960,
+    1280
+  ],
+  "dimensions": [
+    965,
+    965
+  ],
+  "source_bbox": [
+    344,
+    247,
+    606,
+    975
+  ],
+  "translation": [
+    7,
+    -129
+  ],
+  "product_scale": 1,
+  "relative_height": 0.7544041450777202,
+  "margins_output": [
+    351,
+    118,
+    352,
+    119
+  ],
+  "opaque_pixels": 141729,
+  "opaque_rgb_differences": 0,
+  "partial_alpha_pixels": 878,
+  "source_sha256": "754d06baa493b6f630a1f56e787ff0b912ab62a902770b0223a1b597c99ab598",
+  "candidate_sha256": "f206d9fa4e90ed46fc297d7aa594487fe0441b02d01063d0b39ff58ac21656f0",
+  "background": "#FAF8F5",
+  "generative_ai": false,
+  "reopened_rgba_original_rgb_differences": 0,
+  "independent_recomposition_differences": 0,
+  "source_matches_original_manifest": true,
+  "review_notes": "Original de 960×1280: revisar escalonado residual, unión del cuello y contorno de la base, especialmente el lado derecho. No se inventó detalle ni se amplió el máster. Las marcas y la luz gris de los reflejos se conservan.",
+  "petal_contour_reused": false,
+  "mask_sha256": "280d7d02a5086578889e775cd82abf1b3e8330f95a7117fe5dd0e40ad8bab5ff",
+  "shadow_sha256": "ef635cead00a3e756944725bcee6f69bf0ea84d261b96b977564536593ea5089"
+}

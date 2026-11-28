@@ -1,0 +1,247 @@
+{
+  "pilot_17141_unchanged": true,
+  "pilot_sha256": "166df5915a623010dfaf6574e4df1dac2b871f77cf5b022f3683c27bb0c201a7",
+  "candidates": [
+    {
+      "sku": "17133",
+      "name": "Gel Rubber Pink Shine",
+      "status": "pendiente_revision_individual",
+      "source_dimensions": [
+        3024,
+        4032
+      ],
+      "dimensions": [
+        2897,
+        2897
+      ],
+      "source_bbox": [
+        1083,
+        954,
+        1875,
+        3141
+      ],
+      "translation": [
+        -31,
+        -599
+      ],
+      "product_scale": 1,
+      "relative_height": 0.7549188816016569,
+      "margins_output": [
+        1052,
+        355,
+        1053,
+        355
+      ],
+      "opaque_pixels": 1284411,
+      "opaque_rgb_differences": 0,
+      "partial_alpha_pixels": 8530,
+      "source_sha256": "65c3729437597adf94e647502abb1af612340cfca516550de8a2625bb6a49146",
+      "candidate_sha256": "624b84b7da088c266254f3220486c6d32d67d4eae6a312eb46a9ce8098204722",
+      "background": "#FAF8F5",
+      "generative_ai": false,
+      "reopened_rgba_original_rgb_differences": 0,
+      "independent_recomposition_differences": 0,
+      "source_matches_original_manifest": true,
+      "review_notes": "Revisar a tamaño nativo el reflejo del filo superior, los dos extremos de unión tapa/cuello (puede quedar una transición gris puntual) y los escalones de la base. Los arañazos, fibras y reflejos reales no se limpiaron.",
+      "petal_contour_reused": false,
+      "mask_sha256": "2639ad3676b293a4748fb4765f6c87feca867f4ce999503020dd19494f09bd65",
+      "shadow_sha256": "e1afed5079257f45ffa6714213e0be07cecbc3ad3ca3ff07a2b8dde271f69d8a"
+    },
+    {
+      "sku": "17136",
+      "name": "Gel Rubber Piel",
+      "status": "pendiente_revision_individual",
+      "source_dimensions": [
+        960,
+        1280
+      ],
+      "dimensions": [
+        965,
+        965
+      ],
+      "source_bbox": [
+        344,
+        247,
+        606,
+        975
+      ],
+      "translation": [
+        7,
+        -129
+      ],
+      "product_scale": 1,
+      "relative_height": 0.7544041450777202,
+      "margins_output": [
+        351,
+        118,
+        352,
+        119
+      ],
+      "opaque_pixels": 141729,
+      "opaque_rgb_differences": 0,
+      "partial_alpha_pixels": 878,
+      "source_sha256": "754d06baa493b6f630a1f56e787ff0b912ab62a902770b0223a1b597c99ab598",
+      "candidate_sha256": "f206d9fa4e90ed46fc297d7aa594487fe0441b02d01063d0b39ff58ac21656f0",
+      "background": "#FAF8F5",
+      "generative_ai": false,
+      "reopened_rgba_original_rgb_differences": 0,
+      "independent_recomposition_differences": 0,
+      "source_matches_original_manifest": true,
+      "review_notes": "Original de 960×1280: revisar escalonado residual, unión del cuello y contorno de la base, especialmente el lado derecho. No se inventó detalle ni se amplió el máster. Las marcas y la luz gris de los reflejos se conservan.",
+      "petal_contour_reused": false,
+      "mask_sha256": "280d7d02a5086578889e775cd82abf1b3e8330f95a7117fe5dd0e40ad8bab5ff",
+      "shadow_sha256": "ef635cead00a3e756944725bcee6f69bf0ea84d261b96b977564536593ea5089"
+    },
+    {
+      "sku": "28102",
+      "name": "Gel Super Negro",
+      "status": "pendiente_revision_individual",
+      "source_dimensions": [
+        3024,
+        4032
+      ],
+      "dimensions": [
+        3110,
+        3110
+      ],
+      "source_bbox": [
+        1069,
+        567,
+        1911,
+        2915
+      ],
+      "translation": [
+        65,
+        -186
+      ],
+      "product_scale": 1,
+      "relative_height": 0.754983922829582,
+      "margins_output": [
+        1134,
+        381,
+        1134,
+        381
+      ],
+      "opaque_pixels": 1466907,
+      "opaque_rgb_differences": 0,
+      "partial_alpha_pixels": 8551,
+      "source_sha256": "4c0977e3596a9fcd5a7764e3d8af7d34074bd7dd4924c51580b86d0ab696d668",
+      "candidate_sha256": "60c5cca0c51240ae77e348451b3507c8852eba1db32ea9c791d06eb8a53ac396",
+      "background": "#FAF8F5",
+      "generative_ai": false,
+      "reopened_rgba_original_rgb_differences": 0,
+      "independent_recomposition_differences": 0,
+      "source_matches_original_manifest": true,
+      "review_notes": "Revisar ambos extremos de la unión tapa/cuello, la transición del hombro derecho y los dos escalones laterales de la base. Los destellos claros del filo superior pertenecen al original y se conservan.",
+      "petal_contour_reused": false,
+      "mask_sha256": "edb5939b6769c98482f64d4f4262e927806699615ba42de4e4c71c98f6f0f4c8",
+      "shadow_sha256": "6cb8f41328494621396376eef6c566c6d331a6c094826ec487e2b6a5a650db0c"
+    },
+    {
+      "sku": "28101",
+      "name": "Gel Super Blanco",
+      "status": "pendiente_revision_individual",
+      "source_dimensions": [
+        960,
+        1280
+      ],
+      "dimensions": [
+        914,
+        914
+      ],
+      "source_bbox": [
+        356,
+        287,
+        601,
+        977
+      ],
+      "translation": [
+        -22,
+        -175
+      ],
+      "product_scale": 1,
+      "relative_height": 0.7549234135667396,
+      "margins_output": [
+        334,
+        112,
+        335,
+        112
+      ],
+      "opaque_pixels": 126569,
+      "opaque_rgb_differences": 0,
+      "partial_alpha_pixels": 775,
+      "source_sha256": "846d9a8009e4bb6e103a7fd3a70e9a1f924c38fa825b7f5e3ed3312858613f45",
+      "candidate_sha256": "7e540771f31d1b43b005f0a6cb2848b0994f939ff662ce02a79cb4386d842831",
+      "background": "#FAF8F5",
+      "generative_ai": false,
+      "reopened_rgba_original_rgb_differences": 0,
+      "independent_recomposition_differences": 0,
+      "source_matches_original_manifest": true,
+      "review_notes": "Original de 960×1280: el envase blanco conserva la iluminación gris/azulada real. Revisar el ribete de la tapa, los extremos del cuello y el contorno de la base: en el cuello puede persistir una franja gris conservadora por el bajo contraste con el fondo original.",
+      "petal_contour_reused": false,
+      "mask_sha256": "25a833212947e85b394e02f9f480e1d553936b1eaf0a8fc311feee80c247dcd9",
+      "shadow_sha256": "e7f06429d00bbd7f57b8f8d0579e8b5f7c39780335af02ff1978521ffe3182fd"
+    },
+    {
+      "sku": "20132",
+      "name": "TrueBond sin ácido",
+      "status": "pendiente_revision_individual",
+      "source_dimensions": [
+        960,
+        1280
+      ],
+      "dimensions": [
+        883,
+        883
+      ],
+      "source_bbox": [
+        362,
+        290,
+        605,
+        956
+      ],
+      "translation": [
+        -42,
+        -182
+      ],
+      "product_scale": 1,
+      "relative_height": 0.7542468856172141,
+      "margins_output": [
+        320,
+        108,
+        320,
+        109
+      ],
+      "opaque_pixels": 153253,
+      "opaque_rgb_differences": 0,
+      "partial_alpha_pixels": 694,
+      "source_sha256": "c30c5e15dbbe9eb61705d53e8e39e65f9c65c77020380316085c4c0461a55479",
+      "candidate_sha256": "f540feeb8dd3ee56b651d343e0f1dfc8f0ee925f343796e2f172a7d50df35b5d",
+      "background": "#FAF8F5",
+      "generative_ai": false,
+      "reopened_rgba_original_rgb_differences": 0,
+      "independent_recomposition_differences": 0,
+      "source_matches_original_manifest": true,
+      "review_notes": "Original de 960×1280. El gris visible a través del frasco translúcido se mantiene para no alterar los píxeles reales. Revisar pequeños remanentes/irregularidades en las esquinas superiores de la tapa, la unión tapa/frasco y la esquina de base derecha; no se declara que esas zonas estén visualmente aprobadas.",
+      "petal_contour_reused": false,
+      "mask_sha256": "2070bf29286a142f1f0fc9263ed915565132db1e0fd849869d806fab42b3742a",
+      "shadow_sha256": "9e72dd62bfd4d68761a6cdd7d58a0d7658f5b631f6f284552796c276bc03ff49"
+    }
+  ],
+  "pilot_geometry": {
+    "sku": "17141",
+    "status": "referencia_visual_aceptada_no_autorizada_publicacion",
+    "dimensions": [
+      2823,
+      2823
+    ],
+    "relative_height": 0.7495572086432872,
+    "margins_output": [
+      1035,
+      355,
+      1032,
+      352
+    ]
+  },
+  "independent_check_result": "5/5 originales y capas RGB intactos, recomposición exacta; Petal R2 sin cambios"
+}

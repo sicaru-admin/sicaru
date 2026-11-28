@@ -1,0 +1,81 @@
+{
+  "sku": "17141",
+  "source_sha256": "f7d2eff53c41959555200beb353a4674b0de0f3dce724596900beb760707a62c",
+  "previous_sha256": "b799b618caaa0bcdf37d225f9e8897f44b36956322db6e18ea4973d5da708fd0",
+  "refined_sha256": "baf5dcf1644e9876a6d4e110bf33c37e8a0e86dae9ac5be32da57f9569a8f101",
+  "dimensions": [
+    2823,
+    2823
+  ],
+  "product_scale": 1,
+  "translation": [
+    -5,
+    -475
+  ],
+  "opaque_pixels": 1209917,
+  "opaque_rgb_differences": 0,
+  "boundary_alpha_pixels": 4835,
+  "product_layer_rgb_differences_entire_original": 0,
+  "background": "#FAF8F5",
+  "generative_ai": false,
+  "approval": "pending_visual_review",
+  "roi_checks": {
+    "etiqueta_y_color_cuerpo": {
+      "source_box": [
+        1160,
+        2050,
+        1630,
+        2680
+      ],
+      "pixels": 296100,
+      "rgb_differences": 0
+    },
+    "tapa_y_marcas_reales": {
+      "source_box": [
+        1250,
+        1000,
+        1530,
+        1760
+      ],
+      "pixels": 212800,
+      "rgb_differences": 0
+    },
+    "brillos_hombros": {
+      "source_box": [
+        1230,
+        1870,
+        1600,
+        2010
+      ],
+      "pixels": 51800,
+      "rgb_differences": 0
+    }
+  },
+  "other_five_proposals_unchanged": [
+    {
+      "sku": "17133",
+      "sha256": "992e4c723a90aae89a2d6efe5a26d13924ef787103f77958b8e08a823b339590",
+      "unchanged": true
+    },
+    {
+      "sku": "17136",
+      "sha256": "6bd58ca198b6ef01ac8561d32c1cd69a6e5f56de2754b8115a19018016df40fd",
+      "unchanged": true
+    },
+    {
+      "sku": "28101",
+      "sha256": "db82c086d47dfed9d7a711170069fb49b303d4c9f82286cb9e3de227f551abca",
+      "unchanged": true
+    },
+    {
+      "sku": "28102",
+      "sha256": "722d873364dbd8f3b6c50cc57d070aafac45065f4d9bfce989064ae6553156a1",
+      "unchanged": true
+    },
+    {
+      "sku": "20132",
+      "sha256": "aa53b87aa12d56723565abaebffc2ec59e9d399341dcef37f75253dc64341c2c",
+      "unchanged": true
+    }
+  ]
+}
